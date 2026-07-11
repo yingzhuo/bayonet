@@ -11,14 +11,14 @@ Web、安全、数据（JPA/Redis/MongoDB）、校验、日志等领域。
 
 所有命令通过 Gradle 包装器（`./gradlew`）执行。`Makefile` 封装了常用操作。
 
-| 命令             | 作用                                                            |
-|----------------|---------------------------------------------------------------|
-| `make build`   | 跳过测试进行构建（`./gradlew -x check -x test build`）                  |
-| `make test`    | 运行全部测试（`./gradlew test`）                                      |
-| `make check`   | 运行检查（含 checkstyle）（`./gradlew check`）                         |
-| `make clean`   | 清理构建产物                                                        |
+| 命令             | 作用                                                                             |
+|----------------|--------------------------------------------------------------------------------|
+| `make build`   | 跳过测试进行构建（`./gradlew -x check -x test build`）                                   |
+| `make test`    | 运行全部测试（`./gradlew test`）                                                       |
+| `make check`   | 运行检查（含 checkstyle）（`./gradlew check`）                                          |
+| `make clean`   | 清理构建产物                                                                         |
 | `make install` | 发布到 Maven 本地仓库（`./gradlew -x test -x check publishToMavenLocal --no-parallel`） |
-| `make publish` | 先发布到本地仓库，再发布到 Maven Central（需输入 yes 确认）                    |
+| `make publish` | 先发布到本地仓库，再发布到 Maven Central（需输入 yes 确认）                                        |
 
 运行单个测试类：
 
