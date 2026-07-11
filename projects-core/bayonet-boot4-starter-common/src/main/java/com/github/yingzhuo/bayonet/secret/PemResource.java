@@ -31,8 +31,8 @@ public class PemResource extends SecretResource<PemContent> {
 
         try {
             this.pemContent = PemContent.load(stream);
-        } catch (IOException exception) {
-            throw new UncheckedIOException(exception);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         } finally {
             try {
                 stream.close();

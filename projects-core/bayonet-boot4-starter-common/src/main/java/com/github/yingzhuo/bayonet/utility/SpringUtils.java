@@ -79,6 +79,8 @@ public final class SpringUtils {
         return getApplicationContext().getBeanProvider(clazz, allowEagerInit);
     }
 
+    // ------
+
     private static class Hook implements ApplicationListener<ApplicationReadyEvent> {
         static @Nullable ApplicationContext applicationContext;
 
