@@ -1,0 +1,35 @@
+plugins {
+	id 'base'
+}
+
+defaultTasks 'clean'
+
+tasks.register('pushToVcs', Exec) {
+	group = 'other'
+	description = 'Commit and push codes to version control system.'
+
+	workingDir(rootDir)
+	commandLine('bash', "$rootDir/buildSrc/config/vcs/push.sh")
+}
+
+tasks.named('clean') {
+	finalizedBy 'tidy'
+}
+
+tasks.register('tidy', DefaultTask) {
+	group = 'build'
+	description = 'Deletes useless files.'
+
+	doLast {
+		delete fileTree(rootProject.projectDir) {
+			include '**/.DS_Store', '**/*.log', '**/*.hprof', '**/hs_err_pid*'
+		}
+	}
+}
+
+tasks.named('wrapper') {
+	distributionUrl = "https://mirrors.cloud.tencent.com/gradle/gradle-8.14.5-bin.zip"
+	networkTimeout = 30000
+	validateDistributionUrl = false
+	distributionType = Wrapper.DistributionType.ALL
+}

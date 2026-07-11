@@ -1,0 +1,16 @@
+plugins {
+    id 'buildlogic.maven-central-bom-conventions'
+    id 'buildlogic.sonatype-conventions'
+}
+
+description = 'BOM'
+
+dependencies {
+    constraints {
+        rootProject.findProject('projects-core').subprojects { subproject ->
+            if (subproject.name != 'bayonet-bom') {
+                api(subproject)
+            }
+        }
+    }
+}

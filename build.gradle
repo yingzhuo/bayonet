@@ -1,0 +1,15 @@
+plugins {
+    id 'buildlogic.root-project-conventions'
+}
+
+allprojects {
+    group = bayonetGroup
+    version = bayonetVersion
+
+    configurations.configureEach {
+        resolutionStrategy {
+            cacheChangingModulesFor 24, 'hours'
+            cacheDynamicVersionsFor 24, 'hours'
+        }
+    }
+}

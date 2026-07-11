@@ -1,0 +1,74 @@
+plugins {
+	id 'java-platform'
+	id 'maven-publish'
+	id 'signing'
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.javaPlatform
+
+			groupId = project.group
+			artifactId = project.name
+			version = project.version
+
+			versionMapping {
+				usage('java-runtime') {
+					fromResolutionResult()
+				}
+			}
+
+			pom {
+				name = project.name
+				description = 'BOM of Bayonet'
+				url = 'https://github.com/yingzhuo/spring-turbocharger'
+				inceptionYear = '2025'
+
+				licenses {
+					license {
+						name = 'Apache License, Version 2.0'
+						url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+					}
+				}
+
+				developers {
+					developer {
+						id = 'yingzhuo'
+						name = '应卓'
+						email = 'yingzhor@gmail.com'
+						roles = ['author']
+						url = 'https://github.com/yingzhuo'
+					}
+				}
+
+				scm {
+					url = 'git@github.com:yingzhuo/spring-turbocharger.git'
+					connection = 'scm:git:git@github.com:yingzhuo/spring-turbocharger.git'
+					developerConnection = 'scm:git:git@github.com:yingzhuo/spring-turbocharger.git'
+				}
+
+				issueManagement {
+					system = 'GitHub Issues'
+					url = 'https://github.com/yingzhuo/spring-turbocharger/issues'
+				}
+			}
+		}
+	}
+
+	repositories {
+		maven {
+			name = "Local"
+			url = layout.buildDirectory.dir('repos/bundles')
+		}
+	}
+}
+
+signing {
+	useGpgCmd()
+	sign publishing.publications.mavenJava
+}
+
+tasks.withType(GenerateModuleMetadata).configureEach {
+	enabled = false
+}
