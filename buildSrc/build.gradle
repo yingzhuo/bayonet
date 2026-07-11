@@ -1,20 +1,20 @@
 plugins {
-	id 'groovy-gradle-plugin'
+    id 'groovy-gradle-plugin'
 }
 
 description = '构建逻辑'
 
 var file = file('../gradle.properties')
 if (file.exists() && file.isFile()) {
-	var props = new Properties()
+    var props = new Properties()
 
-	file.withDataInputStream { stream ->
-		props.load(stream)
-	}
+    file.withDataInputStream { stream ->
+        props.load(stream)
+    }
 
-	props.forEach(ext::set)
+    props.forEach(ext::set)
 }
 
 dependencies {
-	implementation "io.gitee.pkmer.pkmerboot-central-publisher:io.gitee.pkmer.pkmerboot-central-publisher.gradle.plugin:$mavenCentralPublisherPluginVersion"
+    implementation "io.gitee.pkmer.pkmerboot-central-publisher:io.gitee.pkmer.pkmerboot-central-publisher.gradle.plugin:$mavenCentralPublisherPluginVersion"
 }

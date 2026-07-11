@@ -1,22 +1,22 @@
 import io.gitee.pkmer.enums.PublishingType
 
 plugins {
-	id 'io.gitee.pkmer.pkmerboot-central-publisher'
+    id 'io.gitee.pkmer.pkmerboot-central-publisher'
 }
 
 pkmerBoot {
-	sonatypeMavenCentral {
-		stagingRepository = layout.buildDirectory.dir("repos/bundles")
-		username = providers.gradleProperty('sonatypeUsername').getOrElse(System.getenv('SONATYPE_USERNAME'))
-		password = providers.gradleProperty('sonatypePassword').getOrElse(System.getenv('SONATYPE_PASSWORD'))
-		publishingType = PublishingType.AUTOMATIC
-	}
+    sonatypeMavenCentral {
+        stagingRepository = layout.buildDirectory.dir("repos/bundles")
+        username = providers.gradleProperty('sonatypeUsername').getOrElse(System.getenv('SONATYPE_USERNAME'))
+        password = providers.gradleProperty('sonatypePassword').getOrElse(System.getenv('SONATYPE_PASSWORD'))
+        publishingType = PublishingType.AUTOMATIC
+    }
 }
 
 tasks.named('publishToMavenCentralPortal') {
-	doFirst {
-		if ("$bayonetVersion".endsWith('SNAPSHOT')) {
-			throw new GradleException('Not able to publish SNAPSHOT items')
-		}
-	}
+    doFirst {
+        if ("$bayonetVersion".endsWith('SNAPSHOT')) {
+            throw new GradleException('Not able to publish SNAPSHOT items')
+        }
+    }
 }

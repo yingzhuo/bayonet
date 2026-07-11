@@ -1,82 +1,77 @@
 plugins {
-	id 'java'
-	id 'java-library'
-	id 'io.spring.dependency-management'
+    id 'java'
+    id 'java-library'
+    id 'io.spring.dependency-management'
 }
 
 java {
-	var javaVersionInt = jdkVersion as Integer
-	sourceCompatibility = JavaVersion.toVersion(javaVersionInt)
-	targetCompatibility = JavaVersion.toVersion(javaVersionInt)
+    var javaVersionInt = jdkVersion as Integer
+    sourceCompatibility = JavaVersion.toVersion(javaVersionInt)
+    targetCompatibility = JavaVersion.toVersion(javaVersionInt)
 
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(javaVersionInt)
-		vendor = JvmVendorSpec.ORACLE
-		implementation = JvmImplementation.VENDOR_SPECIFIC
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(javaVersionInt)
+        vendor = JvmVendorSpec.ORACLE
+        implementation = JvmImplementation.VENDOR_SPECIFIC
+    }
 
-	withSourcesJar()
-	withJavadocJar()
+    withSourcesJar()
+    withJavadocJar()
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
-	}
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:$springBootVersion"
+    }
 }
 
 compileJava {
-	options.compilerArgs += [
-		'-parameters',
-		'-Xlint:unchecked',
-		'-Xlint:cast',
-		'-Xlint:rawtypes',
-		'-Xlint:overloads',
-		'-Xlint:divzero',
-		'-Xlint:finally',
-		'-Xlint:static',
-		//'-Werror'
-	]
+    options.compilerArgs += [
+            '-parameters',
+            '-Xlint:unchecked',
+            '-Xlint:cast',
+            '-Xlint:rawtypes',
+            '-Xlint:overloads',
+            '-Xlint:divzero',
+            '-Xlint:finally',
+            '-Xlint:static',
+            //'-Werror'
+    ]
 }
 
 jar {
-	manifest {
-		attributes([
-			'Module-Name'           : project.name,
-			'Implementation-Version': project.version,
-			'Build-Jdk-Spec'        : jdkVersion,
-			'Gradle-Version'        : gradle.gradleVersion
-		])
-	}
+    manifest {
+        attributes([
+                'Module-Name'           : project.name,
+                'Implementation-Version': project.version,
+                'Build-Jdk-Spec'        : jdkVersion,
+                'Gradle-Version'        : gradle.gradleVersion
+        ])
+    }
 }
 
 sourcesJar {
 }
 
 javadoc {
-	failOnError = false
+    failOnError = false
 
-	options {
-		locale = 'en_US'
-		encoding = defaultEncoding
-		addBooleanOption("html5", true)
-		addBooleanOption("Xdoclint:none", true)
-	}
+    options {
+        locale = 'en_US'
+        encoding = defaultEncoding
+        addBooleanOption("html5", true)
+        addBooleanOption("Xdoclint:none", true)
+    }
 }
 
 processResources {
-	from(rootDir) {
-		include('LICENSE.txt', 'NOTICE.txt')
-		into 'META-INF'
-	}
-
-	exclude('**/.DS_Store', '**/.gitkeep', '.gitignore')
+    exclude('**/.DS_Store', '**/.gitkeep', '.gitignore')
 }
 
 processTestResources {
-	exclude('**/.DS_Store', '**/.gitkeep', '.gitignore')
+    exclude('**/.DS_Store', '**/.gitkeep', '.gitignore')
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

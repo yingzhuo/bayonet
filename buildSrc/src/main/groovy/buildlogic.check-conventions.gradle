@@ -1,17 +1,17 @@
 plugins {
-	id 'checkstyle'
+    id 'checkstyle'
 }
 
 checkstyle {
-	configFile = file("${rootDir}/buildSrc/config/checkstyle/google.xml")
+    configFile = file("${rootDir}/buildSrc/config/checkstyle/google.xml")
 }
 
 checkstyleMain {
-	enabled = false
-	source = 'src/main/java'
+    enabled = false
+    source = 'src/main/java'
 }
 
 checkstyleTest {
-	enabled = false
-	source = 'src/test/java'
+    enabled = false
+    source = 'src/test/java'
 }

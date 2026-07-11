@@ -18,10 +18,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PemResourceProtocolResolverTest {
 
-    private static Path pemFile;
     private static final String STOREPASS = "storepass";
     private static final String ALIAS = "testkey";
-
+    private static Path pemFile;
     private final PemResourceProtocolResolver resolver = new PemResourceProtocolResolver();
     private final ResourceLoader loader = new DefaultResourceLoader();
 

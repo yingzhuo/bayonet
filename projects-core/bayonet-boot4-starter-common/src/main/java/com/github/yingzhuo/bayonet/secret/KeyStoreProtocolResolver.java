@@ -10,10 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
+import java.util.regex.Pattern;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import java.util.regex.Pattern;
 
 public class KeyStoreProtocolResolver implements ProtocolResolver {
 
