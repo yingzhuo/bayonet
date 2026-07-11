@@ -22,7 +22,7 @@ publishing {
             pom {
                 name = project.name
                 description = 'BOM of Bayonet'
-                url = 'https://github.com/yingzhuo/spring-turbocharger'
+                url = 'https://github.com/yingzhuo/bayonet'
                 inceptionYear = '2025'
 
                 licenses {
@@ -43,14 +43,14 @@ publishing {
                 }
 
                 scm {
-                    url = 'git@github.com:yingzhuo/spring-turbocharger.git'
-                    connection = 'scm:git:git@github.com:yingzhuo/spring-turbocharger.git'
-                    developerConnection = 'scm:git:git@github.com:yingzhuo/spring-turbocharger.git'
+                    url = 'git@github.com:yingzhuo/bayonet.git'
+                    connection = 'scm:git:git@github.com:yingzhuo/bayonet.git'
+                    developerConnection = 'scm:git:git@github.com:yingzhuo/bayonet.git'
                 }
 
                 issueManagement {
                     system = 'GitHub Issues'
-                    url = 'https://github.com/yingzhuo/spring-turbocharger/issues'
+                    url = 'https://github.com/yingzhuo/bayonet/issues'
                 }
             }
         }
