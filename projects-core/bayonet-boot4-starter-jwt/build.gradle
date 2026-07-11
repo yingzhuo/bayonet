@@ -1,0 +1,40 @@
+plugins {
+    id 'buildlogic.java-conventions'
+    id 'buildlogic.check-conventions'
+    id 'buildlogic.maven-central-jar-conventions'
+    id 'buildlogic.sonatype-conventions'
+}
+
+description = 'jwt相关程序包'
+
+dependencies {
+
+    // test
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // spring-boot & spring
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    compileOnly 'org.springframework.boot:spring-boot-autoconfigure'
+    compileOnly 'org.springframework.boot:spring-boot-starter-aspectj'
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.springframework.boot:spring-boot-starter-security'
+    compileOnly 'org.springframework.boot:spring-boot-starter-logging'
+    compileOnly 'org.springframework.boot:spring-boot-starter-validation'
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+    compileOnly 'org.springframework.boot:spring-boot-autoconfigure-processor'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // bayonet
+    api project(':projects-core:bayonet-boot4-starter-common')
+
+    // jwt tool
+    api libs.java.jwt
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // slf4j
+    api 'org.slf4j:slf4j-api'
+}
