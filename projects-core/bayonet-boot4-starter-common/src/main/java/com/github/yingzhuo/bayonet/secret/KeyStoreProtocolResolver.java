@@ -12,43 +12,46 @@ import java.io.UncheckedIOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import java.util.regex.Pattern;
+
 public class KeyStoreProtocolResolver implements ProtocolResolver {
 
-    private static final String PREFIX = "keystore:";
+    private static final Pattern LOCATION = Pattern.compile(
+            "^keystore:(?<location>[^?]+)(?:\\?(?<params>.*))?$"
+    );
+
+    private static final Pattern PARAM = Pattern.compile("(?<key>\\w+)=(?<value>[^&]+)");
 
     @Override
     @Nullable
     public Resource resolve(String location, ResourceLoader resourceLoader) {
-        if (!location.startsWith(PREFIX)) {
+        var m = LOCATION.matcher(location);
+        if (!m.matches()) {
             return null;
         }
 
-        var stripped = location.substring(PREFIX.length());
-        var queryIndex = stripped.indexOf('?');
-
-        var innerLocation = (queryIndex >= 0) ? stripped.substring(0, queryIndex) : stripped;
-        var queryString = (queryIndex >= 0) ? stripped.substring(queryIndex + 1) : "";
+        var innerLocation = m.group("location");
+        var queryString = m.group("params");
 
         var type = KeyStoreType.PKCS12;
         String storepass = null;
 
-        for (var param : queryString.split("&")) {
-            var eqIndex = param.indexOf('=');
-            if (eqIndex < 0) continue;
-
-            var key = param.substring(0, eqIndex);
-            var value = URLDecoder.decode(param.substring(eqIndex + 1), StandardCharsets.UTF_8);
-
-            if ("type".equals(key)) {
-                type = KeyStoreType.valueOf(value.toUpperCase());
-            } else if ("storepass".equals(key)) {
-                storepass = value;
+        if (queryString != null) {
+            var pm = PARAM.matcher(queryString);
+            while (pm.find()) {
+                var key = pm.group("key");
+                var value = URLDecoder.decode(pm.group("value").replace("+", "%2B"), UTF_8);
+                if ("type".equals(key)) {
+                    type = KeyStoreType.valueOf(value.toUpperCase());
+                } else if ("storepass".equals(key)) {
+                    storepass = value;
+                }
             }
         }
 
         Assert.notNull(storepass, () ->
                 "storepass must not be null; ensure the keystore: URL includes ?storepass=<password>");
-        Assert.notNull(type, () -> "type must not be null; supported: PKCS12, JKS");
 
         var innerResource = resourceLoader.getResource(innerLocation);
         try (InputStream is = innerResource.getInputStream()) {
