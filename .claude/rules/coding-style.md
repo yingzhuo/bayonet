@@ -11,7 +11,6 @@ paths: "**/*.java"
 - 不影响可读性时局部变量优先 `var`
 - 遵循 Google Java Style Guide（google-java-format）
 - 缩进 4 空格，行宽 100，禁止 tab，禁止尾随空格
-- 导入顺序：static → java → javax → org → com → 其他
 
 ## 依赖
 
@@ -26,7 +25,6 @@ paths: "**/*.java"
 
 - 类名 UpperCamelCase，方法/变量 lowerCamelCase
 - 常量 `UPPER_SNAKE_CASE`
-- 禁止魔法值，提取为常量或枚举
 
 ## Lombok
 

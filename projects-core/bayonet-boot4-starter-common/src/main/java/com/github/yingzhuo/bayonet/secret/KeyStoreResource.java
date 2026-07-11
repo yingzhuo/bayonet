@@ -35,8 +35,8 @@ public class KeyStoreResource extends SecretResource<KeyStore> {
     }
 
     @Override
-    public InputStream getInputStream() {
-        throw new UnsupportedOperationException();
+    public String getDescription() {
+        return "KeyStore [" + this.keyStore + "]";
     }
 
     @Override

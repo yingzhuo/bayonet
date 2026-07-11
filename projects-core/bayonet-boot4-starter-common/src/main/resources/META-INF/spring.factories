@@ -1,2 +1,3 @@
 org.springframework.core.io.ProtocolResolver=\
-com.github.yingzhuo.bayonet.secret.KeyStoreProtocolResolver
+com.github.yingzhuo.bayonet.secret.KeyStoreProtocolResolver,\
+com.github.yingzhuo.bayonet.secret.PemResourceProtocolResolver
