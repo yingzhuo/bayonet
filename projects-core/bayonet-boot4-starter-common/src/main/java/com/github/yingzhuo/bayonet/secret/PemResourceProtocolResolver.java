@@ -10,6 +10,15 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.regex.Pattern;
 
+/**
+ * Spring {@link ProtocolResolver}，解析 {@code pem:} 协议的资源位置。
+ * <p>格式：{@code pem:<资源路径>}</p>
+ *
+ * <pre>{@code
+ * pem:classpath:server.pem
+ * pem:file:/etc/ssl/cert.pem
+ * }</pre>
+ */
 public class PemResourceProtocolResolver implements ProtocolResolver {
 
     private static final Pattern LOCATION = Pattern.compile(

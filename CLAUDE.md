@@ -13,6 +13,7 @@ Web、安全、数据（JPA/Redis/MongoDB）、校验、日志等领域。
 
 | 命令             | 作用                                                                             |
 |----------------|--------------------------------------------------------------------------------|
+| `make compile` | 编译全部代码（`./gradlew classes`）                                                    |
 | `make build`   | 跳过测试进行构建（`./gradlew -x check -x test build`）                                   |
 | `make test`    | 运行全部测试（`./gradlew test`）                                                       |
 | `make check`   | 运行检查（含 checkstyle）（`./gradlew check`）                                          |

@@ -9,6 +9,9 @@
       "Bash(java *)",
       "Bash(javac *)",
       "Bash(./gradlew *)",
+      "Bash(gh pr *)",
+      "Bash(make build *)",
+      "Bash(make test *)",
       "WebFetch"
     ],
     "deny": [
