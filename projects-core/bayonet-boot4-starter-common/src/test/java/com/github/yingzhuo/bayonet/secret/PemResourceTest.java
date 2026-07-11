@@ -19,11 +19,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PemResourceTest {
 
+    private static final String STOREPASS = "storepass";
+    private static final String ALIAS = "testkey";
     private static byte[] combinedPemBytes;       // cert + key
     private static byte[] certOnlyPemBytes;        // cert only
     private static byte[] keyOnlyPemBytes;          // key only
-    private static final String STOREPASS = "storepass";
-    private static final String ALIAS = "testkey";
 
     @BeforeAll
     static void setUp(@TempDir Path tempDir) throws Exception {

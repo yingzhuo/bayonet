@@ -13,9 +13,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class KeyStoreProtocolResolverTest {
 
-    private static Path keystorePath;
     private static final String STOREPASS = "storepass";
-
+    private static Path keystorePath;
     private final KeyStoreProtocolResolver resolver = new KeyStoreProtocolResolver();
     private final ResourceLoader loader = new DefaultResourceLoader();
 

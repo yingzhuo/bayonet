@@ -16,10 +16,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class KeyStoreResourceTest {
 
-    private static byte[] populatedKeyStoreBytes;
     private static final String STOREPASS = "storepass";
     private static final String ALIAS_KEY = "testkey";
     private static final String ALIAS_CERT = "testcert";
+    private static byte[] populatedKeyStoreBytes;
 
     @BeforeAll
     static void setUp(@TempDir Path tempDir) throws Exception {
