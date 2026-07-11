@@ -62,40 +62,6 @@ class SpringFactoriesUtilsTest {
         assertThat(result).isNotEmpty();
     }
 
-    // ============== filter ==============
-
-    @Test
-    void should_excludeAll_when_filterReturnsFalse() {
-        var result = SpringFactoriesUtils.load(
-                ProtocolResolver.class,
-                null, null,
-                clazz -> false
-        ).toList();
-        assertThat(result).isEmpty();
-    }
-
-    @Test
-    void should_includeAll_when_filterReturnsTrue() {
-        var resultAll = SpringFactoriesUtils.load(ProtocolResolver.class).toList();
-        var resultFiltered = SpringFactoriesUtils.load(
-                ProtocolResolver.class,
-                null, null,
-                clazz -> true
-        ).toList();
-        assertThat(resultFiltered).hasSameSizeAs(resultAll);
-    }
-
-    @Test
-    void should_filterByClassName() {
-        var result = SpringFactoriesUtils.load(
-                ProtocolResolver.class,
-                null, null,
-                clazz -> clazz.getName().contains("KeyStore")
-        ).toList();
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getClass().getSimpleName()).isEqualTo("KeyStoreProtocolResolver");
-    }
-
     // ============== 参数校验 ==============
 
     @Test
@@ -111,8 +77,8 @@ class SpringFactoriesUtilsTest {
     }
 
     @Test
-    void should_throw_when_targetTypeIsNull_withFullArgs() {
-        assertThatThrownBy(() -> SpringFactoriesUtils.load(null, null, null, null))
+    void should_throw_when_targetTypeIsNull_withClassLoader() {
+        assertThatThrownBy(() -> SpringFactoriesUtils.load(null, null, (ClassLoader) null))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

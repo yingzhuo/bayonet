@@ -8,7 +8,7 @@ endif
 
 .DEFAULT_GOAL := clean
 
-.PHONY: clean purge rebuild-build-logic build install publish update-gradle-wrapper test check
+.PHONY: clean purge rebuild-build-logic compile build install publish update-gradle-wrapper test check
 
 .SILENT:
 
@@ -28,6 +28,9 @@ endif
 rebuild-build-logic:
 	$(GRADLEW) ':buildSrc:clean' -q
 	$(GRADLEW) ':buildSrc:jar' -q
+
+compile:
+	$(GRADLEW) 'classes'
 
 build:
 	$(GRADLEW) -x "check" -x "test" "build"

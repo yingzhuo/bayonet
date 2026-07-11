@@ -8,7 +8,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static org.springframework.core.io.support.SpringFactoriesLoader.FACTORIES_RESOURCE_LOCATION;
@@ -20,11 +19,6 @@ import static org.springframework.core.io.support.SpringFactoriesLoader.FACTORIE
  * <pre>{@code
  * // 默认加载
  * Stream<MyInterface> all = SpringFactoriesUtils.load(MyInterface.class);
- *
- * // 带过滤器
- * Stream<MyInterface> filtered = SpringFactoriesUtils.load(
- *         MyInterface.class, null, null,
- *         clazz -> clazz.getName().startsWith("com.example"));
  * }</pre>
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -39,7 +33,7 @@ public final class SpringFactoriesUtils {
      * @throws IllegalArgumentException 若 {@code targetType} 为 {@code null}
      */
     public static <T> Stream<T> load(Class<T> targetType) {
-        return load(targetType, null, null, null);
+        return load(targetType, null, null);
     }
 
     /**
@@ -52,7 +46,7 @@ public final class SpringFactoriesUtils {
      * @throws IllegalArgumentException 若 {@code targetType} 为 {@code null}
      */
     public static <T> Stream<T> load(Class<T> targetType, @Nullable String springFactoriesResourceLocation) {
-        return load(targetType, springFactoriesResourceLocation, null, null);
+        return load(targetType, springFactoriesResourceLocation, null);
     }
 
     /**
@@ -66,26 +60,6 @@ public final class SpringFactoriesUtils {
      * @throws IllegalArgumentException 若 {@code targetType} 为 {@code null}
      */
     public static <T> Stream<T> load(Class<T> targetType, @Nullable String springFactoriesResourceLocation, @Nullable ClassLoader classLoader) {
-        return load(targetType, springFactoriesResourceLocation, classLoader, null);
-    }
-
-    /**
-     * 加载指定类型的所有工厂实现（全参数）。
-     *
-     * @param targetType                      工厂目标类型
-     * @param springFactoriesResourceLocation SpringFactories 资源位置，{@code null} 时使用默认位置
-     * @param classLoader                     类加载器，{@code null} 时使用默认类加载器
-     * @param filter                          实现类过滤器，{@code null} 时不过滤
-     * @param <T>                             工厂目标类型
-     * @return 工厂实现实例的流，不会为 {@code null}
-     * @throws IllegalArgumentException 若 {@code targetType} 为 {@code null}
-     */
-    public static <T> Stream<T> load(
-            Class<T> targetType,
-            @Nullable String springFactoriesResourceLocation,
-            @Nullable ClassLoader classLoader,
-            @Nullable Predicate<Class<?>> filter
-    ) {
         Assert.notNull(targetType, "targetType must not be null");
 
         if (!StringUtils.hasText(springFactoriesResourceLocation)) {
@@ -98,8 +72,7 @@ public final class SpringFactoriesUtils {
 
         return SpringFactoriesLoader.forResourceLocation(springFactoriesResourceLocation, classLoader)
                 .load(targetType)
-                .stream()
-                .filter(t -> filter == null || filter.test(t.getClass()));
+                .stream();
     }
 
 }
