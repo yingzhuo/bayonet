@@ -14,6 +14,17 @@ import java.util.regex.Pattern;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+/**
+ * Spring {@link ProtocolResolver}，解析 {@code keystore:} 协议的资源位置。
+ * <p>格式：{@code keystore:<资源路径>?type=<类型>&storepass=<密码>}</p>
+ *
+ * <pre>{@code
+ * keystore:classpath:server.p12?type=PKCS12&storepass=changeit
+ * keystore:file:/etc/ssl/server.jks?storepass=secret
+ * }</pre>
+ *
+ * <p>若未指定 {@code type}，默认使用 {@link KeyStoreType#PKCS12}。</p>
+ */
 public class KeyStoreProtocolResolver implements ProtocolResolver {
 
     private static final Pattern LOCATION = Pattern.compile(
