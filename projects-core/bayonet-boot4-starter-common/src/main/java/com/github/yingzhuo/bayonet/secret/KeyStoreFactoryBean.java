@@ -31,13 +31,19 @@ public class KeyStoreFactoryBean implements FactoryBean<KeyStore>, ResourceLoade
      */
     private KeyStoreType keyStoreType = KeyStoreType.PKCS12;
 
-    /** 密钥库资源位置（如 {@code classpath:keystore.p12}） */
+    /**
+     * 密钥库资源位置（如 {@code classpath:keystore.p12}）
+     */
     private String location;
 
-    /** 密钥库密码 */
+    /**
+     * 密钥库密码
+     */
     private String storepass;
 
-    /** Spring 资源加载器，由容器自动注入 */
+    /**
+     * Spring 资源加载器，由容器自动注入
+     */
     private ResourceLoader resourceLoader;
 
     @Override
