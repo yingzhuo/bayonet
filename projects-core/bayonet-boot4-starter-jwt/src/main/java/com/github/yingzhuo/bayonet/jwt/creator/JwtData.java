@@ -5,7 +5,10 @@ import org.springframework.util.Assert;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 /**
@@ -35,6 +38,10 @@ public final class JwtData implements JwtConstants {
      */
     public static JwtData newInstance() {
         return new JwtData();
+    }
+
+    private static Date toDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     /**
@@ -282,10 +289,6 @@ public final class JwtData implements JwtConstants {
      */
     public Map<String, Object> getPayloadMap() {
         return Collections.unmodifiableMap(this.payloadMap);
-    }
-
-    private static Date toDate(LocalDateTime localDateTime) {
-        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
 }

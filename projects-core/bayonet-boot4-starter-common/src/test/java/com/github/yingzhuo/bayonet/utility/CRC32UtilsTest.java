@@ -12,6 +12,12 @@ class CRC32UtilsTest {
 
     // ============== crc32Value ==============
 
+    private static long crc32Reference(byte[] data) {
+        var crc32 = new CRC32();
+        crc32.update(data);
+        return crc32.getValue();
+    }
+
     @Test
     void should_return_zero_when_dataEmpty() {
         assertThat(CRC32Utils.crc32Value(new byte[0])).isZero();
@@ -31,13 +37,13 @@ class CRC32UtilsTest {
         assertThat(CRC32Utils.crc32Value(data)).isEqualTo(expected);
     }
 
+    // ============== crc32Hex ==============
+
     @Test
     void should_throw_when_dataIsNull() {
         assertThatThrownBy(() -> CRC32Utils.crc32Value(null))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-
-    // ============== crc32Hex ==============
 
     @Test
     void should_return_8charHex_when_dataNotEmpty() {
@@ -63,12 +69,6 @@ class CRC32UtilsTest {
     void should_throw_when_hexDataIsNull() {
         assertThatThrownBy(() -> CRC32Utils.crc32Hex(null))
                 .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    private static long crc32Reference(byte[] data) {
-        var crc32 = new CRC32();
-        crc32.update(data);
-        return crc32.getValue();
     }
 
 }

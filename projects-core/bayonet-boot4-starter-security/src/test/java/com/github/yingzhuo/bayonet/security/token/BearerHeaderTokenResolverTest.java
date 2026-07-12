@@ -13,10 +13,9 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class BearerHeaderTokenResolverTest {
 
+    private final BearerHeaderTokenResolver resolver = new BearerHeaderTokenResolver();
     @Mock
     private WebRequest webRequest;
-
-    private final BearerHeaderTokenResolver resolver = new BearerHeaderTokenResolver();
 
     @Test
     void should_return_token_when_bearerPresent() {

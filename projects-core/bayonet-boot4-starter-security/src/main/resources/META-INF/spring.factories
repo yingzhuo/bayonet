@@ -1,0 +1,2 @@
+org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer=\
+com.github.yingzhuo.bayonet.security.autoconfig.SecurityFilterAutoDSL

@@ -16,19 +16,29 @@ import java.io.Serializable;
  */
 public enum ValidatingResult implements Serializable {
 
-    /** 验证通过 */
+    /**
+     * 验证通过
+     */
     OK,
 
-    /** JWT 格式非法 */
+    /**
+     * JWT 格式非法
+     */
     INVALID_JWT_FORMAT,
 
-    /** 签名无效 */
+    /**
+     * 签名无效
+     */
     INVALID_SIGNATURE,
 
-    /** 时间相关校验失败（过期、未生效等） */
+    /**
+     * 时间相关校验失败（过期、未生效等）
+     */
     INVALID_TIME,
 
-    /** 声明校验失败 */
+    /**
+     * 声明校验失败
+     */
     INVALID_CLAIM,
 
 }

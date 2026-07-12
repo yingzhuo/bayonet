@@ -7,16 +7,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class EnumUtilsTest {
 
-    private enum Color {
-        RED, GREEN, BLUE
-    }
-
-    // ============== getEnum ==============
-
     @Test
     void should_getEnum_when_nameExists() {
         assertThat(EnumUtils.getEnum(Color.class, "RED")).isEqualTo(Color.RED);
     }
+
+    // ============== getEnum ==============
 
     @Test
     void should_throw_when_getEnum_nameNotExists() {
@@ -42,12 +38,12 @@ class EnumUtilsTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    // ============== getEnum with default ==============
-
     @Test
     void should_getEnum_withDefault_when_nameExists() {
         assertThat(EnumUtils.getEnum(Color.class, "RED", Color.BLUE)).isEqualTo(Color.RED);
     }
+
+    // ============== getEnum with default ==============
 
     @Test
     void should_return_default_when_getEnum_nameNotExists() {
@@ -66,12 +62,12 @@ class EnumUtilsTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    // ============== getEnumIgnoreCase ==============
-
     @Test
     void should_getEnumIgnoreCase_when_nameMatchesCase() {
         assertThat(EnumUtils.getEnumIgnoreCase(Color.class, "red")).isEqualTo(Color.RED);
     }
+
+    // ============== getEnumIgnoreCase ==============
 
     @Test
     void should_getEnumIgnoreCase_when_nameMixedCase() {
@@ -84,12 +80,12 @@ class EnumUtilsTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    // ============== getEnumIgnoreCase with default ==============
-
     @Test
     void should_getEnumIgnoreCase_withDefault_when_nameExists() {
         assertThat(EnumUtils.getEnumIgnoreCase(Color.class, "blue", Color.RED)).isEqualTo(Color.BLUE);
     }
+
+    // ============== getEnumIgnoreCase with default ==============
 
     @Test
     void should_return_default_when_getEnumIgnoreCase_nameNotExists() {
@@ -102,21 +98,19 @@ class EnumUtilsTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    // ============== getEnumList ==============
-
     @Test
     void should_getEnumList_when_valid() {
         var list = EnumUtils.getEnumList(Color.class);
         assertThat(list).containsExactly(Color.RED, Color.GREEN, Color.BLUE);
     }
 
+    // ============== getEnumList ==============
+
     @Test
     void should_throw_when_getEnumList_enumClassIsNull() {
         assertThatThrownBy(() -> EnumUtils.getEnumList(null))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-
-    // ============== getEnumMap ==============
 
     @Test
     void should_getEnumMap_when_valid() {
@@ -126,6 +120,8 @@ class EnumUtilsTest {
         assertThat(map).containsEntry("GREEN", Color.GREEN);
         assertThat(map).containsEntry("BLUE", Color.BLUE);
     }
+
+    // ============== getEnumMap ==============
 
     @Test
     void should_getEnumMap_preserveOrder() {
@@ -139,12 +135,12 @@ class EnumUtilsTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    // ============== isValidEnum ==============
-
     @Test
     void should_return_true_when_isValidEnum_nameExists() {
         assertThat(EnumUtils.isValidEnum(Color.class, "RED")).isTrue();
     }
+
+    // ============== isValidEnum ==============
 
     @Test
     void should_return_false_when_isValidEnum_nameNotExists() {
@@ -163,12 +159,12 @@ class EnumUtilsTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    // ============== isValidEnumIgnoreCase ==============
-
     @Test
     void should_return_true_when_isValidEnumIgnoreCase_nameMatches() {
         assertThat(EnumUtils.isValidEnumIgnoreCase(Color.class, "red")).isTrue();
     }
+
+    // ============== isValidEnumIgnoreCase ==============
 
     @Test
     void should_return_false_when_isValidEnumIgnoreCase_nameNotExists() {
@@ -179,6 +175,10 @@ class EnumUtilsTest {
     void should_throw_when_isValidEnumIgnoreCase_enumClassIsNull() {
         assertThatThrownBy(() -> EnumUtils.isValidEnumIgnoreCase(null, "RED"))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    private enum Color {
+        RED, GREEN, BLUE
     }
 
 }

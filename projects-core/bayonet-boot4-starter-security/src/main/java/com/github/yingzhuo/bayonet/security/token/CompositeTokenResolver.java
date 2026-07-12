@@ -30,19 +30,6 @@ public class CompositeTokenResolver implements TokenResolver {
     private final List<TokenResolver> resolvers;
 
     /**
-     * 创建组合解析器（变参便捷方法）
-     *
-     * @param resolvers 子解析器列表
-     * @return 组合解析器
-     */
-    public static TokenResolver of(TokenResolver... resolvers) {
-        if (resolvers == null || resolvers.length == 0) {
-            return webRequest -> null;
-        }
-        return new CompositeTokenResolver(Arrays.asList(resolvers));
-    }
-
-    /**
      * 构造器（从列表）
      *
      * @param resolvers 子解析器列表，不能为 {@code null}，不能包含 {@code null} 元素
@@ -55,6 +42,19 @@ public class CompositeTokenResolver implements TokenResolver {
         var sorted = new ArrayList<>(resolvers);
         AnnotationAwareOrderComparator.sort(sorted);
         this.resolvers = Collections.unmodifiableList(sorted);
+    }
+
+    /**
+     * 创建组合解析器（变参便捷方法）
+     *
+     * @param resolvers 子解析器列表
+     * @return 组合解析器
+     */
+    public static TokenResolver of(TokenResolver... resolvers) {
+        if (resolvers == null || resolvers.length == 0) {
+            return webRequest -> null;
+        }
+        return new CompositeTokenResolver(Arrays.asList(resolvers));
     }
 
     @Override

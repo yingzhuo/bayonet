@@ -30,7 +30,9 @@ class CloseUtilsTest {
 
     @Test
     void should_notThrow_when_CloseableThrows() {
-        Closeable c = () -> { throw new IOException("boom"); };
+        Closeable c = () -> {
+            throw new IOException("boom");
+        };
 
         assertThatCode(() -> CloseUtils.closeQuietly(c))
                 .doesNotThrowAnyException();
@@ -62,7 +64,9 @@ class CloseUtilsTest {
 
     @Test
     void should_notThrow_when_AutoCloseableThrows() {
-        AutoCloseable c = () -> { throw new Exception("boom"); };
+        AutoCloseable c = () -> {
+            throw new Exception("boom");
+        };
 
         assertThatCode(() -> CloseUtils.closeQuietly(c))
                 .doesNotThrowAnyException();
