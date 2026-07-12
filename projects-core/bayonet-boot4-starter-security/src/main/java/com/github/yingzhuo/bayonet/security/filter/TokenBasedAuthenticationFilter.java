@@ -23,21 +23,21 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 /**
- * 基于 Token 的认证过滤器抽象基类。
- * <p>从请求中提取 Token → 转换为 {@link Authentication} → 设置 SecurityContext。
- * 子类需实现 {@link #onAuthenticationSuccess(Authentication, WebRequest)}。</p>
+ * 基于 Token 的认证过滤器。
+ * <p>从请求中提取 Token → 通过 {@link TokenConverter} 转换为 {@link Authentication} → 设置 SecurityContext。
+ * 可配合 {@link TokenResolver} 和 {@link TokenConverter} 灵活配置。</p>
  *
  * <pre>{@code
- * public class JwtAuthFilter extends AbstractTokenBasedAuthenticationFilter<JwtAuthentication> {
- *     protected @Nullable JwtAuthentication convert(String token) { ... }
- *     protected void onAuthenticationSuccess(JwtAuthentication auth, WebRequest request) { ... }
- * }
+ * var filter = new TokenBasedAuthenticationFilter<JwtAuthentication>();
+ * filter.setTokenResolver(new BearerHeaderTokenResolver());
+ * filter.setTokenConverter(new JwtTokenConverter());
+ * filter.setAuthenticationEntryPoint(new Http403ForbiddenEntryPoint());
  * }</pre>
  *
  * @param <A> Authentication 类型
  */
 @Setter
-public abstract class AbstractTokenBasedAuthenticationFilter<A extends Authentication> extends OncePerRequestFilter {
+public class TokenBasedAuthenticationFilter<A extends Authentication> extends OncePerRequestFilter {
 
     private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
     private TokenResolver tokenResolver = new BearerHeaderTokenResolver();
@@ -89,7 +89,7 @@ public abstract class AbstractTokenBasedAuthenticationFilter<A extends Authentic
 
     /**
      * 认证成功后的回调。
-     * <p>可用于记录审计日志、更新最后登录时间等操作。</p>
+     * <p>子类可覆盖此方法以记录审计日志、更新最后登录时间等。</p>
      *
      * @param auth           Authentication 实例
      * @param currentRequest 当前 Web 请求

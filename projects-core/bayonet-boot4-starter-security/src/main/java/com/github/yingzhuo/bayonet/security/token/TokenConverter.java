@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.security.token;
 
+import com.github.yingzhuo.bayonet.security.filter.TokenBasedAuthenticationFilter;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -7,7 +8,7 @@ import org.springframework.security.core.AuthenticationException;
 /**
  * Token 字符串 → {@link Authentication} 转换器。
  * <p>将 {@link TokenResolver} 提取的 Token 字符串转换为 Spring Security
- * {@link Authentication} 对象，供 {@link com.github.yingzhuo.bayonet.security.filter.AbstractTokenBasedAuthenticationFilter} 使用。</p>
+ * {@link Authentication} 对象，供 {@link TokenBasedAuthenticationFilter} 使用。</p>
  *
  * <pre>{@code
  * public class JwtTokenConverter implements TokenConverter<JwtAuthentication> {

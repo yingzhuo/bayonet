@@ -3,7 +3,6 @@ package com.github.yingzhuo.bayonet.security.filter;
 import com.github.yingzhuo.bayonet.security.token.TokenConverter;
 import com.github.yingzhuo.bayonet.security.token.TokenResolver;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class AbstractTokenBasedAuthenticationFilterTest {
+class TokenBasedAuthenticationFilterTest {
 
     @Mock
     private TokenResolver tokenResolver;
@@ -38,7 +37,7 @@ class AbstractTokenBasedAuthenticationFilterTest {
     private HttpServletResponse response;
 
     private final MockHttpServletRequest request = new MockHttpServletRequest();
-    private final AbstractTokenBasedAuthenticationFilter<UsernamePasswordAuthenticationToken> filter = new AbstractTokenBasedAuthenticationFilter<>() {
+    private final TokenBasedAuthenticationFilter<UsernamePasswordAuthenticationToken> filter = new TokenBasedAuthenticationFilter<>() {
     };
 
     @BeforeEach
