@@ -1,6 +1,10 @@
 package com.github.yingzhuo.bayonet.security.filtercfg;
 
 import jakarta.servlet.Filter;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.jspecify.annotations.Nullable;
+import org.springframework.util.Assert;
 
 /**
  * 过滤器配置器。
@@ -43,6 +47,17 @@ public interface FilterConfigurer {
     // ------
 
     /**
+     * 创建默认配置构建器。
+     *
+     * @return 构建器
+     */
+    static Builder builder() {
+        return new Builder();
+    }
+
+    // ------
+
+    /**
      * 过滤器定位提示。
      */
     enum PositionHint {
@@ -58,6 +73,68 @@ public interface FilterConfigurer {
          * 替换参考过滤器。
          */
         AT
+    }
+
+    // ------
+
+    /**
+     * 默认实现，使用 record 承载不可变数据。
+     */
+    record SimpleFilterConfigurer(
+            Filter filter,
+            Class<? extends Filter> positionFilterClass,
+            PositionHint positionHint
+    ) implements FilterConfigurer {
+
+        @Override
+        public Filter getFilter() {
+            return filter();
+        }
+
+        @Override
+        public Class<? extends Filter> getPositionFilterClass() {
+            return positionFilterClass();
+        }
+
+        @Override
+        public PositionHint getPositionHint() {
+            return positionHint();
+        }
+    }
+
+    // ------
+
+    /**
+     * {@link FilterConfigurer} 构建器。
+     */
+    @NoArgsConstructor(access = AccessLevel.PACKAGE)
+    class Builder {
+
+        private @Nullable Filter filter;
+        private @Nullable Class<? extends Filter> positionFilterClass;
+        private @Nullable PositionHint positionHint;
+
+        public Builder filter(Filter filter) {
+            this.filter = filter;
+            return this;
+        }
+
+        public Builder positionFilterClass(Class<? extends Filter> positionFilterClass) {
+            this.positionFilterClass = positionFilterClass;
+            return this;
+        }
+
+        public Builder positionHint(PositionHint positionHint) {
+            this.positionHint = positionHint;
+            return this;
+        }
+
+        public FilterConfigurer build() {
+            Assert.notNull(filter, "filter must not be null");
+            Assert.notNull(positionFilterClass, "positionFilterClass must not be null");
+            Assert.notNull(positionHint, "positionHint must not be null");
+            return new SimpleFilterConfigurer(filter, positionFilterClass, positionHint);
+        }
     }
 
 }
