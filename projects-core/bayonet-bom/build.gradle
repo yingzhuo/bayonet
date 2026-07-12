@@ -12,5 +12,7 @@ dependencies {
                 api(subproject)
             }
         }
+
+        api libs.java.jwt
     }
 }
