@@ -1,8 +1,6 @@
 package com.github.yingzhuo.bayonet.classpath;
 
 import org.jspecify.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.boot.io.ApplicationResourceLoader;
 import org.springframework.core.env.Environment;
@@ -32,13 +30,11 @@ import java.util.stream.Stream;
  */
 public class ClassPathScanner {
 
-    private static final Logger log = LoggerFactory.getLogger(ClassPathScanner.class);
-
     private final ClassPathScannerWorker worker;
     private ClassLoader classLoader = ClassPathScanner.class.getClassLoader();
 
     /**
-     * 构造器，默认不启用 Spring 内置过滤器。
+     * 构造器，默认不启用 Spring 内置过滤器
      */
     public ClassPathScanner() {
         this(false);
@@ -54,7 +50,7 @@ public class ClassPathScanner {
     }
 
     /**
-     * 设置 ResourceLoader，{@code null} 时使用默认的 {@link ApplicationResourceLoader}。
+     * 设置 ResourceLoader，{@code null} 时使用默认的 {@link ApplicationResourceLoader}
      *
      * @param resourceLoader ResourceLoader，可为 {@code null}
      */
@@ -72,7 +68,7 @@ public class ClassPathScanner {
     }
 
     /**
-     * 设置 ClassLoader，不能为 {@code null}。
+     * 设置 ClassLoader，不能为 {@code null}
      *
      * @param classLoader ClassLoader
      * @throws IllegalArgumentException 若 {@code classLoader} 为 {@code null}
@@ -83,7 +79,7 @@ public class ClassPathScanner {
     }
 
     /**
-     * 重置过滤器（不启用默认过滤器）。
+     * 重置过滤器（不启用默认过滤器）
      */
     public void resetFilters() {
         worker.resetFilters(false);
@@ -99,7 +95,7 @@ public class ClassPathScanner {
     }
 
     /**
-     * 添加包含过滤器（类型过滤器）。
+     * 添加包含过滤器（类型过滤器）
      *
      * @param includeFilters 包含过滤器，{@code null} 元素将被忽略
      */
@@ -112,7 +108,7 @@ public class ClassPathScanner {
     }
 
     /**
-     * 添加排除过滤器（类型过滤器）。
+     * 添加排除过滤器（类型过滤器）
      *
      * @param excludeFilters 排除过滤器，{@code null} 元素将被忽略
      */
@@ -125,7 +121,7 @@ public class ClassPathScanner {
     }
 
     /**
-     * 扫描指定包下的候选组件。
+     * 扫描指定包下的候选组件
      * <p>返回的 {@link GenericBeanDefinition} 中 {@link GenericBeanDefinition#getBeanClass() BeanClass}
      * 已通过 ClassLoader 加载到 JVM 中。如果某个类无法加载（类不存在、依赖缺失等），该定义将被静默丢弃。</p>
      *
@@ -157,7 +153,7 @@ public class ClassPathScanner {
     }
 
     /**
-     * 尝试加载 BeanClass，失败时丢弃该定义。
+     * 尝试加载 BeanClass，失败时丢弃该定义
      *
      * @param beanDef 待解析的 BeanDefinition
      * @return 加载成功返回 {@code true}，失败返回 {@code false}
@@ -172,7 +168,6 @@ public class ClassPathScanner {
             beanDef.setBeanClass(clazz);
             return true;
         } catch (Exception e) {
-            log.trace("Failed to resolve bean class: {}", className, e);
             return false;
         }
     }
