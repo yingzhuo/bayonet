@@ -31,30 +31,23 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class TokenBasedAuthenticationFilterTest {
 
-    @Mock
-    private TokenResolver tokenResolver;
-
-    @Mock
-    private TokenConverter<UsernamePasswordAuthenticationToken> tokenConverter;
-
-    @Mock
-    private FilterChain filterChain;
-
-    @Mock
-    private HttpServletResponse response;
-
-    @Mock
-    private RememberMeServices rememberMeServices;
-
-    @Mock
-    private ApplicationEventPublisher eventPublisher;
-
-    @Captor
-    private ArgumentCaptor<Object> eventCaptor;
-
     private final MockHttpServletRequest request = new MockHttpServletRequest();
     private final TokenBasedAuthenticationFilter<UsernamePasswordAuthenticationToken> filter = new TokenBasedAuthenticationFilter<>() {
     };
+    @Mock
+    private TokenResolver tokenResolver;
+    @Mock
+    private TokenConverter<UsernamePasswordAuthenticationToken> tokenConverter;
+    @Mock
+    private FilterChain filterChain;
+    @Mock
+    private HttpServletResponse response;
+    @Mock
+    private RememberMeServices rememberMeServices;
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
+    @Captor
+    private ArgumentCaptor<Object> eventCaptor;
 
     @BeforeEach
     void setUp() {

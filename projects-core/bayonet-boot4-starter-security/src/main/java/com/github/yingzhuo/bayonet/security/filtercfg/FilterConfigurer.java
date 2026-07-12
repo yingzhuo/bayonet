@@ -23,6 +23,15 @@ import org.springframework.util.Assert;
 public interface FilterConfigurer {
 
     /**
+     * 创建默认配置构建器。
+     *
+     * @return 构建器
+     */
+    static Builder builder() {
+        return new Builder();
+    }
+
+    /**
      * 返回要添加的过滤器实例。
      *
      * @return 过滤器实例
@@ -37,23 +46,14 @@ public interface FilterConfigurer {
      */
     Class<? extends Filter> getPositionFilterClass();
 
+    // ------
+
     /**
      * 返回定位提示，决定在参考过滤器的 {@link PositionHint#BEFORE 前面}、{@link PositionHint#AFTER 后面} 还是 {@link PositionHint#AT 位置} 添加。
      *
      * @return 定位提示
      */
     PositionHint getPositionHint();
-
-    // ------
-
-    /**
-     * 创建默认配置构建器。
-     *
-     * @return 构建器
-     */
-    static Builder builder() {
-        return new Builder();
-    }
 
     // ------
 

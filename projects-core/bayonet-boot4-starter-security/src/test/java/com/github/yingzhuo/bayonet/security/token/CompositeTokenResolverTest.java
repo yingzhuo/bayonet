@@ -86,6 +86,15 @@ class CompositeTokenResolverTest {
 
     // ============== Order 排序 ==============
 
+    @Test
+    void should_respect_order_annotation() {
+        var low = new LowPriorityResolver();
+        var high = new HighPriorityResolver();
+        // 按 Order(2), Order(1) 传入，预期 Order(1) 先执行
+        var resolver = new CompositeTokenResolver(List.of(low, high));
+        assertThat(resolver.resolve(webRequest)).isEqualTo("high");
+    }
+
     @Order(2)
     static class LowPriorityResolver implements TokenResolver {
         @Override
@@ -100,15 +109,6 @@ class CompositeTokenResolverTest {
         public @org.jspecify.annotations.Nullable String resolve(@NonNull WebRequest webRequest) {
             return "high";
         }
-    }
-
-    @Test
-    void should_respect_order_annotation() {
-        var low = new LowPriorityResolver();
-        var high = new HighPriorityResolver();
-        // 按 Order(2), Order(1) 传入，预期 Order(1) 先执行
-        var resolver = new CompositeTokenResolver(List.of(low, high));
-        assertThat(resolver.resolve(webRequest)).isEqualTo("high");
     }
 
 }
