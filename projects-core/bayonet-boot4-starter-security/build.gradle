@@ -5,7 +5,7 @@ plugins {
     id 'buildlogic.sonatype-conventions'
 }
 
-description = 'jwt相关程序包'
+description = 'security相关组件'
 
 dependencies {
 
@@ -15,9 +15,12 @@ dependencies {
 
     // spring-boot & spring
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-security'
     compileOnly 'org.springframework.boot:spring-boot-autoconfigure'
     compileOnly 'org.springframework.boot:spring-boot-starter-aspectj'
     compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.springframework.boot:spring-boot-starter-security'
     compileOnly 'org.springframework.boot:spring-boot-starter-logging'
     compileOnly 'org.springframework.boot:spring-boot-starter-validation'
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
@@ -26,9 +29,7 @@ dependencies {
 
     // bayonet
     api project(':projects-core:bayonet-boot4-starter-common')
-
-    // jwt tool
-    api libs.java.jwt
+    api project(':projects-core:bayonet-boot4-starter-jwt')
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
@@ -36,4 +37,5 @@ dependencies {
 
     // slf4j
     api 'org.slf4j:slf4j-api'
+
 }
