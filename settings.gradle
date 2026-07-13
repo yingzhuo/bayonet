@@ -29,7 +29,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = 'bayonet'
-
+include ':project-test'
 include ':projects-core:bayonet-bom'
 include ':projects-core:bayonet-boot4-starter-common'
 include ':projects-core:bayonet-boot4-starter-jwt'

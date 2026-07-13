@@ -1,0 +1,20 @@
+plugins {
+    id 'buildlogic.java-conventions'
+}
+
+description = 'ID生成器'
+
+dependencies {
+    // spring-boot
+    api 'org.springframework.boot:spring-boot-starter-web'
+    api 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // spring-turbocharger
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // slf4j
+    api 'org.slf4j:slf4j-api'
+}
