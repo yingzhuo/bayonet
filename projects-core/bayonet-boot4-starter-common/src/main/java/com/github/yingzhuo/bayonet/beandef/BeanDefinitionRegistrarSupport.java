@@ -75,7 +75,7 @@ public abstract class BeanDefinitionRegistrarSupport implements ImportBeanDefini
      * 获取指定注解的属性。
      * <p>若目标注解不存在于 {@code metadata} 上，返回空 {@link AnnotationAttributes}（非 {@code null}）。</p>
      *
-     * @param metadata      AnnotationMetadata
+     * @param metadata       AnnotationMetadata
      * @param annotationType 注解类型
      * @return 注解属性（非 {@code null}）
      */
