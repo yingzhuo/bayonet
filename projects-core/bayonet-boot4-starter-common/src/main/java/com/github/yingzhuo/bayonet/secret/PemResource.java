@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.secret;
 
+import com.github.yingzhuo.bayonet.utility.CloseUtils;
 import org.jspecify.annotations.Nullable;
 import org.springframework.boot.ssl.pem.PemContent;
 import org.springframework.util.Assert;
@@ -34,11 +35,7 @@ public class PemResource extends SecretResource<PemContent> {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         } finally {
-            try {
-                stream.close();
-            } catch (IOException e) {
-                // NoOp
-            }
+            CloseUtils.closeQuietly(stream);
         }
     }
 

@@ -57,6 +57,19 @@ public @interface HMACAlgorithm {
     // ------
 
     /**
+     * HMAC 算法类型枚举。
+     * <p>支持的 HMAC 签名算法：</p>
+     * <ul>
+     *     <li>{@link #HMAC256} — HmacSHA256</li>
+     *     <li>{@link #HMAC384} — HmacSHA384</li>
+     *     <li>{@link #HMAC512} — HmacSHA512</li>
+     * </ul>
+     */
+    enum Type {
+        HMAC256, HMAC384, HMAC512
+    }
+
+    /**
      * HMAC JWT Algorithm 的 {@link ImportBeanDefinitionRegistrar} 实现。
      * <p>读取 {@link HMACAlgorithm} 注解属性，创建对应的 HMAC Algorithm Bean。</p>
      */
@@ -85,19 +98,6 @@ public @interface HMACAlgorithm {
             var beanName = beanNameGenerator.generateBeanName(beanDef, registry);
             registry.registerBeanDefinition(beanName, beanDef);
         }
-    }
-
-    /**
-     * HMAC 算法类型枚举。
-     * <p>支持的 HMAC 签名算法：</p>
-     * <ul>
-     *     <li>{@link #HMAC256} — HmacSHA256</li>
-     *     <li>{@link #HMAC384} — HmacSHA384</li>
-     *     <li>{@link #HMAC512} — HmacSHA512</li>
-     * </ul>
-     */
-    enum Type {
-        HMAC256, HMAC384, HMAC512
     }
 
 }
