@@ -1,31 +1,26 @@
 package com.github.yingzhuo.bayonet.jwt.algorithm;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import lombok.RequiredArgsConstructor;
+import com.github.yingzhuo.bayonet.beandef.AnnotationImportingUtils;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
-import org.springframework.beans.factory.support.*;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.boot.ssl.pem.PemContent;
-import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
-import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.Assert;
 
-@RequiredArgsConstructor
-class PemAlgorithmImporting implements ImportBeanDefinitionRegistrar {
+class PemAlgorithmImporting extends AbstractAlgorithmImporting {
 
-    private final ResourceLoader resourceLoader;
-    private final Environment environment;
+    public PemAlgorithmImporting(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
+        super(resourceLoader, environment, beanFactory, beanClassLoader);
+    }
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {
-        var importingAttributes =
-                AnnotationAttributes.fromMap(importingClassMetadata.getAnnotationAttributes(PemAlgorithm.class.getName()));
-
-        if (importingAttributes == null) {
-            return;
-        }
+        var importingAttributes = AnnotationImportingUtils.getAnnotationAttributes(importingClassMetadata, PemAlgorithm.class);
 
         var location = environment.resolvePlaceholders(importingAttributes.getString("location"));
         var keypass = environment.resolvePlaceholders(importingAttributes.getString("keypass"));
@@ -34,21 +29,11 @@ class PemAlgorithmImporting implements ImportBeanDefinitionRegistrar {
         var beanAliases = importingAttributes.getStringArray("beanAliases");
 
         var target = getAlgorithm(location, keypass, algorithmName);
-        var beanDef = (GenericBeanDefinition) BeanDefinitionBuilder.genericBeanDefinition(Algorithm.class, () -> target)
-                .setPrimary(primary)
-                .setAbstract(false)
-                .setLazyInit(false)
-                .setScope(AbstractBeanDefinition.SCOPE_SINGLETON)
-                .setRole(AbstractBeanDefinition.ROLE_APPLICATION)
-                .getBeanDefinition();
-
+        var beanDef = super.createBeanDefinition(target, primary);
         var beanName = beanNameGenerator.generateBeanName(beanDef, registry);
         registry.registerBeanDefinition(beanName, beanDef);
 
-        for (var beanAlias : beanAliases) {
-            beanAlias = environment.resolvePlaceholders(beanAlias);
-            registry.registerAlias(beanName, beanAlias);
-        }
+        super.registerBeanAlias(beanAliases, beanName, registry);
     }
 
     private Algorithm getAlgorithm(String location, String keypass, AlgorithmName algorithmName) {
