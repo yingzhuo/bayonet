@@ -41,7 +41,7 @@ class PemAlgorithmImporting extends AlgorithmImportingSupport {
             var pemContent = PemContent.load(stream);
 
             var certificates = pemContent.getCertificates();
-            Assert.notEmpty(certificates, "cannot load X509Certificate");
+            Assert.notEmpty(certificates, "cannot load X509 certificate");
 
             var publicKey = certificates.get(0).getPublicKey();
             var privateKey = pemContent.getPrivateKey(keypass);

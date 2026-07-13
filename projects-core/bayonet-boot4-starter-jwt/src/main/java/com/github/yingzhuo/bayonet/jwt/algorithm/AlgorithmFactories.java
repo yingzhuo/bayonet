@@ -16,7 +16,7 @@ import java.security.interfaces.RSAPublicKey;
  * 内部工具
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class AlgorithmFactories {
+final class AlgorithmFactories {
 
     public static Algorithm createAlgorithm(AlgorithmName algorithmName, PublicKey publicKey, PrivateKey privateKey) {
         Assert.notNull(algorithmName, "algorithmName must not be null");

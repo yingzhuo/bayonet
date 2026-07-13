@@ -16,8 +16,8 @@ public interface VerificationCustomizer {
     /**
      * 定制 {@link Verification} 配置。
      *
-     * @param component Verification 实例
+     * @param verification Verification 实例
      */
-    void customize(Verification component);
+    void customize(Verification verification);
 
 }
