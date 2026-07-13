@@ -2,6 +2,7 @@ package com.github.yingzhuo.bayonet.jwt.validator;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.github.yingzhuo.bayonet.jwt.blacklist.BlacklistChecker;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -54,6 +55,12 @@ class DefaultJwtValidatorTest {
     @Test
     void should_create_when_customizerIsNull() {
         var validator = new DefaultJwtValidator(algorithm, null);
+        assertThat(validator).isNotNull();
+    }
+
+    @Test
+    void should_create_when_blacklistCheckerIsNull() {
+        var validator = new DefaultJwtValidator(algorithm, null, null);
         assertThat(validator).isNotNull();
     }
 
@@ -144,6 +151,35 @@ class DefaultJwtValidatorTest {
 
         var result = new DefaultJwtValidator(algorithm).validate(token);
         assertThat(result).isEqualTo(ValidatingResult.INVALID_TIME);
+    }
+
+    // ============== BlacklistChecker ==============
+
+    @Test
+    void should_return_INVALID_BLACKLISTED_when_checkerRejects() {
+        var checker = (BlacklistChecker) (raw, decoded) -> true;
+        var validator = new DefaultJwtValidator(algorithm, null, checker);
+
+        var result = validator.validate(validToken);
+        assertThat(result).isEqualTo(ValidatingResult.INVALID_BLACKLISTED);
+    }
+
+    @Test
+    void should_return_OK_when_checkerAccepts() {
+        var checker = (BlacklistChecker) (raw, decoded) -> false;
+        var validator = new DefaultJwtValidator(algorithm, null, checker);
+
+        var result = validator.validate(validToken);
+        assertThat(result).isEqualTo(ValidatingResult.OK);
+    }
+
+    @Test
+    void should_return_INVALID_JWT_FORMAT_when_garbageWithChecker() {
+        var checker = (BlacklistChecker) (raw, decoded) -> true;
+        var validator = new DefaultJwtValidator(algorithm, null, checker);
+
+        var result = validator.validate("garbage.token.here");
+        assertThat(result).isEqualTo(ValidatingResult.INVALID_JWT_FORMAT);
     }
 
 }

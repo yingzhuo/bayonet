@@ -39,5 +39,11 @@ public enum ValidatingResult implements Serializable {
     /**
      * 声明校验失败
      */
-    INVALID_CLAIM
+    INVALID_CLAIM,
+
+    /**
+     * 已被拉黑
+     */
+    INVALID_BLACKLISTED
+
 }
