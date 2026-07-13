@@ -1,7 +1,6 @@
 package com.github.yingzhuo.bayonet.jwt.algorithm;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import com.github.yingzhuo.bayonet.beandef.AnnotationImportingUtils;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -12,7 +11,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.Assert;
 
-class PemAlgorithmImporting extends AbstractAlgorithmImporting {
+class PemAlgorithmImporting extends AlgorithmImportingSupport {
 
     public PemAlgorithmImporting(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
         super(resourceLoader, environment, beanFactory, beanClassLoader);
@@ -20,7 +19,7 @@ class PemAlgorithmImporting extends AbstractAlgorithmImporting {
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {
-        var importingAttributes = AnnotationImportingUtils.getAnnotationAttributes(importingClassMetadata, PemAlgorithm.class);
+        var importingAttributes = getAnnotationAttributes(importingClassMetadata, PemAlgorithm.class);
 
         var location = environment.resolvePlaceholders(importingAttributes.getString("location"));
         var keypass = environment.resolvePlaceholders(importingAttributes.getString("keypass"));

@@ -1,7 +1,6 @@
 package com.github.yingzhuo.bayonet.jwt.algorithm;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import com.github.yingzhuo.bayonet.beandef.AnnotationImportingUtils;
 import com.github.yingzhuo.bayonet.secret.KeyStoreType;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.BeanFactory;
@@ -15,7 +14,7 @@ import org.springframework.util.StringUtils;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 
-class KeyStoreAlgorithmImporting extends AbstractAlgorithmImporting {
+class KeyStoreAlgorithmImporting extends AlgorithmImportingSupport {
 
     public KeyStoreAlgorithmImporting(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
         super(resourceLoader, environment, beanFactory, beanClassLoader);
@@ -23,7 +22,7 @@ class KeyStoreAlgorithmImporting extends AbstractAlgorithmImporting {
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {
-        var importAttributes = AnnotationImportingUtils.getAnnotationAttributes(importingClassMetadata, KeyStoreAlgorithm.class);
+        var importAttributes = getAnnotationAttributes(importingClassMetadata, KeyStoreAlgorithm.class);
 
         var type = importAttributes.<KeyStoreType>getEnum("type");
         var location = environment.resolvePlaceholders(importAttributes.getString("location"));
@@ -35,7 +34,7 @@ class KeyStoreAlgorithmImporting extends AbstractAlgorithmImporting {
         var beanAliases = importAttributes.getStringArray("beanAliases");
 
         var target = getAlgorithm(type, location, storepass, alias, keypass, algorithmName);
-        var beanDef = super.createBeanDefinition(target, primary);
+        var beanDef = createBeanDefinition(target, primary);
         var beanName = beanNameGenerator.generateBeanName(beanDef, registry);
         registry.registerBeanDefinition(beanName, beanDef);
 
