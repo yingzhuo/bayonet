@@ -37,6 +37,7 @@ class KeyStoreAlgorithmImporting implements ImportBeanDefinitionRegistrar {
         var keypass = importAttributes.getString("keypass");
         var algorithmName = importAttributes.<AlgorithmName>getEnum("algorithmName");
         var primary = importAttributes.getBoolean("primary");
+        var beanAliases = importAttributes.getStringArray("beanAliases");
 
         var target = getAlgorithm(type, location, storepass, alias, keypass, algorithmName);
         var beanDef = (GenericBeanDefinition) BeanDefinitionBuilder.genericBeanDefinition(Algorithm.class, () -> target)
@@ -49,6 +50,11 @@ class KeyStoreAlgorithmImporting implements ImportBeanDefinitionRegistrar {
 
         var beanName = beanNameGenerator.generateBeanName(beanDef, registry);
         registry.registerBeanDefinition(beanName, beanDef);
+
+        for (var beanAlias : beanAliases) {
+            beanAlias = environment.resolvePlaceholders(beanAlias);
+            registry.registerAlias(beanName, beanAlias);
+        }
     }
 
     private Algorithm getAlgorithm(

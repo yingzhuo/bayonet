@@ -31,6 +31,7 @@ class PemAlgorithmImporting implements ImportBeanDefinitionRegistrar {
         var keypass = environment.resolvePlaceholders(importingAttributes.getString("keypass"));
         var algorithmName = importingAttributes.<AlgorithmName>getEnum("algorithmName");
         var primary = importingAttributes.getBoolean("primary");
+        var beanAliases = importingAttributes.getStringArray("beanAliases");
 
         var target = getAlgorithm(location, keypass, algorithmName);
         var beanDef = (GenericBeanDefinition) BeanDefinitionBuilder.genericBeanDefinition(Algorithm.class, () -> target)
@@ -43,6 +44,11 @@ class PemAlgorithmImporting implements ImportBeanDefinitionRegistrar {
 
         var beanName = beanNameGenerator.generateBeanName(beanDef, registry);
         registry.registerBeanDefinition(beanName, beanDef);
+
+        for (var beanAlias : beanAliases) {
+            beanAlias = environment.resolvePlaceholders(beanAlias);
+            registry.registerAlias(beanName, beanAlias);
+        }
     }
 
     private Algorithm getAlgorithm(String location, String keypass, AlgorithmName algorithmName) {

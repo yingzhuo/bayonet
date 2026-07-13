@@ -58,4 +58,10 @@ public @interface PemAlgorithm {
      */
     boolean primary() default false;
 
+    /**
+     * 是否设置 Bean 的别名
+     *
+     * @return Bean 的别名
+     */
+    String[] beanAliases() default {};
 }
