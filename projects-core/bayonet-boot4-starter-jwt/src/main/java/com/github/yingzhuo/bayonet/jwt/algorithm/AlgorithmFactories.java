@@ -30,6 +30,9 @@ final class AlgorithmFactories {
             case ECDSA256 -> Algorithm.ECDSA256((ECPublicKey) publicKey, (ECPrivateKey) privateKey);
             case ECDSA384 -> Algorithm.ECDSA384((ECPublicKey) publicKey, (ECPrivateKey) privateKey);
             case ECDSA512 -> Algorithm.ECDSA512((ECPublicKey) publicKey, (ECPrivateKey) privateKey);
+            case RSA256PSS -> Algorithm.RSA256PSS((RSAPublicKey) publicKey, (RSAPrivateKey) privateKey);
+            case RSA384PSS -> Algorithm.RSA384PSS((RSAPublicKey) publicKey, (RSAPrivateKey) privateKey);
+            case RSA512PSS -> Algorithm.RSA512PSS((RSAPublicKey) publicKey, (RSAPrivateKey) privateKey);
         };
     }
 
