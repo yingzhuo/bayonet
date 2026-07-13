@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.secret;
 
+import com.github.yingzhuo.bayonet.utility.CloseUtils;
 import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 
@@ -37,11 +38,7 @@ public class KeyStoreResource extends SecretResource<KeyStore> {
         } catch (Exception e) {
             throw new IllegalArgumentException(e.getMessage(), e);
         } finally {
-            try {
-                stream.close();
-            } catch (IOException e) {
-                // NoOp
-            }
+            CloseUtils.closeQuietly(stream);
         }
     }
 

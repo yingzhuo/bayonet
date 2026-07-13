@@ -69,7 +69,7 @@ public abstract class BeanDefinitionRegistrarSupport implements ImportBeanDefini
     public final void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
     }
 
-    // ----
+    // ------
 
     /**
      * 获取指定注解的属性。
@@ -116,7 +116,7 @@ public abstract class BeanDefinitionRegistrarSupport implements ImportBeanDefini
         return metadata.getMergedRepeatableAnnotationAttributes(importingAnnotation, importingContainerAnnotation, false);
     }
 
-    // ----
+    // ------
 
     /**
      * 注册 Bean 别名。
@@ -128,6 +128,10 @@ public abstract class BeanDefinitionRegistrarSupport implements ImportBeanDefini
      * @param registry   BeanDefinitionRegistry
      */
     protected final void registerBeanAlias(String[] aliasArray, String beanName, BeanDefinitionRegistry registry) {
+        Assert.notNull(aliasArray, "aliasArray must not be null");
+        Assert.hasText(beanName, "beanName must not be null");
+        Assert.notNull(registry, "registry must not be null");
+
         for (var alias : aliasArray) {
             alias = environment.resolvePlaceholders(alias);
             registry.registerAlias(beanName, alias);

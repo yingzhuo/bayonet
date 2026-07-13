@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.jwt.creator;
 
+import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -62,6 +63,52 @@ class DefaultJwtCreatorTest {
     void should_throw_when_dataIsNull() {
         var creator = new DefaultJwtCreator(algorithm);
         assertThatThrownBy(() -> creator.create(null))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    // ============== JtiGenerator ==============
+
+    @Test
+    void should_setJti_when_jtiGeneratorProvided() {
+        var generator = (JtiGenerator) () -> "generated-jti-001";
+        var creator = new DefaultJwtCreator(algorithm, generator);
+
+        var token = creator.create(JwtData.newInstance().addPayloadSubject("user"));
+        var decoded = JWT.decode(token);
+
+        assertThat(decoded.getId()).isEqualTo("generated-jti-001");
+    }
+
+    @Test
+    void should_overridePayloadJti_when_jtiGeneratorProvided() {
+        var generator = (JtiGenerator) () -> "from-generator";
+        var creator = new DefaultJwtCreator(algorithm, generator);
+
+        var data = JwtData.newInstance()
+                .addPayloadSubject("user")
+                .addPayloadJwtId("from-payload");
+        var token = creator.create(data);
+        var decoded = JWT.decode(token);
+
+        assertThat(decoded.getId()).isEqualTo("from-generator");
+    }
+
+    @Test
+    void should_notSetJti_when_jtiGeneratorIsNull() {
+        var creator = new DefaultJwtCreator(algorithm);
+
+        var token = creator.create(JwtData.newInstance().addPayloadSubject("user"));
+        var decoded = JWT.decode(token);
+
+        assertThat(decoded.getId()).isNull();
+    }
+
+    @Test
+    void should_throw_when_jtiGeneratorReturnsNull() {
+        var generator = (JtiGenerator) () -> null;
+        var creator = new DefaultJwtCreator(algorithm, generator);
+
+        assertThatThrownBy(() -> creator.create(JwtData.newInstance().addPayloadSubject("user")))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 

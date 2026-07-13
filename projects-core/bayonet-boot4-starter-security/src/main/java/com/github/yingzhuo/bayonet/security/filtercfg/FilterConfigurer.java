@@ -1,8 +1,6 @@
 package com.github.yingzhuo.bayonet.security.filtercfg;
 
 import jakarta.servlet.Filter;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 
@@ -107,7 +105,6 @@ public interface FilterConfigurer {
     /**
      * {@link FilterConfigurer} 构建器。
      */
-    @NoArgsConstructor(access = AccessLevel.PACKAGE)
     class Builder {
 
         private @Nullable Filter filter;
