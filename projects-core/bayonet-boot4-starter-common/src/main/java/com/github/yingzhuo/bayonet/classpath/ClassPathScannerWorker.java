@@ -17,14 +17,7 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 public class ClassPathScannerWorker extends ClassPathScanningCandidateComponentProvider {
 
     /**
-     * 构造器，默认不启用 Spring 内置过滤器。
-     */
-    public ClassPathScannerWorker() {
-        this(false);
-    }
-
-    /**
-     * 构造器。
+     * 构造器
      *
      * @param useDefaultFilters 是否启用 Spring 默认过滤器
      */

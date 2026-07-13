@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class ClassPathScannerWorkerTest {
 
-    private final ClassPathScannerWorker scanner = new ClassPathScannerWorker() {
+    private final ClassPathScannerWorker scanner = new ClassPathScannerWorker(false) {
         @Override
         public boolean isCandidateComponent(AnnotatedBeanDefinition bd) {
             return super.isCandidateComponent(bd);
@@ -56,12 +56,6 @@ class ClassPathScannerWorkerTest {
         when(metadata.isIndependent()).thenReturn(false);
 
         assertThat(scanner.isCandidateComponent(beanDefinition)).isFalse();
-    }
-
-    @Test
-    void default_constructor_should_disable_default_filters() {
-        var scanner = new ClassPathScannerWorker();
-        assertThat(scanner).isNotNull();
     }
 
 }
