@@ -73,7 +73,7 @@ public @interface HMACAlgorithm {
             var secret = environment.resolvePlaceholders(attributes.getString("secret"));
             var algorithmName = attributes.<Type>getEnum("algorithmName");
 
-            final var alg = switch (algorithmName) {
+            var alg = switch (algorithmName) {
                 case HMAC256 -> Algorithm.HMAC256(secret);
                 case HMAC384 -> Algorithm.HMAC384(secret);
                 case HMAC512 -> Algorithm.HMAC512(secret);

@@ -32,8 +32,8 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Import(NoOpAlgorithm.Importing.class)
-public @interface NoOpAlgorithm {
+@Import(NoneAlgorithm.Importing.class)
+public @interface NoneAlgorithm {
 
     /**
      * 无签名 JWT Algorithm 的 {@link ImportBeanDefinitionRegistrar} 实现。

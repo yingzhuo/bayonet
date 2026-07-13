@@ -2,7 +2,7 @@ package com.github.yingzhuo.bayonet.jwt.algorithm;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.github.yingzhuo.bayonet.secret.KeyStoreType;
-import org.springframework.beans.factory.BeanDefinitionStoreException;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
@@ -62,7 +62,7 @@ class KeyStoreAlgorithmImporting extends AlgorithmImportingSupport {
 
             return AlgorithmFactories.createAlgorithm(algorithmName, publicKey, privateKey);
         } catch (Exception e) {
-            throw new BeanDefinitionStoreException(e.getMessage(), e);
+            throw new BeanCreationException(e.getMessage(), e);
         }
     }
 
