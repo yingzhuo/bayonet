@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.*;
 import com.github.yingzhuo.bayonet.jwt.blacklist.BlacklistChecker;
+import com.github.yingzhuo.bayonet.jwt.creator.JwtConstants;
 import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 
@@ -100,7 +101,7 @@ public class DefaultJwtValidator implements JwtValidator {
             return ValidatingResult.INVALID_CLAIM;
         } catch (IncorrectClaimException ex) {
             var claimName = ex.getClaimName();
-            if ("nbf".equals(claimName) || "iat".equals(claimName)) {
+            if (JwtConstants.PAYLOAD_NOT_BEFORE.equals(claimName) || JwtConstants.PAYLOAD_ISSUED_AT.equals(claimName)) {
                 return ValidatingResult.INVALID_TIME;
             }
             return ValidatingResult.INVALID_CLAIM;
