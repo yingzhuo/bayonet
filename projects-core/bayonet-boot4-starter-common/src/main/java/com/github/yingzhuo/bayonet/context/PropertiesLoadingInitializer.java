@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.context;
 
+import com.github.yingzhuo.bayonet.utility.PropertiesUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
 import org.springframework.context.ApplicationContextInitializer;
@@ -10,8 +11,6 @@ import org.springframework.core.io.ResourceLoader;
 import java.io.IOException;
 import java.util.Properties;
 
-import static com.github.yingzhuo.bayonet.utility.PropertiesUtils.toMapPropertySource;
-
 /**
  * 在 Spring 容器初始化前加载外部 properties 文件，将其注册到 {@code Environment} 的 {@code PropertySource} 末尾。
  * <p>默认按以下顺序查找 {@code default.properties}</p>
@@ -20,7 +19,6 @@ import static com.github.yingzhuo.bayonet.utility.PropertiesUtils.toMapPropertyS
  *   <li>{@code file:config/default.properties}</li>
  *   <li>{@code classpath:default.properties}</li>
  *   <li>{@code classpath:config/default.properties}</li>
- *   <li>{@code classpath:META-INF/default.properties}</li>
  * </ol>
  *
  * <p>适用于需要在 application.yml 加载前注入默认属性的场景。
@@ -33,8 +31,7 @@ public class PropertiesLoadingInitializer implements ApplicationContextInitializ
             "file:default.properties",
             "file:config/default.properties",
             "classpath:default.properties",
-            "classpath:config/default.properties",
-            "classpath:META-INF/default.properties",
+            "classpath:config/default.properties"
     };
 
     @Override
@@ -51,8 +48,7 @@ public class PropertiesLoadingInitializer implements ApplicationContextInitializ
 
                 ctx.getEnvironment()
                         .getPropertySources()
-                        .addLast(toMapPropertySource(location, properties));
-
+                        .addLast(PropertiesUtils.toMapPropertySource(location, properties));
                 log.debug("Loaded properties from {}", location);
             } catch (IOException e) {
                 log.warn("Failed to load properties from {}: {}", location, e.getMessage());

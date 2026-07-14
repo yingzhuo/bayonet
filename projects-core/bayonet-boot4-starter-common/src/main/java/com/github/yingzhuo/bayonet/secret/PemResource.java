@@ -18,6 +18,7 @@ import java.util.List;
  * 将 PEM 内容包装为 Spring {@link org.springframework.core.io.Resource}。
  * <p>使用 Spring Boot 的 {@link PemContent} 加载 PEM 格式的证书和私钥。</p>
  */
+@Deprecated
 public class PemResource extends SecretResource<PemContent> {
 
     private final PemContent pemContent;

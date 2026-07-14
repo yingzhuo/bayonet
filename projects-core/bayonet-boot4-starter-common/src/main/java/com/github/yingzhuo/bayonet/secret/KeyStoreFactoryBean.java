@@ -24,6 +24,7 @@ import java.security.KeyStore;
  * }</pre>
  */
 @Setter
+@Deprecated
 public class KeyStoreFactoryBean implements FactoryBean<KeyStore>, ResourceLoaderAware {
 
     /**

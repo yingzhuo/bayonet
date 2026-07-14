@@ -11,6 +11,7 @@ import java.io.InputStream;
  *
  * @param <T> 密钥材料的类型（如 {@link java.security.KeyStore} 或 {@link org.springframework.boot.ssl.pem.PemContent}）
  */
+@Deprecated
 public abstract class SecretResource<T> extends AbstractResource {
 
     @Override
