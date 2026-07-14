@@ -1,6 +1,5 @@
 package com.github.yingzhuo.bayonet.context;
 
-import com.github.yingzhuo.bayonet.utility.PropertiesUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
 import org.springframework.context.ApplicationContextInitializer;
@@ -10,6 +9,8 @@ import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
 import java.util.Properties;
+
+import static com.github.yingzhuo.bayonet.utility.PropertiesUtils.toMapPropertySource;
 
 /**
  * 在 Spring 容器初始化前加载外部 properties 文件，将其注册到 {@code Environment} 的 {@code PropertySource} 末尾。
@@ -50,10 +51,9 @@ public class PropertiesLoadingInitializer implements ApplicationContextInitializ
 
                 ctx.getEnvironment()
                         .getPropertySources()
-                        .addLast(PropertiesUtils.toMapPropertySource(location, properties));
+                        .addLast(toMapPropertySource(location, properties));
 
                 log.debug("Loaded properties from {}", location);
-
             } catch (IOException e) {
                 log.warn("Failed to load properties from {}: {}", location, e.getMessage());
             }
@@ -67,5 +67,4 @@ public class PropertiesLoadingInitializer implements ApplicationContextInitializ
         }
         return null;
     }
-
 }

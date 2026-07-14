@@ -21,12 +21,11 @@ public class BouncyCastleInstallingInitializer implements ApplicationContextInit
 
             var clazz = Class.forName(PROVIDER_CLASS_NAME);
             Security.addProvider((java.security.Provider) clazz.getConstructor().newInstance());
-            log.info("BouncyCastle JCE provider initialization complete.");
+            log.debug("BouncyCastle JCE provider initialization complete.");
         } catch (ClassNotFoundException ignored) {
-            log.info("BouncyCastle JCE provider not found. Skipping.");
+            log.debug("BouncyCastle JCE provider not found. Skipping.");
         } catch (Exception e) {
             log.warn("Failed to install BouncyCastle provider", e);
         }
     }
-
 }
