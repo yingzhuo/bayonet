@@ -3,6 +3,7 @@ package com.github.yingzhuo.bayonet.security.token;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
+import org.springframework.core.Ordered;
 import org.springframework.web.context.request.WebRequest;
 
 /**
@@ -18,7 +19,7 @@ import org.springframework.web.context.request.WebRequest;
  * @see TokenResolver
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class NullTokenResolver implements TokenResolver {
+public final class NullTokenResolver implements TokenResolver, Ordered {
 
     /**
      * 单例实例。
@@ -34,6 +35,11 @@ public final class NullTokenResolver implements TokenResolver {
     @Override
     public @Nullable String resolve(WebRequest webRequest) {
         return null;
+    }
+
+    @Override
+    public int getOrder() {
+        return LOWEST_PRECEDENCE;
     }
 
 }

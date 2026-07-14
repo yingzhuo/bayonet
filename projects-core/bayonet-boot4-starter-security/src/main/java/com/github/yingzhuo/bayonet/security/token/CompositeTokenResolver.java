@@ -1,15 +1,11 @@
 package com.github.yingzhuo.bayonet.security.token;
 
-import lombok.Getter;
 import org.jspecify.annotations.Nullable;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * 组合 Token 解析器。
@@ -26,16 +22,15 @@ import java.util.List;
  */
 public class CompositeTokenResolver implements TokenResolver {
 
-    @Getter
     private final List<TokenResolver> resolvers;
 
     /**
-     * 构造器（从列表）
+     * 构造器（从Collection）
      *
      * @param resolvers 子解析器列表，不能为 {@code null}，不能包含 {@code null} 元素
      * @throws IllegalArgumentException 若 {@code resolvers} 为 {@code null} 或包含 {@code null}
      */
-    public CompositeTokenResolver(List<TokenResolver> resolvers) {
+    public CompositeTokenResolver(Collection<TokenResolver> resolvers) {
         Assert.notNull(resolvers, "resolvers must not be null");
         Assert.noNullElements(resolvers, "resolvers must not contain null elements");
 
@@ -66,6 +61,17 @@ public class CompositeTokenResolver implements TokenResolver {
             }
         }
         return null;
+    }
+
+    /**
+     * 返回所有子解析器的不可变列表。
+     * <p>列表按 {@link org.springframework.core.annotation.Order @Order} 或
+     * {@link org.springframework.core.Ordered} 排序，不可修改。</p>
+     *
+     * @return 子解析器不可变列表（非 {@code null}）
+     */
+    public List<TokenResolver> getResolvers() {
+        return resolvers;
     }
 
 }
