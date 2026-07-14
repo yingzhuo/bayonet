@@ -1,15 +1,14 @@
 package com.github.yingzhuo.bayonet.jwt.algorithm;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import org.springframework.beans.factory.BeanCreationException;
+import com.github.yingzhuo.bayonet.secret.KeyBundleFactories;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
-import org.springframework.boot.ssl.pem.PemContent;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 class PemAlgorithmImporting extends AlgorithmImportingSupport {
 
@@ -36,22 +35,12 @@ class PemAlgorithmImporting extends AlgorithmImportingSupport {
     }
 
     private Algorithm getAlgorithm(String location, String keypass, AlgorithmName algorithmName) {
-
-        try (var stream = resourceLoader.getResource(location).getInputStream()) {
-            var pemContent = PemContent.load(stream);
-
-            var certificates = pemContent.getCertificates();
-            Assert.notEmpty(certificates, "cannot load X509 certificate");
-
-            var publicKey = certificates.get(0).getPublicKey();
-            var privateKey = pemContent.getPrivateKey(keypass);
-            Assert.notNull(privateKey, "cannot load private key");
-
-            return AlgorithmFactories.createAlgorithm(algorithmName, publicKey, privateKey);
-
-        } catch (Exception e) {
-            throw new BeanCreationException(e.getMessage(), e);
+        if (!StringUtils.hasText(keypass)) {
+            keypass = null;
         }
+
+        var keyBundle = KeyBundleFactories.loadFromPem(location, keypass);
+        return AlgorithmFactories.createAlgorithm(algorithmName, keyBundle.getPublicKey(), keyBundle.getPrivateKey());
     }
 
 }

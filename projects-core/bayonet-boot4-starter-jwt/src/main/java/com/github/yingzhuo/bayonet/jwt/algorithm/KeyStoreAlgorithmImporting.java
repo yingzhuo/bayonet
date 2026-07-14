@@ -1,8 +1,8 @@
 package com.github.yingzhuo.bayonet.jwt.algorithm;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import com.github.yingzhuo.bayonet.secret.KeyBundleFactories;
 import com.github.yingzhuo.bayonet.secret.KeyStoreType;
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
@@ -10,9 +10,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.StringUtils;
-
-import java.security.KeyStore;
-import java.security.PrivateKey;
 
 class KeyStoreAlgorithmImporting extends AlgorithmImportingSupport {
 
@@ -53,17 +50,8 @@ class KeyStoreAlgorithmImporting extends AlgorithmImportingSupport {
             keypass = storepass;
         }
 
-        try (var stream = resourceLoader.getResource(location).getInputStream()) {
-            var ks = KeyStore.getInstance(type.name());
-            ks.load(stream, keypass.toCharArray());
-
-            var publicKey = ks.getCertificate(alias).getPublicKey();
-            var privateKey = (PrivateKey) ks.getKey(alias, keypass.toCharArray());
-
-            return AlgorithmFactories.createAlgorithm(algorithmName, publicKey, privateKey);
-        } catch (Exception e) {
-            throw new BeanCreationException(e.getMessage(), e);
-        }
+        var keyBundle = KeyBundleFactories.loadFromStore(location, type, storepass, alias, keypass);
+        return AlgorithmFactories.createAlgorithm(algorithmName, keyBundle.getPublicKey(), keyBundle.getPrivateKey());
     }
 
 }
