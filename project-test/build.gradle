@@ -10,6 +10,8 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-actuator'
 
     // spring-turbocharger
+    api platform(project(':projects-core:bayonet-bom'))
+    api project(':projects-core:bayonet-boot4-starter-common')
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
@@ -17,4 +19,7 @@ dependencies {
 
     // slf4j
     api 'org.slf4j:slf4j-api'
+
+    // BC
+    api 'org.bouncycastle:bcprov-jdk18on'
 }

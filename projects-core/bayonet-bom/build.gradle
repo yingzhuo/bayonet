@@ -14,5 +14,6 @@ dependencies {
         }
 
         api libs.java.jwt
+        api libs.bc.bom
     }
 }
