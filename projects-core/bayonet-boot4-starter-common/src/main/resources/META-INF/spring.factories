@@ -3,7 +3,8 @@ com.github.yingzhuo.bayonet.utility.SpringUtils.Hook
 org.springframework.boot.EnvironmentPostProcessor=\
 com.github.yingzhuo.bayonet.utility.SpringUtils.Hook
 org.springframework.context.ApplicationContextInitializer=\
-com.github.yingzhuo.bayonet.context.BouncyCastleInstallingInitializer
+com.github.yingzhuo.bayonet.context.BouncyCastleInstallingInitializer,\
+com.github.yingzhuo.bayonet.context.IncludePropertiesInitializer,
 org.springframework.core.io.ProtocolResolver=\
 com.github.yingzhuo.bayonet.secret.KeyStoreProtocolResolver,\
 com.github.yingzhuo.bayonet.secret.PemResourceProtocolResolver
