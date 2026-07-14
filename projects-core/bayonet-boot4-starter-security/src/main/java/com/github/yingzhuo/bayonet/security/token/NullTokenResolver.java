@@ -22,7 +22,7 @@ import org.springframework.web.context.request.WebRequest;
 public final class NullTokenResolver implements TokenResolver, Ordered {
 
     /**
-     * 单例实例。
+     * 单例实例
      */
     public static final NullTokenResolver INSTANCE = new NullTokenResolver();
 
@@ -39,7 +39,7 @@ public final class NullTokenResolver implements TokenResolver, Ordered {
 
     @Override
     public int getOrder() {
-        return LOWEST_PRECEDENCE;
+        return Integer.MAX_VALUE;
     }
 
 }
