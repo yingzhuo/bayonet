@@ -1,6 +1,7 @@
 package com.github.yingzhuo.bayonet.security.token;
 
 import org.jspecify.annotations.Nullable;
+import org.springframework.core.Ordered;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.WebRequest;
@@ -20,33 +21,46 @@ import java.util.Objects;
  * var resolver = new HttpHeaderTokenResolver(HttpHeaders.AUTHORIZATION, "Bearer ");
  * }</pre>
  */
-public class HttpHeaderTokenResolver implements TokenResolver {
+public class HttpHeaderTokenResolver implements TokenResolver, Ordered {
 
     private final String headerName;
     private final String prefix;
+    private final int order;
 
     /**
-     * 构造器（无前缀）
+     * 构造器。
      *
-     * @param headerName HTTP 请求头名称
+     * @param headerName HTTP 请求头名称（非空）
      * @throws IllegalArgumentException 若 {@code headerName} 为空
      */
     public HttpHeaderTokenResolver(String headerName) {
-        this(headerName, null);
+        this(headerName, "", 0);
     }
 
     /**
-     * 构造器（指定前缀）
+     * 构造器（无前缀，指定排序）。
      *
-     * @param headerName HTTP 请求头名称
-     * @param prefix     token 值前缀（如 {@code "Bearer "}），可为 {@code null}
+     * @param headerName HTTP 请求头名称（非空）
+     * @param order      排序值（越小优先级越高）
      * @throws IllegalArgumentException 若 {@code headerName} 为空
      */
-    public HttpHeaderTokenResolver(String headerName, @Nullable String prefix) {
-        Assert.hasText(headerName, "header name must not be empty");
+    public HttpHeaderTokenResolver(String headerName, int order) {
+        this(headerName, "", order);
+    }
 
+    /**
+     * 构造器（指定前缀和排序）。
+     *
+     * @param headerName HTTP 请求头名称（非空）
+     * @param prefix     token 值前缀（如 {@code "Bearer "}），为 {@code null} 时视为空字符串
+     * @param order      排序值（越小优先级越高）
+     * @throws IllegalArgumentException 若 {@code headerName} 为空
+     */
+    public HttpHeaderTokenResolver(String headerName, @Nullable String prefix, int order) {
+        Assert.hasText(headerName, "header name must not be empty");
         this.headerName = headerName;
         this.prefix = Objects.requireNonNullElse(prefix, "");
+        this.order = order;
     }
 
     @Override
@@ -61,6 +75,11 @@ public class HttpHeaderTokenResolver implements TokenResolver {
         }
 
         return null;
+    }
+
+    @Override
+    public int getOrder() {
+        return this.order;
     }
 
 }

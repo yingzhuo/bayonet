@@ -15,7 +15,11 @@ import org.springframework.http.HttpHeaders;
 public class BearerHeaderTokenResolver extends HttpHeaderTokenResolver {
 
     public BearerHeaderTokenResolver() {
-        super(HttpHeaders.AUTHORIZATION, "Bearer ");
+        this(0);
+    }
+
+    public BearerHeaderTokenResolver(int order) {
+        super(HttpHeaders.AUTHORIZATION, "Bearer ", order);
     }
 
 }
