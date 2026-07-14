@@ -52,7 +52,7 @@ public class CompositeTokenResolver implements TokenResolver {
      */
     public static TokenResolver of(TokenResolver... resolvers) {
         if (resolvers == null || resolvers.length == 0) {
-            return webRequest -> null;
+            return NullTokenResolver.INSTANCE;
         }
         return new CompositeTokenResolver(Arrays.asList(resolvers));
     }
