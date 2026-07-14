@@ -57,7 +57,7 @@ public final class KeyBundleFactories {
         var input = ResourceUtils.loadAsInputStream(location);
         var ks = KeyStoreUtils.loadKeyStore(input, type, storepass);
 
-        if (keypass == null) {
+        if (keypass == null || keypass.isBlank()) {
             keypass = storepass;
         }
 
