@@ -30,11 +30,11 @@ public final class KeyBundleFactories {
         var pc = PemContent.of(text);
         Assert.notNull(pc, "failed to parse PEM content from: " + location);
 
-        if (pc.getPrivateKey(keypass) == null) {
+        var privatekey = pc.getPrivateKey();
+        if (privatekey == null) {
             throw new IllegalArgumentException("no private key found in PEM: " + location);
         }
-
-        return new KeyBundleImpl(pc.getCertificates(), pc.getPrivateKey(keypass));
+        return new KeyBundleImpl(pc.getCertificates(), privatekey);
     }
 
     /**

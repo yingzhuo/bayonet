@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.secret;
 
+import com.github.yingzhuo.bayonet.utility.CloseUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
@@ -49,6 +50,8 @@ public final class KeyStoreUtils {
             throw new UncheckedIOException(e);
         } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
+        } finally {
+            CloseUtils.closeQuietly(inputStream);
         }
     }
 
@@ -260,5 +263,4 @@ public final class KeyStoreUtils {
         }
         throw new IllegalArgumentException("cannot get " + attrName);
     }
-
 }
