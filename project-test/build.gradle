@@ -2,7 +2,7 @@ plugins {
     id 'buildlogic.java-conventions'
 }
 
-description = 'ID生成器'
+description = '集成测试(临时)'
 
 dependencies {
     // spring-boot
@@ -21,5 +21,6 @@ dependencies {
     api 'org.slf4j:slf4j-api'
 
     // BC
+    api platform(libs.bc.bom)
     api 'org.bouncycastle:bcprov-jdk18on'
 }
