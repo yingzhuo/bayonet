@@ -25,6 +25,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  *
  * <p>若未指定 {@code type}，默认使用 {@link KeyStoreType#PKCS12}。</p>
  */
+@Deprecated
 public class KeyStoreProtocolResolver implements ProtocolResolver {
 
     private static final Pattern LOCATION = Pattern.compile(

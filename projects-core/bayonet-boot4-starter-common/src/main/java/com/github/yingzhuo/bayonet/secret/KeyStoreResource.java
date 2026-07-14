@@ -14,6 +14,7 @@ import java.security.cert.Certificate;
  * 将 {@link KeyStore} 包装为 Spring {@link org.springframework.core.io.Resource}。
  * <p>提供便捷方法获取证书链、密钥对及公钥/私钥。</p>
  */
+@Deprecated
 public class KeyStoreResource extends SecretResource<KeyStore> {
 
     private final KeyStore keyStore;

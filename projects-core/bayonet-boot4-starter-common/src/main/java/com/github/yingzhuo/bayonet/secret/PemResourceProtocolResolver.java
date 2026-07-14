@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
  * pem:file:/etc/ssl/cert.pem
  * }</pre>
  */
+@Deprecated
 public class PemResourceProtocolResolver implements ProtocolResolver {
 
     private static final Pattern LOCATION = Pattern.compile(
