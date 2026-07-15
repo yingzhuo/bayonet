@@ -82,7 +82,8 @@ bayonet/
 ### 关键依赖（bayonet-boot4-starter-common）
 
 - **API**：slf4j-api
-- **编译期（compileOnly）**：spring-boot-autoconfigure、spring-boot-starter-web、spring-boot-starter-aspectj、spring-boot-starter-logging、spring-boot-starter-validation、spring-boot-autoconfigure-processor、spring-boot-configuration-processor、groovy、lombok
+- **编译期（compileOnly）**
+  ：spring-boot-autoconfigure、spring-boot-starter-web、spring-boot-starter-aspectj、spring-boot-starter-logging、spring-boot-starter-validation、spring-boot-autoconfigure-processor、spring-boot-configuration-processor、groovy、lombok
 - **可选（compileOnly）**：org.bouncycastle:bcprov-jdk18on（通过 bc-bom 版本管理，反射安装）
 - **注解处理器**：spring-boot-configuration-processor、lombok
 - **测试**：junit-jupiter、spring-boot-starter-test
@@ -90,13 +91,15 @@ bayonet/
 ### 关键依赖（bayonet-boot4-starter-jwt）
 
 - **API**：bayonet-boot4-starter-common、com.auth0:java-jwt、slf4j-api
-- **编译期（compileOnly）**：spring-boot-autoconfigure、spring-boot-starter-web、spring-boot-starter-aspectj、spring-boot-starter-logging、spring-boot-starter-validation、spring-boot-configuration-processor、spring-boot-autoconfigure-processor、lombok
+- **编译期（compileOnly）**
+  ：spring-boot-autoconfigure、spring-boot-starter-web、spring-boot-starter-aspectj、spring-boot-starter-logging、spring-boot-starter-validation、spring-boot-configuration-processor、spring-boot-autoconfigure-processor、lombok
 - **注解处理器**：spring-boot-configuration-processor、lombok
 - **测试**：junit-jupiter、spring-boot-starter-test
 
 ### 关键依赖（bayonet-boot4-starter-security）
 
 - **API**：bayonet-boot4-starter-common、slf4j-api
-- **编译期（compileOnly）**：spring-boot-autoconfigure、spring-boot-starter-web、spring-boot-starter-security、spring-boot-starter-aspectj、spring-boot-starter-logging、spring-boot-starter-validation、spring-boot-configuration-processor、spring-boot-autoconfigure-processor、lombok
+- **编译期（compileOnly）**
+  ：spring-boot-autoconfigure、spring-boot-starter-web、spring-boot-starter-security、spring-boot-starter-aspectj、spring-boot-starter-logging、spring-boot-starter-validation、spring-boot-configuration-processor、spring-boot-autoconfigure-processor、lombok
 - **注解处理器**：spring-boot-configuration-processor、lombok
 - **测试**：junit-jupiter、spring-boot-starter-test、spring-boot-starter-web、spring-boot-starter-security

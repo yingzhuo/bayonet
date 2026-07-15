@@ -1,12 +1,13 @@
 package com.github.yingzhuo.bayonet.security.filtercfg;
 
+import com.github.yingzhuo.bayonet.security.autoconfig.SecurityFilterAutoDSL;
 import jakarta.servlet.Filter;
 import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 
 /**
  * 过滤器配置器。
- * <p>实现此接口并注册为 Spring Bean，即可通过 {@link com.github.yingzhuo.bayonet.security.autoconfig.SecurityFilterAutoDSL SecurityFilterAutoDSL}
+ * <p>实现此接口并注册为 Spring Bean，即可通过 {@link SecurityFilterAutoDSL }
  * 自动将过滤器添加到 Security 过滤器链的指定位置。</p>
  *
  * <pre>{@code
@@ -43,8 +44,6 @@ public interface FilterConfigurer {
      * @return 参考过滤器 Class
      */
     Class<? extends Filter> getPositionFilterClass();
-
-    // ------
 
     /**
      * 返回定位提示，决定在参考过滤器的 {@link PositionHint#BEFORE 前面}、{@link PositionHint#AFTER 后面} 还是 {@link PositionHint#AT 位置} 添加。
@@ -84,17 +83,14 @@ public interface FilterConfigurer {
             PositionHint positionHint
     ) implements FilterConfigurer {
 
-        @Override
         public Filter getFilter() {
             return filter();
         }
 
-        @Override
         public Class<? extends Filter> getPositionFilterClass() {
             return positionFilterClass();
         }
 
-        @Override
         public PositionHint getPositionHint() {
             return positionHint();
         }

@@ -15,8 +15,6 @@ package com.github.yingzhuo.bayonet.jwt.algorithm;
  * ECDSA384    — ECDSA with P-384
  * ECDSA512    — ECDSA with P-521
  * }</pre>
- *
- * @see com.auth0.jwt.algorithms.Algorithm
  */
 public enum AlgorithmName {
 
