@@ -5,6 +5,10 @@ plugins {
 
 description = 'BOM'
 
+javaPlatform {
+    allowDependencies()
+}
+
 dependencies {
     constraints {
         rootProject.findProject('projects-core').subprojects { subproject ->

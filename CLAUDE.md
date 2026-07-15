@@ -1,11 +1,6 @@
 # CLAUDE.md
 
-本文件为 Claude Code（claude.ai/code）在此仓库中工作时提供指引。
-
-## 什么是 Bayonet？
-
-Bayonet 是应卓开发的 Spring Boot 4.x 增强库，提供可复用的自动配置、工具类和集成支持，涵盖
-Web、安全、数据（JPA/Redis/MongoDB）、校验、日志等领域。
+本文件为 ClaudeCode 在此仓库中工作时提供指引。
 
 ## 构建与测试命令
 
@@ -66,9 +61,8 @@ bayonet/
 
 ### 构建系统
 
-- **Gradle 8.14.5**，腾讯云镜像，JDK 17 目标，Oracle JVM 供应商
+- **Gradle 8.14.5**，JDK 17 目标
 - 通过 `buildSrc/` 中的约定插件统一模块配置，各模块按 ID 引用（`buildlogic.java-conventions` 等）
-- Spring Boot BOM（`org.springframework.boot:spring-boot-dependencies:4.1.0`）提供受管理的依赖版本
 - 仓库顺序：阿里云镜像 → Maven Central → Gradle Plugin Portal → Spring 仓库
 - 禁用模块元数据生成（发布优化），版本属性统一在 `gradle.properties` 中管理
 
@@ -76,15 +70,6 @@ bayonet/
 
 - `projects-core/` 下的模块应用 `buildlogic.java-conventions`，该插件配置 Java 17、`-parameters` javac 标志、JUnit
   Platform、sources JAR、javadoc JAR 及 Spring Boot 依赖管理
-- JAR 清单包含 `Module-Name`、`Implementation-Version`、`Build-Jdk-Spec`、`Gradle-Version`
-- 处理资源时会将根目录的 `LICENSE.txt` 和 `NOTICE.txt`（如存在）打包进 `META-INF/`
-
-### 添加新模块
-
-1. 在 `settings.gradle` 中用 `include ':projects-core:<模块名>'` 注册
-2. 在 `projects-core/<模块名>/build.gradle` 中应用所需的约定插件
-3. 如需发布，应用 `buildlogic.maven-central-jar-conventions`（JAR 模块）或 `buildlogic.maven-central-bom-conventions`（BOM
-   模块）+ `buildlogic.sonatype-conventions`
 
 ### 发布
 
@@ -96,21 +81,22 @@ bayonet/
 
 ### 关键依赖（bayonet-boot4-starter-common）
 
-- **编译期（compileOnly）**：spring-boot-autoconfigure、spring-boot-starter-*
-  （web、security、validation、data-jpa、data-redis、data-mongodb、aspectj、logging）、groovy、lombok
 - **API**：slf4j-api
-- **可选（compileOnly）**：org.bouncycastle（BC provider，反射安装）
-- **注解处理器**：spring-boot-configuration-processor、spring-boot-autoconfigure-processor、lombok
+- **编译期（compileOnly）**：spring-boot-autoconfigure、spring-boot-starter-web、spring-boot-starter-aspectj、spring-boot-starter-logging、spring-boot-starter-validation、spring-boot-autoconfigure-processor、spring-boot-configuration-processor、groovy、lombok
+- **可选（compileOnly）**：org.bouncycastle:bcprov-jdk18on（通过 bc-bom 版本管理，反射安装）
+- **注解处理器**：spring-boot-configuration-processor、lombok
 - **测试**：junit-jupiter、spring-boot-starter-test
 
 ### 关键依赖（bayonet-boot4-starter-jwt）
 
-- **API**：com.auth0.jwt（auth0 java-jwt）
-- **编译期**：spring-boot-autoconfigure、spring-boot-starter、lombok
+- **API**：bayonet-boot4-starter-common、com.auth0:java-jwt、slf4j-api
+- **编译期（compileOnly）**：spring-boot-autoconfigure、spring-boot-starter-web、spring-boot-starter-aspectj、spring-boot-starter-logging、spring-boot-starter-validation、spring-boot-configuration-processor、spring-boot-autoconfigure-processor、lombok
+- **注解处理器**：spring-boot-configuration-processor、lombok
 - **测试**：junit-jupiter、spring-boot-starter-test
 
 ### 关键依赖（bayonet-boot4-starter-security）
 
-- **API**：spring-boot-starter-security、spring-security-config
-- **编译期**：spring-boot-autoconfigure、spring-boot-starter-web（可选）、lombok
-- **测试**：junit-jupiter、spring-boot-starter-test、mockito
+- **API**：bayonet-boot4-starter-common、slf4j-api
+- **编译期（compileOnly）**：spring-boot-autoconfigure、spring-boot-starter-web、spring-boot-starter-security、spring-boot-starter-aspectj、spring-boot-starter-logging、spring-boot-starter-validation、spring-boot-configuration-processor、spring-boot-autoconfigure-processor、lombok
+- **注解处理器**：spring-boot-configuration-processor、lombok
+- **测试**：junit-jupiter、spring-boot-starter-test、spring-boot-starter-web、spring-boot-starter-security
