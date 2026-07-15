@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.secret;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 
 import java.security.PrivateKey;
@@ -16,6 +17,7 @@ public class KeyBundleImpl implements KeyBundle {
 
     private final List<X509Certificate> certificateChain;
     private final PrivateKey privateKey;
+    private @Nullable String location;
 
     /**
      * 构造器。
@@ -24,7 +26,7 @@ public class KeyBundleImpl implements KeyBundle {
      * @param privateKey       私钥（非 {@code null}）
      * @throws IllegalArgumentException 若参数不满足约束
      */
-    public KeyBundleImpl(List<X509Certificate> certificateChain, PrivateKey privateKey) {
+    public KeyBundleImpl(List<X509Certificate> certificateChain, PrivateKey privateKey, @Nullable String location) {
         Assert.notNull(certificateChain, "certificateChain must not be null");
         Assert.notEmpty(certificateChain, "certificateChain must not be empty");
         Assert.noNullElements(certificateChain, "certificateChain must not contain null elements");
@@ -32,6 +34,7 @@ public class KeyBundleImpl implements KeyBundle {
 
         this.certificateChain = List.copyOf(certificateChain);
         this.privateKey = privateKey;
+        this.location = location;
     }
 
     @Override
@@ -57,4 +60,8 @@ public class KeyBundleImpl implements KeyBundle {
         return certificateChain;
     }
 
+    @Override
+    public @Nullable String getLocation() {
+        return location;
+    }
 }

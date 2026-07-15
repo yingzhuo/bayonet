@@ -1,6 +1,5 @@
 package com.github.yingzhuo.bayonet.secret;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -19,22 +18,20 @@ import java.util.Enumeration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class KeyStoreUtilsTest {
 
-    @Mock
-    private KeyStore keyStore;
-
-    @Mock
-    private X509Certificate certificate;
-
-    @Mock
-    private PrivateKey privateKey;
-
     private static final String ALIAS = "test-alias";
     private static final String KEYPASS = "keypass";
+    @Mock
+    private KeyStore keyStore;
+    @Mock
+    private X509Certificate certificate;
+    @Mock
+    private PrivateKey privateKey;
 
     // ============== loadKeyStore ==============
 
