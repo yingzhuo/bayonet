@@ -1,5 +1,7 @@
 package com.github.yingzhuo.bayonet.secret;
 
+import org.jspecify.annotations.Nullable;
+
 import java.io.Serializable;
 import java.security.KeyPair;
 import java.security.PrivateKey;
@@ -52,5 +54,15 @@ public interface KeyBundle extends Serializable {
      * @return 证书链（非 {@code null}，可能包含多个中间 CA 证书）
      */
     List<X509Certificate> getCertificateChain();
+
+    /**
+     * 获取资源路径
+     *
+     * @return 资源路径
+     */
+    @Nullable
+    default String getLocation() {
+        return null;
+    }
 
 }
