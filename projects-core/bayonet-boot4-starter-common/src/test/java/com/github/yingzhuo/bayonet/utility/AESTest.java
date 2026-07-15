@@ -131,6 +131,19 @@ class AESTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
+    // ============== getSecretKeyAsBase64 ==============
+
+    @Test
+    void should_exportKeyAsBase64() {
+        var aes = new AES(AES.generateKey());
+        var exported = aes.getSecretKeyAsBase64();
+        assertThat(exported).isNotNull();
+        // 可以 round-trip
+        var restored = new AES(exported);
+        var encrypted = aes.encrypt(DATA);
+        assertThat(restored.decrypt(encrypted)).isEqualTo(DATA);
+    }
+
     // ============== 跨构造器互通 ==============
 
     @Test

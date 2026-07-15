@@ -164,6 +164,15 @@ public final class AES {
         }
     }
 
+    /**
+     * 获取当前密钥的 URL-safe Base64 编码字符串。
+     *
+     * @return URL-safe Base64 编码的密钥
+     */
+    public String getSecretKeyAsBase64() {
+        return Base64.getUrlEncoder().encodeToString(secretKey.getEncoded());
+    }
+
     private byte[] copyOf(byte[] src, int offset, int length) {
         var dest = new byte[length];
         System.arraycopy(src, offset, dest, 0, length);
