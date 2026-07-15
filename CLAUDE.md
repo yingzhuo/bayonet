@@ -42,11 +42,25 @@ Web、安全、数据（JPA/Redis/MongoDB）、校验、日志等领域。
 ```
 bayonet/
 ├── buildSrc/                              # 约定插件（预编译脚本插件）
+├── project-test/                          # 集成测试项目
 ├── projects-core/
 │   ├── bayonet-bom/                       # BOM（物料清单）POM 模块
-│   └── bayonet-boot4-starter-common/      # 基础与工具（主模块）
+│   ├── bayonet-boot4-starter-common/      # 基础与工具（主模块）
+│   │   ├── context/                       # Spring 容器初始化器（BC 安装、properties 加载）
+│   │   ├── inject/                        # 注解式属性注入（@SpringApplicationName 等）
+│   │   ├── secret/                        # 密钥与证书（KeyBundle、KeyStoreUtils 等）
+│   │   └── utility/                       # 通用工具类（PropertiesUtils、ResourceUtils 等）
+│   ├── bayonet-boot4-starter-jwt/         # JWT 支持（auth0 java-jwt）
+│   │   ├── algorithm/                     # 签名算法（HMAC/RSA/ECDSA/RSA-PSS）
+│   │   ├── autoconfig/                    # 自动配置
+│   │   ├── blacklist/                     # JWT 黑名单
+│   │   └── creator/                       # JWT 创建与验证
+│   └── bayonet-boot4-starter-security/    # Spring Security 增强
+│       ├── autoconfig/                    # 自动配置
+│       ├── password/                      # PasswordEncoder 工厂
+│       └── token/                         # Token 解析器（Header/Bearer/Composite）
 └── gradle/
-    ├── libs.versions.toml                 # 版本目录（已预留，可迁移版本号至此集中管理）
+    ├── libs.versions.toml                 # 版本目录
     └── wrapper/                           # Gradle 包装器
 ```
 
@@ -85,5 +99,18 @@ bayonet/
 - **编译期（compileOnly）**：spring-boot-autoconfigure、spring-boot-starter-*
   （web、security、validation、data-jpa、data-redis、data-mongodb、aspectj、logging）、groovy、lombok
 - **API**：slf4j-api
+- **可选（compileOnly）**：org.bouncycastle（BC provider，反射安装）
 - **注解处理器**：spring-boot-configuration-processor、spring-boot-autoconfigure-processor、lombok
 - **测试**：junit-jupiter、spring-boot-starter-test
+
+### 关键依赖（bayonet-boot4-starter-jwt）
+
+- **API**：com.auth0.jwt（auth0 java-jwt）
+- **编译期**：spring-boot-autoconfigure、spring-boot-starter、lombok
+- **测试**：junit-jupiter、spring-boot-starter-test
+
+### 关键依赖（bayonet-boot4-starter-security）
+
+- **API**：spring-boot-starter-security、spring-security-config
+- **编译期**：spring-boot-autoconfigure、spring-boot-starter-web（可选）、lombok
+- **测试**：junit-jupiter、spring-boot-starter-test、mockito
