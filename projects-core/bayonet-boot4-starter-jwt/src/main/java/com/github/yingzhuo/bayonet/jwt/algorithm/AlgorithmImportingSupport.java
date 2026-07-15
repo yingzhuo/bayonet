@@ -13,14 +13,13 @@ import org.springframework.core.io.ResourceLoader;
  * <p>继承自 {@link BeanDefinitionRegistrarSupport}，提供创建 {@link Algorithm} Bean 定义的通用方法。
  * 子类只需关注从注解读取属性和构建具体的 {@link Algorithm} 实例。</p>
  *
- * @see BeanDefinitionRegistrarSupport
  * @see PemAlgorithmImporting
  * @see KeyStoreAlgorithmImporting
  */
-abstract class AlgorithmImportingSupport extends BeanDefinitionRegistrarSupport {
+public abstract class AlgorithmImportingSupport extends BeanDefinitionRegistrarSupport {
 
     /**
-     * 构造器。
+     * 构造器
      *
      * @param resourceLoader  ResourceLoader
      * @param environment     Environment
@@ -32,7 +31,7 @@ abstract class AlgorithmImportingSupport extends BeanDefinitionRegistrarSupport 
     }
 
     /**
-     * 创建 {@link Algorithm} 的 Bean 定义。
+     * 创建 {@link Algorithm} 的 Bean 定义
      * <p>使用 {@link BeanDefinitionBuilder} 构建单例 Bean 定义，并根据 {@code primary} 参数
      * 设置是否为 {@code @Primary} Bean。默认作用域为单例，非抽象，非延迟初始化。</p>
      *

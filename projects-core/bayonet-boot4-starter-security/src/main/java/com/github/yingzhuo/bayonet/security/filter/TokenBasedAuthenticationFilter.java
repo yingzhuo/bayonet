@@ -135,7 +135,7 @@ public class TokenBasedAuthenticationFilter<A extends Authentication> extends On
     protected void onAuthenticationSuccess(A auth, WebRequest currentRequest) throws AuthenticationException {
         try {
             auth.setAuthenticated(true);
-        } catch (Exception ignored) {
+        } catch (IllegalArgumentException ignored) {
         }
     }
 

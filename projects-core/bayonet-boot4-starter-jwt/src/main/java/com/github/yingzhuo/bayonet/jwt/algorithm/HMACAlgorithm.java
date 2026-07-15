@@ -99,5 +99,4 @@ public @interface HMACAlgorithm {
             registry.registerBeanDefinition(beanName, beanDef);
         }
     }
-
 }

@@ -62,8 +62,7 @@ public abstract class BeanDefinitionRegistrarSupport implements ImportBeanDefini
     }
 
     /**
-     * 注册 Bean 定义（2 参数版本，已弃用）。
-     * <p>标记为 {@code final} 禁止子类覆盖，统一使用 3 参数版本。</p>
+     * 注册 Bean 定义（2 参数版本，已弃用）
      */
     @Override
     public final void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
@@ -137,5 +136,4 @@ public abstract class BeanDefinitionRegistrarSupport implements ImportBeanDefini
             registry.registerAlias(beanName, alias);
         }
     }
-
 }
