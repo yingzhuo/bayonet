@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.jwt.creator;
+package com.github.yingzhuo.bayonet.jwt;
 
 /**
  * JWT 标准声明名称常量。
@@ -15,11 +15,11 @@ public interface JwtConstants {
      * Header: 密钥标识
      */
     String HEADER_KEY_ID = "kid";
-    /**
-     * Header: 签名算法（已废弃）
-     */
-    @Deprecated
-    String HEADER_ALGORITHM = "alg";
+//    /**
+//     * Header: 签名算法（已废弃）
+//     */
+//    @Deprecated
+//    String HEADER_ALGORITHM = "alg";
     /**
      * Header: 内容类型
      */

@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.jwt.creator;
 
+import com.github.yingzhuo.bayonet.jwt.JwtConstants;
 import org.springframework.util.Assert;
 
 import java.time.Duration;
@@ -11,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import static com.github.yingzhuo.bayonet.jwt.JwtConstants.*;
+
 /**
  * JWT 数据构建器。
  * <p>提供流式 API 构建 JWT 的 header 和 payload 声明。</p>
@@ -21,8 +24,10 @@ import java.util.function.Supplier;
  *     .addPayloadIssuer("bayonet")
  *     .addPayloadExpiresAtFuture(Duration.ofHours(1));
  * }</pre>
+ *
+ * @see JwtConstants
  */
-public final class JwtData implements JwtConstants {
+public final class JwtData {
 
     private final Map<String, Object> headerMap = new HashMap<>();
     private final Map<String, Object> payloadMap = new HashMap<>();
@@ -40,10 +45,6 @@ public final class JwtData implements JwtConstants {
         return new JwtData();
     }
 
-    private static Date toDate(LocalDateTime localDateTime) {
-        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-    }
-
     /**
      * 设置 header 中的令牌类型。
      *
@@ -58,11 +59,11 @@ public final class JwtData implements JwtConstants {
     /**
      * 设置 header 中的密钥标识。
      *
-     * @param id 密钥标识
+     * @param keyId 密钥标识
      * @return this
      */
-    public JwtData addHeaderKeyId(String id) {
-        headerMap.put(HEADER_KEY_ID, id);
+    public JwtData addHeaderKeyId(String keyId) {
+        headerMap.put(HEADER_KEY_ID, keyId);
         return this;
     }
 
@@ -91,19 +92,19 @@ public final class JwtData implements JwtConstants {
         return this;
     }
 
-    /**
-     * 设置 header 中的签名算法。
-     *
-     * @param algorithm 算法名称
-     * @return this
-     * @deprecated JWT header 中的 {@code alg} 应由签名库自动设置，无需手动指定
-     */
-    @Deprecated
-    public JwtData addHeaderAlgorithm(String algorithm) {
-        Assert.hasText(algorithm, "algorithm is null or blank");
-        headerMap.put(HEADER_ALGORITHM, algorithm);
-        return this;
-    }
+//    /**
+//     * 设置 header 中的签名算法。
+//     *
+//     * @param algorithm 算法名称
+//     * @return this
+//     * @deprecated JWT header 中的 {@code alg} 应由签名库自动设置，无需手动指定
+//     */
+//    @Deprecated(forRemoval = true)
+//    public JwtData addHeaderAlgorithm(String algorithm) {
+//        Assert.hasText(algorithm, "algorithm is null or blank");
+//        headerMap.put(HEADER_ALGORITHM, algorithm);
+//        return this;
+//    }
 
     /**
      * 设置 payload 中的签发者。
@@ -140,6 +141,7 @@ public final class JwtData implements JwtConstants {
      */
     public JwtData addPayloadAudience(String... audience) {
         Assert.notNull(audience, "audience is null");
+        Assert.notEmpty(audience, "audience must not be empty");
         payloadMap.put(PAYLOAD_AUDIENCE, audience);
         return this;
     }
@@ -291,4 +293,9 @@ public final class JwtData implements JwtConstants {
         return Collections.unmodifiableMap(this.payloadMap);
     }
 
+    // ---
+
+    private Date toDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
 }
