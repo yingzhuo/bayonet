@@ -34,6 +34,41 @@ public final class AES {
     private final SecretKey secretKey;
 
     /**
+     * 构造器（使用 {@link SecretKey}）。
+     *
+     * @param secretKey AES 密钥（非 {@code null}）
+     * @throws IllegalArgumentException 若参数为 {@code null}
+     */
+    public AES(SecretKey secretKey) {
+        Assert.notNull(secretKey, "secretKey must not be null");
+        this.secretKey = secretKey;
+    }
+
+    /**
+     * 构造器（使用密钥字节数组）。
+     *
+     * @param secretKey AES 密钥字节数组（非 {@code null}）
+     * @throws IllegalArgumentException 若参数为 {@code null}
+     */
+    public AES(byte[] secretKey) {
+        Assert.notNull(secretKey, "secretKey must not be null");
+        this.secretKey = AES.restoreKey(secretKey);
+    }
+
+    /**
+     * 构造器（使用 URL-safe Base64 编码的密钥字符串）。
+     *
+     * @param base64UrlEncodedKey URL-safe Base64 编码的 AES 密钥（非空）
+     * @throws IllegalArgumentException 若参数为空或 Base64 解码失败
+     */
+    public AES(String base64UrlEncodedKey) {
+        Assert.hasText(base64UrlEncodedKey, "base64UrlEncodedKey must not be null or empty");
+        this.secretKey = AES.restoreKey(Base64.getUrlDecoder().decode(base64UrlEncodedKey));
+    }
+
+    // ------
+
+    /**
      * 生成 AES 密钥（256 位）。
      *
      * @return AES {@link SecretKey}
@@ -70,41 +105,6 @@ public final class AES {
     public static SecretKey restoreKey(byte[] encoded) {
         Assert.notNull(encoded, "encoded must not be null");
         return new SecretKeySpec(encoded, "AES");
-    }
-
-    // ------
-
-    /**
-     * 构造器（使用 {@link SecretKey}）。
-     *
-     * @param secretKey AES 密钥（非 {@code null}）
-     * @throws IllegalArgumentException 若参数为 {@code null}
-     */
-    public AES(SecretKey secretKey) {
-        Assert.notNull(secretKey, "secretKey must not be null");
-        this.secretKey = secretKey;
-    }
-
-    /**
-     * 构造器（使用密钥字节数组）。
-     *
-     * @param secretKey AES 密钥字节数组（非 {@code null}）
-     * @throws IllegalArgumentException 若参数为 {@code null}
-     */
-    public AES(byte[] secretKey) {
-        Assert.notNull(secretKey, "secretKey must not be null");
-        this.secretKey = AES.restoreKey(secretKey);
-    }
-
-    /**
-     * 构造器（使用 URL-safe Base64 编码的密钥字符串）。
-     *
-     * @param base64UrlEncodedKey URL-safe Base64 编码的 AES 密钥（非空）
-     * @throws IllegalArgumentException 若参数为空或 Base64 解码失败
-     */
-    public AES(String base64UrlEncodedKey) {
-        Assert.hasText(base64UrlEncodedKey, "base64UrlEncodedKey must not be null or empty");
-        this.secretKey = AES.restoreKey(Base64.getUrlDecoder().decode(base64UrlEncodedKey));
     }
 
     // ------
