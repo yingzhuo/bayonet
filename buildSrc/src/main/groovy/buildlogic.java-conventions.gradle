@@ -40,14 +40,6 @@ compileJava {
 }
 
 jar {
-    manifest {
-        attributes([
-                'Module-Name'           : project.name,
-                'Implementation-Version': project.version,
-                'Build-Jdk-Spec'        : jdkVersion,
-                'Gradle-Version'        : gradle.gradleVersion
-        ])
-    }
 }
 
 sourcesJar {
