@@ -1,6 +1,7 @@
 package com.github.yingzhuo.bayonet.bean;
 
 import org.springframework.context.annotation.Import;
+import org.springframework.core.annotation.AliasFor;
 
 import java.lang.annotation.*;
 
@@ -14,6 +15,15 @@ import java.lang.annotation.*;
  * <pre>{@code
  * &#64;Configuration
  * &#64;ImportText(location = "classpath:welcome.txt", beanName = "welcomeMessage")
+ * public class AppConfig {
+ * }
+ * }</pre>
+ *
+ * <p>使用 {@link #value()} 简写形式：</p>
+ *
+ * <pre>{@code
+ * &#64;Configuration
+ * &#64;ImportText("classpath:welcome.txt")
  * public class AppConfig {
  * }
  * }</pre>
@@ -41,17 +51,33 @@ public @interface ImportText {
     /**
      * 资源位置。
      * <p>Spring Resource 协议路径，如 {@code classpath:data/hello.txt}、{@code file:/tmp/data.txt}。
+     * 与 {@link #value()} 互为别名。</p>
      *
      * @return 资源位置（不可为空）
+     * @see #value()
      */
-    String location();
+    @AliasFor("value")
+    String location() default "";
+
+    /**
+     * 资源位置（{@link #location()} 的别名）。
+     * <p>支持简写形式：{@code @ImportText("classpath:data.txt")} 等价于
+     * {@code @ImportText(location = "classpath:data.txt")}。</p>
+     *
+     * @return 资源位置
+     * @see #location()
+     */
+    @AliasFor("location")
+    String value() default "";
 
     /**
      * Bean 名称。
+     * <p>若为空字符串，将使用文本内容的标识哈希值作为 Bean 名称。
+     * 建议始终明确指定。</p>
      *
-     * @return Bean 名称（不可为空）
+     * @return Bean 名称（可选，默认为空）
      */
-    String beanName();
+    String beanName() default "";
 
     /**
      * Bean 别名。

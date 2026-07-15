@@ -37,11 +37,7 @@ class ImportTextImporting extends BeanDefinitionRegistrarSupport {
             var aliases = annotationAttribute.getStringArray("aliases");
 
             if (!StringUtils.hasText(location)) {
-                throw new IllegalArgumentException("location must not be empty");
-            }
-
-            if (!StringUtils.hasText(beanName)) {
-                throw new IllegalArgumentException("beanName must not be empty");
+                throw new IllegalArgumentException("location/value must not be empty");
             }
 
             var text = getText(location);
@@ -49,6 +45,10 @@ class ImportTextImporting extends BeanDefinitionRegistrarSupport {
             var beanDef = BeanDefinitionBuilder.genericBeanDefinition(String.class, () -> text)
                     .setPrimary(primary)
                     .getBeanDefinition();
+
+            if (!StringUtils.hasText(beanName)) {
+                beanName = "textBean_" + System.identityHashCode(text);
+            }
 
             registry.registerBeanDefinition(beanName, beanDef);
             registerBeanAlias(aliases, beanName, registry);

@@ -20,6 +20,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -125,13 +126,15 @@ class ImportTextTest {
     }
 
     @Test
-    void should_throw_when_beanName_is_empty() {
+    void should_register_with_generatedName_when_beanName_is_empty() throws Exception {
+        mockResource("classpath:test.txt", "hello");
+
         when(metadata.getMergedRepeatableAnnotationAttributes(ImportText.class, ImportText.List.class, false))
                 .thenReturn(Set.of(createAttrs("", "classpath:test.txt", false, new String[0])));
 
-        assertThatThrownBy(() -> createImporting().registerBeanDefinitions(metadata, registry, null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("beanName");
+        createImporting().registerBeanDefinitions(metadata, registry, null);
+
+        verify(registry).registerBeanDefinition(anyString(), any());
     }
 
     // ============== 可重复注解 ==============
