@@ -19,14 +19,7 @@ import java.lang.annotation.*;
  * <p><b>安全警告：</b>无签名验证的 Algorithm 在生产环境中使用将导致 JWT 令牌可被任意伪造。
  * 请仅在开发或内部测试场景中使用。</p>
  *
- * <pre>{@code
- * @Configuration
- * @NoOpAlgorithm
- * public class JwtConfig {
- * }
- * }</pre>
- *
- * @see com.auth0.jwt.algorithms.Algorithm#none
+ * @see Algorithm#none
  */
 @Inherited
 @Documented
