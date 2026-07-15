@@ -24,12 +24,14 @@ public final class KeyBundleFactories {
      * @param location PEM 文件路径（支持 classpath:/、file:/ 等 Spring 资源协议，非空）
      * @param keypass  私钥密码，为 {@code null} 时表示私钥未加密
      * @return {@link KeyBundle}（非 {@code null}）
+     * @throws IllegalArgumentException 参数不正确
      */
     public static KeyBundle loadFromPem(String location, @Nullable String keypass) {
         Assert.hasText(location, "location must not be empty");
 
         try (var stream = ResourceUtils.loadAsInputStream(location)) {
             var pc = PemContent.load(stream);
+            Assert.notNull(pc, "failed to parse PEM content from: " + location);
             var privatekey = pc.getPrivateKey(keypass);
             if (privatekey == null) {
                 throw new IllegalArgumentException("no private key found in PEM: " + location);
@@ -49,6 +51,7 @@ public final class KeyBundleFactories {
      * @param alias     证书别名（非空）
      * @param keypass   私钥密码，为 {@code null} 时使用 {@code storepass}
      * @return {@link KeyBundle}（非 {@code null}）
+     * @throws IllegalArgumentException 参数不正确
      */
     public static KeyBundle loadFromStore(String location, KeyStoreType type, String storepass, String alias, @Nullable String keypass) {
         Assert.hasText(location, "location must not be empty");
