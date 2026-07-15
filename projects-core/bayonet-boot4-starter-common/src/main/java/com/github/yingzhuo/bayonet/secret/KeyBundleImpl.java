@@ -1,6 +1,7 @@
 package com.github.yingzhuo.bayonet.secret;
 
 import org.jspecify.annotations.Nullable;
+import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 
 import java.security.PrivateKey;
@@ -17,7 +18,7 @@ public class KeyBundleImpl implements KeyBundle {
 
     private final List<X509Certificate> certificateChain;
     private final PrivateKey privateKey;
-    private @Nullable String location;
+    private final @Nullable String location;
 
     /**
      * 构造器。
@@ -63,5 +64,13 @@ public class KeyBundleImpl implements KeyBundle {
     @Override
     public @Nullable String getLocation() {
         return location;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringCreator(this)
+                .append("location", location)
+                .append("certificate", getCertificate())
+                .toString();
     }
 }
