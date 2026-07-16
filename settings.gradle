@@ -17,7 +17,7 @@ plugins {
 dependencyResolutionManagement {
     repositories {
         mavenLocal()
-        maven { name = '阿里云'; url = 'https://maven.aliyun.com/repository/public/' }
+        maven { url = 'https://maven.aliyun.com/repository/public/' }
         mavenCentral()
         gradlePluginPortal()
         maven { url = 'https://repo.spring.io/release' }
@@ -30,8 +30,13 @@ dependencyResolutionManagement {
 rootProject.name = 'bayonet'
 
 includeBuild 'build-logic'
+
+['projects-core'].each {
+    file(it).eachDir { projectDir ->
+        if (projectDir.directory && new File(projectDir, 'build.gradle').exists()) {
+            include ":$it:${projectDir.name}"
+        }
+    }
+}
+
 include ':project-test'
-include ':projects-core:bayonet-bom'
-include ':projects-core:bayonet-boot4-starter-common'
-include ':projects-core:bayonet-boot4-starter-jwt'
-include ':projects-core:bayonet-boot4-starter-security'
