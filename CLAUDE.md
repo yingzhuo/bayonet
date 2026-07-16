@@ -41,22 +41,9 @@ bayonet/
 ├── projects-core/
 │   ├── bayonet-bom/                       # BOM（物料清单）POM 模块
 │   ├── bayonet-boot4-starter-common/      # 基础与工具（主模块）
-│   │   ├── context/                       # Spring 容器初始化器（BC 安装、properties 加载）
-│   │   ├── inject/                        # 注解式属性注入（@SpringApplicationName 等）
-│   │   ├── secret/                        # 密钥与证书（KeyBundle、KeyStoreUtils 等）
-│   │   └── utility/                       # 通用工具类（PropertiesUtils、ResourceUtils 等）
 │   ├── bayonet-boot4-starter-jwt/         # JWT 支持（auth0 java-jwt）
-│   │   ├── algorithm/                     # 签名算法（HMAC/RSA/ECDSA/RSA-PSS）
-│   │   ├── autoconfig/                    # 自动配置
-│   │   ├── blacklist/                     # JWT 黑名单
-│   │   └── creator/                       # JWT 创建与验证
 │   └── bayonet-boot4-starter-security/    # Spring Security 增强
-│       ├── autoconfig/                    # 自动配置
-│       ├── password/                      # PasswordEncoder 工厂
-│       └── token/                         # Token 解析器（Header/Bearer/Composite）
-└── gradle/
-    ├── libs.versions.toml                 # 版本目录
-    └── wrapper/                           # Gradle 包装器
+└── gradle/                                # 版本目录和包装器
 ```
 
 ### 构建系统
@@ -78,28 +65,3 @@ bayonet/
 - 签名使用 GPG（`signing.useGpgCmd()`）
 - Sonatype 凭证来自 `sonatypeUsername`/`sonatypePassword` Gradle 属性或 `SONATYPE_USERNAME`/`SONATYPE_PASSWORD` 环境变量
 - 发布类型：`AUTOMATIC`
-
-### 关键依赖（bayonet-boot4-starter-common）
-
-- **API**：slf4j-api
-- **编译期（compileOnly）**
-  ：spring-boot-autoconfigure、spring-boot-starter-web、spring-boot-starter-aspectj、spring-boot-starter-logging、spring-boot-starter-validation、spring-boot-autoconfigure-processor、spring-boot-configuration-processor、groovy、lombok
-- **可选（compileOnly）**：org.bouncycastle:bcprov-jdk18on（通过 bc-bom 版本管理，反射安装）
-- **注解处理器**：spring-boot-configuration-processor、lombok
-- **测试**：junit-jupiter、spring-boot-starter-test
-
-### 关键依赖（bayonet-boot4-starter-jwt）
-
-- **API**：bayonet-boot4-starter-common、com.auth0:java-jwt、slf4j-api
-- **编译期（compileOnly）**
-  ：spring-boot-autoconfigure、spring-boot-starter-web、spring-boot-starter-aspectj、spring-boot-starter-logging、spring-boot-starter-validation、spring-boot-configuration-processor、spring-boot-autoconfigure-processor、lombok
-- **注解处理器**：spring-boot-configuration-processor、lombok
-- **测试**：junit-jupiter、spring-boot-starter-test
-
-### 关键依赖（bayonet-boot4-starter-security）
-
-- **API**：bayonet-boot4-starter-common、slf4j-api
-- **编译期（compileOnly）**
-  ：spring-boot-autoconfigure、spring-boot-starter-web、spring-boot-starter-security、spring-boot-starter-aspectj、spring-boot-starter-logging、spring-boot-starter-validation、spring-boot-configuration-processor、spring-boot-autoconfigure-processor、lombok
-- **注解处理器**：spring-boot-configuration-processor、lombok
-- **测试**：junit-jupiter、spring-boot-starter-test、spring-boot-starter-web、spring-boot-starter-security
