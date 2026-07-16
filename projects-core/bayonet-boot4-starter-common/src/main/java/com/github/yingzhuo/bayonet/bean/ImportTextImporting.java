@@ -14,6 +14,8 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 class ImportTextImporting extends BeanDefinitionRegistrarSupport {
 
@@ -35,29 +37,39 @@ class ImportTextImporting extends BeanDefinitionRegistrarSupport {
             var location = annotationAttribute.getString("location");
             var primary = annotationAttribute.getBoolean("primary");
             var aliases = annotationAttribute.getStringArray("aliases");
+            var trim = annotationAttribute.getBoolean("trim");
+            var trimEachLine = annotationAttribute.getBoolean("trimEachLine");
 
             if (!StringUtils.hasText(location)) {
-                throw new IllegalArgumentException("location must not be empty");
+                throw new IllegalArgumentException("location/value must not be empty");
             }
 
-            if (!StringUtils.hasText(beanName)) {
-                throw new IllegalArgumentException("beanName must not be empty");
-            }
-
-            var text = getText(location);
+            var text = getText(location, trim, trimEachLine);
 
             var beanDef = BeanDefinitionBuilder.genericBeanDefinition(String.class, () -> text)
                     .setPrimary(primary)
                     .getBeanDefinition();
+
+            if (!StringUtils.hasText(beanName)) {
+                beanName = "textBean_" + System.identityHashCode(text);
+            }
 
             registry.registerBeanDefinition(beanName, beanDef);
             registerBeanAlias(aliases, beanName, registry);
         }
     }
 
-    private String getText(String location) {
+    private String getText(String location, boolean trim, boolean trimEachLine) {
         try {
             var text = resourceLoader.getResource(location).getContentAsString(StandardCharsets.UTF_8);
+            if (trim) {
+                text = text.strip();
+            }
+            if (trimEachLine) {
+                text = Arrays.stream(text.split("\\R"))
+                        .map(String::trim)
+                        .collect(Collectors.joining("\n"));
+            }
             return environment.resolvePlaceholders(text);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
