@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.classpath;
 
+import com.github.yingzhuo.bayonet.collection.PackageTrie;
 import org.jspecify.annotations.Nullable;
 import org.springframework.util.StringUtils;
 
@@ -8,8 +9,8 @@ import java.util.stream.Stream;
 
 /**
  * 包名集合。
- * <p>一个不可变视图的包名集合，支持从字符串、{@link Package} 对象、{@link Class 类} 三种来源添加包名。
- * 内部使用 {@link TreeSet} 保持自然排序，通过 {@link #asSet()} 返回不可修改视图。</p>
+ * <p>基于 {@link PackageTrie} 实现，自动维护短前缀包名优先的集合语义。
+ * 支持从字符串、{@link Package} 对象、{@link Class 类} 三种来源添加包名。</p>
  *
  * <pre>{@code
  * var set = new PackageSet()
@@ -20,10 +21,7 @@ import java.util.stream.Stream;
  */
 public final class PackageSet implements Iterable<String> {
 
-    private final SortedSet<String> innerSet = new TreeSet<>(
-            Comparator.comparingInt(String::length)
-                    .thenComparing(Comparator.naturalOrder())
-    );
+    private final PackageTrie trie = new PackageTrie();
 
     /**
      * 添加包名（字符串形式）。
@@ -80,7 +78,7 @@ public final class PackageSet implements Iterable<String> {
 
     @Override
     public Iterator<String> iterator() {
-        return innerSet.iterator();
+        return asSet().iterator();
     }
 
     /**
@@ -89,7 +87,7 @@ public final class PackageSet implements Iterable<String> {
      * @return this
      */
     public PackageSet clear() {
-        innerSet.clear();
+        trie.clear();
         return this;
     }
 
@@ -99,7 +97,7 @@ public final class PackageSet implements Iterable<String> {
      * @return 空返回 {@code true}
      */
     public boolean isEmpty() {
-        return innerSet.isEmpty();
+        return trie.isEmpty();
     }
 
     /**
@@ -108,29 +106,23 @@ public final class PackageSet implements Iterable<String> {
      * @return 包名数量
      */
     public int size() {
-        return innerSet.size();
+        return trie.size();
     }
 
     /**
-     * 返回不可修改的包名集合视图。
+     * 返回按自然顺序排序的不可修改包名集合视图。
      *
      * @return 不可修改的排序集合
      */
     public SortedSet<String> asSet() {
-        return Collections.unmodifiableSortedSet(innerSet);
+        return Collections.unmodifiableSortedSet(new TreeSet<>(trie.getAllPackages()));
     }
 
-    // 性能差! 时间复杂度O(n²)
-    // 由于数据量非常小 就这样算了
     private void addToInnerSet(String pkg) {
         if (!StringUtils.hasText(pkg)) {
             return;
         }
-        for (String existing : innerSet) {
-            if (pkg.startsWith(existing)) return;
-        }
-        innerSet.removeIf(existing -> existing.startsWith(pkg));
-        innerSet.add(pkg);
+        trie.add(pkg);
     }
 
 }
