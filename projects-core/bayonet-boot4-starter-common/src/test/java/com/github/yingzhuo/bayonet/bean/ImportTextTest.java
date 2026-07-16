@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
@@ -16,6 +17,7 @@ import org.springframework.core.type.AnnotationMetadata;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -50,11 +52,17 @@ class ImportTextTest {
     }
 
     private AnnotationAttributes createAttrs(String beanName, String location, boolean primary, String[] aliases) {
+        return createAttrs(beanName, location, primary, aliases, false, false);
+    }
+
+    private AnnotationAttributes createAttrs(String beanName, String location, boolean primary, String[] aliases, boolean trim, boolean trimEachLine) {
         var attrs = new AnnotationAttributes();
         attrs.put("beanName", beanName);
         attrs.put("location", location);
         attrs.put("primary", primary);
         attrs.put("aliases", aliases);
+        attrs.put("trim", trim);
+        attrs.put("trimEachLine", trimEachLine);
         return attrs;
     }
 
@@ -62,7 +70,7 @@ class ImportTextTest {
         var resource = mock(Resource.class);
         when(resourceLoader.getResource(location)).thenReturn(resource);
         lenient().doReturn(content).when(resource).getContentAsString(StandardCharsets.UTF_8);
-        when(environment.resolvePlaceholders(content)).thenReturn(content);
+        lenient().when(environment.resolvePlaceholders(anyString())).thenAnswer(invocation -> invocation.getArgument(0));
     }
 
     // ============== 基本注册 ==============
@@ -165,6 +173,72 @@ class ImportTextTest {
         createImporting().registerBeanDefinitions(metadata, registry, null);
 
         verify(registry, never()).registerBeanDefinition(any(), any());
+    }
+
+    // ============== trim ==============
+
+    @Test
+    void should_trim_content() throws Exception {
+        mockResource("classpath:test.txt", "  hello world  ");
+
+        when(metadata.getMergedRepeatableAnnotationAttributes(ImportText.class, ImportText.List.class, false))
+                .thenReturn(Set.of(createAttrs("trimBean", "classpath:test.txt", false, new String[0], true, false)));
+
+        var captor = ArgumentCaptor.forClass(BeanDefinition.class);
+        createImporting().registerBeanDefinitions(metadata, registry, null);
+
+        verify(registry).registerBeanDefinition(eq("trimBean"), captor.capture());
+        var supplier = ((AbstractBeanDefinition) captor.getValue()).getInstanceSupplier();
+        assertThat(((Supplier<?>) supplier).get()).isEqualTo("hello world");
+    }
+
+    // ============== trimEachLine ==============
+
+    @Test
+    void should_trim_each_line() throws Exception {
+        mockResource("classpath:test.txt", "  a\n  b  \n  c  ");
+
+        when(metadata.getMergedRepeatableAnnotationAttributes(ImportText.class, ImportText.List.class, false))
+                .thenReturn(Set.of(createAttrs("lineBean", "classpath:test.txt", false, new String[0], false, true)));
+
+        var captor = ArgumentCaptor.forClass(BeanDefinition.class);
+        createImporting().registerBeanDefinitions(metadata, registry, null);
+
+        verify(registry).registerBeanDefinition(eq("lineBean"), captor.capture());
+        var supplier = ((AbstractBeanDefinition) captor.getValue()).getInstanceSupplier();
+        assertThat(((Supplier<?>) supplier).get()).isEqualTo("a\nb\nc");
+    }
+
+    @Test
+    void should_handle_crlf_with_trimEachLine() throws Exception {
+        mockResource("classpath:test.txt", "  a\r\n  b  \r\n  c  ");
+
+        when(metadata.getMergedRepeatableAnnotationAttributes(ImportText.class, ImportText.List.class, false))
+                .thenReturn(Set.of(createAttrs("crlfBean", "classpath:test.txt", false, new String[0], false, true)));
+
+        var captor = ArgumentCaptor.forClass(BeanDefinition.class);
+        createImporting().registerBeanDefinitions(metadata, registry, null);
+
+        verify(registry).registerBeanDefinition(eq("crlfBean"), captor.capture());
+        var supplier = ((AbstractBeanDefinition) captor.getValue()).getInstanceSupplier();
+        assertThat(((Supplier<?>) supplier).get()).isEqualTo("a\nb\nc");
+    }
+
+    // ============== trim + trimEachLine ==============
+
+    @Test
+    void should_trim_then_trimEachLine() throws Exception {
+        mockResource("classpath:test.txt", "  hello\n  world  \n");
+
+        when(metadata.getMergedRepeatableAnnotationAttributes(ImportText.class, ImportText.List.class, false))
+                .thenReturn(Set.of(createAttrs("bothBean", "classpath:test.txt", false, new String[0], true, true)));
+
+        var captor = ArgumentCaptor.forClass(BeanDefinition.class);
+        createImporting().registerBeanDefinitions(metadata, registry, null);
+
+        verify(registry).registerBeanDefinition(eq("bothBean"), captor.capture());
+        var supplier = ((AbstractBeanDefinition) captor.getValue()).getInstanceSupplier();
+        assertThat(((Supplier<?>) supplier).get()).isEqualTo("hello\nworld");
     }
 
 }
