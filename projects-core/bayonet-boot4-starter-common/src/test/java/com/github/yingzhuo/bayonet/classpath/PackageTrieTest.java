@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.collection;
+package com.github.yingzhuo.bayonet.classpath;
 
 import org.junit.jupiter.api.Test;
 

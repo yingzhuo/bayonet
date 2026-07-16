@@ -1,6 +1,5 @@
 package com.github.yingzhuo.bayonet.classpath;
 
-import com.github.yingzhuo.bayonet.collection.PackageTrie;
 import org.jspecify.annotations.Nullable;
 import org.springframework.util.StringUtils;
 
