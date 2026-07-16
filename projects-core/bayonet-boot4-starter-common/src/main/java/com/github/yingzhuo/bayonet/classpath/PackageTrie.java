@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.collection;
+package com.github.yingzhuo.bayonet.classpath;
 
 import org.jspecify.annotations.Nullable;
 
@@ -9,6 +9,7 @@ import java.util.*;
  * <p>基于 Trie 数据结构维护一组包名，自动确保短前缀包名优先于长包名。
  * 当添加一个包名时，若已有更短的前缀存在，则拒绝添加；反之若新包名是已有
  * 包名的更短前缀，则移除所有被它覆盖的包名。</p>
+ * 注意: 本类型不是线程安全的
  *
  * <pre>{@code
  * var trie = new PackageTrie();
@@ -29,15 +30,15 @@ public final class PackageTrie {
      * <p>若已有更短前缀则拒绝（返回 {@code false}）；若新包名是已有包名的更短前缀，
      * 则移除所有已被覆盖的包名。</p>
      *
-     * @param packageName 包名
+     * @param pkgName 包名
      * @return 添加成功返回 {@code true}
      */
-    public boolean add(String packageName) {
-        if (hasShorterPrefix(packageName)) {
+    public boolean add(String pkgName) {
+        if (hasShorterPrefix(pkgName)) {
             return false;
         }
-        var removed = removeAllWithPrefix(packageName);
-        insert(packageName);
+        var removed = removeAllWithPrefix(pkgName);
+        insert(pkgName);
         size = size - removed + 1;
         return true;
     }
@@ -45,12 +46,12 @@ public final class PackageTrie {
     /**
      * 是否存在指定包名。
      *
-     * @param packageName 包名
+     * @param pkgName 包名
      * @return 存在返回 {@code true}
      */
-    public boolean contains(String packageName) {
+    public boolean contains(String pkgName) {
         var node = root;
-        for (char c : packageName.toCharArray()) {
+        for (char c : pkgName.toCharArray()) {
             node = node.children.get(c);
             if (node == null) return false;
         }
@@ -109,7 +110,7 @@ public final class PackageTrie {
         return size == 0;
     }
 
-    // ============== 内部方法 ==============
+    // ------
 
     private boolean hasShorterPrefix(String target) {
         var node = root;

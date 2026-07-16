@@ -1,5 +1,4 @@
 plugins {
-    id 'java-platform'
     id 'maven-publish'
     id 'signing'
 }
@@ -7,13 +6,16 @@ plugins {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            from components.javaPlatform
+            from components.java
 
             groupId = project.group
             artifactId = project.name
             version = project.version
 
             versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
                 usage('java-runtime') {
                     fromResolutionResult()
                 }
@@ -21,9 +23,9 @@ publishing {
 
             pom {
                 name = project.name
-                description = 'BOM of Bayonet'
+                description = 'Another enhancement library of SpringBoot & SpringFramework'
                 url = 'https://github.com/yingzhuo/bayonet'
-                inceptionYear = '2025'
+                inceptionYear = '2026'
 
                 licenses {
                     license {
@@ -37,8 +39,6 @@ publishing {
                         id = 'yingzhuo'
                         name = '应卓'
                         email = 'yingzhor@gmail.com'
-                        roles = ['author']
-                        url = 'https://github.com/yingzhuo'
                     }
                 }
 
@@ -58,7 +58,7 @@ publishing {
 
     repositories {
         maven {
-            name = "Local"
+            name = "local"
             url = layout.buildDirectory.dir('repos/bundles')
         }
     }

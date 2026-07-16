@@ -3,8 +3,8 @@ plugins {
 }
 
 allprojects {
-    group = bayonetGroup
-    version = bayonetVersion
+    group = 'com.github.yingzhuo'
+    version = '4.1.0'
 
     configurations.configureEach {
         resolutionStrategy {

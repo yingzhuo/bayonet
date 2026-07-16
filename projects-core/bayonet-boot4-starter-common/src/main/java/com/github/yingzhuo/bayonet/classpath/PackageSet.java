@@ -1,6 +1,5 @@
 package com.github.yingzhuo.bayonet.classpath;
 
-import com.github.yingzhuo.bayonet.collection.PackageTrie;
 import org.jspecify.annotations.Nullable;
 import org.springframework.util.StringUtils;
 
@@ -68,7 +67,7 @@ public final class PackageSet implements Iterable<String> {
         if (baseClasses != null) {
             Arrays.stream(baseClasses)
                     .filter(Objects::nonNull)
-                    .map(c -> c.getPackage())
+                    .map(Class::getPackage)
                     .filter(Objects::nonNull)
                     .map(Package::getName)
                     .forEach(this::addToInnerSet);

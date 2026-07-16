@@ -3,7 +3,7 @@ plugins {
 }
 
 checkstyle {
-    configFile = file("${rootDir}/buildSrc/config/checkstyle/google.xml")
+    configFile = file("${rootDir}/build-logic/config/checkstyle/google.xml")
 }
 
 checkstyleMain {
