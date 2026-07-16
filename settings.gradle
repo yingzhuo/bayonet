@@ -29,6 +29,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = 'bayonet'
+
+includeBuild 'build-logic'
 include ':project-test'
 include ':projects-core:bayonet-bom'
 include ':projects-core:bayonet-boot4-starter-common'

@@ -36,7 +36,7 @@
 
 ```
 bayonet/
-├── buildSrc/                              # 约定插件（预编译脚本插件）
+├── build-logic/                           # 约定插件（预编译脚本插件）
 ├── project-test/                          # 集成测试项目
 ├── projects-core/
 │   ├── bayonet-bom/                       # BOM（物料清单）POM 模块
@@ -62,7 +62,7 @@ bayonet/
 ### 构建系统
 
 - **Gradle 8.14.5**，JDK 17 目标
-- 通过 `buildSrc/` 中的约定插件统一模块配置，各模块按 ID 引用（`buildlogic.java-conventions` 等）
+- 通过 `build-logic/` 中的约定插件统一模块配置，各模块按 ID 引用（`buildlogic.java-conventions` 等）
 - 仓库顺序：阿里云镜像 → Maven Central → Gradle Plugin Portal → Spring 仓库
 - 禁用模块元数据生成（发布优化），版本属性统一在 `gradle.properties` 中管理
 

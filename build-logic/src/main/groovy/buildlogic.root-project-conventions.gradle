@@ -4,14 +4,6 @@ plugins {
 
 defaultTasks 'clean'
 
-tasks.register('pushToVcs', Exec) {
-    group = 'other'
-    description = 'Commit and push codes to version control system.'
-
-    workingDir(rootDir)
-    commandLine('bash', "$rootDir/buildSrc/config/vcs/push.sh")
-}
-
 tasks.named('clean') {
     finalizedBy 'tidy'
 }
