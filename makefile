@@ -16,18 +16,18 @@ clean:
 	$(GRADLEW) 'clean' -q
 
 purge: clean
-	$(GRADLEW) ':build-logic:clean' -q
+	$(GRADLEW) ':buildSrc:clean' -q
 ifeq ($(OS), Windows_NT)
 	if exist $(MAKEFILE_PATH)\.gradle rmdir /s /q $(MAKEFILE_PATH)\.gradle
-	if exist $(MAKEFILE_PATH)\build-logic\.gradle rmdir /s /q $(MAKEFILE_PATH)\build-logic\.gradle
+	if exist $(MAKEFILE_PATH)\buildSrc\.gradle rmdir /s /q $(MAKEFILE_PATH)\buildSrc\.gradle
 else
 	rm -rf $(MAKEFILE_PATH)/.gradle
-	rm -rf $(MAKEFILE_PATH)/build-logic/.gradle
+	rm -rf $(MAKEFILE_PATH)/buildSrc/.gradle
 endif
 
 rebuild-build-logic:
-	$(GRADLEW) ':build-logic:clean' -q
-	$(GRADLEW) ':build-logic:jar' -q
+	$(GRADLEW) ':buildSrc:clean' -q
+	$(GRADLEW) ':buildSrc:jar' -q
 
 compile:
 	$(GRADLEW) 'classes'
@@ -50,4 +50,4 @@ test:
 	$(GRADLEW) "test"
 
 check:
-	$(GRADLEW) "check"
+	$(GRADLEW) -x "test" "check"

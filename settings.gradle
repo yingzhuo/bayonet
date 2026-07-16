@@ -24,8 +24,6 @@ dependencyResolutionManagement {
 
 rootProject.name = 'bayonet'
 
-includeBuild 'build-logic'
-
 ['projects-core'].each {
     file(it).eachDir { projectDir ->
         if (projectDir.directory && new File(projectDir, 'build.gradle').exists()) {

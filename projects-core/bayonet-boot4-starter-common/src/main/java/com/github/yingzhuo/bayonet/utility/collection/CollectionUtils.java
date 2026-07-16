@@ -143,7 +143,7 @@ public final class CollectionUtils {
     /**
      * 向 Map 中添加另一个 Map 中的全部键值对（null-safe）。
      *
-     * @param map     目标 Map（非 {@code null}）
+     * @param map      目标 Map（非 {@code null}）
      * @param elements 源 Map，可为 {@code null}
      * @param <K>      键类型
      * @param <V>      值类型

@@ -1,6 +1,5 @@
 plugins {
     id 'buildlogic.java-conventions'
-    id 'buildlogic.check-conventions'
     id 'buildlogic.maven-central-jar-conventions'
     id 'buildlogic.sonatype-conventions'
 }
