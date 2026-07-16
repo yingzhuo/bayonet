@@ -2,6 +2,8 @@ package com.github.yingzhuo.bayonet.classpath;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -164,6 +166,81 @@ class PackageSetTest {
                 .acceptPackages("com.example.foo", "com.example.foo")
                 .asSet();
         assertThat(set).hasSize(1);
+    }
+
+    // ============== 前缀去重（子包被父包吸收）==============
+
+    @Test
+    void should_absorb_subpackage_when_parent_added_first() {
+        var set = new PackageSet()
+                .acceptPackages("com.example", "com.example.foo")
+                .asSet();
+        assertThat(set).containsExactly("com.example");
+    }
+
+    @Test
+    void should_absorb_subpackage_when_parent_added_last() {
+        var set = new PackageSet()
+                .acceptPackages("com.example.foo", "com.example")
+                .asSet();
+        assertThat(set).containsExactly("com.example");
+    }
+
+    @Test
+    void should_absorb_nested_subpackages() {
+        var set = new PackageSet()
+                .acceptPackages("com.example.a.b", "com.example", "com.example.a.b.c")
+                .asSet();
+        assertThat(set).containsExactly("com.example");
+    }
+
+    @Test
+    void should_not_absorb_sibling_packages() {
+        var set = new PackageSet()
+                .acceptPackages("com.example.foo", "com.example.bar")
+                .asSet();
+        assertThat(set).containsExactly("com.example.bar", "com.example.foo");
+    }
+
+    // ============== 链式调用返回 this ==============
+
+    @Test
+    void acceptPackages_should_return_this() {
+        var set = new PackageSet();
+        assertThat(set.acceptPackages("com.example")).isSameAs(set);
+    }
+
+    @Test
+    void acceptBasePackageClasses_should_return_this() {
+        var set = new PackageSet();
+        assertThat(set.acceptBasePackageClasses(getClass())).isSameAs(set);
+    }
+
+    // ============== 混合来源 ==============
+
+    @Test
+    void should_accept_mixed_sources() {
+        var set = new PackageSet()
+                .acceptPackages("com.example.foo")
+                .acceptPackages(String.class.getPackage())
+                .acceptBasePackageClasses(PackageSetTest.class)
+                .asSet();
+
+        assertThat(set).contains("com.example.foo", "java.lang", "com.github.yingzhuo.bayonet.classpath");
+    }
+
+    // ============== iterator ==============
+
+    @Test
+    void should_iterate_in_order() {
+        var set = new PackageSet()
+                .acceptPackages("z", "a", "m");
+
+        var list = new ArrayList<String>();
+        for (var pkg : set) {
+            list.add(pkg);
+        }
+        assertThat(list).containsExactly("a", "m", "z");
     }
 
 }

@@ -20,7 +20,10 @@ import java.util.stream.Stream;
  */
 public final class PackageSet implements Iterable<String> {
 
-    private final SortedSet<String> innerSet = new TreeSet<>();
+    private final SortedSet<String> innerSet = new TreeSet<>(
+            Comparator.comparingInt(String::length)
+                    .thenComparing(Comparator.naturalOrder())
+    );
 
     /**
      * 添加包名（字符串形式）。
@@ -33,7 +36,7 @@ public final class PackageSet implements Iterable<String> {
             Stream.of(packages)
                     .filter(StringUtils::hasText)
                     .map(String::trim)
-                    .forEach(innerSet::add);
+                    .forEach(this::addToInnerSet);
         }
         return this;
     }
@@ -49,7 +52,7 @@ public final class PackageSet implements Iterable<String> {
             Stream.of(packages)
                     .filter(Objects::nonNull)
                     .map(Package::getName)
-                    .forEach(innerSet::add);
+                    .forEach(this::addToInnerSet);
         }
         return this;
     }
@@ -70,7 +73,7 @@ public final class PackageSet implements Iterable<String> {
                     .map(c -> c.getPackage())
                     .filter(Objects::nonNull)
                     .map(Package::getName)
-                    .forEach(innerSet::add);
+                    .forEach(this::addToInnerSet);
         }
         return this;
     }
@@ -115,6 +118,19 @@ public final class PackageSet implements Iterable<String> {
      */
     public SortedSet<String> asSet() {
         return Collections.unmodifiableSortedSet(innerSet);
+    }
+
+    // 性能差! 时间复杂度O(n²)
+    // 由于数据量非常小 就这样算了
+    private void addToInnerSet(String pkg) {
+        if (!StringUtils.hasText(pkg)) {
+            return;
+        }
+        for (String existing : innerSet) {
+            if (pkg.startsWith(existing)) return;
+        }
+        innerSet.removeIf(existing -> existing.startsWith(pkg));
+        innerSet.add(pkg);
     }
 
 }
