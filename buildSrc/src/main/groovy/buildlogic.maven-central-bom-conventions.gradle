@@ -23,7 +23,7 @@ publishing {
                 name = project.name
                 description = 'BOM of Bayonet'
                 url = 'https://github.com/yingzhuo/bayonet'
-                inceptionYear = '2025'
+                inceptionYear = '2026'
 
                 licenses {
                     license {
@@ -37,8 +37,6 @@ publishing {
                         id = 'yingzhuo'
                         name = '应卓'
                         email = 'yingzhor@gmail.com'
-                        roles = ['author']
-                        url = 'https://github.com/yingzhuo'
                     }
                 }
 
@@ -58,7 +56,7 @@ publishing {
 
     repositories {
         maven {
-            name = "Local"
+            name = "local"
             url = layout.buildDirectory.dir('repos/bundles')
         }
     }
