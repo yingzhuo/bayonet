@@ -24,9 +24,6 @@ dependencies {
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-    // groovy
-    compileOnly 'org.apache.groovy:groovy'
-
     // lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
