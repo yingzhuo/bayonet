@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.jwt.creator;
+package com.github.yingzhuo.bayonet.jwt.service;
 
 /**
  * JWT ID (jti) 生成器接口。
@@ -9,7 +9,7 @@ package com.github.yingzhuo.bayonet.jwt.creator;
  * JtiGenerator generator = () -> UUID.randomUUID().toString();
  * }</pre>
  *
- * @see com.github.yingzhuo.bayonet.jwt.creator.DefaultJwtCreator
+ * @see DefaultJwtCreator
  */
 public interface JtiGenerator {
 

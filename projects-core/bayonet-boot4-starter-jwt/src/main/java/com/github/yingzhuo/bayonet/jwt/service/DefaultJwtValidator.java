@@ -1,10 +1,9 @@
-package com.github.yingzhuo.bayonet.jwt.validator;
+package com.github.yingzhuo.bayonet.jwt.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.*;
 import com.github.yingzhuo.bayonet.jwt.JwtConstants;
-import com.github.yingzhuo.bayonet.jwt.blacklist.BlacklistChecker;
 import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 

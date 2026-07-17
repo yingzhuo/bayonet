@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.jwt.creator;
+package com.github.yingzhuo.bayonet.jwt.service;
 
 import com.github.yingzhuo.bayonet.jwt.JwtConstants;
 import org.springframework.util.Assert;

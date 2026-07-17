@@ -1,8 +1,7 @@
-package com.github.yingzhuo.bayonet.jwt.validator;
+package com.github.yingzhuo.bayonet.jwt.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.github.yingzhuo.bayonet.jwt.blacklist.BlacklistChecker;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

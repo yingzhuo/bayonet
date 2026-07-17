@@ -8,7 +8,7 @@ endif
 
 .DEFAULT_GOAL := clean
 
-.PHONY: clean purge rebuild-build-logic compile build install publish update-gradle-wrapper test check
+.PHONY: clean purge rebuild-build-logic compile build install publish test
 
 .SILENT:
 
@@ -43,11 +43,5 @@ publish: install
 	read -p "确认继续？(yes/no) " confirm && [ $$confirm = "yes" ] || exit 1
 	$(GRADLEW) -x "test" -x "check" "publishToMavenCentralPortal" --no-parallel
 
-update-gradle-wrapper:
-	$(GRADLEW) ":wrapper" -q
-
 test:
 	$(GRADLEW) "test"
-
-check:
-	$(GRADLEW) -x "test" "check"

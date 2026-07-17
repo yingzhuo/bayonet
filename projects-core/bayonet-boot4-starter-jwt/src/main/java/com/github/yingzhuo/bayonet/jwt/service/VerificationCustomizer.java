@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.jwt.validator;
+package com.github.yingzhuo.bayonet.jwt.service;
 
 import com.auth0.jwt.interfaces.Verification;
 
