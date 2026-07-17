@@ -127,17 +127,17 @@ public class ClassPathScanner {
      * <p>返回的 {@link GenericBeanDefinition} 中 {@link GenericBeanDefinition#getBeanClass() BeanClass}
      * 已通过 ClassLoader 加载到 JVM 中。如果某个类无法加载（类不存在、依赖缺失等），该定义将被静默丢弃。</p>
      *
-     * @param packageSet 待扫描的包名集合，{@code null} 或空集合时返回空集
+     * @param packageTrie 待扫描的包名集合，{@code null} 或空集合时返回空集
      * @return 不可修改的 {@link GenericBeanDefinition} 集合
      */
-    public Set<GenericBeanDefinition> scan(@Nullable PackageSet packageSet) {
-        if (packageSet == null || packageSet.isEmpty()) {
+    public Set<GenericBeanDefinition> scan(@Nullable PackageTrie packageTrie) {
+        if (packageTrie == null || packageTrie.isEmpty()) {
             return Set.of();
         }
 
         var set = new HashSet<GenericBeanDefinition>();
 
-        for (var basePackage : packageSet) {
+        for (var basePackage : packageTrie) {
             worker.findCandidateComponents(basePackage)
                     .stream()
                     .map(bd -> bd instanceof GenericBeanDefinition g ? g : new GenericBeanDefinition(bd))
@@ -166,7 +166,7 @@ public class ClassPathScanner {
             return false;
         }
         try {
-            var clazz = ClassUtils.resolveClassName(className, this.classLoader);
+            var clazz = ClassUtils.resolveClassName(className, classLoader);
             beanDef.setBeanClass(clazz);
             return true;
         } catch (Exception e) {

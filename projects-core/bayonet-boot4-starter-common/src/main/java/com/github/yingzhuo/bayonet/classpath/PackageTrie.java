@@ -5,7 +5,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.*;
 
 /**
- * 包名前缀树。
+ * 包名前缀树
  * <p>基于 Trie 数据结构维护一组包名，自动确保短前缀包名优先于长包名。
  * 当添加一个包名时，若已有更短的前缀存在，则拒绝添加；反之若新包名是已有
  * 包名的更短前缀，则移除所有被它覆盖的包名。</p>
@@ -20,7 +20,7 @@ import java.util.*;
  * trie.contains("com.example");   // false
  * }</pre>
  */
-public final class PackageTrie {
+public final class PackageTrie implements Iterable<String> {
 
     private Node root = new Node();
     private int size = 0;
@@ -33,7 +33,10 @@ public final class PackageTrie {
      * @param pkgName 包名
      * @return 添加成功返回 {@code true}
      */
-    public boolean add(String pkgName) {
+    public boolean add(@Nullable String pkgName) {
+        if (pkgName == null || pkgName.isBlank()) {
+            return false;
+        }
         if (hasShorterPrefix(pkgName)) {
             return false;
         }
@@ -41,6 +44,58 @@ public final class PackageTrie {
         insert(pkgName);
         size = size - removed + 1;
         return true;
+    }
+
+    /**
+     * 添加包名（字符串形式）。
+     *
+     * @param pkgNames 包名数组，{@code null} 或空数组将被忽略
+     * @return this
+     */
+    public PackageTrie acceptPackages(String... pkgNames) {
+        if (pkgNames != null && pkgNames.length > 0) {
+            Arrays.stream(pkgNames)
+                    .filter(Objects::nonNull)
+                    .forEach(this::add);
+        }
+        return this;
+    }
+
+    /**
+     * 添加包名（{@link Package} 对象形式）。
+     *
+     * @param packages {@link Package} 数组，{@code null} 或空数组将被忽略
+     * @return this
+     */
+    public PackageTrie acceptPackages(Package... packages) {
+        if (packages != null && packages.length > 0) {
+            Arrays.stream(packages)
+                    .filter(Objects::nonNull)
+                    .map(Package::getName)
+                    .forEach(this::add);
+        }
+        return this;
+    }
+
+    /**
+     * 添加包名（通过 {@link Class 类} 推断）。
+     * <p>通过 {@link Class#getPackage()} 推断包名。
+     * 原始类型（如 {@code int.class}）、数组类型（如 {@code String[].class}）等
+     * 无法获取包名的类型将被忽略。</p>
+     *
+     * @param baseClasses 类数组，{@code null} 或空数组将被忽略
+     * @return this
+     */
+    public PackageTrie acceptBasePackageClasses(Class<?>... baseClasses) {
+        if (baseClasses != null && baseClasses.length > 0) {
+            Arrays.stream(baseClasses)
+                    .filter(Objects::nonNull)
+                    .map(Class::getPackage)
+                    .filter(Objects::nonNull)
+                    .map(Package::getName)
+                    .forEach(this::add);
+        }
+        return this;
     }
 
     /**
@@ -82,6 +137,11 @@ public final class PackageTrie {
         Set<String> result = new HashSet<>();
         collectAll(root, new StringBuilder(), result);
         return result;
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        return getAllPackages().iterator();
     }
 
     /**

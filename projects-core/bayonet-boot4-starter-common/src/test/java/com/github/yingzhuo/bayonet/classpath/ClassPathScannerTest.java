@@ -19,8 +19,8 @@ class ClassPathScannerTest {
     }
 
     @Test
-    void scan_should_returnEmptySet_when_emptyPackageSet() {
-        assertThat(scanner.scan(new PackageSet())).isEmpty();
+    void scan_should_returnEmptySet_when_emptyPackageTrie() {
+        assertThat(scanner.scan(new PackageTrie())).isEmpty();
     }
 
     // ============== scan ==============
@@ -29,7 +29,7 @@ class ClassPathScannerTest {
     void scan_should_findClasses_and_loadBeanClass() {
         scanner.addIncludeFilters((metadataReader, metadataReaderFactory) -> true);
 
-        var result = scanner.scan(new PackageSet().acceptPackages("com.github.yingzhuo.bayonet.classpath"));
+        var result = scanner.scan(new PackageTrie().acceptPackages("com.github.yingzhuo.bayonet.classpath"));
 
         assertThat(result).isNotEmpty();
         assertThat(result).allMatch(bd -> {
@@ -43,9 +43,8 @@ class ClassPathScannerTest {
     @Test
     void setResourceLoader_should_useDefault_when_null() {
         scanner.setResourceLoader(null);
-        // 不抛异常即为通过
         scanner.addIncludeFilters((metadataReader, metadataReaderFactory) -> true);
-        assertThat(scanner.scan(new PackageSet().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
+        assertThat(scanner.scan(new PackageTrie().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
                 .isNotEmpty();
     }
 
@@ -53,7 +52,7 @@ class ClassPathScannerTest {
     void setResourceLoader_should_useCustom_when_notNull() {
         scanner.setResourceLoader(new DefaultResourceLoader());
         scanner.addIncludeFilters((metadataReader, metadataReaderFactory) -> true);
-        assertThat(scanner.scan(new PackageSet().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
+        assertThat(scanner.scan(new PackageTrie().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
                 .isNotEmpty();
     }
 
@@ -63,16 +62,24 @@ class ClassPathScannerTest {
     void setEnvironment_should_useDefault_when_null() {
         scanner.setEnvironment(null);
         scanner.addIncludeFilters((metadataReader, metadataReaderFactory) -> true);
-        assertThat(scanner.scan(new PackageSet().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
+        assertThat(scanner.scan(new PackageTrie().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
                 .isNotEmpty();
     }
 
-    // ============== setClassLoader(null) ==============
+    // ============== setClassLoader ==============
 
     @Test
     void setClassLoader_should_throw_when_null() {
         assertThatThrownBy(() -> scanner.setClassLoader(null))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void setClassLoader_should_useCustom_when_notNull() {
+        scanner.setClassLoader(getClass().getClassLoader());
+        scanner.addIncludeFilters((metadataReader, metadataReaderFactory) -> true);
+        assertThat(scanner.scan(new PackageTrie().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
+                .isNotEmpty();
     }
 
     // ============== addIncludeFilters(null) ==============
@@ -81,8 +88,7 @@ class ClassPathScannerTest {
     void addIncludeFilters_should_ignore_null() {
         scanner.addIncludeFilters((TypeFilter[]) null);
         scanner.addIncludeFilters((metadataReader, metadataReaderFactory) -> true);
-        // 不抛异常即为通过
-        assertThat(scanner.scan(new PackageSet().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
+        assertThat(scanner.scan(new PackageTrie().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
                 .isNotEmpty();
     }
 
@@ -91,8 +97,7 @@ class ClassPathScannerTest {
     @Test
     void addExcludeFilters_should_ignore_null() {
         scanner.addExcludeFilters((TypeFilter[]) null);
-        // 不抛异常即为通过
-        assertThat(scanner.scan(new PackageSet().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
+        assertThat(scanner.scan(new PackageTrie().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
                 .isEmpty();
     }
 
@@ -103,8 +108,16 @@ class ClassPathScannerTest {
         scanner.addIncludeFilters((metadataReader, metadataReaderFactory) -> true);
         scanner.resetFilters();
 
-        assertThat(scanner.scan(new PackageSet().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
+        assertThat(scanner.scan(new PackageTrie().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
                 .isEmpty();
+    }
+
+    @Test
+    void resetFilters_withDefault_should_useDefaultFilters() {
+        scanner.resetFilters(true);
+        scanner.addIncludeFilters((metadataReader, metadataReaderFactory) -> true);
+        assertThat(scanner.scan(new PackageTrie().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
+                .isNotEmpty();
     }
 
     // ============== 返回不可修改集 ==============
@@ -112,9 +125,25 @@ class ClassPathScannerTest {
     @Test
     void scan_should_return_unmodifiableSet() {
         scanner.addIncludeFilters((metadataReader, metadataReaderFactory) -> true);
-        var result = scanner.scan(new PackageSet().acceptPackages("com.github.yingzhuo.bayonet.classpath"));
+        var result = scanner.scan(new PackageTrie().acceptPackages("com.github.yingzhuo.bayonet.classpath"));
         assertThatThrownBy(result::clear)
                 .isInstanceOf(UnsupportedOperationException.class);
+    }
+
+    // ============== useDefaultFilters 构造器 ==============
+
+    @Test
+    void should_use_defaultFilters_when_constructed_with_true() {
+        var s = new ClassPathScanner(true);
+        assertThat(s.scan(new PackageTrie().acceptPackages("java.lang"))).isEmpty();
+    }
+
+    @Test
+    void should_not_use_defaultFilters_when_constructed_with_false() {
+        var s = new ClassPathScanner(false);
+        s.addIncludeFilters((metadataReader, metadataReaderFactory) -> true);
+        assertThat(s.scan(new PackageTrie().acceptPackages("com.github.yingzhuo.bayonet.classpath")))
+                .isNotEmpty();
     }
 
 }
