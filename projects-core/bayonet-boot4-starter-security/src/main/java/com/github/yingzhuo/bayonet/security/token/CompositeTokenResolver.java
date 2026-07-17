@@ -1,15 +1,21 @@
 package com.github.yingzhuo.bayonet.security.token;
 
+import com.github.yingzhuo.bayonet.utility.collection.ArrayUtils;
+import com.github.yingzhuo.bayonet.utility.collection.SortingUtils;
 import org.jspecify.annotations.Nullable;
-import org.springframework.core.annotation.AnnotationAwareOrderComparator;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * 组合 Token 解析器。
- * <p>按 {@link org.springframework.core.annotation.Order @Order} 或 {@link org.springframework.core.Ordered} 排序后，
+ * <p>按 {@link Order @Order} 或 {@link Ordered} 排序后，
  * 依次调用子解析器，返回第一个非 null 结果。若全部返回 null 则返回 null。</p>
  *
  * <pre>{@code
@@ -20,9 +26,7 @@ import java.util.*;
  * String token = resolver.resolve(webRequest);
  * }</pre>
  */
-public class CompositeTokenResolver implements TokenResolver {
-
-    private final List<TokenResolver> resolvers;
+public record CompositeTokenResolver(Collection<TokenResolver> resolvers) implements TokenResolver {
 
     /**
      * 构造器（从Collection）
@@ -35,7 +39,7 @@ public class CompositeTokenResolver implements TokenResolver {
         Assert.noNullElements(resolvers, "resolvers must not contain null elements");
 
         var sorted = new ArrayList<>(resolvers);
-        AnnotationAwareOrderComparator.sort(sorted);
+        SortingUtils.sort(sorted);
         this.resolvers = Collections.unmodifiableList(sorted);
     }
 
@@ -46,8 +50,11 @@ public class CompositeTokenResolver implements TokenResolver {
      * @return 组合解析器
      */
     public static TokenResolver of(TokenResolver... resolvers) {
-        if (resolvers == null || resolvers.length == 0) {
-            return NullTokenResolver.INSTANCE;
+        if (ArrayUtils.isEmpty(resolvers)) {
+            return request -> null;
+        }
+        if (ArrayUtils.size(resolvers) == 1) {
+            return resolvers[0];
         }
         return new CompositeTokenResolver(Arrays.asList(resolvers));
     }
@@ -62,16 +69,4 @@ public class CompositeTokenResolver implements TokenResolver {
         }
         return null;
     }
-
-    /**
-     * 返回所有子解析器的不可变列表。
-     * <p>列表按 {@link org.springframework.core.annotation.Order @Order} 或
-     * {@link org.springframework.core.Ordered} 排序，不可修改。</p>
-     *
-     * @return 子解析器不可变列表（非 {@code null}）
-     */
-    public List<TokenResolver> getResolvers() {
-        return resolvers;
-    }
-
 }
