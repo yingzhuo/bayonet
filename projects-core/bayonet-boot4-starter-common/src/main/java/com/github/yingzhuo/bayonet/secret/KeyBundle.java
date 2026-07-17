@@ -2,7 +2,6 @@ package com.github.yingzhuo.bayonet.secret;
 
 import org.jspecify.annotations.Nullable;
 
-import java.io.Serializable;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -13,7 +12,7 @@ import java.util.List;
  * 密钥与证书的聚合容器。
  * <p>持有私钥、公钥（从证书中提取）及证书链，适用于 TLS/mTLS 等需要同时使用密钥和证书的场景。</p>
  */
-public interface KeyBundle extends Serializable {
+public interface KeyBundle {
 
     /**
      * 获取公钥。
