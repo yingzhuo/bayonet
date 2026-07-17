@@ -49,18 +49,9 @@ bayonet/
 
 - **Gradle 8.14.5**，JDK 17 目标
 - 通过 `buildSrc/` 中的约定插件统一模块配置，各模块按 ID 引用（`buildlogic.java-conventions` 等）
-- 仓库顺序：阿里云镜像 → Maven Central → Gradle Plugin Portal → Spring 仓库
 - 禁用模块元数据生成（发布优化），版本属性统一在 `gradle.properties` 中管理
 
 ### 模块约定
 
 - `projects-core/` 下的模块应用 `buildlogic.java-conventions`，该插件配置 Java 17、`-parameters` javac 标志、JUnit
   Platform、sources JAR、javadoc JAR 及 Spring Boot 依赖管理
-
-### 发布
-
-- 需发布的模块应用 `buildlogic.maven-central-jar-conventions` 或 `buildlogic.maven-central-bom-conventions` +
-  `buildlogic.sonatype-conventions`
-- 签名使用 GPG（`signing.useGpgCmd()`）
-- Sonatype 凭证来自 `sonatypeUsername`/`sonatypePassword` Gradle 属性或 `SONATYPE_USERNAME`/`SONATYPE_PASSWORD` 环境变量
-- 发布类型：`AUTOMATIC`
