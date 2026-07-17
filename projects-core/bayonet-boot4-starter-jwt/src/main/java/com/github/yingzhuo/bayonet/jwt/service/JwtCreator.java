@@ -1,8 +1,10 @@
-package com.github.yingzhuo.bayonet.jwt.creator;
+package com.github.yingzhuo.bayonet.jwt.service;
 
 /**
  * JWT 创建器接口。
  * <p>将 {@link JwtData} 中的数据签名生成 JWT token。</p>
+ *
+ * @see JwtValidator
  */
 public interface JwtCreator {
 

@@ -1,13 +1,7 @@
 package com.github.yingzhuo.bayonet.jwt.autoconfig;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import com.github.yingzhuo.bayonet.jwt.blacklist.BlacklistChecker;
-import com.github.yingzhuo.bayonet.jwt.creator.DefaultJwtCreator;
-import com.github.yingzhuo.bayonet.jwt.creator.JtiGenerator;
-import com.github.yingzhuo.bayonet.jwt.creator.JwtCreator;
-import com.github.yingzhuo.bayonet.jwt.validator.DefaultJwtValidator;
-import com.github.yingzhuo.bayonet.jwt.validator.JwtValidator;
-import com.github.yingzhuo.bayonet.jwt.validator.VerificationCustomizer;
+import com.github.yingzhuo.bayonet.jwt.service.*;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -28,20 +22,14 @@ public class JwtBeanAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(Algorithm.class)
-    public JwtCreator jwtCreator(
-            Algorithm algorithm,
-            @Autowired(required = false) @Nullable JtiGenerator jtiGenerator) {
+    public JwtCreator jwtCreator(Algorithm algorithm, @Autowired(required = false) @Nullable JtiGenerator jtiGenerator) {
         return new DefaultJwtCreator(algorithm, jtiGenerator);
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(Algorithm.class)
-    public JwtValidator jwtValidator(
-            Algorithm algorithm,
-            @Autowired(required = false) @Nullable VerificationCustomizer verificationCustomizer,
-            @Autowired(required = false) @Nullable BlacklistChecker blacklistChecker
-    ) {
+    public JwtValidator jwtValidator(Algorithm algorithm, @Autowired(required = false) @Nullable VerificationCustomizer verificationCustomizer, @Autowired(required = false) @Nullable BlacklistChecker blacklistChecker) {
         return new DefaultJwtValidator(algorithm, verificationCustomizer, blacklistChecker);
     }
 

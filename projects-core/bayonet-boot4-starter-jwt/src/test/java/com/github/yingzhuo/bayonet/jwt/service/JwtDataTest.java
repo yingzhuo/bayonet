@@ -1,5 +1,6 @@
-package com.github.yingzhuo.bayonet.jwt.creator;
+package com.github.yingzhuo.bayonet.jwt.service;
 
+import com.github.yingzhuo.bayonet.jwt.service.JwtData;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;

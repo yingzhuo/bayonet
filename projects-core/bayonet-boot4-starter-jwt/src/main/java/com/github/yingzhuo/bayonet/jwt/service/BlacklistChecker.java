@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.jwt.blacklist;
+package com.github.yingzhuo.bayonet.jwt.service;
 
 import org.jspecify.annotations.Nullable;
 
@@ -7,7 +7,7 @@ import org.jspecify.annotations.Nullable;
  * <p>用于在 JWT 认证流程中判断令牌是否已被拉黑（如用户登出、令牌吊销等场景）。
  * 实现类需保证线程安全。</p>
  *
- * @see com.github.yingzhuo.bayonet.jwt.validator.DefaultJwtValidator
+ * @see DefaultJwtValidator
  */
 public interface BlacklistChecker {
 

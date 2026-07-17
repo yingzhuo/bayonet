@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.jwt.validator;
+package com.github.yingzhuo.bayonet.jwt.service;
 
 /**
  * JWT 验证结果枚举。
