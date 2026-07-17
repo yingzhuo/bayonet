@@ -92,20 +92,6 @@ public final class JwtData {
         return this;
     }
 
-//    /**
-//     * 设置 header 中的签名算法。
-//     *
-//     * @param algorithm 算法名称
-//     * @return this
-//     * @deprecated JWT header 中的 {@code alg} 应由签名库自动设置，无需手动指定
-//     */
-//    @Deprecated(forRemoval = true)
-//    public JwtData addHeaderAlgorithm(String algorithm) {
-//        Assert.hasText(algorithm, "algorithm is null or blank");
-//        headerMap.put(HEADER_ALGORITHM, algorithm);
-//        return this;
-//    }
-
     /**
      * 设置 payload 中的签发者。
      *

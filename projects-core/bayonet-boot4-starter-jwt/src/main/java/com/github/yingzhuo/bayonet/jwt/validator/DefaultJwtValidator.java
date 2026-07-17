@@ -77,7 +77,7 @@ public class DefaultJwtValidator implements JwtValidator {
         this.algorithm = algorithm;
         this.verificationCustomizer = Objects.requireNonNullElse(verificationCustomizer, v -> {
         });
-        this.blacklistChecker = Objects.requireNonNullElse(blacklistChecker, (r, d) -> false);
+        this.blacklistChecker = Objects.requireNonNullElse(blacklistChecker, (token, jti) -> false);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class DefaultJwtValidator implements JwtValidator {
 
         try {
             var decodedToken = JWT.decode(token);
-            if (this.blacklistChecker.isBlacklisted(token, decodedToken)) {
+            if (this.blacklistChecker.isBlacklisted(token, decodedToken.getId())) {
                 return ValidatingResult.INVALID_BLACKLISTED;
             }
         } catch (JWTDecodeException e) {
@@ -114,5 +114,4 @@ public class DefaultJwtValidator implements JwtValidator {
         }
         return ValidatingResult.OK;
     }
-
 }
