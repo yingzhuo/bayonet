@@ -4,17 +4,16 @@
 
 ## 构建与测试命令
 
-所有命令通过 Gradle 包装器（`./gradlew`）执行。`Makefile` 封装了常用操作。
+所有命令通过 Gradle 包装器（`./gradlew`）执行。`makefile` 封装了常用操作。
 
-| 命令             | 作用                                                                             |
-|----------------|--------------------------------------------------------------------------------|
-| `make compile` | 编译全部代码（`./gradlew classes`）                                                    |
-| `make build`   | 跳过测试进行构建（`./gradlew -x check -x test build`）                                   |
-| `make test`    | 运行全部测试（`./gradlew test`）                                                       |
-| `make check`   | 运行检查（含 checkstyle）（`./gradlew check`）                                          |
-| `make clean`   | 清理构建产物                                                                         |
+| 命令           | 作用                                                                                    |
+|----------------|-----------------------------------------------------------------------------------------|
+| `make compile` | 编译全部代码（`./gradlew classes`）                                                     |
+| `make build`   | 跳过测试进行构建（`./gradlew -x check -x test build`）                                  |
+| `make test`    | 运行全部测试（`./gradlew test`）                                                        |
+| `make clean`   | 清理构建产物                                                                            |
 | `make install` | 发布到 Maven 本地仓库（`./gradlew -x test -x check publishToMavenLocal --no-parallel`） |
-| `make publish` | 先发布到本地仓库，再发布到 Maven Central（需输入 yes 确认）                                        |
+| `make publish` | 先发布到本地仓库，再发布到 Maven Central（需输入 yes 确认）                             |
 
 运行单个测试类：
 
@@ -36,7 +35,7 @@
 
 ```
 bayonet/
-├── buildSrc/                           # 约定插件（预编译脚本插件）
+├── buildSrc/                              # 约定插件（预编译脚本插件）
 ├── project-test/                          # 集成测试项目
 ├── projects-core/
 │   ├── bayonet-bom/                       # BOM（物料清单）POM 模块
