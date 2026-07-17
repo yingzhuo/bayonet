@@ -90,8 +90,6 @@ class ImportTextTest {
     @Test
     void should_register_bean_with_aliases() throws Exception {
         mockResource("classpath:test.txt", "hello");
-        when(environment.resolvePlaceholders("alias1")).thenReturn("alias1");
-        when(environment.resolvePlaceholders("alias2")).thenReturn("alias2");
 
         when(metadata.getMergedRepeatableAnnotationAttributes(ImportText.class, ImportText.List.class, false))
                 .thenReturn(Set.of(createAttrs("myBean", "classpath:test.txt", false, new String[]{"alias1", "alias2"})));
