@@ -30,7 +30,7 @@
 # --------------------------------------
 .idea/
 .gradle/
-build-logic/.kotlin/
+buildSrc/.kotlin/
 .run/
 gradlew
 gradlew.bat

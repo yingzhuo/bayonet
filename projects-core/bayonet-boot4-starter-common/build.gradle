@@ -1,6 +1,5 @@
 plugins {
     id 'buildlogic.java-conventions'
-    id 'buildlogic.check-conventions'
     id 'buildlogic.maven-central-jar-conventions'
     id 'buildlogic.sonatype-conventions'
 }
@@ -24,9 +23,6 @@ dependencies {
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-    // groovy
-    compileOnly 'org.apache.groovy:groovy'
-
     // lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -35,6 +31,6 @@ dependencies {
     api 'org.slf4j:slf4j-api'
 
     // BC
-    implementation platform(libs.bc.bom)
+    api platform(libs.bc.bom)
     compileOnly 'org.bouncycastle:bcprov-jdk18on'
 }

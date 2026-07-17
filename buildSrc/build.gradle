@@ -2,8 +2,6 @@ plugins {
     id 'groovy-gradle-plugin'
 }
 
-description = '构建逻辑'
-
 var file = file('../gradle.properties')
 if (file.exists() && file.isFile()) {
     var props = new Properties()
