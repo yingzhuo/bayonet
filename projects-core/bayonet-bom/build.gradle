@@ -13,6 +13,7 @@ dependencies {
     constraints {
         api libs.bc.bom
         api libs.java.jwt
+        api libs.hocon
 
         rootProject.findProject('projects-core').subprojects { subproject ->
             if (subproject.name != 'bayonet-bom') {
