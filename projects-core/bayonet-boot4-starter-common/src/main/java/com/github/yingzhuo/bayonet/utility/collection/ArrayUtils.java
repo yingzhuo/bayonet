@@ -10,6 +10,7 @@ import java.util.Objects;
 /**
  * 数组工具类。
  * <p>提供 null-safe 的数组判空、大小获取等操作。</p>
+ * @author 应卓
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ArrayUtils {

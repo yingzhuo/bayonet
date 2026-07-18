@@ -16,6 +16,7 @@ import org.springframework.util.Assert;
  *
  * @see ApplicationEventPublisher
  * @see SpringUtils
+ * @author 应卓
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EventPublisherUtils {

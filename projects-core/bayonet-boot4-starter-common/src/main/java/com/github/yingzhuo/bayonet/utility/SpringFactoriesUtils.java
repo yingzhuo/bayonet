@@ -20,6 +20,7 @@ import java.util.stream.Stream;
  * }</pre>
  *
  * @see ServiceLoaderUtils
+ * @author 应卓
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SpringFactoriesUtils {

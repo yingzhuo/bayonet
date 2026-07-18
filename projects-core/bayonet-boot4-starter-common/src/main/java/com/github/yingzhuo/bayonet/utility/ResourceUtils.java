@@ -27,6 +27,7 @@ import java.util.List;
  * byte[] data = ResourceUtils.loadBytes("classpath:config.properties");
  * String text = ResourceUtils.loadText("file:/tmp/app.log", StandardCharsets.UTF_8);
  * }</pre>
+ * @author 应卓
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ResourceUtils {

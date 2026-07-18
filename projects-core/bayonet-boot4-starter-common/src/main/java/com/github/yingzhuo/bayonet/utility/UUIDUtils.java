@@ -14,6 +14,7 @@ import java.util.UUID;
  * String uid = UUIDUtils.versionFourShort();  // "a1b2c3d4e5f6..."
  * String uid = UUIDUtils.versionFourLong();   // "a1b2c3d4-e5f6-..."
  * }</pre>
+ * @author 应卓
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class UUIDUtils {

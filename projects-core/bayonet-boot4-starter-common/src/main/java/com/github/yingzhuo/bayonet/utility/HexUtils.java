@@ -14,6 +14,7 @@ import java.util.HexFormat;
  * String hex = HexUtils.encodeToString(bytes);
  * byte[] data = HexUtils.decodeToBytes(hex);
  * }</pre>
+ * @author 应卓
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class HexUtils {

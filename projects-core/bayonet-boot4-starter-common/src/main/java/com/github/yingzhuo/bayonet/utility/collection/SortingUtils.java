@@ -23,6 +23,7 @@ import java.util.List;
  * // 使用自定义比较器
  * SortingUtils.sort(myBeanList, Comparator.comparing(MyBean::getName));
  * }</pre>
+ * @author 应卓
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SortingUtils {

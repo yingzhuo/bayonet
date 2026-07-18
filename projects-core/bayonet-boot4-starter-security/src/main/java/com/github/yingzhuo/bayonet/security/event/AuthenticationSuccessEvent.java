@@ -10,6 +10,7 @@ import org.springframework.web.context.request.WebRequest;
  * @param currentRequest 当前 Web 请求
  * @param token          认证使用的原始 Token 字符串
  * @param authentication 认证通过的 Authentication 实例
+ * @author 应卓
  */
 public record AuthenticationSuccessEvent(WebRequest currentRequest, String token, Authentication authentication) {
 }

@@ -38,6 +38,7 @@ import java.util.Objects;
  * @see ValidatingResult
  * @see VerificationCustomizer
  * @see BlacklistChecker
+ * @author 应卓
  */
 public class DefaultJwtValidator implements JwtValidator {
 

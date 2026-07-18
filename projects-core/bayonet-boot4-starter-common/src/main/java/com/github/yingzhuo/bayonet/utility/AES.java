@@ -23,6 +23,7 @@ import java.util.Base64;
  * }</pre>
  *
  * @see #generateKey()
+ * @author 应卓
  */
 public final class AES {
 

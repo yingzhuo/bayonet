@@ -23,6 +23,7 @@ import java.util.Collection;
  * <pre>{@code
  * var bean = SpringUtils.getBean(SomeService.class);
  * }</pre>
+ * @author 应卓
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SpringUtils {

@@ -17,6 +17,7 @@ import java.time.Duration;
  * <pre>{@code
  * boolean reachable = SocketUtils.isReachable("example.com", 80, Duration.ofSeconds(5));
  * }</pre>
+ * @author 应卓
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SocketUtils {

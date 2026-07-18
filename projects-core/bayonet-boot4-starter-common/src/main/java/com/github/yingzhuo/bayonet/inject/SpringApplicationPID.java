@@ -6,6 +6,7 @@ import java.lang.annotation.*;
 
 /**
  * 注入 {@code spring.application.pid} 配置属性的注解。
+ * @author 应卓
  */
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)

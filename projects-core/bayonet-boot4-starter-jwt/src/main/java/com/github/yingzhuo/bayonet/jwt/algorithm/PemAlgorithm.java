@@ -22,6 +22,7 @@ import java.lang.annotation.*;
  * }</pre>
  *
  * @see AlgorithmName
+ * @author 应卓
  */
 @Inherited
 @Target(ElementType.TYPE)

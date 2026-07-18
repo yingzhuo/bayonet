@@ -20,6 +20,7 @@ import java.lang.annotation.*;
  * 请仅在开发或内部测试场景中使用。</p>
  *
  * @see Algorithm#none
+ * @author 应卓
  */
 @Inherited
 @Documented

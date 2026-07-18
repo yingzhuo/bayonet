@@ -19,6 +19,7 @@ import java.util.*;
  * trie.contains("com");           // true
  * trie.contains("com.example");   // false
  * }</pre>
+ * @author 应卓
  */
 public final class PackageTrie implements Iterable<String> {
 
