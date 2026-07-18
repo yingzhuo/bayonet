@@ -4,7 +4,7 @@ plugins {
     id 'buildlogic.sonatype-conventions'
 }
 
-description = '二维码条形码相关增强工具'
+description = '二维码条形码增强'
 
 dependencies {
 

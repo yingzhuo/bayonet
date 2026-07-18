@@ -4,7 +4,7 @@ plugins {
     id 'buildlogic.sonatype-conventions'
 }
 
-description = '基础和工具'
+description = '基础工具和公共代码'
 
 dependencies {
 
