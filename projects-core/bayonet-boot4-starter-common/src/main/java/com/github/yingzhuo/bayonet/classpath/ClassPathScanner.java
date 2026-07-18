@@ -30,7 +30,7 @@ import java.util.stream.Stream;
  * var result = scanner.scan(new PackageSet().acceptPackages("com.example"));
  * }</pre>
  */
-public class ClassPathScanner {
+public final class ClassPathScanner {
 
     private final ClassPathScannerWorker worker;
     private ClassLoader classLoader = ClassPathScanner.class.getClassLoader();

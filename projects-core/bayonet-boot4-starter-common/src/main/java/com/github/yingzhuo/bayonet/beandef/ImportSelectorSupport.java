@@ -31,7 +31,7 @@ import org.springframework.core.io.ResourceLoader;
 public abstract class ImportSelectorSupport extends AbstractImportingSupport implements ImportSelector {
 
     /**
-     * 构造器。
+     * 构造器
      *
      * @param resourceLoader  ResourceLoader
      * @param environment     Environment
