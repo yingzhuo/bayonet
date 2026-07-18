@@ -1,0 +1,4 @@
+org.springframework.boot.env.PropertySourceLoader=\
+com.github.yingzhuo.bayonet.hocon.HoconPropertySourceFactory
+org.springframework.context.ApplicationContextInitializer=\
+com.github.yingzhuo.bayonet.hocon.context.HoconLoadingInitializer

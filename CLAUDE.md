@@ -40,6 +40,7 @@ bayonet/
 ├── projects-core/
 │   ├── bayonet-bom/                       # BOM（物料清单）POM 模块
 │   ├── bayonet-boot4-starter-common/      # 基础与工具（主模块）
+│   ├── bayonet-boot4-starter-hocon/       # hocon配置文件增强
 │   ├── bayonet-boot4-starter-jwt/         # JWT 支持（auth0 java-jwt）
 │   └── bayonet-boot4-starter-security/    # Spring Security 增强
 └── gradle/                                # 版本目录和包装器
