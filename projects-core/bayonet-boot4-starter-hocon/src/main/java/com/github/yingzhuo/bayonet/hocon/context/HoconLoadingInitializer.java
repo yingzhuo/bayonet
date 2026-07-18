@@ -5,6 +5,7 @@ import com.github.yingzhuo.bayonet.hocon.HoconPropertySourceLoader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.Ordered;
 
 import java.io.IOException;
 
@@ -22,7 +23,8 @@ import java.io.IOException;
  * @see com.github.yingzhuo.bayonet.context.PropertiesLoadingInitializer
  */
 @Slf4j
-public class HoconLoadingInitializer extends AbstractApplicationContextInitializer<ConfigurableApplicationContext> {
+public class HoconLoadingInitializer extends AbstractApplicationContextInitializer<ConfigurableApplicationContext>
+        implements Ordered {
 
     private static final String[] DEFAULT_LOCATIONS = new String[]{
             "file:default.conf",
@@ -45,14 +47,19 @@ public class HoconLoadingInitializer extends AbstractApplicationContextInitializ
             try {
                 var propertySourceList = LOADER.load(location, resource);
                 for (var propertySource : propertySourceList) {
-                    ctx.getEnvironment().getPropertySources().addLast(propertySource);
+                    ctx.getEnvironment().getPropertySources().addFirst(propertySource);
                 }
                 log.debug("loaded HOCON config from: {}", location);
-                return;
+                break;
             } catch (IOException e) {
                 log.warn("failed to load HOCON config from {}: {}", location, e.getMessage());
             }
         }
+    }
+
+    @Override
+    public int getOrder() {
+        return 110;
     }
 
 }
