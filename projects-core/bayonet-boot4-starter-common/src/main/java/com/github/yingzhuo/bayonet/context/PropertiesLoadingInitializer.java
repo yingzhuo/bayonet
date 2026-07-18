@@ -2,11 +2,7 @@ package com.github.yingzhuo.bayonet.context;
 
 import com.github.yingzhuo.bayonet.utility.PropertiesUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.jspecify.annotations.Nullable;
-import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -25,7 +21,7 @@ import java.util.Properties;
  * 当某位置的文件不存在或不可读时静默跳过。</p>
  */
 @Slf4j
-public class PropertiesLoadingInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+public class PropertiesLoadingInitializer extends AbstractApplicationContextInitializer<ConfigurableApplicationContext> {
 
     private static final String[] DEFAULT_LOCATIONS = new String[]{
             "file:default.properties",
@@ -37,8 +33,9 @@ public class PropertiesLoadingInitializer implements ApplicationContextInitializ
     @Override
     public void initialize(ConfigurableApplicationContext ctx) {
         for (String location : DEFAULT_LOCATIONS) {
-            var resource = getResource(ctx, location);
+            var resource = loadResource(ctx, location);
             if (resource == null) {
+                log.trace("properties config not found at: {}", location);
                 continue;
             }
 
@@ -56,11 +53,4 @@ public class PropertiesLoadingInitializer implements ApplicationContextInitializ
         }
     }
 
-    private @Nullable Resource getResource(ResourceLoader resourceLoader, String location) {
-        var resource = resourceLoader.getResource(location);
-        if (resource.exists() && resource.isReadable()) {
-            return resource;
-        }
-        return null;
-    }
 }
