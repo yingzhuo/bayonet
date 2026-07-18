@@ -1,6 +1,5 @@
 package com.github.yingzhuo.bayonet.validation.jsr380;
 
-import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.jspecify.annotations.Nullable;
 
@@ -11,7 +10,7 @@ import org.jspecify.annotations.Nullable;
  *
  * @author 应卓
  */
-public class PasswordValidator implements ConstraintValidator<Password, String> {
+public class PasswordValidator extends AbstractValidator<Password, String> {
 
     private int minLength;
     private int maxLength;

@@ -1,12 +1,9 @@
 package com.github.yingzhuo.bayonet.validation.jsr380;
 
-import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.jspecify.annotations.Nullable;
 
 import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -16,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
  *
  * @author 应卓
  */
-public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch, Object> {
+public class PasswordMatchValidator extends AbstractValidator<PasswordMatch, Object> {
 
     private String propertyName1;
     private String propertyName2;
@@ -43,16 +40,5 @@ public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch
         } catch (IntrospectionException | InvocationTargetException | IllegalAccessException e) {
             return false;
         }
-    }
-
-    @Nullable
-    private Object getPropertyValue(Object bean, String propertyName)
-            throws IntrospectionException, InvocationTargetException, IllegalAccessException {
-        for (PropertyDescriptor descriptor : Introspector.getBeanInfo(bean.getClass()).getPropertyDescriptors()) {
-            if (descriptor.getName().equals(propertyName) && descriptor.getReadMethod() != null) {
-                return descriptor.getReadMethod().invoke(bean);
-            }
-        }
-        return null;
     }
 }
