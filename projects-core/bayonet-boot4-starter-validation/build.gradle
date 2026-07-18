@@ -4,7 +4,7 @@ plugins {
     id 'buildlogic.sonatype-conventions'
 }
 
-description = '基础工具和公共代码'
+description = 'Validation增强'
 
 dependencies {
 
@@ -13,16 +13,15 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // spring-boot & spring
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.boot:spring-boot-starter-aspectj'
     compileOnly 'org.springframework.boot:spring-boot-autoconfigure'
-    compileOnly 'org.springframework.boot:spring-boot-starter-aspectj'
-    compileOnly 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.springframework.boot:spring-boot-starter-logging'
     compileOnly 'org.springframework.boot:spring-boot-starter-validation'
-    compileOnly 'org.springframework.boot:spring-boot-autoconfigure-processor'
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+    compileOnly 'org.springframework.boot:spring-boot-autoconfigure-processor'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // bayonet
+    api project(':projects-core:bayonet-boot4-starter-common')
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
@@ -30,8 +29,4 @@ dependencies {
 
     // slf4j
     api 'org.slf4j:slf4j-api'
-
-    // BC
-    api platform(libs.bc.bom)
-    compileOnly 'org.bouncycastle:bcprov-jdk18on'
 }

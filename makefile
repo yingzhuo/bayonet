@@ -33,15 +33,15 @@ compile:
 	$(GRADLEW) 'classes'
 
 build:
-	$(GRADLEW) -x "check" -x "test" "build"
+	$(GRADLEW) -x "test" "build"
 
 install:
-	$(GRADLEW) -x "test" -x "check" "publishToMavenLocal" --no-parallel
+	$(GRADLEW) -x "test" "publishToMavenLocal" --no-parallel
 
 publish: install
 	echo "警告：即将发布到Maven中央仓库！"
 	read -p "确认继续？(yes/no) " confirm && [ $$confirm = "yes" ] || exit 1
-	$(GRADLEW) -x "test" -x "check" "publishToMavenCentralPortal" --no-parallel
+	$(GRADLEW) -x "test" "publishToMavenCentralPortal" --no-parallel
 
 test:
 	$(GRADLEW) "test"

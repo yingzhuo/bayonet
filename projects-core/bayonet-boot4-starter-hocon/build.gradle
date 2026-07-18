@@ -4,7 +4,7 @@ plugins {
     id 'buildlogic.sonatype-conventions'
 }
 
-description = 'hocon配置文件增强'
+description = 'HOCON配置文件增强'
 
 dependencies {
 
