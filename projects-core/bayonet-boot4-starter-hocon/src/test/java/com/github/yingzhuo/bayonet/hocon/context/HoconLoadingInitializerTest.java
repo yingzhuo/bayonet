@@ -61,7 +61,7 @@ class HoconLoadingInitializerTest {
 
         initializer.initialize(ctx);
 
-        verify(propertySources).addLast(argThat(ps -> "classpath:default.conf".equals(ps.getName())));
+        verify(propertySources).addFirst(argThat(ps -> "classpath:default.conf".equals(ps.getName())));
     }
 
     // ============== 第一个路径不存在，从第二个加载 ==============
@@ -83,7 +83,7 @@ class HoconLoadingInitializerTest {
 
         initializer.initialize(ctx);
 
-        verify(propertySources).addLast(argThat(ps -> "file:config/default.conf".equals(ps.getName())));
+        verify(propertySources).addFirst(argThat(ps -> "file:config/default.conf".equals(ps.getName())));
         verify(ctx, never()).getResource("classpath:default.conf");
     }
 
