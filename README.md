@@ -1,3 +1,12 @@
+```text
+ ____                               _
+| __ )  __ _ _   _  ___  _ __   ___| |_
+|  _ \ / _` | | | |/ _ \| '_ \ / _ \ __|         /| _______________
+| |_) | (_| | |_| | (_) | | | |  __/ |_    O|===|* >________________>
+|____/ \__,_|\__, |\___/|_| |_|\___|\__|         \|
+             |___/
+```
+
 # bayonet
 
 Bayonet 是应卓开发的 Spring Boot 4.x 增强库，提供可复用的自动配置、工具类和集成支持，涵盖
@@ -5,7 +14,8 @@ Web、安全、数据（JPA/Redis/MongoDB）、校验、日志等领域。
 
 ### 关于 Claude Code
 
-本项目使用 Claude Code 作为AI辅助开发Agent。请参考[CLAUDE.md](./CLAUDE.md)。
+本项目使用 Claude Code 作为AI辅助开发Agent。请参考[CLAUDE.md](./CLAUDE.md)。<br>
+大语言模型使用的是 deepseek-v4-flash / deepseek-v4-pro
 
 #### 风险提示️ ⚠️
 
