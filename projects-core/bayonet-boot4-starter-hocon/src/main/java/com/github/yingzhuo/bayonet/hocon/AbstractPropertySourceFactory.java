@@ -14,8 +14,6 @@ import java.io.IOException;
  * HOCON 配置文件的 {@link PropertySourceFactory} 抽象基类。
  * <p>委托 {@link PropertySourceLoader} 加载配置，处理空结果和单文档场景。
  * 多文档配置文件暂不支持。</p>
- *
- * @author 应卓
  */
 public abstract class AbstractPropertySourceFactory implements PropertySourceFactory {
 
