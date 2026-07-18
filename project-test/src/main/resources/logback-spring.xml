@@ -12,7 +12,7 @@
     <import class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"/>
 
     <!-- log精细配置 -->
-    <logger name="io.github.yingzhuo.bayonet" level="trace"/>
+    <logger name="com.github.yingzhuo.bayonet" level="trace"/>
     <logger name="org.springframework" level="warn"/>
 
     <appender name="STDOUT" class="ConsoleAppender">

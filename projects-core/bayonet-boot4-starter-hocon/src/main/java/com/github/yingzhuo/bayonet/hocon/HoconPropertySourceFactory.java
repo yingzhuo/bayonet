@@ -11,7 +11,6 @@ package com.github.yingzhuo.bayonet.hocon;
  * public class MyConfig { }
  * }</pre>
  *
- * @author 应卓
  * @see HoconPropertySourceLoader
  * @see AbstractPropertySourceFactory
  */
