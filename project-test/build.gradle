@@ -12,6 +12,7 @@ dependencies {
     // spring-turbocharger
     api platform(project(':projects-core:bayonet-bom'))
     api project(':projects-core:bayonet-boot4-starter-common')
+    api project(':projects-core:bayonet-boot4-starter-hocon')
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
