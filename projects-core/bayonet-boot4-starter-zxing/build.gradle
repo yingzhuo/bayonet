@@ -1,0 +1,35 @@
+plugins {
+    id 'buildlogic.java-conventions'
+    id 'buildlogic.maven-central-jar-conventions'
+    id 'buildlogic.sonatype-conventions'
+}
+
+description = '二维码条形码相关增强工具'
+
+dependencies {
+
+    // test
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // spring-boot & spring
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    compileOnly 'org.springframework.boot:spring-boot-autoconfigure'
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+    compileOnly 'org.springframework.boot:spring-boot-autoconfigure-processor'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // bayonet
+    api project(':projects-core:bayonet-boot4-starter-common')
+
+    // jwt tool
+    api libs.zxing.core
+    api libs.zxing.javase
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // slf4j
+    api 'org.slf4j:slf4j-api'
+}

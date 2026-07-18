@@ -14,6 +14,8 @@ dependencies {
         api libs.bc.bom
         api libs.java.jwt
         api libs.hocon
+        api libs.zxing.core
+        api libs.zxing.javase
 
         rootProject.findProject('projects-core').subprojects { subproject ->
             if (subproject.name != 'bayonet-bom') {

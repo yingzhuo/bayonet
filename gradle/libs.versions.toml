@@ -5,5 +5,7 @@
 java-jwt = { module = "com.auth0:java-jwt", version = "4.6.0" }
 bc-bom = { module = "org.bouncycastle:bc-jdk18on-bom", version = "1.85" }
 hocon = { module = "com.typesafe:config", version = "1.4.9" }
+zxing-core = { module = "com.google.zxing:core", version = "3.5.4" }
+zxing-javase = { module = "com.google.zxing:javase", version = "3.5.4" }
 [bundles]
 [plugins]
