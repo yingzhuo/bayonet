@@ -4,15 +4,19 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.boot.io.ApplicationResourceLoader;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 资源加载工具类。
@@ -71,7 +75,7 @@ public final class ResourceUtils {
      * @see #loadText(String, Charset)
      */
     public static String loadText(String location) {
-        return loadText(location, UTF_8);
+        return loadText(location, StandardCharsets.UTF_8);
     }
 
     /**
@@ -88,7 +92,7 @@ public final class ResourceUtils {
 
         try {
             var resource = getResourceLoader().getResource(location);
-            return resource.getContentAsString(charset != null ? charset : UTF_8);
+            return resource.getContentAsString(charset != null ? charset : StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -112,6 +116,43 @@ public final class ResourceUtils {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    // ------
+
+    /**
+     * 获取资源模式解析器。
+     *
+     * @return ResourcePatternResolver，非 {@code null}
+     */
+    public static ResourcePatternResolver getResourcePatternResolver() {
+        return ResourcePatternUtils.getResourcePatternResolver(getResourceLoader());
+    }
+
+    /**
+     * 解析一个或多个资源位置模式，返回所有匹配的资源。
+     * <p>支持 Spring 资源模式语法（如 {@code classpath*:*.xml}）。
+     * 单个模式解析失败时静默跳过（返回空数组），不阻断其他模式的匹配。</p>
+     *
+     * @param locationPatterns 资源位置模式，不能为 {@code null} 且不能包含 {@code null} 元素
+     * @return 匹配的资源列表，非 {@code null}
+     * @throws IllegalArgumentException 若 {@code locationPatterns} 为 {@code null}
+     */
+    public static List<Resource> resolveResources(String... locationPatterns) {
+        Assert.notNull(locationPatterns, "locationPatterns must not be null");
+        Assert.noNullElements(locationPatterns, "locationPatterns must not contain null elements");
+
+        var resolver = getResourcePatternResolver();
+        return Arrays.stream(locationPatterns)
+                .map(pattern -> {
+                    try {
+                        return resolver.getResources(pattern);
+                    } catch (IOException e) {
+                        return new Resource[0];
+                    }
+                })
+                .flatMap(Arrays::stream)
+                .toList();
     }
 
     // ------

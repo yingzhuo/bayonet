@@ -96,4 +96,59 @@ class ResourceUtilsTest {
         assertThat(ResourceUtils.getResourceLoader()).isNotNull();
     }
 
+    // ============== getResourcePatternResolver ==============
+
+    @Test
+    void should_return_nonNull_resourcePatternResolver() {
+        assertThat(ResourceUtils.getResourcePatternResolver()).isNotNull();
+    }
+
+    // ============== resolveResources ==============
+
+    @Test
+    void should_resolveResources_when_patternMatches() {
+        var resources = ResourceUtils.resolveResources("classpath*:resource-utils-test.txt");
+        assertThat(resources).isNotEmpty();
+    }
+
+    @Test
+    void should_resolveResources_when_multiplePatterns() {
+        var resources = ResourceUtils.resolveResources(
+                "classpath*:resource-utils-test.txt",
+                "classpath*:resource-utils-test.txt");
+        assertThat(resources).hasSize(2);
+    }
+
+    @Test
+    void should_return_empty_when_noMatch() {
+        var resources = ResourceUtils.resolveResources("classpath*:nonexistent-*.txt");
+        assertThat(resources).isEmpty();
+    }
+
+    @Test
+    void should_skip_failed_pattern() {
+        var resources = ResourceUtils.resolveResources("classpath*:nonexistent*.txt", "classpath*:resource-utils-test.txt");
+        assertThat(resources).isNotEmpty();
+    }
+
+    @Test
+    void should_return_empty_when_varargsEmpty() {
+        var resources = ResourceUtils.resolveResources(new String[0]);
+        assertThat(resources).isEmpty();
+    }
+
+    @Test
+    void should_throw_when_locationPatterns_is_null() {
+        assertThatThrownBy(() -> ResourceUtils.resolveResources((String[]) null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("locationPatterns");
+    }
+
+    @Test
+    void should_throw_when_locationPatterns_contains_null() {
+        assertThatThrownBy(() -> ResourceUtils.resolveResources("classpath:test.txt", null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("null");
+    }
+
 }

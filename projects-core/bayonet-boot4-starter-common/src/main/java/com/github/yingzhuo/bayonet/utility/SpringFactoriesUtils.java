@@ -10,22 +10,22 @@ import org.springframework.util.StringUtils;
 
 import java.util.stream.Stream;
 
-import static org.springframework.core.io.support.SpringFactoriesLoader.FACTORIES_RESOURCE_LOCATION;
-
 /**
- * {@link SpringFactoriesLoader} 工具类。
+ * {@link SpringFactoriesLoader} 工具类
  * <p>提供流式 API，支持按类型加载工厂实现、指定资源位置、自定义类加载器和实现类过滤器。</p>
  *
  * <pre>{@code
  * // 默认加载
  * Stream<MyInterface> all = SpringFactoriesUtils.load(MyInterface.class);
  * }</pre>
+ *
+ * @see ServiceLoaderUtils
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SpringFactoriesUtils {
 
     /**
-     * 加载指定类型的所有工厂实现。
+     * 加载指定类型的所有工厂实现
      *
      * @param targetType 工厂目标类型
      * @param <T>        工厂目标类型
@@ -37,7 +37,7 @@ public final class SpringFactoriesUtils {
     }
 
     /**
-     * 加载指定类型的所有工厂实现（自定义 factories 资源位置）。
+     * 加载指定类型的所有工厂实现（自定义 factories 资源位置）
      *
      * @param targetType                      工厂目标类型
      * @param springFactoriesResourceLocation SpringFactories 资源位置，{@code null} 时使用默认位置
@@ -50,7 +50,7 @@ public final class SpringFactoriesUtils {
     }
 
     /**
-     * 加载指定类型的所有工厂实现（自定义资源位置和类加载器）。
+     * 加载指定类型的所有工厂实现（自定义资源位置和类加载器）
      *
      * @param targetType                      工厂目标类型
      * @param springFactoriesResourceLocation SpringFactories 资源位置，{@code null} 时使用默认位置
@@ -63,7 +63,7 @@ public final class SpringFactoriesUtils {
         Assert.notNull(targetType, "targetType must not be null");
 
         if (!StringUtils.hasText(springFactoriesResourceLocation)) {
-            springFactoriesResourceLocation = FACTORIES_RESOURCE_LOCATION;
+            springFactoriesResourceLocation = "META-INF/spring.factories";
         }
 
         if (classLoader == null) {
@@ -74,5 +74,4 @@ public final class SpringFactoriesUtils {
                 .load(targetType)
                 .stream();
     }
-
 }
