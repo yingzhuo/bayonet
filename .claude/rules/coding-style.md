@@ -14,7 +14,7 @@ paths: "**/*.java"
 
 ## 依赖
 
-- 禁止直接引入不在 BOM 管理的第三方依赖
+- 禁止直接引入不在 `gradle/libs.versions.toml` 管理的第三方依赖
 
 ## 版权
 
@@ -29,7 +29,6 @@ paths: "**/*.java"
 ## Lombok
 
 - 使用 `@Slf4j`、`@RequiredArgsConstructor`、`@Getter`、`@Setter`
-- `@Builder` 限 DTO/VO/BO；Entity 不建或用 `@Builder(toBuilder = true)`
 
 ## 返回值
 
