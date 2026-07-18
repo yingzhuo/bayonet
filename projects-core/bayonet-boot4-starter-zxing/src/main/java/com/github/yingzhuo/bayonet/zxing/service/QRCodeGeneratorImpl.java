@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.zxing.service;
 
+import com.github.yingzhuo.bayonet.zxing.exception.WritingException;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -40,7 +41,7 @@ public class QRCodeGeneratorImpl implements QRCodeGenerator {
 
             return image;
         } catch (WriterException e) {
-            throw new RuntimeException("Failed to generate QR code", e);
+            throw new WritingException(e);
         }
     }
 

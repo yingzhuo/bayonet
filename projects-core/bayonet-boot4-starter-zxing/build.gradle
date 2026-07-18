@@ -22,9 +22,8 @@ dependencies {
     // bayonet
     api project(':projects-core:bayonet-boot4-starter-common')
 
-    // jwt tool
-    api libs.zxing.core
-    api libs.zxing.javase
+    // qrcode/barcode tool
+    api libs.bundles.zxing
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
