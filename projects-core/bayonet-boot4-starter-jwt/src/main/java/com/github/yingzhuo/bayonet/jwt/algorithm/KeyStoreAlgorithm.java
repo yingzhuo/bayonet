@@ -24,6 +24,7 @@ import java.lang.annotation.*;
  *
  * @see AlgorithmName
  * @see KeyStoreType
+ * @author 应卓
  */
 @Inherited
 @Target(ElementType.TYPE)

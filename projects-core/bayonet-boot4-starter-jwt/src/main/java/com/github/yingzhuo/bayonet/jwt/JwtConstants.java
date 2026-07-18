@@ -4,6 +4,7 @@ package com.github.yingzhuo.bayonet.jwt;
  * JWT 标准声明名称常量。
  * <p>定义 JWT header 和 payload 中使用的标准字段名称，
  * 对应 <a href="https://www.rfc-editor.org/rfc/rfc7519">RFC 7519</a> 规范。</p>
+ * @author 应卓
  */
 public interface JwtConstants {
 

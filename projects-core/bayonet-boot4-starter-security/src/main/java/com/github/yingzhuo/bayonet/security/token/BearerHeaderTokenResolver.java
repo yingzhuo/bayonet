@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
  * var resolver = new BearerHeaderTokenResolver();
  * String token = resolver.resolve(webRequest);
  * }</pre>
+ * @author 应卓
  */
 public class BearerHeaderTokenResolver extends HttpHeaderTokenResolver {
 

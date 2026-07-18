@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 /**
  * 二维码生成器接口。
  * <p>使用 ZXing 生成二维码，支持自定义 Logo 和纠错级别。</p>
+ * @author 应卓
  */
 public interface QRCodeGenerator {
 

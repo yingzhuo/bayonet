@@ -18,6 +18,7 @@ import org.springframework.util.Assert;
  *
  * @see JtiGenerator
  * @see JwtData
+ * @author 应卓
  */
 public class DefaultJwtCreator implements JwtCreator {
 

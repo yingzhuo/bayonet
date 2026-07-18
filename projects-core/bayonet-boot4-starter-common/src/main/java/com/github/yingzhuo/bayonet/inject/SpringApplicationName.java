@@ -11,6 +11,7 @@ import java.lang.annotation.*;
  * &#064;SpringApplicationName
  * private String name;
  * }</pre>
+ * @author 应卓
  */
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)

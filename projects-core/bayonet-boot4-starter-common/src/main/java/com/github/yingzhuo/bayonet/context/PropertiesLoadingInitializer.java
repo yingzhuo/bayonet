@@ -18,6 +18,7 @@ import java.util.Properties;
  *   <li>{@code classpath:config/default.properties}</li>
  * </ol>
  * <p>若所有路径均不可用则静默跳过（设计上配置文件是可选的）。</p>
+ * @author 应卓
  */
 @Slf4j
 public class PropertiesLoadingInitializer extends AbstractApplicationContextInitializer<ConfigurableApplicationContext>

@@ -15,6 +15,7 @@ import java.util.*;
  * HOCON（Human-Optimized Config Object Notation）配置文件的 {@link PropertySourceLoader} 实现。
  * <p>负责将 {@code .conf} 文件解析为 Spring 的 {@link MapPropertySource}，
  * 支持嵌套 map 和集合结构的递归展平。</p>
+ * @author 应卓
  */
 public class HoconPropertySourceLoader implements PropertySourceLoader {
 

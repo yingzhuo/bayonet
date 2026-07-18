@@ -5,6 +5,7 @@ package com.github.yingzhuo.bayonet.jwt.service;
  * <p>将 {@link JwtData} 中的数据签名生成 JWT token。</p>
  *
  * @see JwtValidator
+ * @author 应卓
  */
 public interface JwtCreator {
 

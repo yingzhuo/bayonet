@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
  * 按 {@link FilterConfigurer.PositionHint 定位提示} 添加到 Security 过滤器链中的指定位置。</p>
  *
  * @see FilterConfigurer
+ * @author 应卓
  */
 public class SecurityFilterAutoDSL extends AbstractHttpConfigurer<SecurityFilterAutoDSL, HttpSecurity> {
 

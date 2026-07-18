@@ -13,6 +13,7 @@ package com.github.yingzhuo.bayonet.hocon;
  *
  * @see HoconPropertySourceLoader
  * @see AbstractPropertySourceFactory
+ * @author 应卓
  */
 public class HoconPropertySourceFactory extends AbstractPropertySourceFactory {
 

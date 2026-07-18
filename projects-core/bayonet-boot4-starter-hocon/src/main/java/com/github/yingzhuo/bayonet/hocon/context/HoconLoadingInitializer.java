@@ -21,6 +21,7 @@ import java.io.IOException;
  * <p>若所有路径均不可用则静默跳过（设计上配置文件是可选的）。</p>
  *
  * @see com.github.yingzhuo.bayonet.context.PropertiesLoadingInitializer
+ * @author 应卓
  */
 @Slf4j
 public class HoconLoadingInitializer extends AbstractApplicationContextInitializer<ConfigurableApplicationContext>

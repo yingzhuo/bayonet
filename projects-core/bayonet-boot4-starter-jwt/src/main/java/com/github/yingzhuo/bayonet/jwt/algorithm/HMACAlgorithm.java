@@ -32,6 +32,7 @@ import java.lang.annotation.*;
  *
  * @see com.auth0.jwt.algorithms.Algorithm
  * @see Type
+ * @author 应卓
  */
 @Inherited
 @Documented

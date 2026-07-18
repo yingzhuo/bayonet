@@ -17,6 +17,7 @@ import java.util.Properties;
 /**
  * {@link Properties} 与 {@link Map} 之间的转换工具类。
  * <p>所有方法接受 {@code null} 输入，返回不可变 Map。</p>
+ * @author 应卓
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PropertiesUtils {

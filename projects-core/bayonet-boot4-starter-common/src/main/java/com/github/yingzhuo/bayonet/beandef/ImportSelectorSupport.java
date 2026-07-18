@@ -27,6 +27,7 @@ import org.springframework.core.io.ResourceLoader;
  * }</pre>
  *
  * @see BeanDefinitionRegistrarSupport
+ * @author 应卓
  */
 public abstract class ImportSelectorSupport extends AbstractImportingSupport implements ImportSelector {
 

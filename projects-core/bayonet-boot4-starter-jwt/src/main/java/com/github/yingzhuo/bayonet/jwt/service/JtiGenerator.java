@@ -10,6 +10,7 @@ package com.github.yingzhuo.bayonet.jwt.service;
  * }</pre>
  *
  * @see DefaultJwtCreator
+ * @author 应卓
  */
 public interface JtiGenerator {
 

@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
  * var resolver = new BearerHeaderTokenResolver();
  * String token = resolver.resolve(webRequest);
  * }</pre>
+ * @author 应卓
  */
 public interface TokenResolver {
 

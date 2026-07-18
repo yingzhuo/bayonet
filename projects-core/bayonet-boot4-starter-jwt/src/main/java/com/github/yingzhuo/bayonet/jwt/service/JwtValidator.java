@@ -5,6 +5,7 @@ package com.github.yingzhuo.bayonet.jwt.service;
  * <p>验证 JWT token 的有效性并返回 {@link ValidatingResult}。</p>
  *
  * @see JwtCreator
+ * @author 应卓
  */
 public interface JwtValidator {
 

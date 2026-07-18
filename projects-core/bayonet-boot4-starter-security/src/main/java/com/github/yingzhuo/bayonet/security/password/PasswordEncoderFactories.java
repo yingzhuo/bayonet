@@ -27,6 +27,7 @@ import java.util.Map;
  *
  * @see DelegatingPasswordEncoder
  * @see BCryptPasswordEncoder
+ * @author 应卓
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PasswordEncoderFactories {

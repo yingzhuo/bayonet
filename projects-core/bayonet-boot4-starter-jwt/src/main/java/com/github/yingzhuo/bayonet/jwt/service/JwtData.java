@@ -26,6 +26,7 @@ import static com.github.yingzhuo.bayonet.jwt.JwtConstants.*;
  * }</pre>
  *
  * @see JwtConstants
+ * @author 应卓
  */
 public final class JwtData {
 

@@ -8,6 +8,7 @@ import org.jspecify.annotations.Nullable;
  * 实现类需保证线程安全。</p>
  *
  * @see DefaultJwtValidator
+ * @author 应卓
  */
 public interface BlacklistChecker {
 

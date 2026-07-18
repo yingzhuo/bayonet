@@ -12,6 +12,7 @@ import java.util.List;
  * {@link KeyBundle} 的默认实现。
  * <p>通过证书链和私钥构造，公钥从终端实体证书中提取。
  * 证书链在构造时进行防御性拷贝，getter 返回不可变视图。</p>
+ * @author 应卓
  */
 public class KeyBundleImpl implements KeyBundle {
 

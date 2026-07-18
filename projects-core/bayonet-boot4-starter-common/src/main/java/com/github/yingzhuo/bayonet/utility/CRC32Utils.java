@@ -14,6 +14,7 @@ import java.util.zip.CRC32;
  * long crc = CRC32Utils.crc32Value(data);
  * String hex = CRC32Utils.crc32Hex(data);
  * }</pre>
+ * @author 应卓
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CRC32Utils {
