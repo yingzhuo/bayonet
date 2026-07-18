@@ -11,18 +11,20 @@ import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
 /**
- * {@link ServiceLoader} 工具类。
+ * {@link ServiceLoader} 工具类
  * <p>提供流式 API，按类型加载 SPI 服务实现。</p>
  *
  * <pre>{@code
  * Stream<MyService> services = ServiceLoaderUtils.load(MyService.class);
  * }</pre>
+ *
+ * @see SpringFactoriesUtils
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ServiceLoaderUtils {
 
     /**
-     * 加载指定 SPI 类型的所有服务实现。
+     * 加载指定 SPI 类型的所有服务实现
      *
      * @param targetType SPI 服务类型
      * @param <T>        SPI 服务类型
@@ -34,7 +36,7 @@ public final class ServiceLoaderUtils {
     }
 
     /**
-     * 加载指定 SPI 类型的所有服务实现（自定义类加载器）。
+     * 加载指定 SPI 类型的所有服务实现（自定义类加载器）
      *
      * @param targetType  SPI 服务类型
      * @param classLoader 类加载器，{@code null} 时使用默认类加载器

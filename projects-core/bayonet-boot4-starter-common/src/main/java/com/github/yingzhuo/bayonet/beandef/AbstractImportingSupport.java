@@ -5,6 +5,8 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.Assert;
 
@@ -14,6 +16,7 @@ import java.util.Set;
 abstract class AbstractImportingSupport {
 
     protected final ResourceLoader resourceLoader;
+    protected final ResourcePatternResolver resourcePatternResolver;
     protected final Environment environment;
     protected final BeanFactory beanFactory;
     protected final ClassLoader beanClassLoader;
@@ -33,6 +36,7 @@ abstract class AbstractImportingSupport {
         Assert.notNull(beanClassLoader, "beanClassLoader must not be null");
 
         this.resourceLoader = resourceLoader;
+        this.resourcePatternResolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
         this.environment = environment;
         this.beanFactory = beanFactory;
         this.beanClassLoader = beanClassLoader;
