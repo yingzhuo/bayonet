@@ -46,9 +46,9 @@ public class PropertiesLoadingInitializer extends AbstractApplicationContextInit
                 ctx.getEnvironment()
                         .getPropertySources()
                         .addLast(PropertiesUtils.toMapPropertySource(location, properties));
-                log.debug("Loaded properties from {}", location);
+                log.debug("loaded properties from {}", location);
             } catch (IOException e) {
-                log.warn("Failed to load properties from {}: {}", location, e.getMessage());
+                log.warn("failed to load properties from {}: {}", location, e.getMessage());
             }
         }
     }

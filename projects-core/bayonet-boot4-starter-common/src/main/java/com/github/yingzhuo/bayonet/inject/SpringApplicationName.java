@@ -11,9 +11,6 @@ import java.lang.annotation.*;
  * &#064;SpringApplicationName
  * private String name;
  * }</pre>
- *
- * @see SpringApplicationGroup
- * @see SpringApplicationVersion
  */
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
