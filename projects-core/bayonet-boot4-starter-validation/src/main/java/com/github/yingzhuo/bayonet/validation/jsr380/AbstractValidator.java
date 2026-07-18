@@ -9,10 +9,10 @@ import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class AbstractValidator<A extends Annotation, T> implements ConstraintValidator<A, T> {
+abstract class AbstractValidator<A extends Annotation, T> implements ConstraintValidator<A, T> {
 
-    @SuppressWarnings("unchecked")
     @Nullable
+    @SuppressWarnings("unchecked")
     protected final <T> T getPropertyValue(Object bean, String propertyName)
             throws IntrospectionException, InvocationTargetException, IllegalAccessException {
         for (PropertyDescriptor descriptor : Introspector.getBeanInfo(bean.getClass()).getPropertyDescriptors()) {
