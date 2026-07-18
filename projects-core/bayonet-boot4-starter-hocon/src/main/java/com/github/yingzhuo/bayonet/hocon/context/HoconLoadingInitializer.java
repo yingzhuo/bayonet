@@ -18,6 +18,8 @@ import java.io.IOException;
  *   <li>{@code classpath:config/default.conf}</li>
  * </ol>
  * <p>若所有路径均不可用则静默跳过（设计上配置文件是可选的）。</p>
+ *
+ * @see com.github.yingzhuo.bayonet.context.PropertiesLoadingInitializer
  */
 @Slf4j
 public class HoconLoadingInitializer extends AbstractApplicationContextInitializer<ConfigurableApplicationContext> {
@@ -45,10 +47,10 @@ public class HoconLoadingInitializer extends AbstractApplicationContextInitializ
                 for (var propertySource : propertySourceList) {
                     ctx.getEnvironment().getPropertySources().addLast(propertySource);
                 }
-                log.debug("Loaded HOCON config from: {}", location);
+                log.debug("loaded HOCON config from: {}", location);
                 return;
             } catch (IOException e) {
-                log.warn("Failed to load HOCON config from {}: {}", location, e.getMessage());
+                log.warn("failed to load HOCON config from {}: {}", location, e.getMessage());
             }
         }
     }

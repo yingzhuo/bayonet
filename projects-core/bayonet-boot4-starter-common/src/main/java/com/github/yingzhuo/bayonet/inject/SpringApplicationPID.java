@@ -5,16 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import java.lang.annotation.*;
 
 /**
- * 注入 {@code spring.application.version} 配置属性的注解。
- *
- * <pre>{@code
- * &#064;SpringApplicationVersion
- * private String version;
- * }</pre>
+ * 注入 {@code spring.application.pid} 配置属性的注解。
  */
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Value("${spring.application.version}")
-public @interface SpringApplicationVersion {
+@Value("${spring.application.pid:-1}")
+public @interface SpringApplicationPID {
 }
