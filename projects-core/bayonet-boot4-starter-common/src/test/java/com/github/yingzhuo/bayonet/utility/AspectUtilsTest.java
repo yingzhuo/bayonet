@@ -100,9 +100,11 @@ class AspectUtilsTest {
 
     static class Helper {
         @Deprecated
-        public void annotatedMethod() {}
+        public void annotatedMethod() {
+        }
 
-        public void plainMethod() {}
+        public void plainMethod() {
+        }
     }
 
 }

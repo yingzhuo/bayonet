@@ -333,18 +333,15 @@ public final class TypeFilterFactories {
 
     // ------
 
-    private static final class All implements TypeFilter {
+    private record All(List<TypeFilter> list) implements TypeFilter {
 
-        private final List<TypeFilter> list;
-
-        public All(List<TypeFilter> list) {
+        private All(List<TypeFilter> list) {
             Assert.notNull(list, "list is required");
             Assert.noNullElements(list, "list has null element(s)");
             Assert.isTrue(list.size() >= 2, "list size must greater than 1");
             this.list = new ArrayList<>(list);
         }
 
-        @Override
         public boolean match(MetadataReader reader, MetadataReaderFactory readerFactory) throws IOException {
             for (TypeFilter filter : list) {
                 if (!filter.match(reader, readerFactory)) {
@@ -355,18 +352,15 @@ public final class TypeFilterFactories {
         }
     }
 
-    private static final class Any implements TypeFilter {
+    private record Any(List<TypeFilter> list) implements TypeFilter {
 
-        private final List<TypeFilter> list;
-
-        public Any(List<TypeFilter> list) {
+        private Any(List<TypeFilter> list) {
             Assert.notNull(list, "list is required");
             Assert.noNullElements(list, "list has null element(s)");
             Assert.isTrue(list.size() >= 2, "list size must greater than 1");
             this.list = new ArrayList<>(list);
         }
 
-        @Override
         public boolean match(MetadataReader reader, MetadataReaderFactory readerFactory) throws IOException {
             for (TypeFilter filter : list) {
                 if (filter.match(reader, readerFactory)) {

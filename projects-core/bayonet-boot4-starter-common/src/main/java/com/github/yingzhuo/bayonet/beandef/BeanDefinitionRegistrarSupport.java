@@ -35,7 +35,7 @@ import java.util.Arrays;
 public abstract class BeanDefinitionRegistrarSupport extends AbstractImportingSupport implements ImportBeanDefinitionRegistrar {
 
     /**
-     * 构造器。
+     * 构造器
      *
      * @param resourceLoader  ResourceLoader
      * @param environment     Environment
@@ -55,7 +55,7 @@ public abstract class BeanDefinitionRegistrarSupport extends AbstractImportingSu
     // ------
 
     /**
-     * 注册 Bean 别名。
+     * 注册 Bean 别名
      *
      * @param aliasArray 别名数组（可为空数组）
      * @param beanName   Bean 名称

@@ -18,6 +18,14 @@ abstract class AbstractImportingSupport {
     protected final BeanFactory beanFactory;
     protected final ClassLoader beanClassLoader;
 
+    /**
+     * 构造器
+     *
+     * @param resourceLoader  ResourceLoader
+     * @param environment     Environment
+     * @param beanFactory     BeanFactory
+     * @param beanClassLoader ClassLoader
+     */
     protected AbstractImportingSupport(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
         Assert.notNull(resourceLoader, "resourceLoader must not be null");
         Assert.notNull(environment, "environment must not be null");
@@ -31,7 +39,7 @@ abstract class AbstractImportingSupport {
     }
 
     /**
-     * 获取指定注解的属性。
+     * 获取指定注解的属性
      * <p>若目标注解不存在于 {@code metadata} 上，返回空 {@link AnnotationAttributes}（非 {@code null}）。</p>
      *
      * @param metadata       AnnotationMetadata
@@ -48,7 +56,7 @@ abstract class AbstractImportingSupport {
     }
 
     /**
-     * 获取导入注解的属性集合（可选支持容器注解）。
+     * 获取导入注解的属性集合（可选支持容器注解）
      *
      * @param metadata                     AnnotationMetadata
      * @param importingAnnotation          导入注解类型
