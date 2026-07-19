@@ -31,7 +31,9 @@ import java.util.Arrays;
  *     }
  * }
  * }</pre>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 public abstract class BeanDefinitionRegistrarSupport extends AbstractImportingSupport implements ImportBeanDefinitionRegistrar {
 

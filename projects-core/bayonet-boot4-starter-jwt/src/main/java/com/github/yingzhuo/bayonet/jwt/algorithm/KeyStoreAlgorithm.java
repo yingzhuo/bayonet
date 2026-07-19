@@ -22,9 +22,10 @@ import java.lang.annotation.*;
  * }
  * }</pre>
  *
+ * @author 应卓
  * @see AlgorithmName
  * @see KeyStoreType
- * @author 应卓
+ * @since 4.1.0
  */
 @Inherited
 @Target(ElementType.TYPE)

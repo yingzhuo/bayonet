@@ -26,7 +26,9 @@ import java.util.regex.Pattern;
  *     TypeFilterFactories.hasAnnotation(Component.class)
  * );
  * }</pre>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TypeFilterFactories {

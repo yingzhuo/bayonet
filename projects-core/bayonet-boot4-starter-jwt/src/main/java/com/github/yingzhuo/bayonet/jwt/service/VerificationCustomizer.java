@@ -10,7 +10,9 @@ import com.auth0.jwt.interfaces.Verification;
  * VerificationCustomizer customizer = v -> v.acceptLeeway(5);
  * var validator = new DefaultJwtValidator(algorithm, customizer);
  * }</pre>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 public interface VerificationCustomizer {
 

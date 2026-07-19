@@ -14,9 +14,10 @@ import org.springframework.util.Assert;
  * EventPublisherUtils.publishEvent(new UserRegisteredEvent(userId));
  * }</pre>
  *
+ * @author 应卓
  * @see ApplicationEventPublisher
  * @see SpringUtils
- * @author 应卓
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EventPublisherUtils {

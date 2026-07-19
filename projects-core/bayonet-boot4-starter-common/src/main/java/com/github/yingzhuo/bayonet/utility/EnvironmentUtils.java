@@ -23,10 +23,11 @@ import org.springframework.core.env.StandardEnvironment;
  * boolean isDev = EnvironmentUtils.acceptsProfiles(Profiles.of("dev"));
  * }</pre>
  *
+ * @author 应卓
  * @see Environment
  * @see StandardEnvironment
  * @see SpringUtils
- * @author 应卓
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EnvironmentUtils {

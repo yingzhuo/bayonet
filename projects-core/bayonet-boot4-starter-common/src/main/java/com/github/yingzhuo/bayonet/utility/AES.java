@@ -22,8 +22,9 @@ import java.util.Base64;
  * byte[] decrypted = aes.decrypt(encrypted);
  * }</pre>
  *
- * @see #generateKey()
  * @author 应卓
+ * @see #generateKey()
+ * @since 4.1.0
  */
 public final class AES {
 

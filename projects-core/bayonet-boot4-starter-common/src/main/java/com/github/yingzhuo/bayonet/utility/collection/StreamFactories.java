@@ -20,7 +20,9 @@ import java.util.stream.StreamSupport;
  * // Enumeration 转 Stream
  * StreamFactories.of(Collections.enumeration(List.of("a", "b")));
  * }</pre>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class StreamFactories {

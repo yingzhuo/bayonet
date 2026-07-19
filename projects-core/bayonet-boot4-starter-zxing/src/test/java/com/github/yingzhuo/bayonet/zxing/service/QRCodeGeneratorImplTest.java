@@ -2,14 +2,6 @@ package com.github.yingzhuo.bayonet.zxing.service;
 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import org.junit.jupiter.api.Test;
-import org.springframework.core.io.ClassPathResource;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

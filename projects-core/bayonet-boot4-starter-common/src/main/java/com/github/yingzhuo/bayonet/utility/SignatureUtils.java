@@ -20,7 +20,9 @@ import java.security.cert.X509Certificate;
  * // 验签
  * boolean ok = SignatureUtils.verify(data, signature, "SHA256withRSA", publicKey);
  * }</pre>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SignatureUtils {

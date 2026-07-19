@@ -19,8 +19,9 @@ import java.util.stream.Stream;
  * Stream<MyInterface> all = SpringFactoriesUtils.load(MyInterface.class);
  * }</pre>
  *
- * @see ServiceLoaderUtils
  * @author 应卓
+ * @see ServiceLoaderUtils
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SpringFactoriesUtils {

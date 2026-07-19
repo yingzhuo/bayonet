@@ -9,8 +9,9 @@ package com.github.yingzhuo.bayonet.jwt.service;
  * JtiGenerator generator = () -> UUID.randomUUID().toString();
  * }</pre>
  *
- * @see DefaultJwtCreator
  * @author 应卓
+ * @see DefaultJwtCreator
+ * @since 4.1.0
  */
 public interface JtiGenerator {
 

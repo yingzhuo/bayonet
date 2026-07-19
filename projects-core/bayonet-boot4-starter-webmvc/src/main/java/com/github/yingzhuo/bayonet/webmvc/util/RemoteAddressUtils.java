@@ -16,6 +16,7 @@ import java.util.Objects;
  * 最后回退到 {@link HttpServletRequest#getRemoteAddr()}。</p>
  *
  * @author 应卓
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RemoteAddressUtils {

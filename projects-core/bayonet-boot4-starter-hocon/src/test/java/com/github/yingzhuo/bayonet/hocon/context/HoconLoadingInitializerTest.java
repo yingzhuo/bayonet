@@ -19,18 +19,33 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class HoconLoadingInitializerTest {
 
+    private final HoconLoadingInitializer initializer = new HoconLoadingInitializer();
     @Mock
     ConfigurableApplicationContext ctx;
-
     @Mock
     ConfigurableEnvironment environment;
-
     @Mock
     MutablePropertySources propertySources;
 
-    private final HoconLoadingInitializer initializer = new HoconLoadingInitializer();
-
     // ============== 无可用的配置文件 ==============
+
+    private static Resource mockResourceNotFound() {
+        var r = mock(Resource.class);
+        when(r.exists()).thenReturn(false);
+        return r;
+    }
+
+    // ============== 从 classpath:default.conf 加载成功 ==============
+
+    private static Resource mockResourceFound(String url) throws Exception {
+        var r = mock(Resource.class);
+        when(r.exists()).thenReturn(true);
+        when(r.isReadable()).thenReturn(true);
+        when(r.getURL()).thenReturn(new java.net.URL(url));
+        return r;
+    }
+
+    // ============== 第一个路径不存在，从第二个加载 ==============
 
     @Test
     void should_do_nothing_when_no_config_found() {
@@ -42,7 +57,7 @@ class HoconLoadingInitializerTest {
         verify(ctx, never()).getEnvironment();
     }
 
-    // ============== 从 classpath:default.conf 加载成功 ==============
+    // ============== IOException 时不应抛出异常 ==============
 
     @Test
     void should_load_from_classpath_when_found() throws Exception {
@@ -64,7 +79,7 @@ class HoconLoadingInitializerTest {
         verify(propertySources).addFirst(argThat(ps -> "classpath:default.conf".equals(ps.getName())));
     }
 
-    // ============== 第一个路径不存在，从第二个加载 ==============
+    // ============== helper ==============
 
     @Test
     void should_fallback_to_next_location() throws Exception {
@@ -87,8 +102,6 @@ class HoconLoadingInitializerTest {
         verify(ctx, never()).getResource("classpath:default.conf");
     }
 
-    // ============== IOException 时不应抛出异常 ==============
-
     @Test
     void should_handle_ioException_gracefully() throws Exception {
         var resource = mock(Resource.class);
@@ -99,22 +112,6 @@ class HoconLoadingInitializerTest {
         when(ctx.getResource(anyString())).thenReturn(resource);
 
         assertThatCode(() -> initializer.initialize(ctx)).doesNotThrowAnyException();
-    }
-
-    // ============== helper ==============
-
-    private static Resource mockResourceNotFound() {
-        var r = mock(Resource.class);
-        when(r.exists()).thenReturn(false);
-        return r;
-    }
-
-    private static Resource mockResourceFound(String url) throws Exception {
-        var r = mock(Resource.class);
-        when(r.exists()).thenReturn(true);
-        when(r.isReadable()).thenReturn(true);
-        when(r.getURL()).thenReturn(new java.net.URL(url));
-        return r;
     }
 
 }

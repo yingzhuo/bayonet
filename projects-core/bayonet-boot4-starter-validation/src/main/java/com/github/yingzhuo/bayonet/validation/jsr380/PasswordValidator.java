@@ -9,6 +9,7 @@ import org.jspecify.annotations.Nullable;
  * 根据 JSR 380 规范，{@code null} 值视为有效（由 {@link jakarta.validation.constraints.NotNull} 处理）。</p>
  *
  * @author 应卓
+ * @since 4.1.0
  */
 public class PasswordValidator extends AbstractValidator<Password, String> {
 

@@ -15,7 +15,9 @@ import java.io.IOException;
  * CloseUtils.closeQuietly(inputStream);
  * CloseUtils.closeQuietly(connection);
  * }</pre>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CloseUtils {

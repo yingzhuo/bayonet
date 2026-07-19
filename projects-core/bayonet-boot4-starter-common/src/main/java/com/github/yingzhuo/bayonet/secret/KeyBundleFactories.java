@@ -13,7 +13,9 @@ import java.io.UncheckedIOException;
 /**
  * {@link KeyBundle} 的工厂类。
  * <p>提供从 PEM 文件或 KeyStore 加载密钥与证书链的便捷方法。</p>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class KeyBundleFactories {

@@ -16,6 +16,7 @@ import java.util.Objects;
  * 当无请求上下文时，{@code getXxx()} 系列方法返回 {@code null}，{@code getRequiredXxx()} 系列方法抛出异常。</p>
  *
  * @author 应卓
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ServletUtils {

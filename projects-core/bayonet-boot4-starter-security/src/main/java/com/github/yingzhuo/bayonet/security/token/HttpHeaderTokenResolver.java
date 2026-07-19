@@ -20,7 +20,9 @@ import java.util.Objects;
  * // 从 Authorization: Bearer xxx 提取
  * var resolver = new HttpHeaderTokenResolver(HttpHeaders.AUTHORIZATION, "Bearer ");
  * }</pre>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 public class HttpHeaderTokenResolver implements TokenResolver, Ordered {
 

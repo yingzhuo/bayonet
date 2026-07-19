@@ -18,8 +18,9 @@ import java.util.stream.Stream;
  * Stream<MyService> services = ServiceLoaderUtils.load(MyService.class);
  * }</pre>
  *
- * @see SpringFactoriesUtils
  * @author 应卓
+ * @see SpringFactoriesUtils
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ServiceLoaderUtils {

@@ -12,7 +12,9 @@ package com.github.yingzhuo.bayonet.jwt.service;
  *   <li>{@link #INVALID_CLAIM} — 声明校验失败</li>
  *   <li>{@link #INVALID_BLACKLISTED} — 已登出或被吊销</li>
  * </ul>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 public enum ValidatingResult {
 

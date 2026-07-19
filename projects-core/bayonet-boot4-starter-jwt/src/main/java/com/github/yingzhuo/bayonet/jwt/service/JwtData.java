@@ -25,8 +25,9 @@ import static com.github.yingzhuo.bayonet.jwt.JwtConstants.*;
  *     .addPayloadExpiresAtFuture(Duration.ofHours(1));
  * }</pre>
  *
- * @see JwtConstants
  * @author 应卓
+ * @see JwtConstants
+ * @since 4.1.0
  */
 public final class JwtData {
 

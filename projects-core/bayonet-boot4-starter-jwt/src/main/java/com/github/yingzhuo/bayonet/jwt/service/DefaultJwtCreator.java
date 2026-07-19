@@ -16,9 +16,10 @@ import org.springframework.util.Assert;
  * String token = creator.create(JwtData.newInstance().addPayloadSubject("user123"));
  * }</pre>
  *
+ * @author 应卓
  * @see JtiGenerator
  * @see JwtData
- * @author 应卓
+ * @since 4.1.0
  */
 public class DefaultJwtCreator implements JwtCreator {
 

@@ -19,6 +19,7 @@ import java.lang.annotation.*;
  * }</pre>
  *
  * @author 应卓
+ * @since 4.1.0
  */
 @Documented
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
