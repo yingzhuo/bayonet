@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.webmvc.support;
+package com.github.yingzhuo.bayonet.webmvc.support.arg;
 
 import com.github.yingzhuo.bayonet.webmvc.util.RemoteAddressUtils;
 import jakarta.servlet.http.HttpServletRequest;

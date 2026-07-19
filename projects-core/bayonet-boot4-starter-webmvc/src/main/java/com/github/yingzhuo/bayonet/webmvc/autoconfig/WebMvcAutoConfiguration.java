@@ -1,12 +1,14 @@
 package com.github.yingzhuo.bayonet.webmvc.autoconfig;
 
-import com.github.yingzhuo.bayonet.webmvc.support.RemoteAddressHandlerMethodArgumentResolver;
+import com.github.yingzhuo.bayonet.webmvc.support.arg.RemoteAddressHandlerMethodArgumentResolver;
+import com.github.yingzhuo.bayonet.webmvc.support.ret.ImageRetHandlerMethodReturnValueHandler;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.core.Ordered;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 
@@ -28,4 +30,8 @@ public class WebMvcAutoConfiguration implements WebMvcConfigurer {
         resolvers.add(new RemoteAddressHandlerMethodArgumentResolver());
     }
 
+    @Override
+    public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
+        handlers.add(new ImageRetHandlerMethodReturnValueHandler());
+    }
 }
