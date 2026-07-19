@@ -21,7 +21,7 @@ class ImageRetTest {
                 .build();
 
         assertThat(result).isNotNull();
-        assertThat(result.getImage()).isEqualTo(TEST_IMAGE);
+        assertThat(result.image()).isEqualTo(TEST_IMAGE);
     }
 
     @Test
@@ -108,7 +108,7 @@ class ImageRetTest {
                 .contentDispositionType(ContentDispositionType.ATTACHMENT)
                 .build();
 
-        assertThat(result.getImage()).isEqualTo(TEST_IMAGE);
+        assertThat(result.image()).isEqualTo(TEST_IMAGE);
         assertThat(result.maxAge()).isEqualTo(600);
         assertThat(result.contentType()).isEqualTo("image/webp");
         assertThat(result.filename()).isEqualTo("photo.webp");

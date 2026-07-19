@@ -6,32 +6,33 @@ import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
 
-import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * 图片返回值接口。
- * <p>控制器方法返回此类型时，由 {@link ImageRetHandlerMethodReturnValueHandler}
- * 直接写入 HTTP 响应，而非走视图解析。</p>
+ * 文件下载返回值接口。
+ * <p>控制器方法返回此类型时，由 {@link AttachmentRetHandlerMethodReturnValueHandler}
+ * 直接写入 HTTP 响应，支持文件名、Content-Disposition 和状态码配置。</p>
  *
  * <pre>{@code
- * @GetMapping("/image")
- * public ImageRet image() {
- *     return ImageRet.builder()
- *             .image(myImage)
- *             .contentType("image/png")
- *             .maxAge(3600)
+ * &#64;GetMapping("/download")
+ * public AttachmentRet download() {
+ *     return AttachmentRet.builder()
+ *             .inputStream(inputStream)
+ *             .filename("report.pdf")
+ *             .contentType("application/pdf")
  *             .build();
- * }}</pre>
+ * }
+ * }</pre>
  *
  * @author 应卓
  * @since 4.1.0
  */
-public interface ImageRet extends Serializable {
+public interface AttachmentRet extends Serializable {
 
     /**
-     * 创建 {@link ImageRet} 构建器。
+     * 创建 {@link AttachmentRet} 构建器。
      *
      * @return Builder
      */
@@ -40,20 +41,20 @@ public interface ImageRet extends Serializable {
     }
 
     /**
-     * 获取图片对象。
+     * 获取文件输入流。
+     * <p>该 InputStream 由 {@link AttachmentRetHandlerMethodReturnValueHandler}
+     * 在消费完毕后自动关闭，调用方无需手动关闭。</p>
      *
-     * @return BufferedImage，非 {@code null}
+     * @return InputStream，非 {@code null}
      */
-    BufferedImage image();
+    InputStream inputStream();
 
     /**
-     * 缓存时间（秒）。
+     * 文件名。
      *
-     * @return 缓存秒数，负数表示不设置缓存
+     * @return 文件名
      */
-    default int maxAge() {
-        return -1;
-    }
+    String filename();
 
     /**
      * 响应 Content-Type。
@@ -61,16 +62,7 @@ public interface ImageRet extends Serializable {
      * @return Content-Type
      */
     default String contentType() {
-        return "image/png";
-    }
-
-    /**
-     * 文件名。
-     *
-     * @return 文件名
-     */
-    default String filename() {
-        return "image.png";
+        return "application/octet-stream";
     }
 
     /**
@@ -79,7 +71,7 @@ public interface ImageRet extends Serializable {
      * @return ContentDispositionType
      */
     default ContentDispositionType contentDispositionType() {
-        return ContentDispositionType.INLINE;
+        return ContentDispositionType.ATTACHMENT;
     }
 
     /**
@@ -92,38 +84,39 @@ public interface ImageRet extends Serializable {
     }
 
     /**
-     * {@link ImageRet} 构建器。
+     * {@link AttachmentRet} 构建器。
      */
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     final class Builder {
 
-        private @Nullable BufferedImage image;
-        private int maxAge = -1;
-        private String contentType = "image/png";
-        private String filename = "image.png";
-        private ContentDispositionType contentDispositionType = ContentDispositionType.INLINE;
+        private @Nullable InputStream inputStream;
+        private @Nullable String filename;
+        private String contentType = "application/octet-stream";
+        private ContentDispositionType contentDispositionType = ContentDispositionType.ATTACHMENT;
         private HttpStatus httpStatus = HttpStatus.OK;
 
         /**
-         * 设置图片（必填）。
+         * 设置文件输入流（必填）。
+         * <p>该 InputStream 由 Handler 在消费完毕后自动关闭，调用方无需手动关闭。</p>
          *
-         * @param image BufferedImage
+         * @param inputStream InputStream
          * @return this
-         * @throws NullPointerException image 为 {@code null} 时抛出
+         * @throws NullPointerException inputStream 为 {@code null} 时抛出
          */
-        public Builder image(BufferedImage image) {
-            this.image = Objects.requireNonNull(image, "image must not be null");
+        public Builder inputStream(InputStream inputStream) {
+            this.inputStream = Objects.requireNonNull(inputStream, "inputStream must not be null");
             return this;
         }
 
         /**
-         * 设置缓存时间。
+         * 设置文件名（必填）。
          *
-         * @param maxAge 缓存秒数，负数表示不设置
+         * @param filename 文件名
          * @return this
+         * @throws NullPointerException filename 为 {@code null} 时抛出
          */
-        public Builder maxAge(int maxAge) {
-            this.maxAge = maxAge;
+        public Builder filename(String filename) {
+            this.filename = Objects.requireNonNull(filename, "filename must not be null");
             return this;
         }
 
@@ -132,20 +125,10 @@ public interface ImageRet extends Serializable {
          *
          * @param contentType Content-Type
          * @return this
+         * @throws NullPointerException contentType 为 {@code null} 时抛出
          */
         public Builder contentType(String contentType) {
             this.contentType = Objects.requireNonNull(contentType);
-            return this;
-        }
-
-        /**
-         * 设置文件名。
-         *
-         * @param filename 文件名
-         * @return this
-         */
-        public Builder filename(String filename) {
-            this.filename = Objects.requireNonNull(filename);
             return this;
         }
 
@@ -154,6 +137,7 @@ public interface ImageRet extends Serializable {
          *
          * @param contentDispositionType ContentDispositionType
          * @return this
+         * @throws NullPointerException contentDispositionType 为 {@code null} 时抛出
          */
         public Builder contentDispositionType(ContentDispositionType contentDispositionType) {
             this.contentDispositionType = Objects.requireNonNull(contentDispositionType);
@@ -173,37 +157,31 @@ public interface ImageRet extends Serializable {
         }
 
         /**
-         * 构建 {@link ImageRet} 实例。
+         * 构建 {@link AttachmentRet} 实例。
          *
-         * @return ImageRet
-         * @throws NullPointerException image 未设置时抛出
+         * @return AttachmentRet
+         * @throws NullPointerException inputStream 或 filename 未设置时抛出
          */
-        public ImageRet build() {
-            var img = Objects.requireNonNull(image, "image must not be null");
+        public AttachmentRet build() {
+            var is = Objects.requireNonNull(inputStream, "inputStream must not be null");
+            var fn = Objects.requireNonNull(filename, "filename must not be null");
             var ct = this.contentType;
-            var fn = this.filename;
             var cdt = this.contentDispositionType;
-            var ma = this.maxAge;
 
-            return new ImageRet() {
+            return new AttachmentRet() {
                 @Override
-                public BufferedImage image() {
-                    return img;
-                }
-
-                @Override
-                public int maxAge() {
-                    return ma;
-                }
-
-                @Override
-                public String contentType() {
-                    return ct;
+                public InputStream inputStream() {
+                    return is;
                 }
 
                 @Override
                 public String filename() {
                     return fn;
+                }
+
+                @Override
+                public String contentType() {
+                    return ct;
                 }
 
                 @Override

@@ -14,6 +14,7 @@ import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -48,7 +49,7 @@ public class ImageRetHandlerMethodReturnValueHandler implements HandlerMethodRet
         }
 
         var imageRet = (ImageRet) returnValue;
-        var image = imageRet.getImage();
+        var image = imageRet.image();
 
         if (image == null) {
             return;
@@ -62,7 +63,8 @@ public class ImageRetHandlerMethodReturnValueHandler implements HandlerMethodRet
         writeResponse(response, imageRet, image);
     }
 
-    private void writeResponse(HttpServletResponse response, ImageRet imageRet, java.awt.image.BufferedImage image) throws IOException {
+    private void writeResponse(HttpServletResponse response, ImageRet imageRet, BufferedImage image) throws IOException {
+        response.setStatus(imageRet.httpStatus().value());
         response.setContentType(imageRet.contentType());
 
         var maxAge = imageRet.maxAge();
