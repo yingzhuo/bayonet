@@ -1,6 +1,7 @@
 package com.github.yingzhuo.bayonet.webmvc.autoconfig;
 
 import com.github.yingzhuo.bayonet.webmvc.support.arg.RemoteAddressHandlerMethodArgumentResolver;
+import com.github.yingzhuo.bayonet.webmvc.support.ret.AttachmentRetHandlerMethodReturnValueHandler;
 import com.github.yingzhuo.bayonet.webmvc.support.ret.ImageRetHandlerMethodReturnValueHandler;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class WebMvcAutoConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> handlers) {
+        handlers.add(new AttachmentRetHandlerMethodReturnValueHandler());
         handlers.add(new ImageRetHandlerMethodReturnValueHandler());
     }
 }
