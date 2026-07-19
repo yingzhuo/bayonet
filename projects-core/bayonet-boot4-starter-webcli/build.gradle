@@ -1,0 +1,35 @@
+plugins {
+    id 'buildlogic.java-conventions'
+    id 'buildlogic.maven-central-jar-conventions'
+    id 'buildlogic.sonatype-conventions'
+}
+
+description = 'WebClient增强'
+
+dependencies {
+
+    // test
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // spring-boot & spring
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    api 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.springframework.boot:spring-boot-autoconfigure'
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+    compileOnly 'org.springframework.boot:spring-boot-autoconfigure-processor'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // bayonet
+    api project(':projects-core:bayonet-boot4-starter-common')
+
+    // apache-client (v5)
+    compileOnly 'org.apache.httpcomponents.client5:httpclient5'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // slf4j
+    api 'org.slf4j:slf4j-api'
+}

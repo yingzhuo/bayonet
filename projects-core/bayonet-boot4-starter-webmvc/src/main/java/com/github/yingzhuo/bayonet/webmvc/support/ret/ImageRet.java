@@ -30,6 +30,15 @@ import java.util.Objects;
 public interface ImageRet extends Serializable {
 
     /**
+     * 创建 {@link ImageRet} 构建器。
+     *
+     * @return Builder
+     */
+    static Builder builder() {
+        return new Builder();
+    }
+
+    /**
      * 获取图片对象。
      *
      * @return BufferedImage，非 {@code null}
@@ -70,15 +79,6 @@ public interface ImageRet extends Serializable {
      */
     default ContentDispositionType contentDispositionType() {
         return ContentDispositionType.INLINE;
-    }
-
-    /**
-     * 创建 {@link ImageRet} 构建器。
-     *
-     * @return Builder
-     */
-    static Builder builder() {
-        return new Builder();
     }
 
     /**
