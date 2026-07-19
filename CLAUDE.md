@@ -44,6 +44,7 @@ bayonet/
 │   ├── bayonet-boot4-starter-jwt/         # JWT增强
 │   ├── bayonet-boot4-starter-zxing/       # 二维码条形码增强
 │   ├── bayonet-boot4-starter-validation/  # Validation增强
+│   ├── bayonet-boot4-starter-webcli/      # WebClient增强
 │   ├── bayonet-boot4-starter-webmvc/      # WebMvc增强
 │   └── bayonet-boot4-starter-security/    # SpringSecurity增强
 └── gradle/                                # 版本目录和包装器
