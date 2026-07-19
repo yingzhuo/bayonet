@@ -4,6 +4,7 @@ import com.github.yingzhuo.bayonet.webmvc.support.ContentDispositionType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
+import org.springframework.http.HttpStatus;
 
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
@@ -43,7 +44,7 @@ public interface ImageRet extends Serializable {
      *
      * @return BufferedImage，非 {@code null}
      */
-    BufferedImage getImage();
+    BufferedImage image();
 
     /**
      * 缓存时间（秒）。
@@ -82,6 +83,15 @@ public interface ImageRet extends Serializable {
     }
 
     /**
+     * 响应 HTTP 状态码。
+     *
+     * @return HTTP 状态码，默认 {@link HttpStatus#OK}
+     */
+    default HttpStatus httpStatus() {
+        return HttpStatus.OK;
+    }
+
+    /**
      * {@link ImageRet} 构建器。
      */
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -92,6 +102,7 @@ public interface ImageRet extends Serializable {
         private String contentType = "image/png";
         private String filename = "image.png";
         private ContentDispositionType contentDispositionType = ContentDispositionType.INLINE;
+        private HttpStatus httpStatus = HttpStatus.OK;
 
         /**
          * 设置图片（必填）。
@@ -150,6 +161,18 @@ public interface ImageRet extends Serializable {
         }
 
         /**
+         * 设置 HTTP 状态码。
+         *
+         * @param httpStatus HTTP 状态码
+         * @return this
+         * @throws NullPointerException httpStatus 为 {@code null} 时抛出
+         */
+        public Builder httpStatus(HttpStatus httpStatus) {
+            this.httpStatus = Objects.requireNonNull(httpStatus);
+            return this;
+        }
+
+        /**
          * 构建 {@link ImageRet} 实例。
          *
          * @return ImageRet
@@ -164,7 +187,7 @@ public interface ImageRet extends Serializable {
 
             return new ImageRet() {
                 @Override
-                public BufferedImage getImage() {
+                public BufferedImage image() {
                     return img;
                 }
 
@@ -186,6 +209,11 @@ public interface ImageRet extends Serializable {
                 @Override
                 public ContentDispositionType contentDispositionType() {
                     return cdt;
+                }
+
+                @Override
+                public HttpStatus httpStatus() {
+                    return httpStatus;
                 }
             };
         }
