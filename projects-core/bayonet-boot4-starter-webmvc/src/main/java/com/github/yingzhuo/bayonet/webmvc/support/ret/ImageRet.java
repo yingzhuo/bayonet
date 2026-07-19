@@ -23,7 +23,7 @@ import java.util.Objects;
  *             .contentType("image/png")
  *             .maxAge(3600)
  *             .build();
- * }</pre>
+ * }}</pre>
  *
  * @author 应卓
  * @since 4.1.0
