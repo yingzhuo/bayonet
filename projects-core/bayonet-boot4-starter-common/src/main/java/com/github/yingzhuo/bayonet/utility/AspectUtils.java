@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
  * AOP 工具类，提供从 {@link JoinPoint} 中提取方法、目标对象等信息的静态方法。
  *
  * @author 应卓
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class AspectUtils {

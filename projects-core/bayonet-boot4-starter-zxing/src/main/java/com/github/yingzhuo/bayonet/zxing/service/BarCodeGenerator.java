@@ -5,7 +5,9 @@ import java.awt.image.BufferedImage;
 /**
  * 条形码生成器接口。
  * <p>使用 ZXing 生成 CODE_128 格式条形码。</p>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 public interface BarCodeGenerator {
 

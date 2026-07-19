@@ -10,8 +10,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
  * <p>通过 {@code spring.factories} 自动注册，将容器中所有 {@link FilterConfigurer} 类型的 Bean
  * 按 {@link FilterConfigurer.PositionHint 定位提示} 添加到 Security 过滤器链中的指定位置。</p>
  *
- * @see FilterConfigurer
  * @author 应卓
+ * @see FilterConfigurer
+ * @since 4.1.0
  */
 public class SecurityFilterAutoDSL extends AbstractHttpConfigurer<SecurityFilterAutoDSL, HttpSecurity> {
 

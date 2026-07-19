@@ -11,7 +11,9 @@ import java.util.Map;
 /**
  * 集合工具类。
  * <p>提供 null-safe 的集合大小获取、空判断、元素添加等操作。</p>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CollectionUtils {

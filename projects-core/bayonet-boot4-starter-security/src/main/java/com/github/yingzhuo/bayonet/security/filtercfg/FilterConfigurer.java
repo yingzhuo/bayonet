@@ -18,7 +18,9 @@ import org.springframework.util.Assert;
  *     public PositionHint getPositionHint() { return PositionHint.BEFORE; }
  * }
  * }</pre>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 public interface FilterConfigurer {
 

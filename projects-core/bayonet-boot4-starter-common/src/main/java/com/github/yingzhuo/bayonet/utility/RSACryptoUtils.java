@@ -31,9 +31,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * String longDecrypted = RSACryptoUtils.decryptLong(longEncrypted, keyPair.getPrivate());
  * }</pre>
  *
+ * @author 应卓
  * @see SignatureUtils
  * @see Cipher
- * @author 应卓
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RSACryptoUtils {

@@ -22,7 +22,9 @@ import java.util.function.Function;
  * KeyStore 操作工具类。
  * <p>提供 KeyStore 加载、密钥/证书查询、别名检查等便捷方法。
  * 所有方法均会关闭传入的输入流。</p>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class KeyStoreUtils {

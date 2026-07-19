@@ -29,7 +29,9 @@ import java.util.stream.Stream;
  * scanner.addIncludeFilters(new AnnotationTypeFilter(Component.class));
  * var result = scanner.scan(new PackageSet().acceptPackages("com.example"));
  * }</pre>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 public final class ClassPathScanner {
 

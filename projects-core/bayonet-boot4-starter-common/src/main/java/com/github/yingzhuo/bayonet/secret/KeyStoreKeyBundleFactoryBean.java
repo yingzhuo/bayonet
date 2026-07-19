@@ -23,8 +23,9 @@ import org.springframework.util.Assert;
  * }
  * }</pre>
  *
- * @see KeyBundleFactories#loadFromStore
  * @author 应卓
+ * @see KeyBundleFactories#loadFromStore
+ * @since 4.1.0
  */
 @Setter
 public class KeyStoreKeyBundleFactoryBean extends AbstractKeyBundleFactoryBean {

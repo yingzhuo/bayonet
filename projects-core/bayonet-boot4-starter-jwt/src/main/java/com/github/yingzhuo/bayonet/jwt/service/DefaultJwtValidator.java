@@ -34,11 +34,12 @@ import java.util.Objects;
  * ValidatingResult result = validator.validate(token);
  * }</pre>
  *
+ * @author 应卓
  * @see JwtValidator
  * @see ValidatingResult
  * @see VerificationCustomizer
  * @see BlacklistChecker
- * @author 应卓
+ * @since 4.1.0
  */
 public class DefaultJwtValidator implements JwtValidator {
 

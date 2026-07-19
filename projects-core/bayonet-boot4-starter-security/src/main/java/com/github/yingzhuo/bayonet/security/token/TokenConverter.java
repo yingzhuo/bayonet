@@ -20,6 +20,7 @@ import org.springframework.security.core.AuthenticationException;
  *
  * @param <A> Authentication 类型
  * @author 应卓
+ * @since 4.1.0
  */
 public interface TokenConverter<A extends Authentication> {
 

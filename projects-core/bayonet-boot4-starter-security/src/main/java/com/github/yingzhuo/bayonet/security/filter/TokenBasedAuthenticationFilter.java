@@ -49,6 +49,7 @@ import java.io.IOException;
  *
  * @param <A> Authentication 类型
  * @author 应卓
+ * @since 4.1.0
  */
 @Setter
 public class TokenBasedAuthenticationFilter<A extends Authentication> extends OncePerRequestFilter {

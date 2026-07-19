@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
  * @param token          认证使用的原始 Token 字符串
  * @param e              认证异常信息
  * @author 应卓
+ * @since 4.1.0
  */
 public record AuthenticationFailureEvent(WebRequest currentRequest, String token, AuthenticationException e) {
 }

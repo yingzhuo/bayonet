@@ -29,6 +29,7 @@ abstract class AbstractImportingSupport {
      * @param beanFactory     BeanFactory
      * @param beanClassLoader ClassLoader
      * @author 应卓
+     * @since 4.1.0
      */
     protected AbstractImportingSupport(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
         Assert.notNull(resourceLoader, "resourceLoader must not be null");

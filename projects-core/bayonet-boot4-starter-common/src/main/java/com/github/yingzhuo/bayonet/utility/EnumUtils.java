@@ -18,7 +18,9 @@ import java.util.Map;
  * MyEnum fallback = EnumUtils.getEnum(MyEnum.class, "unknown", MyEnum.DEFAULT);
  * boolean valid = EnumUtils.isValidEnum(MyEnum.class, "FOO");
  * }</pre>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EnumUtils {

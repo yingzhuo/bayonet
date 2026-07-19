@@ -9,6 +9,7 @@ import org.springframework.web.context.request.WebRequest;
  * @param currentRequest 当前 Web 请求
  * @param token          提取到的原始 Token 字符串
  * @author 应卓
+ * @since 4.1.0
  */
 public record TokenResolvedEvent(WebRequest currentRequest, String token) {
 }

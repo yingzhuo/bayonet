@@ -25,7 +25,9 @@ import java.util.Collections;
  * );
  * String token = resolver.resolve(webRequest);
  * }</pre>
+ *
  * @author 应卓
+ * @since 4.1.0
  */
 public record CompositeTokenResolver(Collection<TokenResolver> resolvers) implements TokenResolver {
 

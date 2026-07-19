@@ -30,9 +30,10 @@ import java.lang.annotation.*;
  * }
  * }</pre>
  *
+ * @author 应卓
  * @see com.auth0.jwt.algorithms.Algorithm
  * @see Type
- * @author 应卓
+ * @since 4.1.0
  */
 @Inherited
 @Documented

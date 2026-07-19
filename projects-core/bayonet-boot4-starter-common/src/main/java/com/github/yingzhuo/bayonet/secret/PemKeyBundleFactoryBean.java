@@ -21,8 +21,9 @@ import org.springframework.util.Assert;
  * }
  * }</pre>
  *
- * @see KeyBundleFactories#loadFromPem
  * @author 应卓
+ * @see KeyBundleFactories#loadFromPem
+ * @since 4.1.0
  */
 @Setter
 public class PemKeyBundleFactoryBean extends AbstractKeyBundleFactoryBean {

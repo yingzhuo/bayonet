@@ -18,6 +18,7 @@ import java.util.Iterator;
  *
  * @param <T> 元素类型
  * @author 应卓
+ * @since 4.1.0
  */
 public final class EnumerationIterator<T> implements Iterator<T> {
 

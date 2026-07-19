@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
  * @param token          认证使用的原始 Token 字符串
  * @param authentication 认证通过的 Authentication 实例
  * @author 应卓
+ * @since 4.1.0
  */
 public record AuthenticationSuccessEvent(WebRequest currentRequest, String token, Authentication authentication) {
 }

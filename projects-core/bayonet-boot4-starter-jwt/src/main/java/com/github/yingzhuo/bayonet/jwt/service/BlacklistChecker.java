@@ -7,8 +7,9 @@ import org.jspecify.annotations.Nullable;
  * <p>用于在 JWT 认证流程中判断令牌是否已被拉黑（如用户登出、令牌吊销等场景）。
  * 实现类需保证线程安全。</p>
  *
- * @see DefaultJwtValidator
  * @author 应卓
+ * @see DefaultJwtValidator
+ * @since 4.1.0
  */
 public interface BlacklistChecker {
 
