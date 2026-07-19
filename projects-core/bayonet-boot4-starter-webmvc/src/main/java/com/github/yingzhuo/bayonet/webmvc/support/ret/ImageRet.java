@@ -5,9 +5,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.Assert;
 
 import java.awt.image.BufferedImage;
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -28,7 +28,7 @@ import java.util.Objects;
  * @author 应卓
  * @since 4.1.0
  */
-public interface ImageRet extends Serializable {
+public interface ImageRet {
 
     /**
      * 创建 {@link ImageRet} 构建器。
@@ -176,14 +176,16 @@ public interface ImageRet extends Serializable {
          * 构建 {@link ImageRet} 实例。
          *
          * @return ImageRet
-         * @throws NullPointerException image 未设置时抛出
+         * @throws IllegalStateException image 未设置时抛出
          */
         public ImageRet build() {
-            var img = Objects.requireNonNull(image, "image must not be null");
+            Assert.state(image != null, "image must not be null");
+            var img = this.image;
             var ct = this.contentType;
             var fn = this.filename;
             var cdt = this.contentDispositionType;
             var ma = this.maxAge;
+            var hs = this.httpStatus;
 
             return new ImageRet() {
                 @Override
@@ -213,7 +215,7 @@ public interface ImageRet extends Serializable {
 
                 @Override
                 public HttpStatus httpStatus() {
-                    return httpStatus;
+                    return hs;
                 }
             };
         }

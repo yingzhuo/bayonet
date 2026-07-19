@@ -151,7 +151,7 @@ class ImageRetTest {
     @Test
     void should_throw_when_build_without_image() {
         assertThatThrownBy(() -> ImageRet.builder().build())
-                .isInstanceOf(NullPointerException.class)
+                .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("image");
     }
 
