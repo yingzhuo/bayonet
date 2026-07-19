@@ -5,9 +5,9 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.Assert;
 
 import java.io.InputStream;
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -29,7 +29,7 @@ import java.util.Objects;
  * @author 应卓
  * @since 4.1.0
  */
-public interface AttachmentRet extends Serializable {
+public interface AttachmentRet {
 
     /**
      * 创建 {@link AttachmentRet} 构建器。
@@ -160,13 +160,16 @@ public interface AttachmentRet extends Serializable {
          * 构建 {@link AttachmentRet} 实例。
          *
          * @return AttachmentRet
-         * @throws NullPointerException inputStream 或 filename 未设置时抛出
+         * @throws IllegalStateException inputStream 或 filename 未设置时抛出
          */
         public AttachmentRet build() {
-            var is = Objects.requireNonNull(inputStream, "inputStream must not be null");
-            var fn = Objects.requireNonNull(filename, "filename must not be null");
+            Assert.state(inputStream != null, "inputStream must not be null");
+            Assert.state(filename != null, "filename must not be null");
+            var is = this.inputStream;
+            var fn = this.filename;
             var ct = this.contentType;
             var cdt = this.contentDispositionType;
+            var hs = this.httpStatus;
 
             return new AttachmentRet() {
                 @Override
@@ -191,7 +194,7 @@ public interface AttachmentRet extends Serializable {
 
                 @Override
                 public HttpStatus httpStatus() {
-                    return httpStatus;
+                    return hs;
                 }
             };
         }

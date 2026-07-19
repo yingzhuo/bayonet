@@ -144,7 +144,7 @@ class AttachmentRetTest {
         assertThatThrownBy(() -> AttachmentRet.builder()
                 .filename("test.txt")
                 .build())
-                .isInstanceOf(NullPointerException.class)
+                .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("inputStream");
     }
 
@@ -153,14 +153,14 @@ class AttachmentRetTest {
         assertThatThrownBy(() -> AttachmentRet.builder()
                 .inputStream(TEST_INPUT_STREAM)
                 .build())
-                .isInstanceOf(NullPointerException.class)
+                .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("filename");
     }
 
     @Test
     void should_throw_when_build_without_both() {
         assertThatThrownBy(() -> AttachmentRet.builder().build())
-                .isInstanceOf(NullPointerException.class)
+                .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("inputStream");
     }
 
