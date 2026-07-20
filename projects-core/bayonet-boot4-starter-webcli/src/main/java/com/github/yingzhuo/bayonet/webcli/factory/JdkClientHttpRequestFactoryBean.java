@@ -28,8 +28,8 @@ import java.time.Duration;
  * <p><b>使用示例</b></p>
  * <pre>{@code
  * &#64;Bean
- * public JDK11ClientHttpRequestFactoryBean clientHttpRequestFactory() {
- *     var bean = new JDK11ClientHttpRequestFactoryBean();
+ * public JdkClientHttpRequestFactoryBean clientHttpRequestFactory() {
+ *     var bean = new JdkClientHttpRequestFactoryBean();
  *     bean.setTrustAll(true);
  *     bean.setReadTimeout(Duration.ofSeconds(30));
  *     return bean;
@@ -40,7 +40,7 @@ import java.time.Duration;
  * @since 4.1.0
  */
 @Setter
-public class JDK11ClientHttpRequestFactoryBean extends AbstractClientHttpRequestFactoryBean implements InitializingBean {
+public class JdkClientHttpRequestFactoryBean extends AbstractClientHttpRequestFactoryBean implements InitializingBean {
 
     /**
      * 是否信任所有证书（包括自签名证书）。

@@ -87,8 +87,8 @@ public final class Apache5ClientHttpRequestFactoryFactories {
      * @param connectionRequestTimeout   从连接池获取连接的超时时间（可为 {@code null}）
      * @param readTimeout                读取超时时间（可为 {@code null}）
      * @return HttpComponentsClientHttpRequestFactory 实例
-     * @throws BeanCreationException     创建失败时抛出
-     * @throws IllegalArgumentException  客户端证书密钥库/密码或信任库/策略配置不一致时抛出
+     * @throws BeanCreationException    创建失败时抛出
+     * @throws IllegalArgumentException 客户端证书密钥库/密码或信任库/策略配置不一致时抛出
      */
     public static HttpComponentsClientHttpRequestFactory create(
             boolean trustAll,

@@ -1,6 +1,6 @@
 package com.github.yingzhuo.bayonet.webcli.util;
 
-import com.github.yingzhuo.bayonet.webcli.factory.JDK11ClientHttpRequestFactoryBean;
+import com.github.yingzhuo.bayonet.webcli.factory.JdkClientHttpRequestFactoryBean;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
@@ -14,7 +14,7 @@ import java.time.Duration;
  * JDK {@link java.net.http.HttpClient} 的 {@link JdkClientHttpRequestFactory} 工厂工具类。
  *
  * <p>提供静态便捷方法快速创建 {@link JdkClientHttpRequestFactory} 实例，
- * 底层委托给 {@link JDK11ClientHttpRequestFactoryBean} 完成配置和生命周期管理。</p>
+ * 底层委托给 {@link JdkClientHttpRequestFactoryBean} 完成配置和生命周期管理。</p>
  *
  * <p><b>使用示例</b></p>
  * <pre>{@code
@@ -45,7 +45,7 @@ public final class JdkClientHttpRequestFactoryFactories {
      */
     public static JdkClientHttpRequestFactory createDefault() {
         try {
-            var factory = new JDK11ClientHttpRequestFactoryBean();
+            var factory = new JdkClientHttpRequestFactoryBean();
             factory.afterPropertiesSet();
             return (JdkClientHttpRequestFactory) factory.getObject();
         } catch (Exception e) {
@@ -96,7 +96,7 @@ public final class JdkClientHttpRequestFactoryFactories {
             @Nullable Duration readTimeout) {
 
         try {
-            var factory = new JDK11ClientHttpRequestFactoryBean();
+            var factory = new JdkClientHttpRequestFactoryBean();
             factory.setTrustAll(trustAll);
             factory.setTrustStore(trustStore);
             factory.setClientSideKeyStore(clientSideKeyStore);
