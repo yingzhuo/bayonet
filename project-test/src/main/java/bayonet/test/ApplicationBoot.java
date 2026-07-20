@@ -1,9 +1,9 @@
 package bayonet.test;
 
+import com.github.yingzhuo.bayonet.webcli.annotation.UnsafeClientHttpRequestFactory;
 import com.github.yingzhuo.bayonet.webcli.util.InterceptorFactories;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,7 +16,7 @@ import org.springframework.web.client.RestClient;
 public class ApplicationBoot implements ApplicationRunner {
 
     @Autowired
-    @Qualifier("unsafeClientHttpRequest")
+    @UnsafeClientHttpRequestFactory
     private ClientHttpRequestFactory clientHttpRequestFactory;
 
     public static void main(String[] args) {

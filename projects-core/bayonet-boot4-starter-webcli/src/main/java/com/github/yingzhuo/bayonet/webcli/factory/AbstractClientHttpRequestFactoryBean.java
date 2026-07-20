@@ -200,7 +200,7 @@ public abstract class AbstractClientHttpRequestFactoryBean implements
      * @throws KeyStoreException        密钥库操作异常
      * @throws IOException              读取资源时异常
      * @throws CertificateException     证书解析异常
-     * @throws NoSuchAlgorithmException  密码算法不支持
+     * @throws NoSuchAlgorithmException 密码算法不支持
      */
     protected final KeyStore loadKeyStore(String type, String location, char[] pwd) throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
         location = environment.resolvePlaceholders(location);
@@ -226,7 +226,7 @@ public abstract class AbstractClientHttpRequestFactoryBean implements
      * @throws IllegalArgumentException 配置不一致时抛出
      */
     @Override
-    public void afterPropertiesSet() {
+    public final void afterPropertiesSet() {
         if (this.trustStoreLocation != null) {
             Assert.notNull(this.trustStorePassword, "trustStorePassword must not be null when trustStoreLocation is set");
         }
@@ -255,12 +255,12 @@ public abstract class AbstractClientHttpRequestFactoryBean implements
      * <p>若 {@link #clientStoreLocation} 已设置，同时加载客户端证书（用于 mTLS 双向认证）。</p>
      *
      * @return 配置好的 {@link SSLContext} 实例
-     * @throws NoSuchAlgorithmException   TLS 算法不支持
-     * @throws CertificateException       证书解析异常
-     * @throws KeyStoreException          密钥库操作异常
-     * @throws IOException                读取资源异常
-     * @throws UnrecoverableKeyException  密钥不可恢复（密码错误等）
-     * @throws KeyManagementException     SSL 上下文初始化异常
+     * @throws NoSuchAlgorithmException  TLS 算法不支持
+     * @throws CertificateException      证书解析异常
+     * @throws KeyStoreException         密钥库操作异常
+     * @throws IOException               读取资源异常
+     * @throws UnrecoverableKeyException 密钥不可恢复（密码错误等）
+     * @throws KeyManagementException    SSL 上下文初始化异常
      */
     protected final SSLContext createSSLContext() throws NoSuchAlgorithmException, CertificateException, KeyStoreException, IOException, UnrecoverableKeyException, KeyManagementException {
         var ctx = SSLContext.getInstance("TLS");
