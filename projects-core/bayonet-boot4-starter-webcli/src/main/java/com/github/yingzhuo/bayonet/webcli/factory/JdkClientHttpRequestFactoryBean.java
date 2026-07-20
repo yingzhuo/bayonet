@@ -3,6 +3,7 @@ package com.github.yingzhuo.bayonet.webcli.factory;
 import com.github.yingzhuo.bayonet.webcli.support.TrustAllTrustManager;
 import lombok.Setter;
 import org.jspecify.annotations.Nullable;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
@@ -28,8 +29,8 @@ import java.time.Duration;
  * <p><b>使用示例</b></p>
  * <pre>{@code
  * &#64;Bean
- * public JDK11ClientHttpRequestFactoryBean clientHttpRequestFactory() {
- *     var bean = new JDK11ClientHttpRequestFactoryBean();
+ * public JdkClientHttpRequestFactoryBean clientHttpRequestFactory() {
+ *     var bean = new JdkClientHttpRequestFactoryBean();
  *     bean.setTrustAll(true);
  *     bean.setReadTimeout(Duration.ofSeconds(30));
  *     return bean;
@@ -40,7 +41,7 @@ import java.time.Duration;
  * @since 4.1.0
  */
 @Setter
-public class JDK11ClientHttpRequestFactoryBean extends AbstractClientHttpRequestFactoryBean implements InitializingBean {
+public class JdkClientHttpRequestFactoryBean implements FactoryBean<ClientHttpRequestFactory>, InitializingBean {
 
     /**
      * 是否信任所有证书（包括自签名证书）。
@@ -68,12 +69,12 @@ public class JDK11ClientHttpRequestFactoryBean extends AbstractClientHttpRequest
     /**
      * 连接超时时间。
      */
-    private @Nullable Duration connectTimeout;
+    private @Nullable Duration connectTimeout = Duration.ofSeconds(10);
 
     /**
      * 读取响应数据的超时时间。
      */
-    private @Nullable Duration readTimeout;
+    private @Nullable Duration readTimeout = Duration.ofSeconds(30);
 
     @Override
     public ClientHttpRequestFactory getObject() throws Exception {
@@ -101,6 +102,11 @@ public class JDK11ClientHttpRequestFactoryBean extends AbstractClientHttpRequest
         }
 
         return factory;
+    }
+
+    @Override
+    public Class<?> getObjectType() {
+        return ClientHttpRequestFactory.class;
     }
 
     @Override

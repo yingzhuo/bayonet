@@ -82,12 +82,12 @@ public class Apache5ClientHttpRequestFactoryBean extends AbstractClientHttpReque
     /**
      * 从连接池获取连接的超时时间。
      */
-    private @Nullable Duration connectionRequestTimeout;
+    private @Nullable Duration connectionRequestTimeout = Duration.ofSeconds(10);
 
     /**
      * 读取响应数据的超时时间。
      */
-    private @Nullable Duration readTimeout;
+    private @Nullable Duration readTimeout = Duration.ofSeconds(30);
 
     /**
      * 连接管理器（用于资源清理）。
