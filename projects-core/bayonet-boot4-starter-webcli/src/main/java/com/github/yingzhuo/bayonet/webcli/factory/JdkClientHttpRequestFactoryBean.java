@@ -1,29 +1,24 @@
 package com.github.yingzhuo.bayonet.webcli.factory;
 
-import com.github.yingzhuo.bayonet.webcli.support.TrustAllTrustManager;
 import lombok.Setter;
 import org.jspecify.annotations.Nullable;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 
-import javax.net.ssl.*;
 import java.net.http.HttpClient;
-import java.security.*;
 import java.time.Duration;
 
 /**
  * 基于 JDK {@link HttpClient} 的 {@link ClientHttpRequestFactory} 工厂 Bean。
  *
- * <p>通过该工厂 Bean 创建的 {@link ClientHttpRequestFactory} 可用于构建 {@code WebClient}，
- * 支持 HTTP 和 HTTPS 协议，并可配置自定义 SSL 上下文。</p>
+ * <p>继承自 {@link AbstractClientHttpRequestFactoryBean}，专注于配置连接超时和读取超时。
+ * SSL/TLS 相关的配置（信任库、客户端证书、主机名验证等）由父类统一管理。</p>
  *
  * <p><b>功能特性</b></p>
  * <ul>
- *   <li>HTTPS（标准证书 &amp; 自签名证书）— 通过 {@link #trustAll} 或自定义 {@link #trustStore}</li>
- *   <li>客户端证书认证（mTLS）— 通过 {@link #clientSideKeyStore}/{@link #clientSideKeyStorePassword}</li>
- *   <li>连接超时 &amp; 读取超时 — 通过 {@link #connectTimeout}/{@link #readTimeout}</li>
+ *   <li>连接超时 — 通过 {@link #connectTimeout} 控制与目标服务器建立连接的超时时间</li>
+ *   <li>读取超时 — 通过 {@link #readTimeout} 控制从服务器读取响应的超时时间</li>
+ *   <li>SSL/TLS 配置 — 信任库、mTLS、主机名验证等继承自父类</li>
  * </ul>
  *
  * <p><b>使用示例</b></p>
@@ -31,70 +26,56 @@ import java.time.Duration;
  * &#64;Bean
  * public JdkClientHttpRequestFactoryBean clientHttpRequestFactory() {
  *     var bean = new JdkClientHttpRequestFactoryBean();
- *     bean.setTrustAll(true);
+ *     bean.setTrustAllIfNoTrustStore(true);
  *     bean.setReadTimeout(Duration.ofSeconds(30));
  *     return bean;
  * }
  * }</pre>
  *
  * @author 应卓
+ * @see AbstractClientHttpRequestFactoryBean
+ * @see JdkClientHttpRequestFactory
  * @since 4.1.0
  */
 @Setter
-public class JdkClientHttpRequestFactoryBean implements FactoryBean<ClientHttpRequestFactory>, InitializingBean {
-
-    /**
-     * 是否信任所有证书（包括自签名证书）。
-     * <p>当 {@code true} 且未设置自定义 {@link #trustStore} 时，同时禁用主机名验证
-     * 以支持域名不匹配的自签名证书。</p>
-     */
-    private boolean trustAll = false;
-
-    /**
-     * 自定义信任库。
-     */
-    private @Nullable KeyStore trustStore;
-
-    /**
-     * 客户端证书密钥库（用于 mTLS 双向认证）。
-     */
-    private @Nullable KeyStore clientSideKeyStore;
-
-    /**
-     * 客户端证书密钥库密码。
-     * <p>当 {@link #clientSideKeyStore} 不为 {@code null} 时必填。</p>
-     */
-    private @Nullable String clientSideKeyStorePassword;
+public class JdkClientHttpRequestFactoryBean extends AbstractClientHttpRequestFactoryBean {
 
     /**
      * 连接超时时间。
+     * <p>默认值为 10 秒。设为 {@code null} 则使用 JDK 默认超时。</p>
      */
     private @Nullable Duration connectTimeout = Duration.ofSeconds(10);
 
     /**
      * 读取响应数据的超时时间。
+     * <p>默认值为 30 秒。设为 {@code null} 则使用 JDK 默认超时。</p>
      */
     private @Nullable Duration readTimeout = Duration.ofSeconds(30);
 
+    /**
+     * 创建并返回 {@link ClientHttpRequestFactory} 实例。
+     *
+     * <p>通过父类 {@link AbstractClientHttpRequestFactoryBean#createSSLContext()} 获取配置好的 SSL 上下文，
+     * 然后构建 JDK {@link HttpClient} 实例。若父类判定需要禁用主机名验证（信任所有证书且未使用自定义信任库），
+     * 则通过 {@link AbstractClientHttpRequestFactoryBean#createSSLParametersIfNecessary()} 应用对应参数。</p>
+     *
+     * @return 配置好的 {@link JdkClientHttpRequestFactory} 实例
+     * @throws Exception 创建 SSL 上下文或构建 HttpClient 时出错
+     */
     @Override
     public ClientHttpRequestFactory getObject() throws Exception {
-        var sslCtx = createSSLContext();
-        var builder = HttpClient.newBuilder()
+        var sslCtx = super.createSSLContext();
+
+        var clientBuilder = HttpClient.newBuilder()
                 .sslContext(sslCtx);
 
-        // trustAll 且未提供自定义 trustStore 时，禁用主机名验证
-        // 以支持域名不匹配的自签名证书
-        if (this.trustAll && this.trustStore == null) {
-            var sslParams = SSLContext.getDefault().getDefaultSSLParameters();
-            sslParams.setEndpointIdentificationAlgorithm(null);
-            builder.sslParameters(sslParams);
-        }
+        super.createSSLParametersIfNecessary().ifPresent(clientBuilder::sslParameters);
 
         if (this.connectTimeout != null) {
-            builder.connectTimeout(this.connectTimeout);
+            clientBuilder.connectTimeout(this.connectTimeout);
         }
 
-        var httpClient = builder.build();
+        var httpClient = clientBuilder.build();
 
         var factory = new JdkClientHttpRequestFactory(httpClient);
         if (this.readTimeout != null) {
@@ -102,60 +83,5 @@ public class JdkClientHttpRequestFactoryBean implements FactoryBean<ClientHttpRe
         }
 
         return factory;
-    }
-
-    @Override
-    public Class<?> getObjectType() {
-        return ClientHttpRequestFactory.class;
-    }
-
-    @Override
-    public void afterPropertiesSet() {
-        // 校验客户端证书配置一致性：两个必须同时设置或同时不设置
-        if (this.clientSideKeyStore == null && this.clientSideKeyStorePassword != null) {
-            throw new IllegalArgumentException("clientSideKeyStore must not be null when clientSideKeyStorePassword is set");
-        }
-        if (this.clientSideKeyStore != null && this.clientSideKeyStorePassword == null) {
-            throw new IllegalArgumentException("clientSideKeyStorePassword must not be null when clientSideKeyStore is set");
-        }
-    }
-
-    /**
-     * 创建 SSL 上下文。
-     *
-     * <p>按以下优先级构建信任材料：</p>
-     * <ol>
-     *   <li>若 {@link #trustStore} 已设置，则使用自定义信任库</li>
-     *   <li>否则若 {@link #trustAll} 为 {@code true}，则信任所有证书（含自签名证书）</li>
-     *   <li>否则使用 JDK 默认信任库</li>
-     * </ol>
-     *
-     * <p>若 {@link #clientSideKeyStore} 已设置，同时加载客户端证书（用于 mTLS 双向认证）。</p>
-     *
-     * @return 配置好的 {@link SSLContext}
-     */
-    private SSLContext createSSLContext() throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException, KeyManagementException {
-        var ctx = SSLContext.getInstance("TLS");
-
-        TrustManager[] trustManagers = null;
-        if (trustStore != null) {
-            TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            tmf.init(trustStore);
-            trustManagers = tmf.getTrustManagers();
-        }
-
-        KeyManager[] keyManagers = null;
-        if (this.clientSideKeyStore != null && this.clientSideKeyStorePassword != null) {
-            KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-            kmf.init(clientSideKeyStore, clientSideKeyStorePassword.toCharArray());
-            keyManagers = kmf.getKeyManagers();
-        }
-
-        if (trustManagers == null && this.trustAll) {
-            trustManagers = new TrustManager[]{new TrustAllTrustManager()};
-        }
-
-        ctx.init(keyManagers, trustManagers, new SecureRandom());
-        return ctx;
     }
 }

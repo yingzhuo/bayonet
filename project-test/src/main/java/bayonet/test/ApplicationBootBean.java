@@ -10,7 +10,7 @@ public class ApplicationBootBean {
     @Bean("unsafeClientHttpRequest")
     public JdkClientHttpRequestFactoryBean jdkClientHttpRequestFactoryBean() {
         var factoryBean = new JdkClientHttpRequestFactoryBean();
-        factoryBean.setTrustAll(true);
+        factoryBean.setTrustAllIfNoTrustStore(true);
         return factoryBean;
     }
 
