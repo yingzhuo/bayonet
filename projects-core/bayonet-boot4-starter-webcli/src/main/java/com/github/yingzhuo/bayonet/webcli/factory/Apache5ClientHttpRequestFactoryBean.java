@@ -2,6 +2,7 @@ package com.github.yingzhuo.bayonet.webcli.factory;
 
 import lombok.Setter;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
 import org.apache.hc.client5.http.ssl.ClientTlsStrategyBuilder;
 import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
@@ -9,6 +10,7 @@ import org.apache.hc.client5.http.ssl.TrustAllStrategy;
 import org.apache.hc.core5.ssl.SSLContextBuilder;
 import org.apache.hc.core5.ssl.TrustStrategy;
 import org.jspecify.annotations.Nullable;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -45,11 +47,12 @@ import java.time.Duration;
  * @since 4.1.0
  */
 @Setter
-public class Apache5ClientHttpRequestFactoryBean extends AbstractClientHttpRequestFactoryBean implements InitializingBean {
+public class Apache5ClientHttpRequestFactoryBean extends AbstractClientHttpRequestFactoryBean implements InitializingBean, DisposableBean {
 
     /**
      * 是否信任所有证书（包括自签名证书）。
-     * <p>当 {@link #trustStore} 和 {@link #trustStrategy} 均未设置时生效。</p>
+     * <p>仅当 {@link #trustStore} 和 {@link #trustStrategy} 均未设置时生效。
+     * 生效时同时禁用主机名验证以支持域名不匹配的自签名证书。</p>
      */
     private boolean trustAll = false;
 
@@ -86,21 +89,31 @@ public class Apache5ClientHttpRequestFactoryBean extends AbstractClientHttpReque
      */
     private @Nullable Duration readTimeout;
 
+    /**
+     * 连接管理器（用于资源清理）。
+     */
+    private @Nullable PoolingHttpClientConnectionManager connectionManager;
+
     @Override
     public ClientHttpRequestFactory getObject() throws Exception {
         var sslCtx = createSSLContext();
 
-        var tlsStrategy = ClientTlsStrategyBuilder.create()
-                .setSslContext(sslCtx)
-                .setHostnameVerifier(NoopHostnameVerifier.INSTANCE)
-                .buildClassic();
+        var tlsBuilder = ClientTlsStrategyBuilder.create()
+                .setSslContext(sslCtx);
 
-        var cm = PoolingHttpClientConnectionManagerBuilder.create()
+        // 仅当信任所有证书且未提供自定义信任策略时禁用主机名验证
+        if (this.trustAll && this.trustStore == null && this.trustStrategy == null) {
+            tlsBuilder.setHostnameVerifier(NoopHostnameVerifier.INSTANCE);
+        }
+
+        var tlsStrategy = tlsBuilder.buildClassic();
+
+        this.connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
                 .setTlsSocketStrategy(tlsStrategy)
                 .build();
 
         var httpClient = HttpClientBuilder.create()
-                .setConnectionManager(cm)
+                .setConnectionManager(this.connectionManager)
                 .setConnectionManagerShared(true)
                 .build();
 
@@ -119,14 +132,20 @@ public class Apache5ClientHttpRequestFactoryBean extends AbstractClientHttpReque
 
     @Override
     public void afterPropertiesSet() {
-        // 若成对参数中任一为 null，将两者均置为 null 以保持状态一致
-        if (this.clientSideKeyStore == null || this.clientSideKeyStorePassword == null) {
-            this.clientSideKeyStore = null;
-            this.clientSideKeyStorePassword = null;
+        // 校验客户端证书配置一致性：两个必须同时设置或同时不设置
+        if (this.clientSideKeyStore == null && this.clientSideKeyStorePassword != null) {
+            throw new IllegalArgumentException("clientSideKeyStore must not be null when clientSideKeyStorePassword is set");
         }
-        if (this.trustStore == null || this.trustStrategy == null) {
-            this.trustStore = null;
-            this.trustStrategy = null;
+        if (this.clientSideKeyStore != null && this.clientSideKeyStorePassword == null) {
+            throw new IllegalArgumentException("clientSideKeyStorePassword must not be null when clientSideKeyStore is set");
+        }
+
+        // 校验自定义信任策略配置一致性：两个必须同时设置或同时不设置
+        if (this.trustStore == null && this.trustStrategy != null) {
+            throw new IllegalArgumentException("trustStore must not be null when trustStrategy is set");
+        }
+        if (this.trustStore != null && this.trustStrategy == null) {
+            throw new IllegalArgumentException("trustStrategy must not be null when trustStore is set");
         }
     }
 
@@ -162,5 +181,12 @@ public class Apache5ClientHttpRequestFactoryBean extends AbstractClientHttpReque
         }
 
         return builder.build();
+    }
+
+    @Override
+    public void destroy() {
+        if (this.connectionManager != null) {
+            this.connectionManager.close();
+        }
     }
 }
