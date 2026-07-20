@@ -1,7 +1,5 @@
 package com.github.yingzhuo.bayonet.utility.collection.iterator;
 
-import org.jspecify.annotations.Nullable;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -24,8 +22,8 @@ import java.util.NoSuchElementException;
  */
 public class SingletonIterator<T> implements Iterator<T> {
 
-    private boolean consumed = false;
     private final T element;
+    private boolean consumed = false;
 
     /**
      * 创建单元素迭代器。
