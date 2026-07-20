@@ -1,17 +1,17 @@
 package bayonet.test;
 
-import com.github.yingzhuo.bayonet.webcli.annotation.ImportUnsafeClientHttpRequestFactory;
+import com.github.yingzhuo.bayonet.webcli.factory.JdkClientHttpRequestFactoryBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ImportUnsafeClientHttpRequestFactory
 public class ApplicationBootBean {
 
-//    @Bean("unsafeClientHttpRequest")
-//    public JdkClientHttpRequestFactoryBean jdkClientHttpRequestFactoryBean() {
-//        var factoryBean = new JdkClientHttpRequestFactoryBean();
-//        factoryBean.setTrustAllIfNoTrustStore(true);
-//        return factoryBean;
-//    }
+    @Bean("unsafeClientHttpRequestFactory")
+    public JdkClientHttpRequestFactoryBean jdkClientHttpRequestFactoryBean() {
+        var bean = new JdkClientHttpRequestFactoryBean();
+        bean.setTrustAllIfNoTrustStore(true);
+        return bean;
+    }
 
 }
