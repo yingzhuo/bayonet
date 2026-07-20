@@ -34,20 +34,17 @@
 ### 多模块结构
 
 ```
-bayonet/
-├── buildSrc/                              # 约定插件（预编译脚本插件）
-├── project-test/                          # 集成测试项目
-├── projects-core/
-│   ├── bayonet-bom/                       # BOM（物料清单）
-│   ├── bayonet-boot4-starter-common/      # 基础工具和公共代码（主模块）
-│   ├── bayonet-boot4-starter-hocon/       # HOCON配置文件增强
-│   ├── bayonet-boot4-starter-jwt/         # JWT增强
-│   ├── bayonet-boot4-starter-zxing/       # 二维码条形码增强
-│   ├── bayonet-boot4-starter-validation/  # Validation增强
-│   ├── bayonet-boot4-starter-webcli/      # WebClient增强
-│   ├── bayonet-boot4-starter-webmvc/      # WebMvc增强
-│   └── bayonet-boot4-starter-security/    # SpringSecurity增强
-└── gradle/                                # 版本目录和包装器
++--- ':project-integration-test' - 集成测试 (临时)
+\--- ':projects-core'
+     +--- ':projects-core:bayonet-bom' - BOM
+     +--- ':projects-core:bayonet-boot4-starter-common' - 基础工具和公共代码
+     +--- ':projects-core:bayonet-boot4-starter-hocon' - HOCON配置文件增强
+     +--- ':projects-core:bayonet-boot4-starter-jwt' - JWT增强
+     +--- ':projects-core:bayonet-boot4-starter-security' - SpringSecurity增强
+     +--- ':projects-core:bayonet-boot4-starter-validation' - Validation增强
+     +--- ':projects-core:bayonet-boot4-starter-webcli' - WebClient增强
+     +--- ':projects-core:bayonet-boot4-starter-webmvc' - WebMvc增强
+     \--- ':projects-core:bayonet-boot4-starter-zxing' - 二维码条形码增强
 ```
 
 ### 构建系统

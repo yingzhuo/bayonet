@@ -32,4 +32,4 @@ rootProject.name = 'bayonet'
     }
 }
 
-include ':project-test'
+include ':project-integration-test'
