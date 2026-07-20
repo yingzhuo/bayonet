@@ -44,7 +44,8 @@ public class JDK11ClientHttpRequestFactoryBean extends AbstractClientHttpRequest
 
     /**
      * 是否信任所有证书（包括自签名证书）。
-     * <p>当 {@code true} 时，同时禁用主机名验证以支持域名不匹配的自签名证书。</p>
+     * <p>当 {@code true} 且未设置自定义 {@link #trustStore} 时，同时禁用主机名验证
+     * 以支持域名不匹配的自签名证书。</p>
      */
     private boolean trustAll = false;
 
@@ -80,9 +81,10 @@ public class JDK11ClientHttpRequestFactoryBean extends AbstractClientHttpRequest
         var builder = HttpClient.newBuilder()
                 .sslContext(sslCtx);
 
-        // trustAll 时同时禁用主机名验证，以支持域名不匹配的自签名证书
-        if (this.trustAll) {
-            var sslParams = new SSLParameters();
+        // trustAll 且未提供自定义 trustStore 时，禁用主机名验证
+        // 以支持域名不匹配的自签名证书
+        if (this.trustAll && this.trustStore == null) {
+            var sslParams = SSLContext.getDefault().getDefaultSSLParameters();
             sslParams.setEndpointIdentificationAlgorithm(null);
             builder.sslParameters(sslParams);
         }
@@ -103,10 +105,12 @@ public class JDK11ClientHttpRequestFactoryBean extends AbstractClientHttpRequest
 
     @Override
     public void afterPropertiesSet() {
-        // 若成对参数中任一为 null，将两者均置为 null 以保持状态一致
-        if (this.clientSideKeyStore == null || this.clientSideKeyStorePassword == null) {
-            this.clientSideKeyStore = null;
-            this.clientSideKeyStorePassword = null;
+        // 校验客户端证书配置一致性：两个必须同时设置或同时不设置
+        if (this.clientSideKeyStore == null && this.clientSideKeyStorePassword != null) {
+            throw new IllegalArgumentException("clientSideKeyStore must not be null when clientSideKeyStorePassword is set");
+        }
+        if (this.clientSideKeyStore != null && this.clientSideKeyStorePassword == null) {
+            throw new IllegalArgumentException("clientSideKeyStorePassword must not be null when clientSideKeyStore is set");
         }
     }
 
