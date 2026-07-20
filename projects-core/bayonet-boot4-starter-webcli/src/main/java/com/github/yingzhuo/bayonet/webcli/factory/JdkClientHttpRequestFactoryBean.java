@@ -3,6 +3,7 @@ package com.github.yingzhuo.bayonet.webcli.factory;
 import com.github.yingzhuo.bayonet.webcli.support.TrustAllTrustManager;
 import lombok.Setter;
 import org.jspecify.annotations.Nullable;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
@@ -40,7 +41,7 @@ import java.time.Duration;
  * @since 4.1.0
  */
 @Setter
-public class JdkClientHttpRequestFactoryBean extends AbstractClientHttpRequestFactoryBean implements InitializingBean {
+public class JdkClientHttpRequestFactoryBean implements FactoryBean<ClientHttpRequestFactory>, InitializingBean {
 
     /**
      * 是否信任所有证书（包括自签名证书）。
@@ -68,12 +69,12 @@ public class JdkClientHttpRequestFactoryBean extends AbstractClientHttpRequestFa
     /**
      * 连接超时时间。
      */
-    private @Nullable Duration connectTimeout;
+    private @Nullable Duration connectTimeout = Duration.ofSeconds(10);
 
     /**
      * 读取响应数据的超时时间。
      */
-    private @Nullable Duration readTimeout;
+    private @Nullable Duration readTimeout = Duration.ofSeconds(30);
 
     @Override
     public ClientHttpRequestFactory getObject() throws Exception {
@@ -101,6 +102,11 @@ public class JdkClientHttpRequestFactoryBean extends AbstractClientHttpRequestFa
         }
 
         return factory;
+    }
+
+    @Override
+    public Class<?> getObjectType() {
+        return ClientHttpRequestFactory.class;
     }
 
     @Override

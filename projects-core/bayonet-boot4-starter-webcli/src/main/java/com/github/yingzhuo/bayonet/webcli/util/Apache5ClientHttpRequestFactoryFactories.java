@@ -35,6 +35,7 @@ import java.time.Duration;
  * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Deprecated(forRemoval = true)
 public final class Apache5ClientHttpRequestFactoryFactories {
 
     /**

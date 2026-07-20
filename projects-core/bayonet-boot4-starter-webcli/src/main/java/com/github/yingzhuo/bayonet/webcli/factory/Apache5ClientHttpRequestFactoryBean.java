@@ -11,6 +11,7 @@ import org.apache.hc.core5.ssl.SSLContextBuilder;
 import org.apache.hc.core5.ssl.TrustStrategy;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -47,7 +48,7 @@ import java.time.Duration;
  * @since 4.1.0
  */
 @Setter
-public class Apache5ClientHttpRequestFactoryBean extends AbstractClientHttpRequestFactoryBean implements InitializingBean, DisposableBean {
+public class Apache5ClientHttpRequestFactoryBean implements FactoryBean<ClientHttpRequestFactory>, InitializingBean, DisposableBean {
 
     /**
      * 是否信任所有证书（包括自签名证书）。
@@ -82,12 +83,12 @@ public class Apache5ClientHttpRequestFactoryBean extends AbstractClientHttpReque
     /**
      * 从连接池获取连接的超时时间。
      */
-    private @Nullable Duration connectionRequestTimeout;
+    private @Nullable Duration connectionRequestTimeout = Duration.ofSeconds(10);
 
     /**
      * 读取响应数据的超时时间。
      */
-    private @Nullable Duration readTimeout;
+    private @Nullable Duration readTimeout = Duration.ofSeconds(30);
 
     /**
      * 连接管理器（用于资源清理）。
@@ -128,6 +129,11 @@ public class Apache5ClientHttpRequestFactoryBean extends AbstractClientHttpReque
         }
 
         return factory;
+    }
+
+    @Override
+    public Class<?> getObjectType() {
+        return ClientHttpRequestFactory.class;
     }
 
     @Override
