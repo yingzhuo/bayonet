@@ -69,7 +69,8 @@ public class JdkClientHttpRequestFactoryBean extends AbstractClientHttpRequestFa
         var clientBuilder = HttpClient.newBuilder()
                 .sslContext(sslCtx);
 
-        super.createSSLParametersIfNecessary().ifPresent(clientBuilder::sslParameters);
+        createSSLParametersIfNecessary()
+                .ifPresent(clientBuilder::sslParameters);
 
         if (this.connectTimeout != null) {
             clientBuilder.connectTimeout(this.connectTimeout);
