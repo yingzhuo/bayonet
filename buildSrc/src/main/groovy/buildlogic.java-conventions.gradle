@@ -45,11 +45,9 @@ jar {
                 'Implementation-Title'  : project.name,
                 'Implementation-Version': project.version,
                 'Implementation-Vendor' : '应卓',
-                'Built-By'              : '应卓',
                 'Built-Jdk'             : jdkVersion,
                 'Created-By'            : "Gradle ${gradle.gradleVersion}",
-                'Url'                   : 'https://github.com/yingzhuo/bayonet',
-                'Scm'                   : 'scm:git:git@github.com:yingzhuo/bayonet.git'
+                'Url'                   : bayonetSourceCodeUrl
         ])
     }
 }
