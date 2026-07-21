@@ -8,6 +8,9 @@ description = 'WebMvc增强'
 
 dependencies {
 
+    // jetbrains annotation
+    compileOnly libs.jetbrains.annotation
+
     // test
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

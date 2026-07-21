@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.bean;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 
@@ -48,6 +49,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Import(ImportTextImporting.class)
 @Repeatable(ImportText.List.class)
+@ApiStatus.Experimental
 public @interface ImportText {
 
     /**
@@ -127,6 +129,7 @@ public @interface ImportText {
     @Documented
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
+    @ApiStatus.Experimental
     @interface List {
 
         /**
