@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.utility.collection.iterator;
+package com.github.yingzhuo.bayonet.utility.collection;
 
 import org.springframework.util.Assert;
 

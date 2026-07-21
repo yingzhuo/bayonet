@@ -1,6 +1,5 @@
 package com.github.yingzhuo.bayonet.utility.collection;
 
-import com.github.yingzhuo.bayonet.utility.collection.iterator.EnumerationIterator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;

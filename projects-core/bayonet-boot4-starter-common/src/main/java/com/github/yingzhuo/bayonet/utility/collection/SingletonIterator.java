@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.utility.collection.iterator;
+package com.github.yingzhuo.bayonet.utility.collection;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
