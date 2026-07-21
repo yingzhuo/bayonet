@@ -56,7 +56,7 @@ public class Apache5ClientHttpRequestFactoryBean extends AbstractClientHttpReque
      * <p>使用 JDK 默认信任材料，连接超时 10 秒，读取超时 30 秒。</p>
      */
     public Apache5ClientHttpRequestFactoryBean() {
-        this(DEFAULT_SSL_FACTORY);
+        super();
     }
 
     /**
@@ -66,7 +66,7 @@ public class Apache5ClientHttpRequestFactoryBean extends AbstractClientHttpReque
      * @param sslFactory SSL 配置工厂，不能为 {@code null}
      */
     public Apache5ClientHttpRequestFactoryBean(SSLFactory sslFactory) {
-        this(sslFactory, DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT);
+        super(sslFactory);
     }
 
     /**
