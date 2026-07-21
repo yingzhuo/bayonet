@@ -15,10 +15,10 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @ApiStatus.Experimental
+@Deprecated
 class ImportTextImporting extends BeanDefinitionRegistrarSupport {
 
     public ImportTextImporting(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
@@ -68,7 +68,7 @@ class ImportTextImporting extends BeanDefinitionRegistrarSupport {
                 text = text.strip();
             }
             if (trimEachLine) {
-                text = Arrays.stream(text.split("\\R"))
+                text = text.lines()
                         .map(String::trim)
                         .collect(Collectors.joining("\n"));
             }
