@@ -12,10 +12,13 @@ javaPlatform {
 dependencies {
     constraints {
         api libs.jetbrains.annotation
-        api libs.bc.bom
         api libs.java.jwt
         api libs.hocon
         api libs.bundles.zxing
+
+        // other bom
+        api libs.bc.bom
+        api libs.ayza.bom
 
         rootProject.findProject('projects-core').subprojects { subproject ->
             if (subproject.name != 'bayonet-bom') {
