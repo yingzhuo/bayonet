@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * 注入 {@code spring.application.version} 配置属性的注解。
  *
  * <pre>{@code
- * &#064;SpringApplicationVersion
+ * @SpringApplicationVersion
  * private String version;
  * }</pre>
  *

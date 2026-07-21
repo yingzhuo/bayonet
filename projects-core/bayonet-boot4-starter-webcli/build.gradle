@@ -28,8 +28,8 @@ dependencies {
 
     // ayza (SSL Context tool)
     api platform(libs.ayza.bom)
-    api "io.github.hakky54:ayza"
-    api "io.github.hakky54:ayza-for-pem"
+    api 'io.github.hakky54:ayza'
+    api 'io.github.hakky54:ayza-for-pem'
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
