@@ -1,7 +1,8 @@
 package com.github.yingzhuo.bayonet.webcli.factory;
 
 import com.github.yingzhuo.bayonet.secret.KeyStoreType;
-import com.github.yingzhuo.bayonet.webcli.support.TrustAllTrustManager;
+import com.github.yingzhuo.bayonet.webcli.support.UnsafeTrustAllTrustManager;
+import com.github.yingzhuo.bayonet.webcli.util.SSLParametersUtils;
 import lombok.Setter;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.FactoryBean;
@@ -19,7 +20,6 @@ import javax.net.ssl.*;
 import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
-import java.util.Optional;
 
 /**
  * JDK {@link java.net.http.HttpClient} 的 {@link ClientHttpRequestFactory} 工厂 Bean 抽象基类。
@@ -45,7 +45,7 @@ import java.util.Optional;
  *
  * @author 应卓
  * @see JdkClientHttpRequestFactoryBean
- * @see TrustAllTrustManager
+ * @see UnsafeTrustAllTrustManager
  * @since 4.1.0
  */
 public abstract class AbstractClientHttpRequestFactoryBean implements
@@ -163,7 +163,7 @@ public abstract class AbstractClientHttpRequestFactoryBean implements
      *
      * @param clientStoreLocation 客户端证书密钥库资源路径，不能为空
      */
-    public void setClientStoreLocation(String clientStoreLocation) {
+    public final void setClientStoreLocation(String clientStoreLocation) {
         Assert.hasText(clientStoreLocation, "clientStoreLocation must not be empty");
         this.clientStoreLocation = clientStoreLocation;
     }
@@ -173,7 +173,7 @@ public abstract class AbstractClientHttpRequestFactoryBean implements
      *
      * @param clientStorePassword 客户端证书密钥库密码，不能为空
      */
-    public void setClientStorePassword(String clientStorePassword) {
+    public final void setClientStorePassword(String clientStorePassword) {
         Assert.hasText(clientStorePassword, "clientStorePassword must not be empty");
         this.clientStorePassword = clientStorePassword.toCharArray();
     }
@@ -183,7 +183,7 @@ public abstract class AbstractClientHttpRequestFactoryBean implements
      *
      * @param clientStoreType 密钥库类型，不能为 {@code null}
      */
-    public void setClientStoreType(KeyStoreType clientStoreType) {
+    public final void setClientStoreType(KeyStoreType clientStoreType) {
         Assert.notNull(clientStoreType, "clientStoreType must not be null");
         this.clientStoreType = clientStoreType;
     }
@@ -195,12 +195,12 @@ public abstract class AbstractClientHttpRequestFactoryBean implements
      *
      * @param type     密钥库类型（如 {@code PKCS12}、{@code JKS}）
      * @param location 密钥库资源路径（支持 Spring 占位符）
-     * @param pwd      密钥库密码（可为 {@code null}）
+     * @param pwd      密钥库密码字符数组（可为 {@code null}）
      * @return 加载好的 {@link KeyStore} 实例
      * @throws KeyStoreException        密钥库操作异常
      * @throws IOException              读取资源时异常
      * @throws CertificateException     证书解析异常
-     * @throws NoSuchAlgorithmException 密码算法不支持
+     * @throws NoSuchAlgorithmException  密码算法不支持
      */
     protected final KeyStore loadKeyStore(String type, String location, char[] pwd) throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
         location = environment.resolvePlaceholders(location);
@@ -255,12 +255,12 @@ public abstract class AbstractClientHttpRequestFactoryBean implements
      * <p>若 {@link #clientStoreLocation} 已设置，同时加载客户端证书（用于 mTLS 双向认证）。</p>
      *
      * @return 配置好的 {@link SSLContext} 实例
-     * @throws NoSuchAlgorithmException  TLS 算法不支持
-     * @throws CertificateException      证书解析异常
-     * @throws KeyStoreException         密钥库操作异常
-     * @throws IOException               读取资源异常
-     * @throws UnrecoverableKeyException 密钥不可恢复（密码错误等）
-     * @throws KeyManagementException    SSL 上下文初始化异常
+     * @throws NoSuchAlgorithmException   TLS 算法不支持
+     * @throws CertificateException       证书解析异常
+     * @throws KeyStoreException          密钥库操作异常
+     * @throws IOException                读取资源异常
+     * @throws UnrecoverableKeyException  密钥不可恢复（密码错误等）
+     * @throws KeyManagementException     SSL 上下文初始化异常
      */
     protected final SSLContext createSSLContext() throws NoSuchAlgorithmException, CertificateException, KeyStoreException, IOException, UnrecoverableKeyException, KeyManagementException {
         var ctx = SSLContext.getInstance("TLS");
@@ -281,11 +281,11 @@ public abstract class AbstractClientHttpRequestFactoryBean implements
             TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
             tmf.init(trustStore);
             trustManagers = tmf.getTrustManagers();
-        } else if (this.trustAllIfNoTrustStore) {
-            trustManagers = new TrustManager[]{new TrustAllTrustManager()};
+        } else if (isUnsafeMode()) {
+            trustManagers = new TrustManager[]{UnsafeTrustAllTrustManager.getSingletonInstance()};
         }
 
-        ctx.init(keyManagers, trustManagers, new java.security.SecureRandom());
+        ctx.init(keyManagers, trustManagers, new SecureRandom());
         return ctx;
     }
 
@@ -294,19 +294,19 @@ public abstract class AbstractClientHttpRequestFactoryBean implements
      *
      * <p>当 {@link #trustAllIfNoTrustStore} 为 {@code true} 且未设置 {@link #trustStoreLocation} 时，
      * 返回包含禁用主机名验证的 {@link SSLParameters}，以支持访问自签名且域名不匹配的 HTTPS 端点。
-     * 否则返回 {@link Optional#empty()}，使用 JDK 默认主机名验证行为。</p>
+     * 否则返回默认的 {@link SSLParameters}，使用 JDK 默认主机名验证行为。</p>
      *
-     * @return 包含禁用主机名验证的 {@link SSLParameters}，或空
-     * @throws NoSuchAlgorithmException 获取默认 SSL 参数时异常
+     * @return 包含禁用主机名验证的 {@link SSLParameters}，不为空值
      */
-    protected final Optional<SSLParameters> createSSLParametersIfNecessary() throws NoSuchAlgorithmException {
-        if (trustAllIfNoTrustStore && trustStoreLocation == null) {
-            var sslParams = SSLContext.getDefault().getDefaultSSLParameters();
-            sslParams.setEndpointIdentificationAlgorithm(null);
-            return Optional.of(sslParams);
+    protected final SSLParameters createSSLParameters() {
+        if (isUnsafeMode()) {
+            return SSLParametersUtils.createUnsafe();
         } else {
-            return Optional.empty();
+            return SSLParametersUtils.createDefault();
         }
     }
 
+    private boolean isUnsafeMode() {
+        return trustAllIfNoTrustStore && trustStoreLocation == null && trustStorePassword == null;
+    }
 }

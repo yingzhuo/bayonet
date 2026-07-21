@@ -55,34 +55,31 @@ public class JdkClientHttpRequestFactoryBean extends AbstractClientHttpRequestFa
     /**
      * 创建并返回 {@link ClientHttpRequestFactory} 实例。
      *
-     * <p>通过父类 {@link AbstractClientHttpRequestFactoryBean#createSSLContext()} 获取配置好的 SSL 上下文，
-     * 然后构建 JDK {@link HttpClient} 实例。若父类判定需要禁用主机名验证（信任所有证书且未使用自定义信任库），
-     * 则通过 {@link AbstractClientHttpRequestFactoryBean#createSSLParametersIfNecessary()} 应用对应参数。</p>
+     * <p>通过父类 {@link AbstractClientHttpRequestFactoryBean#createSSLContext()} 和
+     * {@link AbstractClientHttpRequestFactoryBean#createSSLParameters()} 分别获取
+     * SSL 上下文和参数，然后构建 JDK {@link HttpClient} 实例。当父类判定需要禁用主机名验证时
+     * （信任所有证书且未使用自定义信任库），{@code createSSLParameters()} 返回的
+     * {@link javax.net.ssl.SSLParameters SSLParameters} 中禁用了端点标识算法。</p>
      *
      * @return 配置好的 {@link JdkClientHttpRequestFactory} 实例
      * @throws Exception 创建 SSL 上下文或构建 HttpClient 时出错
      */
     @Override
     public ClientHttpRequestFactory getObject() throws Exception {
-        var sslCtx = super.createSSLContext();
-
         var clientBuilder = HttpClient.newBuilder()
-                .sslContext(sslCtx);
-
-        createSSLParametersIfNecessary()
-                .ifPresent(clientBuilder::sslParameters);
+                .sslParameters(super.createSSLParameters())
+                .sslContext(super.createSSLContext());
 
         if (this.connectTimeout != null) {
             clientBuilder.connectTimeout(this.connectTimeout);
         }
 
-        var httpClient = clientBuilder.build();
-
-        var factory = new JdkClientHttpRequestFactory(httpClient);
+        var factory = new JdkClientHttpRequestFactory(clientBuilder.build());
         if (this.readTimeout != null) {
             factory.setReadTimeout(this.readTimeout);
         }
 
         return factory;
     }
+
 }
