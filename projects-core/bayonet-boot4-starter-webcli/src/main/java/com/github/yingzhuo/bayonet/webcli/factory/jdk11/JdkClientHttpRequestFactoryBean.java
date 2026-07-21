@@ -1,11 +1,10 @@
-package com.github.yingzhuo.bayonet.webcli.factory;
+package com.github.yingzhuo.bayonet.webcli.factory.jdk11;
 
+import com.github.yingzhuo.bayonet.webcli.factory.AbstractClientHttpRequestFactoryBean;
 import nl.altindag.ssl.SSLFactory;
 import org.jspecify.annotations.Nullable;
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
-import org.springframework.util.Assert;
 
 import java.net.http.HttpClient;
 import java.time.Duration;
@@ -39,14 +38,7 @@ import java.time.Duration;
  * @see JdkClientHttpRequestFactory
  * @since 4.1.0
  */
-public class JdkClientHttpRequestFactoryBean implements FactoryBean<ClientHttpRequestFactory> {
-
-    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
-    private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(30);
-
-    private final SSLFactory sslFactory;
-    private final @Nullable Duration connectTimeout;
-    private final @Nullable Duration readTimeout;
+public class JdkClientHttpRequestFactoryBean extends AbstractClientHttpRequestFactoryBean {
 
     /**
      * 创建默认的工厂 Bean。
@@ -81,21 +73,7 @@ public class JdkClientHttpRequestFactoryBean implements FactoryBean<ClientHttpRe
      * @throws IllegalArgumentException sslFactory 为 {@code null}，或超时值为零/负数时抛出
      */
     public JdkClientHttpRequestFactoryBean(SSLFactory sslFactory, @Nullable Duration connectTimeout, @Nullable Duration readTimeout) {
-        Assert.notNull(sslFactory, "SSLFactory must not be null");
-
-        if (connectTimeout != null) {
-            Assert.isTrue(!connectTimeout.isZero() && !connectTimeout.isNegative(),
-                    "connect timeout must be positive, but got " + connectTimeout);
-        }
-
-        if (readTimeout != null) {
-            Assert.isTrue(!readTimeout.isZero() && !readTimeout.isNegative(),
-                    "read timeout must be positive, but got " + readTimeout);
-        }
-
-        this.sslFactory = sslFactory;
-        this.connectTimeout = connectTimeout;
-        this.readTimeout = readTimeout;
+        super(sslFactory, connectTimeout, readTimeout);
     }
 
     /**
@@ -124,15 +102,4 @@ public class JdkClientHttpRequestFactoryBean implements FactoryBean<ClientHttpRe
 
         return factory;
     }
-
-    /**
-     * 返回 Bean 类型。
-     *
-     * @return {@link ClientHttpRequestFactory} 的 {@link Class}
-     */
-    @Override
-    public final Class<?> getObjectType() {
-        return ClientHttpRequestFactory.class;
-    }
-
 }
