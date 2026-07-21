@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.inject;
+package com.github.yingzhuo.bayonet.bean;
 
 import org.springframework.beans.factory.annotation.Value;
 

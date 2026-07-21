@@ -1,15 +1,15 @@
-package com.github.yingzhuo.bayonet.inject;
+package com.github.yingzhuo.bayonet.bean;
 
 import org.springframework.beans.factory.annotation.Value;
 
 import java.lang.annotation.*;
 
 /**
- * 注入 {@code spring.application.version} 配置属性的注解。
+ * 注入 {@code spring.application.group} 配置属性的注解。
  *
  * <pre>{@code
- * &#064;SpringApplicationVersion
- * private String version;
+ * &#064;SpringApplicationGroup
+ * private String group;
  * }</pre>
  *
  * @author 应卓
@@ -18,6 +18,6 @@ import java.lang.annotation.*;
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Value("${spring.application.version}")
-public @interface SpringApplicationVersion {
+@Value("${spring.application.group}")
+public @interface SpringApplicationGroup {
 }
