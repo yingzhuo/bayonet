@@ -1,6 +1,5 @@
 package com.github.yingzhuo.bayonet.webcli.factory.apache5;
 
-import com.github.yingzhuo.bayonet.webcli.factory.AbstractClientHttpRequestFactoryBean;
 import nl.altindag.ssl.SSLFactory;
 import org.jspecify.annotations.Nullable;
 
@@ -30,12 +29,13 @@ import java.time.Duration;
  * @since 4.1.0
  */
 public class UnsafeApache5ClientHttpRequestFactoryBean extends Apache5ClientHttpRequestFactoryBean {
+
     /**
      * 创建默认的工厂 Bean。
      * <p>连接超时默认 10 秒，读取超时默认 30 秒。</p>
      */
     public UnsafeApache5ClientHttpRequestFactoryBean() {
-        super(UNSAFE_SSL_FACTORY, null, null);
+        super(UNSAFE_SSL_FACTORY);
     }
 
     /**

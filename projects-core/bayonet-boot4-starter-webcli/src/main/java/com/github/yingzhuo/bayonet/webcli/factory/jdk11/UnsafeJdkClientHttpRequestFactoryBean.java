@@ -35,7 +35,7 @@ public class UnsafeJdkClientHttpRequestFactoryBean extends JdkClientHttpRequestF
      * <p>连接超时默认 10 秒，读取超时默认 30 秒。</p>
      */
     public UnsafeJdkClientHttpRequestFactoryBean() {
-        super(UNSAFE_SSL_FACTORY, null, null);
+        super(UNSAFE_SSL_FACTORY);
     }
 
     /**
