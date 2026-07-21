@@ -26,6 +26,7 @@ import java.io.IOException;
  * @author 应卓
  * @see ClientHttpRequestInterceptor
  * @see com.github.yingzhuo.bayonet.webcli.util.InterceptorFactories
+ * @see <a href="https://tools.ietf.org/html/rfc6750">RFC 6750</a>
  * @since 4.1.0
  */
 public class BearerAuthClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {

@@ -19,10 +19,10 @@ import java.nio.charset.StandardCharsets;
  * <p><b>使用示例</b></p>
  * <pre>{@code
  * // Basic 认证（UTF-8）
- * var interceptor = InterceptorFactories.createBasicAuthInterceptor("user", "pass");
+ * var interceptor = InterceptorFactories.createBasicAuthInterceptor("user", "password");
  *
  * // Basic 认证（自定义编码）
- * var interceptor = InterceptorFactories.createBasicAuthInterceptor("user", "pass", StandardCharsets.ISO_8859_1);
+ * var interceptor = InterceptorFactories.createBasicAuthInterceptor("user", "password", StandardCharsets.ISO_8859_1);
  *
  * // Bearer Token 认证
  * var interceptor = InterceptorFactories.createBearerAuthInterceptor("my-token");
@@ -37,17 +37,18 @@ import java.nio.charset.StandardCharsets;
 public final class InterceptorFactories {
 
     /**
-     * 创建 Basic 认证拦截器（使用 UTF-8 编码）。
-     * <p>使用 {@link StandardCharsets#UTF_8 UTF-8} 编码对用户名和密码进行编码。
-     * 相当于调用 {@link #createBasicAuthInterceptor(String, String, Charset) createBasicAuthInterceptor(username, password, StandardCharsets.UTF_8)}。</p>
+     * 创建 Basic 认证拦截器（使用 ISO_8859_1 编码）。
+     * <p>使用 {@link StandardCharsets#ISO_8859_1} 编码对用户名和密码进行编码。
+     * 相当于调用 {@link #createBasicAuthInterceptor(String, String, Charset) createBasicAuthInterceptor(username, password, StandardCharsets.ISO_8859_1)}。</p>
      *
      * @param username 用户名
      * @param password 密码
      * @return BasicAuthenticationInterceptor 实例
      * @throws IllegalArgumentException username 或 password 为空时抛出
+     * @see <a href="https://tools.ietf.org/html/rfc7617">RFC 7617</a>
      */
     public static ClientHttpRequestInterceptor createBasicAuthInterceptor(String username, String password) {
-        return createBasicAuthInterceptor(username, password, StandardCharsets.UTF_8);
+        return createBasicAuthInterceptor(username, password, StandardCharsets.ISO_8859_1);
     }
 
     /**
@@ -58,6 +59,7 @@ public final class InterceptorFactories {
      * @param charset  字符编码，为 {@code null} 时使用 {@link BasicAuthenticationInterceptor} 内部默认值
      * @return BasicAuthenticationInterceptor 实例
      * @throws IllegalArgumentException username 或 password 为空时抛出
+     * @see <a href="https://tools.ietf.org/html/rfc7617">RFC 7617</a>
      */
     public static ClientHttpRequestInterceptor createBasicAuthInterceptor(
             String username, String password, @Nullable Charset charset) {
@@ -74,6 +76,8 @@ public final class InterceptorFactories {
      * @param token Bearer Token
      * @return ClientHttpRequestInterceptor 实例
      * @throws IllegalArgumentException token 为空时抛出
+     * @see BearerAuthClientHttpRequestInterceptor
+     * @see <a href="https://tools.ietf.org/html/rfc6750">RFC 6750</a>
      */
     public static ClientHttpRequestInterceptor createBearerAuthInterceptor(String token) {
         Assert.hasText(token, "token must not be empty");
