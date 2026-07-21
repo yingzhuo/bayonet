@@ -112,7 +112,7 @@ public class Apache5ClientHttpRequestFactoryBean extends AbstractClientHttpReque
     @Override
     public ClientHttpRequestFactory getObject() {
         var factory = this.requestFactory;
-        Assert.state(factory != null, "Apache5ClientHttpRequestFactoryBean is not initialized; ensure the bean is properly configured");
+        Assert.state(factory != null, "Apache5ClientHttpRequestFactoryBean is not initialized");
         return factory;
     }
 

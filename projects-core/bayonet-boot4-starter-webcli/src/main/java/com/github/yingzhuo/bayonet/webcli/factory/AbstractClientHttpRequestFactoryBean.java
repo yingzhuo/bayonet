@@ -57,11 +57,11 @@ public abstract class AbstractClientHttpRequestFactoryBean
 
         if (connectTimeout != null) {
             Assert.isTrue(!connectTimeout.isZero() && !connectTimeout.isNegative(),
-                    "connect timeout must be positive, but got " + connectTimeout);
+                    "connect timeout must be positive");
         }
         if (readTimeout != null) {
             Assert.isTrue(!readTimeout.isZero() && !readTimeout.isNegative(),
-                    "read timeout must be positive, but got " + readTimeout);
+                    "read timeout must be positive");
         }
 
         this.sslFactory = sslFactory;
