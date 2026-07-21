@@ -29,7 +29,7 @@ import java.time.Duration;
  * @see SSLFactory
  * @since 4.1.0
  */
-public class UnsafeJdkClientHttpRequestFactoryBean extends JdkClientHttpRequestFactoryBean {
+public final class UnsafeJdkClientHttpRequestFactoryBean extends JdkClientHttpRequestFactoryBean {
 
     /**
      * 创建默认的工厂 Bean。

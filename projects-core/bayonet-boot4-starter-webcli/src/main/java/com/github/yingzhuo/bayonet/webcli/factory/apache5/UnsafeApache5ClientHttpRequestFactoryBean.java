@@ -29,7 +29,7 @@ import java.time.Duration;
  * @see SSLFactory
  * @since 4.1.0
  */
-public class UnsafeApache5ClientHttpRequestFactoryBean extends Apache5ClientHttpRequestFactoryBean {
+public final class UnsafeApache5ClientHttpRequestFactoryBean extends Apache5ClientHttpRequestFactoryBean {
 
     /**
      * 创建默认的工厂 Bean。
@@ -48,5 +48,4 @@ public class UnsafeApache5ClientHttpRequestFactoryBean extends Apache5ClientHttp
     public UnsafeApache5ClientHttpRequestFactoryBean(@Nullable Duration connectTimeout, @Nullable Duration readTimeout) {
         super(SSLFactoryFactories.createUnsafe(), connectTimeout, readTimeout);
     }
-
 }
