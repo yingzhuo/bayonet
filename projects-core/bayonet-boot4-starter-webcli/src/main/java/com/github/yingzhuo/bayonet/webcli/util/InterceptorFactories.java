@@ -1,9 +1,9 @@
 package com.github.yingzhuo.bayonet.webcli.util;
 
+import com.github.yingzhuo.bayonet.webcli.interceptor.BearerAuthClientHttpRequestInterceptor;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.util.Assert;
@@ -77,13 +77,7 @@ public final class InterceptorFactories {
      */
     public static ClientHttpRequestInterceptor createBearerAuthInterceptor(String token) {
         Assert.hasText(token, "token must not be empty");
-        return (request, body, execution) -> {
-            var headers = request.getHeaders();
-            if (!headers.containsHeader(HttpHeaders.AUTHORIZATION)) {
-                headers.setBearerAuth(token);
-            }
-            return execution.execute(request, body);
-        };
+        return new BearerAuthClientHttpRequestInterceptor(token);
     }
 
 }
