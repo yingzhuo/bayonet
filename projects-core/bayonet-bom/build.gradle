@@ -11,6 +11,7 @@ javaPlatform {
 
 dependencies {
     constraints {
+        api libs.jetbrains.annotation
         api libs.bc.bom
         api libs.java.jwt
         api libs.hocon

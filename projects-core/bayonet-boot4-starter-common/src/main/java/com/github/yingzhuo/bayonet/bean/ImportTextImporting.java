@@ -1,6 +1,7 @@
 package com.github.yingzhuo.bayonet.bean;
 
 import com.github.yingzhuo.bayonet.beandef.BeanDefinitionRegistrarSupport;
+import org.jetbrains.annotations.ApiStatus;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -17,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+@ApiStatus.Experimental
 class ImportTextImporting extends BeanDefinitionRegistrarSupport {
 
     public ImportTextImporting(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
