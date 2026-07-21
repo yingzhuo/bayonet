@@ -45,13 +45,7 @@ public class JdkClientHttpRequestFactoryBean extends AbstractClientHttpRequestFa
      * <p>使用 JDK 默认信任材料，连接超时 10 秒，读取超时 30 秒。</p>
      */
     public JdkClientHttpRequestFactoryBean() {
-        this(
-                SSLFactory.builder()
-                        .withDefaultTrustMaterial()
-                        .build(),
-                DEFAULT_CONNECT_TIMEOUT,
-                DEFAULT_READ_TIMEOUT
-        );
+        super();
     }
 
     /**
@@ -61,7 +55,7 @@ public class JdkClientHttpRequestFactoryBean extends AbstractClientHttpRequestFa
      * @param sslFactory SSL 配置工厂，不能为 {@code null}
      */
     public JdkClientHttpRequestFactoryBean(SSLFactory sslFactory) {
-        this(sslFactory, DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT);
+        super(sslFactory);
     }
 
     /**

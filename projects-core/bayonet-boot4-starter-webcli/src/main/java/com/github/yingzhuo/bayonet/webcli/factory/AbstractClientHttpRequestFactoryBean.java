@@ -9,7 +9,8 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.util.Assert;
 
 import java.time.Duration;
-import java.util.Objects;
+
+import static java.util.Objects.requireNonNullElse;
 
 /**
  * {@link ClientHttpRequestFactory} 工厂 Bean 的抽象基类。
@@ -33,14 +34,15 @@ import java.util.Objects;
  * @see #destroy()
  * @since 4.1.0
  */
-public abstract class AbstractClientHttpRequestFactoryBean implements FactoryBean<ClientHttpRequestFactory>, InitializingBean, DisposableBean {
+public abstract class AbstractClientHttpRequestFactoryBean
+        implements FactoryBean<ClientHttpRequestFactory>, InitializingBean, DisposableBean {
 
     protected static final SSLFactory UNSAFE_SSL_FACTORY = SSLFactory.builder()
             .withUnsafeTrustMaterial()
             .withUnsafeHostnameVerifier()
             .build();
 
-    protected static final SSLFactory DEFAULT_SSL_FACTORY = SSLFactory.builder()
+    private static final SSLFactory DEFAULT_SSL_FACTORY = SSLFactory.builder()
             .withDefaultTrustMaterial()
             .build();
 
@@ -51,7 +53,15 @@ public abstract class AbstractClientHttpRequestFactoryBean implements FactoryBea
     protected final Duration connectTimeout;
     protected final Duration readTimeout;
 
-    public AbstractClientHttpRequestFactoryBean(SSLFactory sslFactory, @Nullable Duration connectTimeout, @Nullable Duration readTimeout) {
+    protected AbstractClientHttpRequestFactoryBean() {
+        this(DEFAULT_SSL_FACTORY);
+    }
+
+    protected AbstractClientHttpRequestFactoryBean(SSLFactory sslFactory) {
+        this(sslFactory, null, null);
+    }
+
+    protected AbstractClientHttpRequestFactoryBean(SSLFactory sslFactory, @Nullable Duration connectTimeout, @Nullable Duration readTimeout) {
         Assert.notNull(sslFactory, "SSLFactory must not be null");
 
         if (connectTimeout != null) {
@@ -64,8 +74,8 @@ public abstract class AbstractClientHttpRequestFactoryBean implements FactoryBea
         }
 
         this.sslFactory = sslFactory;
-        this.connectTimeout = Objects.requireNonNullElse(connectTimeout, DEFAULT_CONNECT_TIMEOUT);
-        this.readTimeout = Objects.requireNonNullElse(readTimeout, DEFAULT_READ_TIMEOUT);
+        this.connectTimeout = requireNonNullElse(connectTimeout, DEFAULT_CONNECT_TIMEOUT);
+        this.readTimeout = requireNonNullElse(readTimeout, DEFAULT_READ_TIMEOUT);
     }
 
     @Override
@@ -74,12 +84,10 @@ public abstract class AbstractClientHttpRequestFactoryBean implements FactoryBea
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        // noop
+    public void afterPropertiesSet() {
     }
 
     @Override
-    public void destroy() throws Exception {
-        // noop
+    public void destroy() {
     }
 }
