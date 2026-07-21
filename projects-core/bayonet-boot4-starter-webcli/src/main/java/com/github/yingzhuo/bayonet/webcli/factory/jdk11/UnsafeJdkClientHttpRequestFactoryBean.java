@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.webcli.factory.jdk11;
 
+import com.github.yingzhuo.bayonet.webcli.util.SSLFactoryFactories;
 import nl.altindag.ssl.SSLFactory;
 import org.jspecify.annotations.Nullable;
 
@@ -35,7 +36,7 @@ public class UnsafeJdkClientHttpRequestFactoryBean extends JdkClientHttpRequestF
      * <p>连接超时默认 10 秒，读取超时默认 30 秒。</p>
      */
     public UnsafeJdkClientHttpRequestFactoryBean() {
-        super(UNSAFE_SSL_FACTORY);
+        super(SSLFactoryFactories.createUnsafe());
     }
 
     /**
@@ -45,6 +46,6 @@ public class UnsafeJdkClientHttpRequestFactoryBean extends JdkClientHttpRequestF
      * @param readTimeout    读取超时（可为 {@code null}，零或负值不允许）
      */
     public UnsafeJdkClientHttpRequestFactoryBean(@Nullable Duration connectTimeout, @Nullable Duration readTimeout) {
-        super(UNSAFE_SSL_FACTORY, connectTimeout, readTimeout);
+        super(SSLFactoryFactories.createUnsafe(), connectTimeout, readTimeout);
     }
 }

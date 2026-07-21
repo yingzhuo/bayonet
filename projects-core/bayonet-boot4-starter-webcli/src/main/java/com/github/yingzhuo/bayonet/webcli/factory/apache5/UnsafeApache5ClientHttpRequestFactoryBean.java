@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.webcli.factory.apache5;
 
+import com.github.yingzhuo.bayonet.webcli.util.SSLFactoryFactories;
 import nl.altindag.ssl.SSLFactory;
 import org.jspecify.annotations.Nullable;
 
@@ -35,7 +36,7 @@ public class UnsafeApache5ClientHttpRequestFactoryBean extends Apache5ClientHttp
      * <p>连接超时默认 10 秒，读取超时默认 30 秒。</p>
      */
     public UnsafeApache5ClientHttpRequestFactoryBean() {
-        super(UNSAFE_SSL_FACTORY);
+        super(SSLFactoryFactories.createUnsafe());
     }
 
     /**
@@ -45,7 +46,7 @@ public class UnsafeApache5ClientHttpRequestFactoryBean extends Apache5ClientHttp
      * @param readTimeout    读取超时（可为 {@code null}，零或负值不允许）
      */
     public UnsafeApache5ClientHttpRequestFactoryBean(@Nullable Duration connectTimeout, @Nullable Duration readTimeout) {
-        super(UNSAFE_SSL_FACTORY, connectTimeout, readTimeout);
+        super(SSLFactoryFactories.createUnsafe(), connectTimeout, readTimeout);
     }
 
 }

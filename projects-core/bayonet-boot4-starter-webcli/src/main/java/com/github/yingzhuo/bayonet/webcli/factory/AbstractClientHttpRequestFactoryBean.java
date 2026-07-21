@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.webcli.factory;
 
+import com.github.yingzhuo.bayonet.webcli.util.SSLFactoryFactories;
 import nl.altindag.ssl.SSLFactory;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.DisposableBean;
@@ -36,16 +37,6 @@ import static java.util.Objects.requireNonNullElse;
  */
 public abstract class AbstractClientHttpRequestFactoryBean
         implements FactoryBean<ClientHttpRequestFactory>, InitializingBean, DisposableBean {
-
-    protected static final SSLFactory UNSAFE_SSL_FACTORY = SSLFactory.builder()
-            .withUnsafeTrustMaterial()
-            .withUnsafeHostnameVerifier()
-            .build();
-
-    private static final SSLFactory DEFAULT_SSL_FACTORY = SSLFactory.builder()
-            .withDefaultTrustMaterial()
-            .build();
-
     protected static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
     protected static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(30);
 
@@ -54,7 +45,7 @@ public abstract class AbstractClientHttpRequestFactoryBean
     protected final Duration readTimeout;
 
     protected AbstractClientHttpRequestFactoryBean() {
-        this(DEFAULT_SSL_FACTORY);
+        this(SSLFactoryFactories.createDefault());
     }
 
     protected AbstractClientHttpRequestFactoryBean(SSLFactory sslFactory) {
