@@ -50,6 +50,7 @@ import java.lang.annotation.*;
 @Import(ImportTextImporting.class)
 @Repeatable(ImportText.List.class)
 @ApiStatus.Experimental
+@Deprecated
 public @interface ImportText {
 
     /**
@@ -130,6 +131,7 @@ public @interface ImportText {
     @Target(ElementType.TYPE)
     @Retention(RetentionPolicy.RUNTIME)
     @ApiStatus.Experimental
+    @Deprecated
     @interface List {
 
         /**
