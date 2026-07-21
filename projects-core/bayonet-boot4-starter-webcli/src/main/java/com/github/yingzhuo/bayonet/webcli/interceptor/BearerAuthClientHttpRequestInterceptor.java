@@ -32,6 +32,12 @@ public class BearerAuthClientHttpRequestInterceptor implements ClientHttpRequest
 
     private final String token;
 
+    /**
+     * 构造器
+     *
+     * @param token 用户认证的令牌
+     * @throws IllegalArgumentException 令牌为空值或blank
+     */
     public BearerAuthClientHttpRequestInterceptor(String token) {
         Assert.hasText(token, "token must not be empty");
         this.token = token;
