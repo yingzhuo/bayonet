@@ -1,85 +1,138 @@
 package com.github.yingzhuo.bayonet.webcli.factory;
 
-import lombok.Setter;
+import nl.altindag.ssl.SSLFactory;
 import org.jspecify.annotations.Nullable;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
+import org.springframework.util.Assert;
 
 import java.net.http.HttpClient;
 import java.time.Duration;
 
 /**
- * 基于 JDK {@link HttpClient} 的 {@link ClientHttpRequestFactory} 工厂 Bean。
+ * 基于 JDK {@link HttpClient} 和 {@link SSLFactory} 的 {@link ClientHttpRequestFactory} 工厂 Bean。
  *
- * <p>继承自 {@link AbstractClientHttpRequestFactoryBean}，专注于配置连接超时和读取超时。
- * SSL/TLS 相关的配置（信任库、客户端证书、主机名验证等）由父类统一管理。</p>
- *
- * <p><b>功能特性</b></p>
- * <ul>
- *   <li>连接超时 — 通过 {@link #connectTimeout} 控制与目标服务器建立连接的超时时间</li>
- *   <li>读取超时 — 通过 {@link #readTimeout} 控制从服务器读取响应的超时时间</li>
- *   <li>SSL/TLS 配置 — 信任库、mTLS、主机名验证等继承自父类</li>
- * </ul>
+ * <p>通过 {@link SSLFactory} 配置 SSL/TLS 行为（信任库、客户端证书、主机名验证等），
+ * 通过构造器注入确保 Bean 实例化后不可变。</p>
  *
  * <p><b>使用示例</b></p>
  * <pre>{@code
+ * // 信任所有证书
  * &#64;Bean
  * public JdkClientHttpRequestFactoryBean clientHttpRequestFactory() {
- *     var bean = new JdkClientHttpRequestFactoryBean();
- *     bean.setTrustAllIfNoTrustStore(true);
- *     bean.setReadTimeout(Duration.ofSeconds(30));
- *     return bean;
+ *     var sslFactory = SSLFactory.builder()
+ *             .withUnsafeTrustMaterial()
+ *             .build();
+ *     return new JdkClientHttpRequestFactoryBean(sslFactory);
+ * }
+ *
+ * // 默认配置
+ * &#64;Bean
+ * public JdkClientHttpRequestFactoryBean clientHttpRequestFactory() {
+ *     return new JdkClientHttpRequestFactoryBean();
  * }
  * }</pre>
  *
  * @author 应卓
- * @see AbstractClientHttpRequestFactoryBean
+ * @see SSLFactory
  * @see JdkClientHttpRequestFactory
  * @since 4.1.0
  */
-@Setter
-public class JdkClientHttpRequestFactoryBean extends AbstractClientHttpRequestFactoryBean {
+public class JdkClientHttpRequestFactoryBean implements FactoryBean<ClientHttpRequestFactory> {
+
+    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
+    private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(30);
+
+    private final SSLFactory sslFactory;
+    private final @Nullable Duration connectTimeout;
+    private final @Nullable Duration readTimeout;
 
     /**
-     * 连接超时时间。
-     * <p>默认值为 10 秒。设为 {@code null} 则使用 JDK 默认超时。</p>
+     * 创建默认的工厂 Bean。
+     * <p>使用 JDK 默认信任材料，连接超时 10 秒，读取超时 30 秒。</p>
      */
-    private @Nullable Duration connectTimeout = Duration.ofSeconds(10);
+    public JdkClientHttpRequestFactoryBean() {
+        this(
+                SSLFactory.builder()
+                        .withDefaultTrustMaterial()
+                        .build(),
+                DEFAULT_CONNECT_TIMEOUT,
+                DEFAULT_READ_TIMEOUT
+        );
+    }
 
     /**
-     * 读取响应数据的超时时间。
-     * <p>默认值为 30 秒。设为 {@code null} 则使用 JDK 默认超时。</p>
+     * 创建指定 SSL 配置的工厂 Bean。
+     * <p>使用默认超时配置（连接超时 10 秒，读取超时 30 秒）。</p>
+     *
+     * @param sslFactory SSL 配置工厂，不能为 {@code null}
      */
-    private @Nullable Duration readTimeout = Duration.ofSeconds(30);
+    public JdkClientHttpRequestFactoryBean(SSLFactory sslFactory) {
+        this(sslFactory, DEFAULT_CONNECT_TIMEOUT, DEFAULT_READ_TIMEOUT);
+    }
+
+    /**
+     * 创建完全自定义的工厂 Bean。
+     *
+     * @param sslFactory      SSL 配置工厂，不能为 {@code null}
+     * @param connectTimeout  连接超时（可为 {@code null}，零或负值不允许）
+     * @param readTimeout     读取超时（可为 {@code null}，零或负值不允许）
+     * @throws IllegalArgumentException sslFactory 为 {@code null}，或超时值为零/负数时抛出
+     */
+    public JdkClientHttpRequestFactoryBean(SSLFactory sslFactory, @Nullable Duration connectTimeout, @Nullable Duration readTimeout) {
+        Assert.notNull(sslFactory, "SSLFactory must not be null");
+
+        if (connectTimeout != null) {
+            Assert.isTrue(!connectTimeout.isZero() && !connectTimeout.isNegative(),
+                    "connect timeout must be positive, but got " + connectTimeout);
+        }
+
+        if (readTimeout != null) {
+            Assert.isTrue(!readTimeout.isZero() && !readTimeout.isNegative(),
+                    "read timeout must be positive, but got " + readTimeout);
+        }
+
+        this.sslFactory = sslFactory;
+        this.connectTimeout = connectTimeout;
+        this.readTimeout = readTimeout;
+    }
 
     /**
      * 创建并返回 {@link ClientHttpRequestFactory} 实例。
      *
-     * <p>通过父类 {@link AbstractClientHttpRequestFactoryBean#createSSLContext()} 和
-     * {@link AbstractClientHttpRequestFactoryBean#createSSLParameters()} 分别获取
-     * SSL 上下文和参数，然后构建 JDK {@link HttpClient} 实例。当父类判定需要禁用主机名验证时
-     * （信任所有证书且未使用自定义信任库），{@code createSSLParameters()} 返回的
-     * {@link javax.net.ssl.SSLParameters SSLParameters} 中禁用了端点标识算法。</p>
+     * <p>通过 {@link SSLFactory#getSslContext()} 和 {@link SSLFactory#getSslParameters()}
+     * 获取配置好的 SSL 上下文和参数，构建 JDK {@link HttpClient} 实例。</p>
      *
      * @return 配置好的 {@link JdkClientHttpRequestFactory} 实例
-     * @throws Exception 创建 SSL 上下文或构建 HttpClient 时出错
      */
     @Override
-    public ClientHttpRequestFactory getObject() throws Exception {
+    public ClientHttpRequestFactory getObject() {
         var clientBuilder = HttpClient.newBuilder()
-                .sslParameters(super.createSSLParameters())
-                .sslContext(super.createSSLContext());
+                .sslContext(sslFactory.getSslContext())
+                .sslParameters(sslFactory.getSslParameters());
 
-        if (this.connectTimeout != null) {
-            clientBuilder.connectTimeout(this.connectTimeout);
+        if (connectTimeout != null) {
+            clientBuilder.connectTimeout(connectTimeout);
         }
 
         var factory = new JdkClientHttpRequestFactory(clientBuilder.build());
-        if (this.readTimeout != null) {
-            factory.setReadTimeout(this.readTimeout);
+
+        if (readTimeout != null) {
+            factory.setReadTimeout(readTimeout);
         }
 
         return factory;
+    }
+
+    /**
+     * 返回 Bean 类型。
+     *
+     * @return {@link ClientHttpRequestFactory} 的 {@link Class}
+     */
+    @Override
+    public final Class<?> getObjectType() {
+        return ClientHttpRequestFactory.class;
     }
 
 }
