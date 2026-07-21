@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.utility.collection.iterator;
 
+import com.github.yingzhuo.bayonet.utility.collection.EnumerationIterator;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
