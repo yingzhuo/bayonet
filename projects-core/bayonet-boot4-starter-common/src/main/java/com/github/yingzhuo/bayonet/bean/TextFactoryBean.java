@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets;
  *
  * <p><b>使用示例</b></p>
  * <pre>{@code
- * &#64;Bean
+ * @Bean
  * public TextFactoryBean myText() {
  *     var bean = new TextFactoryBean();
  *     bean.setLocation("classpath:my-text.txt");

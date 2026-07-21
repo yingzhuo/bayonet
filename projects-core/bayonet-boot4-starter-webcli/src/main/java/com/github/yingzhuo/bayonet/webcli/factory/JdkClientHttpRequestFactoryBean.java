@@ -19,7 +19,7 @@ import java.time.Duration;
  * <p><b>使用示例</b></p>
  * <pre>{@code
  * // 信任所有证书
- * &#64;Bean
+ * @Bean
  * public JdkClientHttpRequestFactoryBean clientHttpRequestFactory() {
  *     var sslFactory = SSLFactory.builder()
  *             .withUnsafeTrustMaterial()
@@ -28,7 +28,7 @@ import java.time.Duration;
  * }
  *
  * // 默认配置
- * &#64;Bean
+ * @Bean
  * public JdkClientHttpRequestFactoryBean clientHttpRequestFactory() {
  *     return new JdkClientHttpRequestFactoryBean();
  * }

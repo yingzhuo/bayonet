@@ -14,8 +14,8 @@ import java.lang.annotation.*;
  * <p>注册的 Bean 类型为 {@link String}，Bean 名称为 {@link #beanName()}：</p>
  *
  * <pre>{@code
- * &#64;Configuration
- * &#64;ImportText(location = "classpath:welcome.txt", beanName = "welcomeMessage")
+ * @Configuration
+ * @ImportText(location = "classpath:welcome.txt", beanName = "welcomeMessage")
  * public class AppConfig {
  * }
  * }</pre>
@@ -23,8 +23,8 @@ import java.lang.annotation.*;
  * <p>使用 {@link #value()} 简写形式：</p>
  *
  * <pre>{@code
- * &#64;Configuration
- * &#64;ImportText("classpath:welcome.txt")
+ * @Configuration
+ * @ImportText("classpath:welcome.txt")
  * public class AppConfig {
  * }
  * }</pre>
@@ -32,9 +32,9 @@ import java.lang.annotation.*;
  * <p>注解可重复使用：</p>
  *
  * <pre>{@code
- * &#64;ImportText(location = "classpath:header.txt", beanName = "header")
- * &#64;ImportText(location = "classpath:footer.txt", beanName = "footer")
- * &#64;Configuration
+ * @ImportText(location = "classpath:header.txt", beanName = "header")
+ * @ImportText(location = "classpath:footer.txt", beanName = "footer")
+ * @Configuration
  * public class AppConfig {
  * }
  * }</pre>

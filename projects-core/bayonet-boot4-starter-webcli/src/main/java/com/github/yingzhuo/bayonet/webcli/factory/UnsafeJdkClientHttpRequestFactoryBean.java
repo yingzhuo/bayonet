@@ -17,7 +17,7 @@ import java.time.Duration;
  *
  * <p><b>使用示例</b></p>
  * <pre>{@code
- * &#64;Bean
+ * @Bean
  * public UnsafeJdkClientHttpRequestFactoryBean clientHttpRequestFactory() {
  *     return new UnsafeJdkClientHttpRequestFactoryBean();
  * }

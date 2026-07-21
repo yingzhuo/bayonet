@@ -35,6 +35,11 @@ paths: "**/*.java"
 - 集合返回 empty 集合，禁止返回 null
 - 单值可能不存在 → `Optional<T>`，但禁止字段类型和方法参数用 Optional
 
+## Javadoc
+
+- 代码片段使用 `{@code ...}`（而非 `<code>...</code>`），`{@code}` 内 `@`、`<`、`>` 等特殊字符按字面量处理，**禁止**使用 HTML 实体转义（如 `&#64;`、`&lt;` 等）
+- 示例代码块用 `<pre>{@code ...}</pre>` 包裹，内部 `@` 直接书写，禁止 `&#64;` 或 `&#064;`
+
 ## 避免 NPE
 
 - 每个 package 必须含 `package-info.java`，使用 `@NullMarked`

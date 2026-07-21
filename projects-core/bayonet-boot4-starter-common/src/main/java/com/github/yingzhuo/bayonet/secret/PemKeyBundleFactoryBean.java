@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
  * {@link #getObject()} 委托 {@link KeyBundleFactories#loadFromPem} 加载。</p>
  *
  * <pre>{@code
- * &#64;Bean
+ * @Bean
  * public PemKeyBundleFactoryBean keyBundle() {
  *     var fb = new PemKeyBundleFactoryBean();
  *     fb.setPemLocation("classpath:cert.pem");

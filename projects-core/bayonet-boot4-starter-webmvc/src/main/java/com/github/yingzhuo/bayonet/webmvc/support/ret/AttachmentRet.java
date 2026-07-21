@@ -16,7 +16,7 @@ import java.util.Objects;
  * 直接写入 HTTP 响应，支持文件名、Content-Disposition 和状态码配置。</p>
  *
  * <pre>{@code
- * &#64;GetMapping("/download")
+ * @GetMapping("/download")
  * public AttachmentRet download() {
  *     return AttachmentRet.builder()
  *             .inputStream(inputStream)

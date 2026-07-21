@@ -12,7 +12,7 @@ import org.springframework.util.Assert;
  * {@link #getObject()} 委托 {@link KeyBundleFactories#loadFromStore} 加载。</p>
  *
  * <pre>{@code
- * &#64;Bean
+ * @Bean
  * public KeyStoreKeyBundleFactoryBean keyBundle() {
  *     var fb = new KeyStoreKeyBundleFactoryBean();
  *     fb.setStoreType(KeyStoreType.PKCS12);
