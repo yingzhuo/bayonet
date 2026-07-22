@@ -43,6 +43,7 @@
      +--- ':projects-main:bayonet-bom' - BOM
      +--- ':projects-main:bayonet-boot4-starter-common' - 基础工具和公共代码
      +--- ':projects-main:bayonet-boot4-starter-hocon' - HOCON配置文件增强
+     +--- ':projects-main:bayonet-boot4-starter-jdbc' - JDBC增强
      +--- ':projects-main:bayonet-boot4-starter-jwt' - JWT增强
      +--- ':projects-main:bayonet-boot4-starter-security' - SpringSecurity增强
      +--- ':projects-main:bayonet-boot4-starter-validation' - Validation增强
