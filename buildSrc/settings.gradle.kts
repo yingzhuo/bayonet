@@ -7,6 +7,11 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
     repositories {
         mavenLocal()
         maven(url = "https://maven.aliyun.com/repository/public/")

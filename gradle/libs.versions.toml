@@ -1,6 +1,7 @@
 # Version Catalogs
 #  https://docs.gradle.org/current/userguide/version_catalogs.html
 [versions]
+
 [libraries]
 jetbrains-annotation = { module = "org.jetbrains:annotations", version = "26.1.0" }
 java-jwt = { module = "com.auth0:java-jwt", version = "4.6.0" }
@@ -9,6 +10,12 @@ hocon = { module = "com.typesafe:config", version = "1.4.9" }
 zxing-core = { module = "com.google.zxing:core", version = "3.5.4" }
 zxing-javase = { module = "com.google.zxing:javase", version = "3.5.4" }
 ayza-bom = { module = "io.github.hakky54:ayza-bom", version = "10.0.5" }
+
+# Plugin Artifacts (for buildSrc dependencies)
+dependency-management-plugin = "io.spring.dependency-management:io.spring.dependency-management.gradle.plugin:1.1.7"
+maven-publish-plugin = "com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:0.37.0"
+
 [bundles]
 zxing = ["zxing-core", "zxing-javase"]
+
 [plugins]
