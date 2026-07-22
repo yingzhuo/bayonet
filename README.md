@@ -1,15 +1,6 @@
-```text
- ____                               _
-| __ )  __ _ _   _  ___  _ __   ___| |_
-|  _ \ / _` | | | |/ _ \| '_ \ / _ \ __|         /| _______________
-| |_) | (_| | |_| | (_) | | | |  __/ |_    O|===|* >________________>
-|____/ \__,_|\__, |\___/|_| |_|\___|\__|         \|
-             |___/
-```
-
 # bayonet
 
-<p align="center">
+<p style="text-align: center;">
   <!-- Star 徽章 -->
   <a href="https://github.com/yingzhuo/bayonet/stargazers">
     <img src="https://img.shields.io/github/stars/yingzhuo/bayonet?style=for-the-badge&logo=octocat&color=ffb6c1&label=%E2%AD%90%20Stars" alt="Stars" />
@@ -24,7 +15,7 @@
   <a href="https://github.com/yingzhuo/bayonet/blob/main/LICENSE.txt">
     <img src="https://img.shields.io/github/license/yingzhuo/bayonet?style=for-the-badge&color=4ea8de" alt="License" />
   </a>
-</p>
+<p style="text-align: center;">
 
 Bayonet 是应卓开发的 Spring Boot 4.x 增强库，提供可复用的自动配置、工具类和集成支持，涵盖
 Web、安全、数据（JPA/Redis/MongoDB）、校验、日志等领域。
@@ -54,9 +45,22 @@ Web、安全、数据（JPA/Redis/MongoDB）、校验、日志等领域。
 
 ### 贡献者
 
-<p align="center">
+<p style="text-align: center;">
   <!-- 贡献者头像强 -->
   <a href="https://github.com/yingzhuo/bayonet/graphs/contributors">
-    <img src="https://contrib.rocks/preview?repo=yingzhuo/bayonet" alt="Contributors" />
+    <img src="https://contrib.rocks/image?repo=yingzhuo/bayonet" />
+  </a>
+</p>
+
+### 星标历史
+
+<p style="text-align: center;">
+  <!-- 星标历史 -->
+  <a href="https://star-history.com/#yingzhuo/bayonet&Date">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=yingzhuo/bayonet&type=Date&theme=dark" />
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=yingzhuo/bayonet&type=Date" />
+      <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=yingzhuo/bayonet&type=Date" width="80%" />
+    </picture>
   </a>
 </p>
