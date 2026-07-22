@@ -21,10 +21,17 @@ dependencyResolutionManagement {
 
 rootProject.name = "bayonet"
 
-file("projects-main").listFiles()?.filter { it.isDirectory }?.forEach { projectDir ->
-    if (file("${projectDir.path}/build.gradle.kts").exists()) {
-        include(":projects-main:${projectDir.name}")
-    }
-}
-
+// 集成测试 (临时性的)
 include(":project-integration-test")
+
+// 实际产物
+include(":projects-main:bayonet-bom")
+include(":projects-main:bayonet-boot4-starter-common")
+include(":projects-main:bayonet-boot4-starter-hocon")
+include(":projects-main:bayonet-boot4-starter-jdbc")
+include(":projects-main:bayonet-boot4-starter-jwt")
+include(":projects-main:bayonet-boot4-starter-security")
+include(":projects-main:bayonet-boot4-starter-validation")
+include(":projects-main:bayonet-boot4-starter-webcli")
+include(":projects-main:bayonet-boot4-starter-webmvc")
+include(":projects-main:bayonet-boot4-starter-zxing")

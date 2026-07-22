@@ -9,14 +9,15 @@ javaPlatform {
     allowDependencies()
 }
 
-val coreSubprojectPaths = rootProject.findProject("projects-main")
-    ?.subprojects
-    ?.filter { it.name != "bayonet-bom" }
-    ?.map { it.path } ?: emptyList()
-
 dependencies {
     constraints {
-        coreSubprojectPaths.forEach { path ->
+        // 除了 'bayonet-bom' 自身的产物都要纳入物料清单
+        val subProjectPathLs = rootProject.findProject("projects-main")
+            ?.subprojects
+            ?.filter { it.name != "bayonet-bom" }
+            ?.map { it.path } ?: emptyList()
+
+        subProjectPathLs.forEach { path ->
             api(project(path = path))
         }
 
