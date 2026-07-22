@@ -12,14 +12,11 @@ javaPlatform {
 dependencies {
     constraints {
         // 除了 'bayonet-bom' 自身的产物都要纳入物料清单
-        val subProjectPathLs = rootProject.findProject("projects-main")
+        rootProject.findProject("projects-main")
             ?.subprojects
             ?.filter { it.name != "bayonet-bom" }
-            ?.map { it.path } ?: emptyList()
-
-        subProjectPathLs.forEach { path ->
-            api(project(path = path))
-        }
+            ?.map { it.path }
+            ?.forEach { api(project(path = it)) }
 
         api(libs.jetbrains.annotation)
         api(libs.java.jwt)
