@@ -26,7 +26,7 @@ dependencyResolutionManagement {
 
 rootProject.name = 'bayonet'
 
-['projects-core'].each {
+['projects-main'].each {
     file(it).eachDir { projectDir ->
         if (projectDir.directory && new File(projectDir, 'build.gradle').exists()) {
             include ":$it:${projectDir.name}"

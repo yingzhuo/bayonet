@@ -3,7 +3,7 @@ plugins {
     id 'buildlogic.publish-conventions'
 }
 
-description = 'WebMvc增强'
+description = 'SpringSecurity增强'
 
 dependencies {
 
@@ -16,14 +16,17 @@ dependencies {
 
     // spring-boot & spring
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    api 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-security'
     compileOnly 'org.springframework.boot:spring-boot-autoconfigure'
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.springframework.boot:spring-boot-starter-security'
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
     compileOnly 'org.springframework.boot:spring-boot-autoconfigure-processor'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     // bayonet
-    api project(':projects-core:bayonet-boot4-starter-common')
+    api project(':projects-main:bayonet-boot4-starter-common')
 
     // lombok
     compileOnly 'org.projectlombok:lombok'

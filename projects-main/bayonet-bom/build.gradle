@@ -11,7 +11,7 @@ javaPlatform {
 
 dependencies {
     constraints {
-        rootProject.findProject('projects-core').subprojects { subproject ->
+        rootProject.findProject('projects-main').subprojects { subproject ->
             if (subproject.name != 'bayonet-bom') {
                 api project(path: subproject.path)
             }

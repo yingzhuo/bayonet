@@ -3,7 +3,7 @@ plugins {
     id 'buildlogic.publish-conventions'
 }
 
-description = '二维码条形码增强'
+description = 'HOCON配置文件增强'
 
 dependencies {
 
@@ -22,10 +22,10 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     // bayonet
-    api project(':projects-core:bayonet-boot4-starter-common')
+    api project(':projects-main:bayonet-boot4-starter-common')
 
-    // qrcode/barcode tool
-    api libs.bundles.zxing
+    // hocon
+    api libs.hocon
 
     // lombok
     compileOnly 'org.projectlombok:lombok'

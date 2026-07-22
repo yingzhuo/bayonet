@@ -59,5 +59,5 @@
 
 ### 模块约定
 
-- `projects-core/` 下的模块应用 `buildlogic.java-conventions`，该插件配置 Java 17、`-parameters` javac 标志、JUnit
+- `projects-main/` 下的模块应用 `buildlogic.java-conventions`，该插件配置 Java 17、`-parameters` javac 标志、JUnit
   Platform、sources JAR、javadoc JAR 及 Spring Boot 依赖管理

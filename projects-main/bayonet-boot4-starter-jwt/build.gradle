@@ -22,7 +22,7 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     // bayonet
-    api project(':projects-core:bayonet-boot4-starter-common')
+    api project(':projects-main:bayonet-boot4-starter-common')
 
     // jwt tool
     api libs.java.jwt
