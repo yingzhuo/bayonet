@@ -15,8 +15,6 @@ java {
         implementation = JvmImplementation.VENDOR_SPECIFIC
     }
 
-    withSourcesJar()
-    withJavadocJar()
 }
 
 dependencyManagement {
@@ -47,12 +45,9 @@ jar {
                 'Implementation-Vendor' : '应卓',
                 'Built-Jdk'             : jdkVersion,
                 'Created-By'            : "Gradle ${gradle.gradleVersion}",
-                'Url'                   : bayonetSourceCodeUrl
+                'Url'                   : 'https://github.com/yingzhuo/bayonet',
         ])
     }
-}
-
-sourcesJar {
 }
 
 javadoc {

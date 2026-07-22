@@ -1,6 +1,6 @@
 plugins {
-    id 'buildlogic.maven-central-bom-conventions'
-    id 'buildlogic.sonatype-conventions'
+    id 'java-platform'
+    id 'buildlogic.publish-conventions'
 }
 
 description = 'BOM'
@@ -8,6 +8,11 @@ description = 'BOM'
 javaPlatform {
     allowDependencies()
 }
+
+def coreSubprojectPaths = rootProject.findProject('projects-core')
+        ?.subprojects
+        ?.findAll { it.name != 'bayonet-bom' }
+        ?.collect { it.path } ?: []
 
 dependencies {
     constraints {
@@ -20,10 +25,8 @@ dependencies {
         api libs.bc.bom
         api libs.ayza.bom
 
-        rootProject.findProject('projects-core').subprojects { subproject ->
-            if (subproject.name != 'bayonet-bom') {
-                api(subproject)
-            }
+        coreSubprojectPaths.each { projectPath ->
+            api project(projectPath)
         }
     }
 }
