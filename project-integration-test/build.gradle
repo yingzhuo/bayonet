@@ -10,9 +10,9 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-actuator'
 
     // bayonet
-    api platform(project(':projects-core:bayonet-bom'))
-    api project(':projects-core:bayonet-boot4-starter-common')
-    api project(':projects-core:bayonet-boot4-starter-webcli')
+    api platform(project(':projects-main:bayonet-bom'))
+    api project(':projects-main:bayonet-boot4-starter-common')
+    api project(':projects-main:bayonet-boot4-starter-webcli')
 
     // lombok
     compileOnly 'org.projectlombok:lombok'

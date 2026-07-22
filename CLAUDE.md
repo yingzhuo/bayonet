@@ -22,13 +22,13 @@
 运行单个测试类：
 
 ```
-./gradlew :projects-core:bayonet-boot4-starter-common:test --tests "com.github.yingzhuo.SomeTest"
+./gradlew :projects-main:bayonet-boot4-starter-common:test --tests "com.github.yingzhuo.SomeTest"
 ```
 
 运行单个测试方法：
 
 ```
-./gradlew :projects-core:bayonet-boot4-starter-common:test --tests "com.github.yingzhuo.SomeTest#testMethod"
+./gradlew :projects-main:bayonet-boot4-starter-common:test --tests "com.github.yingzhuo.SomeTest#testMethod"
 ```
 
 使用 `--info` 或 `--stacktrace` 获取诊断输出。
@@ -39,16 +39,16 @@
 
 ```
 +--- ':project-integration-test' - 集成测试 (临时)
-\--- ':projects-core'
-     +--- ':projects-core:bayonet-bom' - BOM
-     +--- ':projects-core:bayonet-boot4-starter-common' - 基础工具和公共代码
-     +--- ':projects-core:bayonet-boot4-starter-hocon' - HOCON配置文件增强
-     +--- ':projects-core:bayonet-boot4-starter-jwt' - JWT增强
-     +--- ':projects-core:bayonet-boot4-starter-security' - SpringSecurity增强
-     +--- ':projects-core:bayonet-boot4-starter-validation' - Validation增强
-     +--- ':projects-core:bayonet-boot4-starter-webcli' - WebClient增强
-     +--- ':projects-core:bayonet-boot4-starter-webmvc' - WebMvc增强
-     \--- ':projects-core:bayonet-boot4-starter-zxing' - 二维码条形码增强
+\--- ':projects-main'
+     +--- ':projects-main:bayonet-bom' - BOM
+     +--- ':projects-main:bayonet-boot4-starter-common' - 基础工具和公共代码
+     +--- ':projects-main:bayonet-boot4-starter-hocon' - HOCON配置文件增强
+     +--- ':projects-main:bayonet-boot4-starter-jwt' - JWT增强
+     +--- ':projects-main:bayonet-boot4-starter-security' - SpringSecurity增强
+     +--- ':projects-main:bayonet-boot4-starter-validation' - Validation增强
+     +--- ':projects-main:bayonet-boot4-starter-webcli' - WebClient增强
+     +--- ':projects-main:bayonet-boot4-starter-webmvc' - WebMvc增强
+     \--- ':projects-main:bayonet-boot4-starter-zxing' - 二维码条形码增强
 ```
 
 ### 构建系统
@@ -59,5 +59,5 @@
 
 ### 模块约定
 
-- `projects-core/` 下的模块应用 `buildlogic.java-conventions`，该插件配置 Java 17、`-parameters` javac 标志、JUnit
+- `projects-main/` 下的模块应用 `buildlogic.java-conventions`，该插件配置 Java 17、`-parameters` javac 标志、JUnit
   Platform、sources JAR、javadoc JAR 及 Spring Boot 依赖管理

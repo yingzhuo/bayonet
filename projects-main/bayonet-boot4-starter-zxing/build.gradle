@@ -3,7 +3,7 @@ plugins {
     id 'buildlogic.publish-conventions'
 }
 
-description = 'SpringSecurity增强'
+description = '二维码条形码增强'
 
 dependencies {
 
@@ -16,17 +16,16 @@ dependencies {
 
     // spring-boot & spring
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-security'
     compileOnly 'org.springframework.boot:spring-boot-autoconfigure'
-    compileOnly 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.springframework.boot:spring-boot-starter-security'
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
     compileOnly 'org.springframework.boot:spring-boot-autoconfigure-processor'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     // bayonet
-    api project(':projects-core:bayonet-boot4-starter-common')
+    api project(':projects-main:bayonet-boot4-starter-common')
+
+    // qrcode/barcode tool
+    api libs.bundles.zxing
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
