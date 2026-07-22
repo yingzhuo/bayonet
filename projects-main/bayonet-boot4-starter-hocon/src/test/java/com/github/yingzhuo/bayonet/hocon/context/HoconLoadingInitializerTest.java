@@ -51,10 +51,13 @@ class HoconLoadingInitializerTest {
     void should_do_nothing_when_no_config_found() {
         var notFound = mockResourceNotFound();
         when(ctx.getResource(anyString())).thenReturn(notFound);
+        when(ctx.getEnvironment()).thenReturn(environment);
+        when(environment.getProperty("spring.application.name")).thenReturn(null);
 
         initializer.initialize(ctx);
 
-        verify(ctx, never()).getEnvironment();
+        verify(ctx).getEnvironment();
+        verify(propertySources, never()).addFirst(any());
     }
 
     // ============== IOException 时不应抛出异常 ==============
@@ -110,8 +113,30 @@ class HoconLoadingInitializerTest {
         when(resource.getURL()).thenThrow(new IOException("read error"));
 
         when(ctx.getResource(anyString())).thenReturn(resource);
+        when(ctx.getEnvironment()).thenReturn(environment);
+        when(environment.getProperty("spring.application.name")).thenReturn(null);
 
         assertThatCode(() -> initializer.initialize(ctx)).doesNotThrowAnyException();
+    }
+
+    @Test
+    void should_use_applicationName_when_spring_dot_application_dot_name_is_set() throws Exception {
+        var tempFile = Files.createTempFile("test-", ".conf").toFile();
+        tempFile.deleteOnExit();
+        Files.writeString(tempFile.toPath(), "app.name = bayonet");
+
+        var notFound = mockResourceNotFound();
+        var found = mockResourceFound(tempFile.toURI().toURL().toString());
+
+        when(ctx.getResource(anyString())).thenReturn(notFound);
+        when(ctx.getResource("classpath:myapp.conf")).thenReturn(found);
+        when(ctx.getEnvironment()).thenReturn(environment);
+        when(environment.getPropertySources()).thenReturn(propertySources);
+        when(environment.getProperty("spring.application.name")).thenReturn("myapp");
+
+        initializer.initialize(ctx);
+
+        verify(propertySources).addFirst(argThat(ps -> "classpath:myapp.conf".equals(ps.getName())));
     }
 
 }

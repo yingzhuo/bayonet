@@ -6,8 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.Ordered;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 在应用上下文刷新前从默认路径加载 HOCON 配置文件的初始化器。
@@ -18,6 +21,8 @@ import java.io.IOException;
  *   <li>{@code classpath:default.conf}</li>
  *   <li>{@code classpath:config/default.conf}</li>
  * </ol>
+ * <p>若 {@code spring.application.name} 已配置，还会按 {@code classpath -> classpath:config -> file -> file:config}
+ * 优先级尝试加载 {@code {应用名}.conf}。</p>
  * <p>若所有路径均不可用则静默跳过（设计上配置文件是可选的）。</p>
  *
  * @author 应卓
@@ -28,18 +33,28 @@ import java.io.IOException;
 public class HoconLoadingInitializer extends AbstractApplicationContextInitializer<ConfigurableApplicationContext>
         implements Ordered {
 
-    private static final String[] DEFAULT_LOCATIONS = new String[]{
+    private static final List<String> DEFAULT_LOCATIONS = List.of(
             "file:default.conf",
             "file:config/default.conf",
             "classpath:default.conf",
             "classpath:config/default.conf"
-    };
+    );
 
     private static final PropertySourceLoader LOADER = new HoconPropertySourceLoader();
 
     @Override
     public void initialize(ConfigurableApplicationContext ctx) {
-        for (var location : DEFAULT_LOCATIONS) {
+        var locationList = new ArrayList<>(DEFAULT_LOCATIONS);
+
+        var applicationName = ctx.getEnvironment().getProperty("spring.application.name");
+        if (StringUtils.hasText(applicationName)) {
+            locationList.add("classpath:" + applicationName + ".conf");
+            locationList.add("classpath:config/" + applicationName + ".conf");
+            locationList.add("file:" + applicationName + ".conf");
+            locationList.add("file:config/" + applicationName + ".conf");
+        }
+
+        for (var location : locationList) {
             var resource = loadResource(ctx, location);
             if (resource == null) {
                 log.trace("HOCON config not found at: {}", location);
