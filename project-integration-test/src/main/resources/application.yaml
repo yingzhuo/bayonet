@@ -2,6 +2,8 @@
 # Actuator
 # ----------------------------------------------------------------------------------------------------------------------
 spring:
+  application:
+    name: 'project-integration-test'
   banner:
     location: "classpath:config/banner.txt"
 

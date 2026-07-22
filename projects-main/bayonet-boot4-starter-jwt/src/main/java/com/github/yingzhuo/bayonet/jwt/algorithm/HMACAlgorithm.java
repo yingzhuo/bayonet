@@ -35,6 +35,7 @@ import java.lang.annotation.*;
  * @see com.auth0.jwt.algorithms.Algorithm
  * @see Type
  * @since 4.1.0
+ * @deprecated 这种配置方式不易理解，稍有炫技成分。
  */
 @Inherited
 @Documented
@@ -42,6 +43,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Import(HMACAlgorithm.Importing.class)
 @ApiStatus.Experimental
+@Deprecated(since = "4.1.1")
 public @interface HMACAlgorithm {
 
     /**
@@ -70,6 +72,7 @@ public @interface HMACAlgorithm {
      * </ul>
      */
     @ApiStatus.Experimental
+    @Deprecated(since = "4.1.1")
     enum Type {
         HMAC256, HMAC384, HMAC512
     }
@@ -79,6 +82,7 @@ public @interface HMACAlgorithm {
      * <p>读取 {@link HMACAlgorithm} 注解属性，创建对应的 HMAC Algorithm Bean。</p>
      */
     @ApiStatus.Experimental
+    @Deprecated(since = "4.1.1")
     class Importing extends BeanDefinitionRegistrarSupport {
 
         public Importing(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {

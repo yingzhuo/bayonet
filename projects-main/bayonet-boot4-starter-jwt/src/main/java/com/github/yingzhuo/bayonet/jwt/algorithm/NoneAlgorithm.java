@@ -23,6 +23,7 @@ import java.lang.annotation.*;
  * @author 应卓
  * @see Algorithm#none
  * @since 4.1.0
+ * @deprecated 这种配置方式不易理解，稍有炫技成分。
  */
 @Inherited
 @Documented
@@ -30,6 +31,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Import(NoneAlgorithm.Importing.class)
 @ApiStatus.Experimental
+@Deprecated(since = "4.1.1")
 public @interface NoneAlgorithm {
 
     /**
@@ -37,6 +39,7 @@ public @interface NoneAlgorithm {
      * <p>注册一个 {@link com.auth0.jwt.algorithms.Algorithm#none Algorithm.none()} 单例 Bean。</p>
      */
     @ApiStatus.Experimental
+    @Deprecated(since = "4.1.1")
     class Importing implements ImportBeanDefinitionRegistrar {
         @Override
         public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {
