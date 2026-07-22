@@ -1,18 +1,21 @@
-```text
- ____                               _
-| __ )  __ _ _   _  ___  _ __   ___| |_
-|  _ \ / _` | | | |/ _ \| '_ \ / _ \ __|         /| _______________
-| |_) | (_| | |_| | (_) | | | |  __/ |_    O|===|* >________________>
-|____/ \__,_|\__, |\___/|_| |_|\___|\__|         \|
-             |___/
-```
-
 # bayonet
 
-[![License](https://img.shields.io/badge/License-Apache%20v2.0-red?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0)
-[![Author](https://img.shields.io/badge/yingzhor%40gmail.com-F0FF00?style=flat-square)](mailto:yingzhor@gmail.com)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.yingzhuo/bayonet-bom.svg?label=Maven%20Central&style=flat-square)](https://search.maven.org/search?q=g:%22com.github.yingzhuo%22%20AND%20a:%22bayonet-bom%22)
-[![GitHub stars](https://img.shields.io/github/stars/yingzhuo/bayonet?style=flat-square&logo=github&color=ff69b4)](https://github.com/yingzhuo/bayonet/stargazers)
+<p style="text-align: center;">
+  <!-- Star 徽章 -->
+  <a href="https://github.com/yingzhuo/bayonet/stargazers">
+    <img src="https://img.shields.io/github/stars/yingzhuo/bayonet?style=for-the-badge&logo=octocat&color=ffb6c1&label=%E2%AD%90%20Stars" alt="Stars" />
+  </a>
+  <!-- Fork 徽章 -->
+  <a href="https://github.com/yingzhuo/bayonet/network/members">
+    <img src="https://img.shields.io/github/forks/yingzhuo/bayonet?style=for-the-badge&color=ffbe0b" alt="Forks" />
+  </a>
+  <!-- Java 版本 -->
+  <img src="https://img.shields.io/badge/Java-17%2B-orange?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java Version" />
+  <!-- 开源协议 -->
+  <a href="https://github.com/yingzhuo/bayonet/blob/main/LICENSE.txt">
+    <img src="https://img.shields.io/github/license/yingzhuo/bayonet?style=for-the-badge&color=4ea8de" alt="License" />
+  </a>
+<p style="text-align: center;">
 
 Bayonet 是应卓开发的 Spring Boot 4.x 增强库，提供可复用的自动配置、工具类和集成支持，涵盖
 Web、安全、数据（JPA/Redis/MongoDB）、校验、日志等领域。
@@ -39,3 +42,25 @@ Web、安全、数据（JPA/Redis/MongoDB）、校验、日志等领域。
 ### 许可证
 
 - [Apache 2.0](./LICENSE.txt)
+
+### 贡献者
+
+<p style="text-align: center;">
+  <!-- 贡献者头像强 -->
+  <a href="https://github.com/yingzhuo/bayonet/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=yingzhuo/bayonet" />
+  </a>
+</p>
+
+### 星标历史
+
+<p style="text-align: center;">
+  <!-- 星标历史 -->
+  <a href="https://star-history.com/#yingzhuo/bayonet&Date">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=yingzhuo/bayonet&type=Date&theme=dark" />
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=yingzhuo/bayonet&type=Date" />
+      <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=yingzhuo/bayonet&type=Date" width="80%" />
+    </picture>
+  </a>
+</p>

@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Bearer Token 认证请求拦截器。
  *
- * <p>在请求头中添加 {@code Authorization: Bearer &lt;token&gt;}。
+ * <p>在请求头中添加 {@code Authorization: Bearer <token>}。
  * 若请求已包含 {@code Authorization} 头，则不会覆盖已有值。</p>
  *
  * <p><b>使用示例</b></p>
@@ -26,12 +26,19 @@ import java.io.IOException;
  * @author 应卓
  * @see ClientHttpRequestInterceptor
  * @see com.github.yingzhuo.bayonet.webcli.util.InterceptorFactories
+ * @see <a href="https://tools.ietf.org/html/rfc6750">RFC 6750</a>
  * @since 4.1.0
  */
 public class BearerAuthClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
     private final String token;
 
+    /**
+     * 构造器
+     *
+     * @param token 用户认证的令牌
+     * @throws IllegalArgumentException 令牌为空值或blank
+     */
     public BearerAuthClientHttpRequestInterceptor(String token) {
         Assert.hasText(token, "token must not be empty");
         this.token = token;

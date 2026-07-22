@@ -54,6 +54,9 @@ import java.io.IOException;
 @Setter
 public class TokenBasedAuthenticationFilter<A extends Authentication> extends OncePerRequestFilter {
 
+    public static final String ATTRIBUTE_TOKEN_NAME = TokenBasedAuthenticationFilter.class.getName() + "#token";
+    public static final String ATTRIBUTE_AUTHENTICATION_NAME = TokenBasedAuthenticationFilter.class.getName() + "#authentication";
+
     private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
     private TokenResolver tokenResolver = new BearerHeaderTokenResolver();
     private TokenConverter<A> tokenConverter;
@@ -81,6 +84,8 @@ public class TokenBasedAuthenticationFilter<A extends Authentication> extends On
             return;
         }
 
+        request.setAttribute(ATTRIBUTE_TOKEN_NAME, token); // 偷偷放在request里
+
         if (applicationEventPublisher != null) {
             applicationEventPublisher.publishEvent(new TokenResolvedEvent(currentWebRequest, token));
         }
@@ -100,6 +105,7 @@ public class TokenBasedAuthenticationFilter<A extends Authentication> extends On
                 rememberMeServices.loginSuccess(request, response, auth);
             }
 
+            request.setAttribute(ATTRIBUTE_AUTHENTICATION_NAME, auth); // 偷偷放在request里
             securityContextHolderStrategy.getContext().setAuthentication(auth);
 
             if (applicationEventPublisher != null) {
