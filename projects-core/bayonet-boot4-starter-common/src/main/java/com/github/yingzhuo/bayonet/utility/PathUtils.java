@@ -12,7 +12,9 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
-import java.util.*;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -164,7 +166,7 @@ public final class PathUtils {
      * @param replaceExisting 是否覆盖已有文件
      */
     public static void copy(Path source, Path target, boolean replaceExisting) {
-        final List<CopyOption> copyOptions = new ArrayList<>();
+        final List<CopyOption> copyOptions = new LinkedList<>();
 
         if (replaceExisting) {
             copyOptions.add(StandardCopyOption.REPLACE_EXISTING);
@@ -515,7 +517,7 @@ public final class PathUtils {
      */
     public static void writeLines(Path path, List<String> lines, Charset charset, boolean createIfNotExists,
                                   boolean append) {
-        final List<OpenOption> openOptions = new ArrayList<>();
+        final List<OpenOption> openOptions = new LinkedList<>();
         openOptions.add(StandardOpenOption.WRITE);
 
         if (createIfNotExists) {
