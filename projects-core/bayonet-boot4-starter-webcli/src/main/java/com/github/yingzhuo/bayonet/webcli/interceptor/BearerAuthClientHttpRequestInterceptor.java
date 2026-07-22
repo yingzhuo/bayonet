@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Bearer Token 认证请求拦截器。
  *
- * <p>在请求头中添加 {@code Authorization: Bearer &lt;token&gt;}。
+ * <p>在请求头中添加 {@code Authorization: Bearer <token>}。
  * 若请求已包含 {@code Authorization} 头，则不会覆盖已有值。</p>
  *
  * <p><b>使用示例</b></p>
