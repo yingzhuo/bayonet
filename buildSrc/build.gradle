@@ -12,7 +12,3 @@ if (file.exists() && file.isFile()) {
 
     props.forEach(ext::set)
 }
-
-dependencies {
-    implementation "com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:$vanniktechMavenPublishVersion"
-}
