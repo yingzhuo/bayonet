@@ -20,9 +20,11 @@ purge: clean
 ifeq ($(OS), Windows_NT)
 	if exist $(MAKEFILE_PATH)\.gradle rmdir /s /q $(MAKEFILE_PATH)\.gradle
 	if exist $(MAKEFILE_PATH)\buildSrc\.gradle rmdir /s /q $(MAKEFILE_PATH)\buildSrc\.gradle
+	if exist $(MAKEFILE_PATH)\buildSrc\.kotlin rmdir /s /q $(MAKEFILE_PATH)\buildSrc\.kotlin
 else
 	rm -rf $(MAKEFILE_PATH)/.gradle
 	rm -rf $(MAKEFILE_PATH)/buildSrc/.gradle
+	rm -rf $(MAKEFILE_PATH)/buildSrc/.kotlin
 endif
 
 rebuild-build-logic:

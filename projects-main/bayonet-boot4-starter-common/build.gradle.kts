@@ -1,0 +1,37 @@
+plugins {
+    id("buildlogic.java-conventions")
+    id("buildlogic.publish-conventions")
+}
+
+description = "基础工具和公共代码"
+
+dependencies {
+    compileOnly(libs.jetbrains.annotation)
+
+    // test
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    // spring-boot & spring
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-aspectj")
+    compileOnly("org.springframework.boot:spring-boot-autoconfigure")
+    compileOnly("org.springframework.boot:spring-boot-starter-aspectj")
+    compileOnly("org.springframework.boot:spring-boot-starter-web")
+    compileOnly("org.springframework.boot:spring-boot-starter-logging")
+    compileOnly("org.springframework.boot:spring-boot-starter-validation")
+    compileOnly("org.springframework.boot:spring-boot-autoconfigure-processor")
+    compileOnly("org.springframework.boot:spring-boot-configuration-processor")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+    // lombok
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+
+    // slf4j
+    api("org.slf4j:slf4j-api")
+
+    // BC
+    api(platform(libs.bc.bom))
+    compileOnly("org.bouncycastle:bcprov-jdk18on")
+}

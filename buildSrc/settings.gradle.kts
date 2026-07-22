@@ -1,7 +1,7 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven { url = 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven(url = "https://maven.aliyun.com/repository/gradle-plugin")
         mavenCentral()
     }
 }
@@ -9,7 +9,7 @@ pluginManagement {
 dependencyResolutionManagement {
     repositories {
         mavenLocal()
-        maven { url = 'https://maven.aliyun.com/repository/public/' }
+        maven(url = "https://maven.aliyun.com/repository/public/")
         mavenCentral()
     }
     repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
