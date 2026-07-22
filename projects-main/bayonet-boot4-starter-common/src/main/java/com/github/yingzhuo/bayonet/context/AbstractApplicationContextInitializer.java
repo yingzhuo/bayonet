@@ -15,7 +15,7 @@ import org.springframework.core.io.ResourceLoader;
  * @param <T> 应用上下文类型
  * @author 应卓
  * @see PropertiesLoadingInitializer
- * @see com.github.yingzhuo.bayonet.hocon.context.HoconLoadingInitializer
+ * @see YamlLoadingInitializer
  * @since 4.1.0
  */
 public abstract class AbstractApplicationContextInitializer<T extends ConfigurableApplicationContext>
