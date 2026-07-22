@@ -15,10 +15,7 @@ if (propertiesFile.exists() && propertiesFile.isFile) {
     }
 }
 
-val dependencyManagementPluginVersion: String = project.property("dependencyManagementPluginVersion").toString()
-val mavenPublishVersion: String = project.property("mavenPublishVersion").toString()
-
 dependencies {
-    implementation("io.spring.dependency-management:io.spring.dependency-management.gradle.plugin:$dependencyManagementPluginVersion")
-    implementation("com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:$mavenPublishVersion")
+    implementation(libs.dependency.management.plugin)
+    implementation(libs.maven.publish.plugin)
 }
