@@ -3,6 +3,7 @@ package com.github.yingzhuo.bayonet.jdbc.datasource.dynamic;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
+import org.springframework.util.Assert;
 
 /**
  * 数据源上下文持有者。
@@ -26,6 +27,7 @@ public final class DataSourceContextHolder {
      * @param name 数据源标识符
      */
     public static void set(String name) {
+        Assert.hasText(name, "name must not be empty");
         CONTEXT.set(name);
     }
 

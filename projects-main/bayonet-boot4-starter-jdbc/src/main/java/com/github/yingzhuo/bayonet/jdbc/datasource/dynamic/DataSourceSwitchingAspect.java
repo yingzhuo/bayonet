@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.jdbc.datasource.dynamic;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -22,6 +23,7 @@ import org.springframework.core.Ordered;
  * @see DynamicDataSource
  * @since 4.1.1
  */
+@Slf4j
 @Aspect
 public class DataSourceSwitchingAspect implements Ordered {
 
@@ -35,11 +37,23 @@ public class DataSourceSwitchingAspect implements Ordered {
      */
     @Around("@annotation(dsSwitch)")
     public Object around(ProceedingJoinPoint joinPoint, DataSourceSwitch dsSwitch) throws Throwable {
-        DataSourceContextHolder.set(dsSwitch.value());
+        var datasource = dsSwitch.value();
+        if (log.isDebugEnabled()) {
+            log.debug("Switching to datasource '{}' for method '{}#{}'",
+                    datasource, joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName());
+        }
+
+        DataSourceContextHolder.set(datasource);
         try {
             return joinPoint.proceed();
         } finally {
             DataSourceContextHolder.clear();
+            if (log.isDebugEnabled()) {
+                log.debug("Cleared datasource context for method '{}#{}'",
+                        joinPoint.getSignature().getDeclaringTypeName(),
+                        joinPoint.getSignature().getName());
+            }
         }
     }
 
