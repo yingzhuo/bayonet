@@ -44,9 +44,7 @@ public class CurrentTokenHandlerMethodArgumentResolver implements HandlerMethodA
     }
 
     @Override
-    @Nullable
-    public Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) throws Exception {
+    public @Nullable Object resolveArgument(MethodParameter parameter, @Nullable ModelAndViewContainer mavContainer, NativeWebRequest webRequest, @Nullable WebDataBinderFactory binderFactory) {
         var servletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
         if (servletRequest == null) {
             return resolveEmpty(parameter);
@@ -66,5 +64,4 @@ public class CurrentTokenHandlerMethodArgumentResolver implements HandlerMethodA
         }
         return Optional.empty();
     }
-
 }
