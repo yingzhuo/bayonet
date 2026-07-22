@@ -28,7 +28,7 @@ dependencies {
     // ayza (SSL Context tool)
     api platform(libs.ayza.bom)
     api 'io.github.hakky54:ayza'
-    api 'io.github.hakky54:ayza-for-pem'
+    compileOnly 'io.github.hakky54:ayza-for-pem' // optional 很少有工程真的需要从PEM里加载trust信息 一般使用PKCS#12
     compileOnly 'io.github.hakky54:ayza-for-apache5' // optional
 
     // apache5

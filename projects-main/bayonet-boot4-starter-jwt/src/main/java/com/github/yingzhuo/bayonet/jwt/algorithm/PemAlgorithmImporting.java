@@ -2,6 +2,7 @@ package com.github.yingzhuo.bayonet.jwt.algorithm;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.github.yingzhuo.bayonet.secret.KeyBundleFactories;
+import org.jetbrains.annotations.ApiStatus;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
@@ -10,6 +11,13 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.StringUtils;
 
+/**
+ * @author 应卓
+ * @since 4.1.0
+ * @deprecated 这种配置方式不易理解，稍有炫技成分。
+ */
+@ApiStatus.Experimental
+@Deprecated(since = "4.1.1")
 class PemAlgorithmImporting extends AlgorithmImportingSupport {
 
     public PemAlgorithmImporting(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
