@@ -1,7 +1,6 @@
 plugins {
     id 'buildlogic.java-conventions'
-    id 'buildlogic.maven-central-jar-conventions'
-    id 'buildlogic.sonatype-conventions'
+    id 'buildlogic.publish-conventions'
 }
 
 description = '二维码条形码增强'

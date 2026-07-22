@@ -41,7 +41,7 @@ install:
 publish: install
 	echo "警告：即将发布到Maven中央仓库！"
 	read -p "确认继续？(yes/no) " confirm && [ $$confirm = "yes" ] || exit 1
-	$(GRADLEW) -x "test" "publishToMavenCentralPortal" --no-parallel
+	$(GRADLEW) -x "test" "publishAllPublicationsToMavenCentralRepository" --no-parallel
 
 test:
 	$(GRADLEW) "test"

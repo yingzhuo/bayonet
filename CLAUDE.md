@@ -53,7 +53,7 @@
 
 ### 构建系统
 
-- **Gradle 8.14.5**，JDK 17 目标
+- **Gradle 9.6.1**，JDK 17 目标
 - 通过 `buildSrc/` 中的约定插件统一模块配置，各模块按 ID 引用（`buildlogic.java-conventions` 等）
 - 禁用模块元数据生成（发布优化），版本属性统一在 `gradle.properties` 中管理
 
