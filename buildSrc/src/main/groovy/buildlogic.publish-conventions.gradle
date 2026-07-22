@@ -24,6 +24,9 @@ mavenPublishing {
                 id = 'yingzhuo'
                 name = '应卓'
                 email = 'yingzhor@gmail.com'
+                url = 'https://github.com/yingzhuo'
+                roles = ['author']
+                timezone = '+8'
             }
         }
 
