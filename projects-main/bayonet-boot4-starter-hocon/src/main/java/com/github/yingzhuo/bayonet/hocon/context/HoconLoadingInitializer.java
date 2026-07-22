@@ -8,7 +8,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.util.StringUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,13 +61,12 @@ public class HoconLoadingInitializer extends AbstractApplicationContextInitializ
             }
 
             try {
-                var propertySourceList = LOADER.load(location, resource);
-                for (var propertySource : propertySourceList) {
+                for (var propertySource : LOADER.load(location, resource)) {
                     ctx.getEnvironment().getPropertySources().addFirst(propertySource);
                 }
                 log.debug("loaded HOCON config from: {}", location);
                 break;
-            } catch (IOException e) {
+            } catch (Exception e) {
                 log.warn("failed to load HOCON config from {}: {}", location, e.getMessage());
             }
         }
@@ -76,7 +74,6 @@ public class HoconLoadingInitializer extends AbstractApplicationContextInitializ
 
     @Override
     public int getOrder() {
-        return 110;
+        return 120;
     }
-
 }

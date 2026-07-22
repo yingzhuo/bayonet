@@ -7,7 +7,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.util.StringUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,13 +72,12 @@ public class YamlLoadingInitializer extends AbstractApplicationContextInitialize
             }
 
             try {
-                var propertySourceList = LOADER.load(location, resource);
-                for (var propertySource : propertySourceList) {
+                for (var propertySource : LOADER.load(location, resource)) {
                     ctx.getEnvironment().getPropertySources().addFirst(propertySource);
                 }
                 log.debug("loaded YAML config from: {}", location);
                 break;
-            } catch (IOException | RuntimeException e) {
+            } catch (Exception e) {
                 log.warn("failed to load YAML config from {}: {}", location, e.getMessage());
             }
         }
@@ -87,6 +85,6 @@ public class YamlLoadingInitializer extends AbstractApplicationContextInitialize
 
     @Override
     public int getOrder() {
-        return 90;
+        return 100;
     }
 }

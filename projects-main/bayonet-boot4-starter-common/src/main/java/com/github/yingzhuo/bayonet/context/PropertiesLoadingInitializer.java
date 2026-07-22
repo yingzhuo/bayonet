@@ -6,7 +6,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.util.StringUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -65,7 +64,7 @@ public class PropertiesLoadingInitializer extends AbstractApplicationContextInit
                         .addFirst(PropertiesUtils.toMapPropertySource(location, properties));
                 log.debug("loaded properties from {}", location);
                 break;
-            } catch (IOException e) {
+            } catch (Exception e) {
                 log.warn("failed to load properties from {}: {}", location, e.getMessage());
             }
         }
@@ -73,6 +72,6 @@ public class PropertiesLoadingInitializer extends AbstractApplicationContextInit
 
     @Override
     public int getOrder() {
-        return 100;
+        return 110;
     }
 }
