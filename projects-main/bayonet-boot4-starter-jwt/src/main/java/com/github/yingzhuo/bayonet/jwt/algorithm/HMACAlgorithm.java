@@ -2,6 +2,7 @@ package com.github.yingzhuo.bayonet.jwt.algorithm;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.github.yingzhuo.bayonet.beandef.BeanDefinitionRegistrarSupport;
+import org.jetbrains.annotations.ApiStatus;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -40,6 +41,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Import(HMACAlgorithm.Importing.class)
+@ApiStatus.Experimental
 public @interface HMACAlgorithm {
 
     /**
@@ -67,6 +69,7 @@ public @interface HMACAlgorithm {
      *     <li>{@link #HMAC512} — HmacSHA512</li>
      * </ul>
      */
+    @ApiStatus.Experimental
     enum Type {
         HMAC256, HMAC384, HMAC512
     }
@@ -75,6 +78,7 @@ public @interface HMACAlgorithm {
      * HMAC JWT Algorithm 的 {@link ImportBeanDefinitionRegistrar} 实现。
      * <p>读取 {@link HMACAlgorithm} 注解属性，创建对应的 HMAC Algorithm Bean。</p>
      */
+    @ApiStatus.Experimental
     class Importing extends BeanDefinitionRegistrarSupport {
 
         public Importing(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {

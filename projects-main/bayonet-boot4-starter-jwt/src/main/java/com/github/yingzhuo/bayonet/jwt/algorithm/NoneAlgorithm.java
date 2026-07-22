@@ -1,6 +1,7 @@
 package com.github.yingzhuo.bayonet.jwt.algorithm;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import org.jetbrains.annotations.ApiStatus;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
@@ -28,12 +29,14 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Import(NoneAlgorithm.Importing.class)
+@ApiStatus.Experimental
 public @interface NoneAlgorithm {
 
     /**
      * 无签名 JWT Algorithm 的 {@link ImportBeanDefinitionRegistrar} 实现。
      * <p>注册一个 {@link com.auth0.jwt.algorithms.Algorithm#none Algorithm.none()} 单例 Bean。</p>
      */
+    @ApiStatus.Experimental
     class Importing implements ImportBeanDefinitionRegistrar {
         @Override
         public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {

@@ -37,6 +37,14 @@ import java.util.Optional;
  */
 public class CurrentTokenHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
+    @Nullable
+    private static Object resolveEmpty(MethodParameter parameter) {
+        if (String.class.isAssignableFrom(parameter.getParameterType())) {
+            return null;
+        }
+        return Optional.empty();
+    }
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(CurrentToken.class) &&
@@ -55,13 +63,5 @@ public class CurrentTokenHandlerMethodArgumentResolver implements HandlerMethodA
             return token;
         }
         return Optional.ofNullable(token);
-    }
-
-    @Nullable
-    private static Object resolveEmpty(MethodParameter parameter) {
-        if (String.class.isAssignableFrom(parameter.getParameterType())) {
-            return null;
-        }
-        return Optional.empty();
     }
 }

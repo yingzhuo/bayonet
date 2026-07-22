@@ -61,9 +61,9 @@ public class JdkClientHttpRequestFactoryBean extends AbstractClientHttpRequestFa
     /**
      * 创建完全自定义的工厂 Bean。
      *
-     * @param sslFactory      SSL 配置工厂，不能为 {@code null}
-     * @param connectTimeout  连接超时（可为 {@code null}，零或负值不允许）
-     * @param readTimeout     读取超时（可为 {@code null}，零或负值不允许）
+     * @param sslFactory     SSL 配置工厂，不能为 {@code null}
+     * @param connectTimeout 连接超时（可为 {@code null}，零或负值不允许）
+     * @param readTimeout    读取超时（可为 {@code null}，零或负值不允许）
      * @throws IllegalArgumentException sslFactory 为 {@code null}，或超时值为零/负数时抛出
      */
     public JdkClientHttpRequestFactoryBean(SSLFactory sslFactory, @Nullable Duration connectTimeout, @Nullable Duration readTimeout) {
