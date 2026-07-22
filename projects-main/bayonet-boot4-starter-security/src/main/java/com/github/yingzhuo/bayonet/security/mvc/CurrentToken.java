@@ -24,7 +24,7 @@ import java.lang.annotation.*;
  *
  * @author 应卓
  * @see CurrentTokenHandlerMethodArgumentResolver
- * @see com.github.yingzhuo.bayonet.security.filter.TokenBasedAuthenticationFilter
+ * @see com.github.yingzhuo.bayonet.security.filter.TokenBasedAuthenticationFilter#ATTRIBUTE_TOKEN_NAME
  * @since 4.1.1
  */
 @Documented

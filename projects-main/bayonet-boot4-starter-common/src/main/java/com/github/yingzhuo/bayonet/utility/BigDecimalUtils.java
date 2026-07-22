@@ -97,9 +97,9 @@ public final class BigDecimalUtils {
     /**
      * 除法（自定义精度和舍入模式）。
      *
-     * @param number1     被除数，不能为 {@code null}
-     * @param number2     除数，不能为 {@code null}
-     * @param scale       精度
+     * @param number1      被除数，不能为 {@code null}
+     * @param number2      除数，不能为 {@code null}
+     * @param scale        精度
      * @param roundingMode 舍入模式，不能为 {@code null}
      * @return 商
      */

@@ -103,6 +103,15 @@ public class SnowflakeIdGenerator {
     }
 
     /**
+     * 返回当前系统时间的毫秒数。
+     *
+     * @return 当前时间戳（毫秒）
+     */
+    private static long timeGen() {
+        return System.currentTimeMillis();
+    }
+
+    /**
      * 获取下一个唯一 ID（线程安全）。
      *
      * <p>在同一毫秒内通过序列号区分不同 ID（最多 4096 个/毫秒），
@@ -175,14 +184,5 @@ public class SnowflakeIdGenerator {
             timestamp = timeGen();
         }
         return timestamp;
-    }
-
-    /**
-     * 返回当前系统时间的毫秒数。
-     *
-     * @return 当前时间戳（毫秒）
-     */
-    private static long timeGen() {
-        return System.currentTimeMillis();
     }
 }
