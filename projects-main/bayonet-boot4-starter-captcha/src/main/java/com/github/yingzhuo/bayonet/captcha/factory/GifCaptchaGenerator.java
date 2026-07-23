@@ -44,7 +44,7 @@ public class GifCaptchaGenerator implements CaptchaGenerator<GifCaptcha> {
     private int font = 0;
 
     @Override
-    public GifCaptcha generate(Class<GifCaptcha> captchaKlass) {
+    public GifCaptcha generate(Class<? extends Captcha> captchaKlass) {
         var captcha = new GifCaptcha(width, height, len);
         captcha.setCharType(charType);
         if (font > 0) {

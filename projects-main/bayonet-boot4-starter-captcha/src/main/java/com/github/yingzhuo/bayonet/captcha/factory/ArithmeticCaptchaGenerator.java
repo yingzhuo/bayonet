@@ -40,7 +40,7 @@ public class ArithmeticCaptchaGenerator implements CaptchaGenerator<ArithmeticCa
     private int font = 0;
 
     @Override
-    public ArithmeticCaptcha generate(Class<ArithmeticCaptcha> captchaKlass) {
+    public ArithmeticCaptcha generate(Class<? extends Captcha> captchaKlass) {
         var captcha = new ArithmeticCaptcha(width, height, len);
         if (font > 0) {
             try {

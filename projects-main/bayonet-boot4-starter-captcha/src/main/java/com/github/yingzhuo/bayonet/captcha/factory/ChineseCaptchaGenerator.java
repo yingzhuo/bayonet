@@ -39,7 +39,7 @@ public class ChineseCaptchaGenerator implements CaptchaGenerator<ChineseCaptcha>
     private int font = 0;
 
     @Override
-    public ChineseCaptcha generate(Class<ChineseCaptcha> captchaKlass) {
+    public ChineseCaptcha generate(Class<? extends Captcha> captchaKlass) {
         var captcha = new ChineseCaptcha(width, height, len);
         if (font > 0) {
             try {

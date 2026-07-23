@@ -44,7 +44,7 @@ public class SpecCaptchaGenerator implements CaptchaGenerator<SpecCaptcha> {
     private int font = 0;
 
     @Override
-    public SpecCaptcha generate(Class<SpecCaptcha> captchaKlass) {
+    public SpecCaptcha generate(Class<? extends Captcha> captchaKlass) {
         var captcha = new SpecCaptcha(width, height, len);
         captcha.setCharType(charType);
         if (font > 0) {
