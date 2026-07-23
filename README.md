@@ -1,6 +1,10 @@
 # bayonet
 
 <p style="text-align: center;">
+<!-- Maven Central 徽章 -->
+  <a href="https://central.sonatype.com/search?q=g%3Acom.github.yingzhuo%20a%3Abayonet-bom">
+    <img src="https://img.shields.io/maven-central/v/com.github.yingzhuo/bayonet-bom?style=for-the-badge&logo=apachemaven&logoColor=white&color=007ec6&label=Maven%20Central" alt="Maven Central" />
+  </a>
   <!-- 开源协议 -->
   <a href="https://github.com/yingzhuo/bayonet/blob/main/LICENSE.txt">
     <img src="https://img.shields.io/github/license/yingzhuo/bayonet?style=for-the-badge&color=4ea8de" alt="License" />
@@ -15,7 +19,7 @@
   <a href="https://github.com/yingzhuo/bayonet/network/members">
     <img src="https://img.shields.io/github/forks/yingzhuo/bayonet?style=for-the-badge&color=ffbe0b" alt="Forks" />
   </a>
-<p style="text-align: center;">
+</p>
 
 Bayonet 是应卓开发的 Spring Boot 4.x 增强库，提供可复用的自动配置、工具类和集成支持，涵盖
 Web、安全、数据（JPA/Redis/MongoDB）、校验、日志等领域。
