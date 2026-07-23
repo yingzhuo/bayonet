@@ -14,12 +14,11 @@ dependencies {
 
     // spring-boot & spring
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.boot:spring-boot-starter-aspectj")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure")
-    compileOnly("org.springframework.boot:spring-boot-starter-aspectj")
+    api("org.springframework.boot:spring-boot-starter-aspectj")
     compileOnly("org.springframework.boot:spring-boot-starter-web")
     compileOnly("org.springframework.boot:spring-boot-starter-logging")
-    compileOnly("org.springframework.boot:spring-boot-starter-validation")
+    api("org.springframework.boot:spring-boot-starter-validation")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure-processor")
     compileOnly("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")

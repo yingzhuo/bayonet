@@ -1,7 +1,5 @@
 val jdkVersion: String = project.property("jdkVersion").toString()
 val springBootVersion: String = project.property("springBootVersion").toString()
-val defaultEncoding: String = project.property("defaultEncoding").toString()
-val defaultLang: String = project.property("defaultLang").toString()
 
 plugins {
     id("java")
@@ -60,8 +58,8 @@ tasks.named<Javadoc>("javadoc") {
 
     options {
         this as StandardJavadocDocletOptions
-        locale(defaultLang)
-        encoding(defaultEncoding)
+        locale("zh_CN")
+        encoding("UTF-8")
         addBooleanOption("html5", true)
         addBooleanOption("Xdoclint:none", true)
     }
