@@ -17,6 +17,7 @@ dependencies {
     compileOnly("org.springframework.boot:spring-boot-autoconfigure")
     compileOnly("org.springframework.boot:spring-boot-configuration-processor")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure-processor")
+    compileOnly("org.springframework.boot:spring-boot-starter-data-redis") // optional 为了黑名单
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     // bayonet
@@ -28,6 +29,9 @@ dependencies {
     // lombok
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
+
+    // caffeine
+    compileOnly("com.github.ben-manes.caffeine:caffeine") // optional 为了黑名单
 
     // slf4j
     api("org.slf4j:slf4j-api")

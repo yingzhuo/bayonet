@@ -1,6 +1,8 @@
 package com.github.yingzhuo.bayonet.jwt.autoconfig;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import com.github.yingzhuo.bayonet.jwt.blacklist.BlacklistManager;
+import com.github.yingzhuo.bayonet.jwt.blacklist.NoopBlacklistManager;
 import com.github.yingzhuo.bayonet.jwt.service.*;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,8 @@ public class JwtBeanAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(Algorithm.class)
-    public BlacklistChecker blacklistChecker() {
-        return (rawToken, decodedToken) -> false;
+    public BlacklistManager blacklistChecker() {
+        return NoopBlacklistManager.getInstance();
     }
 
     @Bean
@@ -29,8 +31,8 @@ public class JwtBeanAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(Algorithm.class)
-    public JwtValidator jwtValidator(Algorithm algorithm, @Autowired(required = false) @Nullable VerificationCustomizer verificationCustomizer, @Autowired(required = false) @Nullable BlacklistChecker blacklistChecker) {
-        return new DefaultJwtValidator(algorithm, verificationCustomizer, blacklistChecker);
+    public JwtValidator jwtValidator(Algorithm algorithm, @Autowired(required = false) @Nullable VerificationCustomizer verificationCustomizer, @Autowired(required = false) @Nullable BlacklistManager blacklistManager) {
+        return new DefaultJwtValidator(algorithm, verificationCustomizer, blacklistManager);
     }
 
 }
