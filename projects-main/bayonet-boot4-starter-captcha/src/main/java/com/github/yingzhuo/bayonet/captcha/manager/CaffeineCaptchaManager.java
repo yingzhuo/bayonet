@@ -49,6 +49,15 @@ public class CaffeineCaptchaManager implements CaptchaManager {
         return getOrCreate().getIfPresent(saveKey);
     }
 
+    @Override
+    public boolean delete(String saveKey) {
+        Assert.notNull(saveKey, "saveKey must not be null");
+        var cache = getOrCreate();
+        var existed = cache.getIfPresent(saveKey) != null;
+        cache.invalidate(saveKey);
+        return existed;
+    }
+
     private Cache<String, String> getOrCreate() {
         var result = this.cache;
         if (result == null) {

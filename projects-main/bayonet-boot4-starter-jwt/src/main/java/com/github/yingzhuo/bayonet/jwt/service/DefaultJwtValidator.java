@@ -4,6 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.*;
 import com.github.yingzhuo.bayonet.jwt.JwtConstants;
+import com.github.yingzhuo.bayonet.jwt.blacklist.BlacklistManager;
+import com.github.yingzhuo.bayonet.jwt.blacklist.NoopBlacklistManager;
 import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 
@@ -13,7 +15,7 @@ import java.util.Objects;
  * 基于 {@link Algorithm} 的默认 JWT 验证器。
  * <p>验证流程分为两个阶段：</p>
  * <ol>
- *   <li><b>黑名单检查</b> — 解码 token 后查询 {@link BlacklistChecker}，若命中则返回 {@link ValidatingResult#INVALID_BLACKLISTED}</li>
+ *   <li><b>黑名单检查</b> — 解码 token 后查询 {@link BlacklistManager}，若命中则返回 {@link ValidatingResult#INVALID_BLACKLISTED}</li>
  *   <li><b>签名与声明校验</b> — 使用 {@link VerificationCustomizer} 定制验证规则后，校验签名和声明</li>
  * </ol>
  *
@@ -38,14 +40,14 @@ import java.util.Objects;
  * @see JwtValidator
  * @see ValidatingResult
  * @see VerificationCustomizer
- * @see BlacklistChecker
+ * @see BlacklistManager
  * @since 4.1.0
  */
 public class DefaultJwtValidator implements JwtValidator {
 
     private final Algorithm algorithm;
     private final VerificationCustomizer verificationCustomizer;
-    private final BlacklistChecker blacklistChecker;
+    private final BlacklistManager blacklistManager;
 
     /**
      * 构造器。
@@ -71,14 +73,14 @@ public class DefaultJwtValidator implements JwtValidator {
      *
      * @param algorithm              签名算法（非 {@code null}）
      * @param verificationCustomizer 验证配置定制器，为 {@code null} 时使用无操作默认值
-     * @param blacklistChecker       黑名单检查器，为 {@code null} 时使用永不命中默认值
+     * @param blacklistManager       黑名单检查器，为 {@code null} 时使用永不命中默认值
      */
-    public DefaultJwtValidator(Algorithm algorithm, @Nullable VerificationCustomizer verificationCustomizer, @Nullable BlacklistChecker blacklistChecker) {
+    public DefaultJwtValidator(Algorithm algorithm, @Nullable VerificationCustomizer verificationCustomizer, @Nullable BlacklistManager blacklistManager) {
         Assert.notNull(algorithm, "algorithm must not be null");
         this.algorithm = algorithm;
         this.verificationCustomizer = Objects.requireNonNullElse(verificationCustomizer, v -> {
         });
-        this.blacklistChecker = Objects.requireNonNullElse(blacklistChecker, (token, jti) -> false);
+        this.blacklistManager = Objects.requireNonNullElse(blacklistManager, NoopBlacklistManager.getInstance());
     }
 
     @Override
@@ -87,7 +89,7 @@ public class DefaultJwtValidator implements JwtValidator {
 
         try {
             var decodedToken = JWT.decode(token);
-            if (this.blacklistChecker.isBlacklisted(token, decodedToken.getId())) {
+            if (this.blacklistManager.isBlacklisted(token, decodedToken.getId())) {
                 return ValidatingResult.INVALID_BLACKLISTED;
             }
         } catch (JWTDecodeException e) {

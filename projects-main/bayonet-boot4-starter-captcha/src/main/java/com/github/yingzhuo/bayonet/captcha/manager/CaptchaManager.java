@@ -36,4 +36,11 @@ public interface CaptchaManager {
     @Nullable
     String load(String saveKey);
 
+    /**
+     * 删除验证码。
+     *
+     * @param saveKey 存储 key，不能为 {@code null}
+     * @return {@code true} 如果 key 存在且删除成功，否则 {@code false}
+     */
+    boolean delete(String saveKey);
 }

@@ -34,4 +34,10 @@ public class MapCaptchaManager implements CaptchaManager {
         return storage.get(saveKey);
     }
 
+    @Override
+    public boolean delete(String saveKey) {
+        Assert.notNull(saveKey, "saveKey must not be null");
+        return storage.remove(saveKey) != null;
+    }
+
 }

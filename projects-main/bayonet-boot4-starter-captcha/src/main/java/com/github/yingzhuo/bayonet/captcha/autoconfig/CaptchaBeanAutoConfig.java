@@ -5,7 +5,6 @@ import com.github.yingzhuo.bayonet.captcha.factory.SpecCaptchaGenerator;
 import com.github.yingzhuo.bayonet.captcha.manager.CaptchaManager;
 import com.github.yingzhuo.bayonet.captcha.manager.MapCaptchaManager;
 import com.github.yingzhuo.bayonet.captcha.manager.SaveKeyGenerator;
-import com.github.yingzhuo.bayonet.captcha.manager.UUIDSaveKeyGenerator;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +21,7 @@ public class CaptchaBeanAutoConfig {
     @Bean
     @ConditionalOnMissingBean
     public SaveKeyGenerator uuidSaveKeyGenerator() {
-        return UUIDSaveKeyGenerator.getInstance();
+        return SaveKeyGenerator.getDefault();
     }
 
     @Bean
