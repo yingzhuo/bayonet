@@ -5,7 +5,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.Assert;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 /**
  * 基于 Redis 的 {@link CaptchaManager} 实现。
@@ -25,10 +25,10 @@ public class RedisCaptchaManager implements CaptchaManager {
     private final StringRedisTemplate redisTemplate;
 
     /**
-     * 验证码过期时间（秒），默认 300 秒（5 分钟）
+     * 验证码过期时间，默认 5 分钟
      */
     @Setter
-    private long ttlSeconds = 300;
+    private Duration ttl = Duration.ofMinutes(5);
 
     /**
      * Redis key 前缀，默认 {@code captcha:}
@@ -45,7 +45,7 @@ public class RedisCaptchaManager implements CaptchaManager {
     public void save(String saveKey, String captcha) {
         Assert.notNull(saveKey, "saveKey must not be null");
         Assert.notNull(captcha, "captcha must not be null");
-        redisTemplate.opsForValue().set(keyPrefix + saveKey, captcha, ttlSeconds, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(keyPrefix + saveKey, captcha, ttl);
     }
 
     @Override

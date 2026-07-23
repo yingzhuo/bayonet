@@ -45,3 +45,14 @@ paths: "**/*.java"
 
 - 每个 package 必须含 `package-info.java`，使用 `@NullMarked`
 - 使用 `org.jspecify.annotations.Nullable`，不使用其他变体
+
+## 类型选择
+
+- 在表达TTL等时间跨度时，使用 `Duration` 而不是 `long` 型毫秒
+- 在使用 `long` 型字面变量时，使用 'L' 后缀: 10_000L
+- 在使用 `double` 型字面变量时，使用 'D' 后缀: 1.0D
+
+## 线程安全
+
+- 本库有可能用户生产，要考虑到线程安全的情况。
+- 尽量不要在方法上使用 `synchronized` 关键字。使用 DCL + volatile 模式

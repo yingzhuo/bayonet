@@ -23,10 +23,10 @@ import java.time.Duration;
 public class CaffeineCaptchaManager implements CaptchaManager {
 
     /**
-     * 验证码过期时间（秒），默认 300 秒（5 分钟）
+     * 验证码过期时间，默认 5 分钟
      */
     @Setter
-    private long ttlSeconds = 300L;
+    private Duration ttl = Duration.ofMinutes(5);
 
     /**
      * 最大缓存条目数，默认 10_000
@@ -56,7 +56,7 @@ public class CaffeineCaptchaManager implements CaptchaManager {
                 result = this.cache;
                 if (result == null) {
                     result = Caffeine.newBuilder()
-                            .expireAfterWrite(Duration.ofSeconds(ttlSeconds))
+                            .expireAfterWrite(ttl)
                             .maximumSize(maximumSize)
                             .build();
                     this.cache = result;
@@ -65,5 +65,4 @@ public class CaffeineCaptchaManager implements CaptchaManager {
         }
         return result;
     }
-
 }
