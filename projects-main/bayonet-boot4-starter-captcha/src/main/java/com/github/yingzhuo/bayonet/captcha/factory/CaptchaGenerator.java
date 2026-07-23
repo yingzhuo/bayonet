@@ -25,6 +25,6 @@ public interface CaptchaGenerator<T extends Captcha> {
      *
      * @return 验证码实例
      */
-    T generate(Class<T> captchaKlass);
+    <T extends Captcha> T generate();
 
 }

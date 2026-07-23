@@ -39,7 +39,8 @@ public class ChineseGifCaptchaGenerator implements CaptchaGenerator<ChineseGifCa
     private int font = 0;
 
     @Override
-    public ChineseGifCaptcha generate(Class<ChineseGifCaptcha> captchaKlass) {
+    @SuppressWarnings("unchecked")
+    public <T extends Captcha> T generate() {
         var captcha = new ChineseGifCaptcha(width, height, len);
         if (font > 0) {
             try {
@@ -47,7 +48,7 @@ public class ChineseGifCaptchaGenerator implements CaptchaGenerator<ChineseGifCa
             } catch (Exception ignored) {
             }
         }
-        return captcha;
+        return (T) captcha;
     }
 
 }

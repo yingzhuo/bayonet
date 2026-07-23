@@ -44,7 +44,8 @@ public class SpecCaptchaGenerator implements CaptchaGenerator<SpecCaptcha> {
     private int font = 0;
 
     @Override
-    public SpecCaptcha generate(Class<SpecCaptcha> captchaKlass) {
+    @SuppressWarnings("unchecked")
+    public <T extends Captcha> T generate() {
         var captcha = new SpecCaptcha(width, height, len);
         captcha.setCharType(charType);
         if (font > 0) {
@@ -53,7 +54,6 @@ public class SpecCaptchaGenerator implements CaptchaGenerator<SpecCaptcha> {
             } catch (Exception ignored) {
             }
         }
-        return captcha;
+        return (T) captcha;
     }
-
 }

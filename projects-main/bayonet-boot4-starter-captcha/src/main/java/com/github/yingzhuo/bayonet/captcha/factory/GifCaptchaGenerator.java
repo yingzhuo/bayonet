@@ -44,7 +44,8 @@ public class GifCaptchaGenerator implements CaptchaGenerator<GifCaptcha> {
     private int font = 0;
 
     @Override
-    public GifCaptcha generate(Class<GifCaptcha> captchaKlass) {
+    @SuppressWarnings("unchecked")
+    public <T extends Captcha> T generate() {
         var captcha = new GifCaptcha(width, height, len);
         captcha.setCharType(charType);
         if (font > 0) {
@@ -53,7 +54,7 @@ public class GifCaptchaGenerator implements CaptchaGenerator<GifCaptcha> {
             } catch (Exception ignored) {
             }
         }
-        return captcha;
+        return (T) captcha;
     }
 
 }
