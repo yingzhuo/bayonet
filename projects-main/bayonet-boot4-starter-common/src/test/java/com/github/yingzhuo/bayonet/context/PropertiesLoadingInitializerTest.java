@@ -22,9 +22,16 @@ class PropertiesLoadingInitializerTest {
 
     private final PropertiesLoadingInitializer initializer = new PropertiesLoadingInitializer();
 
-    @Mock ConfigurableApplicationContext ctx;
-    @Mock ConfigurableEnvironment environment;
-    @Mock MutablePropertySources propertySources;
+    @Mock
+    ConfigurableApplicationContext ctx;
+    @Mock
+    ConfigurableEnvironment environment;
+    @Mock
+    MutablePropertySources propertySources;
+
+    private static java.io.InputStream urlToInputStream(String url) throws Exception {
+        return new java.net.URL(url).openStream();
+    }
 
     private Resource mockResourceNotFound() {
         var r = mock(Resource.class);
@@ -39,10 +46,6 @@ class PropertiesLoadingInitializerTest {
         lenient().when(r.getURL()).thenReturn(new java.net.URL(url));
         lenient().when(r.getInputStream()).thenReturn(urlToInputStream(url));
         return r;
-    }
-
-    private static java.io.InputStream urlToInputStream(String url) throws Exception {
-        return new java.net.URL(url).openStream();
     }
 
     private void setupDefaultMocks() {

@@ -27,6 +27,7 @@ include(":project-integration-test")
 // 实际产物
 include(":projects-main:bayonet-bom")
 include(":projects-main:bayonet-boot4-starter-common")
+include(":projects-main:bayonet-boot4-starter-freemarker")
 include(":projects-main:bayonet-boot4-starter-hocon")
 include(":projects-main:bayonet-boot4-starter-jdbc")
 include(":projects-main:bayonet-boot4-starter-jwt")
