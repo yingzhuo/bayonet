@@ -50,7 +50,7 @@ tasks.named("publishAllPublicationsToMavenCentralRepository") {
         if (project.version.toString().endsWith("-SNAPSHOT")) {
             throw GradleException(
                 "Cannot publish SNAPSHOT version '$bayonetVersion' to Maven Central. " +
-                    "Release a non-SNAPSHOT version first."
+                        "Release a non-SNAPSHOT version first."
             )
         }
     }

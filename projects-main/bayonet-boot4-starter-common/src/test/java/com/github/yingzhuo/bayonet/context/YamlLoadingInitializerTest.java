@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
@@ -13,7 +12,6 @@ import org.springframework.core.io.Resource;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -24,9 +22,12 @@ class YamlLoadingInitializerTest {
 
     private final YamlLoadingInitializer initializer = new YamlLoadingInitializer();
 
-    @Mock ConfigurableApplicationContext ctx;
-    @Mock ConfigurableEnvironment environment;
-    @Mock MutablePropertySources propertySources;
+    @Mock
+    ConfigurableApplicationContext ctx;
+    @Mock
+    ConfigurableEnvironment environment;
+    @Mock
+    MutablePropertySources propertySources;
 
     private Resource mockResourceNotFound() {
         var r = mock(Resource.class);
