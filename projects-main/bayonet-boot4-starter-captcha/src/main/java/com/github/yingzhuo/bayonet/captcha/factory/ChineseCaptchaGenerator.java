@@ -39,7 +39,8 @@ public class ChineseCaptchaGenerator implements CaptchaGenerator<ChineseCaptcha>
     private int font = 0;
 
     @Override
-    public ChineseCaptcha generate(Class<? extends Captcha> captchaKlass) {
+    @SuppressWarnings("unchecked")
+    public <T extends Captcha> T generate() {
         var captcha = new ChineseCaptcha(width, height, len);
         if (font > 0) {
             try {
@@ -47,7 +48,7 @@ public class ChineseCaptchaGenerator implements CaptchaGenerator<ChineseCaptcha>
             } catch (Exception ignored) {
             }
         }
-        return captcha;
+        return (T) captcha;
     }
 
 }
