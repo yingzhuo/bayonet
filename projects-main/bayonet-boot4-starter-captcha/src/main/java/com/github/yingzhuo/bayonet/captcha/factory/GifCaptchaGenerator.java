@@ -5,8 +5,6 @@ import com.wf.captcha.base.Captcha;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.*;
-
 /**
  * GIF 动态验证码生成器（字母/数字）。
  *
@@ -41,16 +39,19 @@ public class GifCaptchaGenerator implements CaptchaGenerator<GifCaptcha> {
     private int charType = Captcha.TYPE_DEFAULT;
 
     /**
-     * 字体
+     * 字体索引（{@link Captcha#FONT_1} ~ {@link Captcha#FONT_10}），默认 {@code 0} 表示使用库默认字体
      */
-    private Font font;
+    private int font = 0;
 
     @Override
-    public GifCaptcha generate() {
+    public GifCaptcha generate(Class<GifCaptcha> captchaKlass) {
         var captcha = new GifCaptcha(width, height, len);
         captcha.setCharType(charType);
-        if (font != null) {
-            captcha.setFont(font);
+        if (font > 0) {
+            try {
+                captcha.setFont(font);
+            } catch (Exception ignored) {
+            }
         }
         return captcha;
     }

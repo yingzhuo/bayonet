@@ -1,11 +1,9 @@
 package com.github.yingzhuo.bayonet.captcha.factory;
 
 import com.wf.captcha.ArithmeticCaptcha;
+import com.wf.captcha.base.Captcha;
 import lombok.Getter;
 import lombok.Setter;
-import org.jspecify.annotations.Nullable;
-
-import java.awt.*;
 
 /**
  * 算术验证码生成器。
@@ -37,16 +35,18 @@ public class ArithmeticCaptchaGenerator implements CaptchaGenerator<ArithmeticCa
     private int len = 2;
 
     /**
-     * 字体，为 {@code null} 时使用库默认字体
+     * 字体索引（{@link Captcha#FONT_1} ~ {@link Captcha#FONT_10}），默认 {@code 0} 表示使用库默认字体
      */
-    @Nullable
-    private Font font;
+    private int font = 0;
 
     @Override
-    public ArithmeticCaptcha generate() {
+    public ArithmeticCaptcha generate(Class<ArithmeticCaptcha> captchaKlass) {
         var captcha = new ArithmeticCaptcha(width, height, len);
-        if (font != null) {
-            captcha.setFont(font);
+        if (font > 0) {
+            try {
+                captcha.setFont(font);
+            } catch (Exception ignored) {
+            }
         }
         return captcha;
     }
