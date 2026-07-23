@@ -17,6 +17,7 @@ import java.util.UUID;
  * @since 4.1.1
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Deprecated(forRemoval = true)
 public final class UUIDSaveKeyGenerator implements SaveKeyGenerator {
 
     /**

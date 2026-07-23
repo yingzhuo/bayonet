@@ -53,4 +53,10 @@ public class RedisCaptchaManager implements CaptchaManager {
         Assert.notNull(saveKey, "saveKey must not be null");
         return redisTemplate.opsForValue().get(keyPrefix + saveKey);
     }
+
+    @Override
+    public boolean delete(String saveKey) {
+        Assert.notNull(saveKey, "saveKey must not be null");
+        return Boolean.TRUE.equals(redisTemplate.delete(keyPrefix + saveKey));
+    }
 }
