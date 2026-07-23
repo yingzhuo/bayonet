@@ -25,14 +25,14 @@ rootProject.name = "bayonet"
 include(":project-integration-test")
 
 // 实际产物
-include(":projects-main:bayonet-bom")
-include(":projects-main:bayonet-boot4-starter-common")
-include(":projects-main:bayonet-boot4-starter-freemarker")
-include(":projects-main:bayonet-boot4-starter-hocon")
-include(":projects-main:bayonet-boot4-starter-jdbc")
-include(":projects-main:bayonet-boot4-starter-jwt")
-include(":projects-main:bayonet-boot4-starter-security")
-include(":projects-main:bayonet-boot4-starter-validation")
-include(":projects-main:bayonet-boot4-starter-webcli")
-include(":projects-main:bayonet-boot4-starter-webmvc")
-include(":projects-main:bayonet-boot4-starter-zxing")
+includeSubmodules("projects-main")
+
+// ------
+fun includeSubmodules(baseDir: String) {
+    file(baseDir).listFiles()
+        ?.filter { it.isDirectory && file("${it.path}/build.gradle.kts").exists() }
+        ?.sortedBy { it.name }
+        ?.forEach { dir ->
+            include(":$baseDir:${dir.name}")
+        }
+}
