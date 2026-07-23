@@ -1,10 +1,9 @@
 package com.github.yingzhuo.bayonet.captcha.factory;
 
 import com.wf.captcha.ChineseCaptcha;
+import com.wf.captcha.base.Captcha;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.awt.*;
 
 /**
  * 中文 PNG 验证码生成器。
@@ -35,15 +34,18 @@ public class ChineseCaptchaGenerator implements CaptchaGenerator<ChineseCaptcha>
     private int len = 4;
 
     /**
-     * 字体
+     * 字体索引（{@link Captcha#FONT_1} ~ {@link Captcha#FONT_10}），默认 {@code 0} 表示使用库默认字体
      */
-    private Font font;
+    private int font = 0;
 
     @Override
-    public ChineseCaptcha generate() {
+    public ChineseCaptcha generate(Class<ChineseCaptcha> captchaKlass) {
         var captcha = new ChineseCaptcha(width, height, len);
-        if (font != null) {
-            captcha.setFont(font);
+        if (font > 0) {
+            try {
+                captcha.setFont(font);
+            } catch (Exception ignored) {
+            }
         }
         return captcha;
     }

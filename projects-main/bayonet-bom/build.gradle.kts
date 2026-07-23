@@ -22,7 +22,7 @@ dependencies {
         api(libs.java.jwt)
         api(libs.hocon)
         api(libs.bundles.zxing)
-        api (libs.easy.captcha)
+        api(libs.easy.captcha)
 
         // other bom
         api(libs.bc.bom)
