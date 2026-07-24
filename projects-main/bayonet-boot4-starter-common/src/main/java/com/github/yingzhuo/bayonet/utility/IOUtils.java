@@ -43,7 +43,7 @@ public final class IOUtils {
         try {
             return FileCopyUtils.copy(in, out);
         } catch (IOException e) {
-            throw new UncheckedIOException(e.getMessage(), e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -58,7 +58,7 @@ public final class IOUtils {
         try {
             return FileCopyUtils.copy(in, out);
         } catch (IOException e) {
-            throw new UncheckedIOException(e.getMessage(), e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -72,7 +72,7 @@ public final class IOUtils {
         try {
             StreamUtils.copy(in, out);
         } catch (IOException e) {
-            throw new UncheckedIOException(e.getMessage(), e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -99,7 +99,7 @@ public final class IOUtils {
         try {
             StreamUtils.copy(in, charset, out);
         } catch (IOException e) {
-            throw new UncheckedIOException(e.getMessage(), e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -113,7 +113,7 @@ public final class IOUtils {
         try {
             return StreamUtils.copyToByteArray(in);
         } catch (IOException e) {
-            throw new UncheckedIOException(e.getMessage(), e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -140,7 +140,7 @@ public final class IOUtils {
         try {
             return StreamUtils.copyToString(in, charset);
         } catch (IOException e) {
-            throw new UncheckedIOException(e.getMessage(), e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -157,7 +157,7 @@ public final class IOUtils {
         try {
             return StreamUtils.copyRange(in, out, start, end);
         } catch (IOException e) {
-            throw new UncheckedIOException(e.getMessage(), e);
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -171,8 +171,7 @@ public final class IOUtils {
         try {
             return StreamUtils.drain(in);
         } catch (IOException e) {
-            throw new UncheckedIOException(e.getMessage(), e);
+            throw new UncheckedIOException(e);
         }
     }
-
 }
