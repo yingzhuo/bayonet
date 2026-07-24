@@ -29,6 +29,10 @@ public class CaffeineBlacklistManager implements BlacklistManager {
 
     private volatile Cache<String, Boolean> cache;
 
+    private static String resolveKey(String rawToken, @Nullable String jti) {
+        return jti != null ? jti : rawToken;
+    }
+
     @Override
     public boolean isBlacklisted(String rawToken, @Nullable String jti) {
         Assert.notNull(rawToken, "rawToken must not be null");
@@ -45,10 +49,6 @@ public class CaffeineBlacklistManager implements BlacklistManager {
     public void remove(String rawToken, @Nullable String jti) {
         Assert.notNull(rawToken, "rawToken must not be null");
         getOrCreate().invalidate(resolveKey(rawToken, jti));
-    }
-
-    private static String resolveKey(String rawToken, @Nullable String jti) {
-        return jti != null ? jti : rawToken;
     }
 
     private Cache<String, Boolean> getOrCreate() {

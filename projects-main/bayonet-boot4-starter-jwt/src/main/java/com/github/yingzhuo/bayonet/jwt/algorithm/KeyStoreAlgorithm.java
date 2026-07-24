@@ -1,6 +1,7 @@
 package com.github.yingzhuo.bayonet.jwt.algorithm;
 
 import com.github.yingzhuo.bayonet.secret.KeyStoreType;
+import org.jetbrains.annotations.ApiStatus;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -32,6 +33,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Import(KeyStoreAlgorithmImporting.class)
+@ApiStatus.Experimental
 public @interface KeyStoreAlgorithm {
 
     /**

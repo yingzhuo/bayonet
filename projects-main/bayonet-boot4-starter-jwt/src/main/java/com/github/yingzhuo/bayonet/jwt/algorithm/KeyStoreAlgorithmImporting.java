@@ -3,6 +3,7 @@ package com.github.yingzhuo.bayonet.jwt.algorithm;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.github.yingzhuo.bayonet.secret.KeyBundleFactories;
 import com.github.yingzhuo.bayonet.secret.KeyStoreType;
+import org.jetbrains.annotations.ApiStatus;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
@@ -11,6 +12,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.StringUtils;
 
+@ApiStatus.Experimental
 class KeyStoreAlgorithmImporting extends AlgorithmImportingSupport {
 
     public KeyStoreAlgorithmImporting(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
