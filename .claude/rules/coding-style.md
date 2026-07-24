@@ -45,6 +45,7 @@ paths: "**/*.java"
 
 - 每个 package 必须含 `package-info.java`，使用 `@NullMarked`
 - 使用 `org.jspecify.annotations.Nullable`，不使用其他变体
+- 所有可能返回 `null` 的方法必须标注 `@Nullable`，不可遗漏
 
 ## 类型选择
 
