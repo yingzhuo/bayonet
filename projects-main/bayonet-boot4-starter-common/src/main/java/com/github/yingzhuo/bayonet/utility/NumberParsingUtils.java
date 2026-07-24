@@ -63,7 +63,7 @@ public final class NumberParsingUtils {
         }
     }
 
-    // --------------------------------------------------------------
+    // ------
 
     private static <T extends Number> T fallback(String text, Class<T> type) {
         BigDecimal big;
