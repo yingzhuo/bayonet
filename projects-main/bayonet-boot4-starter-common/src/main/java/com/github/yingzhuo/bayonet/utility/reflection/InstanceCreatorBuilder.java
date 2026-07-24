@@ -34,7 +34,7 @@ public final class InstanceCreatorBuilder {
     private boolean silentOnSetterFailure = false;
 
     /**
-     * 私有构造方法
+     * 构造方法 (package-private)
      *
      * @param targetClass 目标类型
      */
