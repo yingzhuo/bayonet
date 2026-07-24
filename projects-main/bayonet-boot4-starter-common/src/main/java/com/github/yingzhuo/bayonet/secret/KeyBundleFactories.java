@@ -9,6 +9,7 @@ import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Objects;
 
 /**
  * {@link KeyBundle} 的工厂类。
@@ -19,6 +20,19 @@ import java.io.UncheckedIOException;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class KeyBundleFactories {
+
+    /**
+     * 从 PEM 文件加载 {@link KeyBundle}。
+     * <p>PEM 文件中必须包含私钥和终端实体证书。</p>
+     *
+     * @param location PEM 文件路径（支持 classpath:/、file:/ 等 Spring 资源协议，非空）
+     * @return {@link KeyBundle}（非 {@code null}）
+     * @throws IllegalArgumentException 参数不正确
+     * @since 4.1.1
+     */
+    public static KeyBundle loadFromPem(String location) {
+        return loadFromPem(location, null);
+    }
 
     /**
      * 从 PEM 文件加载 {@link KeyBundle}。
@@ -49,18 +63,48 @@ public final class KeyBundleFactories {
      * 从 KeyStore 加载 {@link KeyBundle}。
      *
      * @param location  KeyStore 文件路径（支持 Spring 资源协议，非空）
-     * @param type      KeyStore 类型（非 {@code null}）
+     * @param storepass KeyStore 密码（非空）
+     * @param alias     证书别名（非空）
+     * @return {@link KeyBundle}（非 {@code null}）
+     * @throws IllegalArgumentException 参数不正确
+     * @since 4.1.1
+     */
+    public static KeyBundle loadFromStore(String location, String storepass, String alias) {
+        return loadFromStore(location, null, storepass, alias);
+    }
+
+    /**
+     * 从 KeyStore 加载 {@link KeyBundle}。
+     *
+     * @param location  KeyStore 文件路径（支持 Spring 资源协议，非空）
+     * @param type      KeyStore 类型，为 {@code null} 时使用默认类型 {@link KeyStoreType#PKCS12}
+     * @param storepass KeyStore 密码（非空）
+     * @param alias     证书别名（非空）
+     * @return {@link KeyBundle}（非 {@code null}）
+     * @throws IllegalArgumentException 参数不正确
+     * @since 4.1.1
+     */
+    public static KeyBundle loadFromStore(String location, @Nullable KeyStoreType type, String storepass, String alias) {
+        return loadFromStore(location, type, storepass, alias, null);
+    }
+
+    /**
+     * 从 KeyStore 加载 {@link KeyBundle}。
+     *
+     * @param location  KeyStore 文件路径（支持 Spring 资源协议，非空）
+     * @param type      KeyStore 类型，为 {@code null} 时使用默认类型 {@link KeyStoreType#PKCS12}
      * @param storepass KeyStore 密码（非空）
      * @param alias     证书别名（非空）
      * @param keypass   私钥密码，为 {@code null} 时使用 {@code storepass}
      * @return {@link KeyBundle}（非 {@code null}）
      * @throws IllegalArgumentException 参数不正确
      */
-    public static KeyBundle loadFromStore(String location, KeyStoreType type, String storepass, String alias, @Nullable String keypass) {
+    public static KeyBundle loadFromStore(String location, @Nullable KeyStoreType type, String storepass, String alias, @Nullable String keypass) {
         Assert.hasText(location, "location must not be empty");
-        Assert.notNull(type, "type must not be null");
         Assert.hasText(storepass, "storepass must not be empty");
         Assert.hasText(alias, "alias must not be empty");
+
+        type = Objects.requireNonNullElseGet(type, KeyStoreType::getDefault);
 
         var input = ResourceUtils.loadAsInputStream(location);
         var ks = KeyStoreUtils.loadKeyStore(input, type, storepass); // close stream here
