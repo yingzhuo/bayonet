@@ -1,18 +1,16 @@
 package com.github.yingzhuo.bayonet.utility.reflection;
 
 import org.jspecify.annotations.Nullable;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static org.springframework.util.ReflectionUtils.accessibleConstructor;
-import static org.springframework.util.ReflectionUtils.invokeMethod;
 
 /**
  * {@link InstanceCreator} 的构建器。
@@ -75,39 +73,6 @@ public final class InstanceCreatorBuilder {
         }
     }
 
-    private static <T> void applyProperties(Class<?> clazz, T instance, List<Property> properties, boolean silent) {
-        for (var prop : properties) {
-            var setterName = "set" + Character.toUpperCase(prop.name().charAt(0)) + prop.name().substring(1);
-            var setter = findSetter(clazz, setterName, prop.value().getClass());
-            if (setter == null && !silent) {
-                throw new IllegalArgumentException("no setter found: " + setterName + "(" + prop.value().getClass().getSimpleName() + ") in " + clazz);
-            }
-            if (setter != null) {
-                try {
-                    invokeMethod(setter, instance, prop.value());
-                } catch (RuntimeException e) {
-                    if (!silent) {
-                        throw e;
-                    }
-                }
-            }
-        }
-    }
-
-    @Nullable
-    private static Method findSetter(Class<?> clazz, String setterName, Class<?> valueClass) {
-        for (var method : clazz.getMethods()) {
-            if (!method.getName().equals(setterName) || method.getParameterCount() != 1) {
-                continue;
-            }
-            var paramType = method.getParameterTypes()[0];
-            if (paramType.isAssignableFrom(valueClass) || ClassUtils.isAssignable(paramType, valueClass)) {
-                return method;
-            }
-        }
-        return null;
-    }
-
     /**
      * 指定构造器参数类型列表。
      *
@@ -120,9 +85,9 @@ public final class InstanceCreatorBuilder {
     }
 
     /**
-     * 设置属性值（通过反射调用 setter 方法）。
+     * 设置属性值（通过 Spring {@link BeanWrapperImpl} 设置）。
      * <p>创建对象后会按添加顺序依次调用对应的 setter 方法。
-     * setter 方法名规则为 {@code set + 属性名首字母大写}。</p>
+     * 支持自动类型转换（如 {@code Integer} → {@code int}）。</p>
      *
      * @param propertyName  属性名，不可为空
      * @param propertyValue 属性值
@@ -133,8 +98,6 @@ public final class InstanceCreatorBuilder {
         properties.add(new Property(propertyName, propertyValue));
         return this;
     }
-
-    // ------
 
     /**
      * 设置 setter 调用失败时的行为。
@@ -153,42 +116,61 @@ public final class InstanceCreatorBuilder {
      * @return {@link InstanceCreator} 实例
      */
     public InstanceCreator build() {
-        final var clazz = this.targetClass;
-        final var types = this.paramTypes;
-        final var props = List.copyOf(this.properties);
-        final var silent = this.silentOnSetterFailure;
+        return new DefaultInstanceCreator(
+                this.targetClass,
+                this.paramTypes,
+                List.copyOf(this.properties),
+                this.silentOnSetterFailure
+        );
+    }
 
-        return new InstanceCreator() {
-            @Override
-            @SuppressWarnings("unchecked")
-            public <T> T create(Object... params) {
-                Constructor<?> constructor;
-                try {
-                    constructor = accessibleConstructor(clazz, types);
-                } catch (NoSuchMethodException e) {
-                    throw new IllegalArgumentException("no such constructor in " + clazz, e);
-                }
+    // ------
 
-                T instance;
-                try {
-                    instance = (T) constructor.newInstance(params);
-                } catch (InstantiationException | IllegalAccessException e) {
-                    throw new IllegalArgumentException("cannot create instance of " + clazz, e);
-                } catch (InvocationTargetException e) {
-                    var cause = e.getCause();
-                    if (cause instanceof RuntimeException re) {
-                        throw re;
-                    }
-                    if (cause instanceof Error er) {
-                        throw er;
-                    }
-                    throw new IllegalArgumentException("constructor threw an exception in " + clazz, cause);
-                }
+    private record DefaultInstanceCreator(
+            Class<?> clazz,
+            Class<?>[] paramTypes,
+            List<Property> properties,
+            boolean silentOnSetterFailure
+    ) implements InstanceCreator {
 
-                applyProperties(clazz, instance, props, silent);
-                return instance;
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T create(Object... params) {
+            Constructor<?> constructor;
+            try {
+                constructor = ReflectionUtils.accessibleConstructor(clazz(), paramTypes());
+            } catch (NoSuchMethodException e) {
+                throw new IllegalArgumentException("no such constructor in " + clazz(), e);
             }
-        };
+
+            T instance;
+            try {
+                instance = (T) constructor.newInstance(params);
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw new IllegalArgumentException("cannot create instance of " + clazz(), e);
+            } catch (InvocationTargetException e) {
+                var cause = e.getCause();
+                if (cause instanceof RuntimeException re) {
+                    throw re;
+                }
+                if (cause instanceof Error er) {
+                    throw er;
+                }
+                throw new IllegalArgumentException("constructor threw an exception in " + clazz(), cause);
+            }
+
+            var wrapper = new BeanWrapperImpl(instance);
+            for (var prop : properties()) {
+                try {
+                    wrapper.setPropertyValue(prop.name(), prop.value());
+                } catch (RuntimeException e) {
+                    if (!silentOnSetterFailure()) {
+                        throw e;
+                    }
+                }
+            }
+            return instance;
+        }
     }
 
     private record Property(String name, Object value) {

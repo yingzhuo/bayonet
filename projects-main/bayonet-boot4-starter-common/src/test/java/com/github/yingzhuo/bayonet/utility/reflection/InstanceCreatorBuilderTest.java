@@ -143,8 +143,7 @@ class InstanceCreatorBuilderTest {
                 .build();
 
         assertThatThrownBy(() -> creator.create())
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("no setter found");
+                .isInstanceOf(RuntimeException.class);
     }
 
     @Test
