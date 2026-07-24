@@ -13,8 +13,8 @@ import org.springframework.util.Assert;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * FreeMarker 字符串模板渲染器实现。
@@ -53,7 +53,7 @@ public class FreemarkerStringRendererImpl implements FreemarkerStringRenderer, I
         Assert.hasText(templateName, "template name is required");
 
         if (data == null) {
-            data = new HashMap<String, Object>();
+            data = Map.<String, Object>of();
         }
 
         try (Writer writer = new StringWriter()) {
