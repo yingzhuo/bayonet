@@ -14,10 +14,8 @@ import org.springframework.util.StringUtils;
 /**
  * @author 应卓
  * @since 4.1.0
- * @deprecated 这种配置方式不易理解，稍有炫技成分。
  */
 @ApiStatus.Experimental
-@Deprecated(since = "4.1.1")
 class PemAlgorithmImporting extends AlgorithmImportingSupport {
 
     public PemAlgorithmImporting(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {

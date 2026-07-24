@@ -43,7 +43,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Import(HMACAlgorithm.Importing.class)
 @ApiStatus.Experimental
-@Deprecated(since = "4.1.1")
+@Deprecated(since = "4.1.1", forRemoval = true)
 public @interface HMACAlgorithm {
 
     /**

@@ -25,7 +25,6 @@ import java.lang.annotation.*;
  * @author 应卓
  * @see AlgorithmName
  * @since 4.1.0
- * @deprecated 这种配置方式不易理解，稍有炫技成分。
  */
 @Inherited
 @Target(ElementType.TYPE)
@@ -33,7 +32,6 @@ import java.lang.annotation.*;
 @Documented
 @Import(PemAlgorithmImporting.class)
 @ApiStatus.Experimental
-@Deprecated(since = "4.1.1")
 public @interface PemAlgorithm {
 
     /**
