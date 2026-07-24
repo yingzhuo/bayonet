@@ -42,9 +42,10 @@ class KeyStoreUtilsTest {
     }
 
     @Test
-    void should_throw_when_loadKeyStore_typeIsNull() {
+    void should_not_throw_when_loadKeyStore_typeIsNull() {
+        // null type 使用默认值 PKCS12，不会因此抛 IllegalArgumentException
         assertThatThrownBy(() -> KeyStoreUtils.loadKeyStore(InputStream.nullInputStream(), null, "pass"))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isNotInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
