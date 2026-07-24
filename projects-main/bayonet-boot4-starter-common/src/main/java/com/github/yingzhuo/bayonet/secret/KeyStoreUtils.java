@@ -3,6 +3,7 @@ package com.github.yingzhuo.bayonet.secret;
 import com.github.yingzhuo.bayonet.utility.CloseUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 
 import javax.crypto.SecretKey;
@@ -16,6 +17,7 @@ import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -34,16 +36,17 @@ public final class KeyStoreUtils {
      * <p>方法内部会关闭传入的输入流。</p>
      *
      * @param inputStream KeyStore 输入流（非 {@code null}）
-     * @param type        KeyStore 类型，如 {@link KeyStoreType#PKCS12}（非 {@code null}）
+     * @param type        KeyStore 类型，为 {@code null} 时使用默认类型 {@link KeyStoreType#PKCS12}
      * @param storepass   KeyStore 密码（非 {@code null}）
      * @return 已加载的 {@link KeyStore}（非 {@code null}）
      * @throws IllegalArgumentException 若参数为 {@code null} 或加载失败
      * @throws UncheckedIOException     读取输入流失败时抛出
      */
-    public static KeyStore loadKeyStore(InputStream inputStream, KeyStoreType type, String storepass) {
+    public static KeyStore loadKeyStore(InputStream inputStream, @Nullable KeyStoreType type, String storepass) {
         Assert.notNull(inputStream, "inputStream is required");
-        Assert.notNull(type, "type is required");
         Assert.notNull(storepass, "storepass is required");
+
+        type = Objects.requireNonNullElseGet(type, KeyStoreType::getDefault);
 
         try (var input = inputStream) {
             var keyStore = KeyStore.getInstance(type.name());
