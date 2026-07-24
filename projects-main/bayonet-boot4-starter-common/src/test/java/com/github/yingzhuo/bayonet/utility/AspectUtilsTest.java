@@ -40,60 +40,97 @@ class AspectUtilsTest {
                 .hasMessageContaining("joinPoint");
     }
 
-    // ============== getJoinPointMethodAnnotation ==============
+    // ============== getJoinPointClass ==============
 
     @Test
-    void should_get_annotation_from_method() throws NoSuchMethodException {
+    void should_get_target_class_from_joinPoint() {
+        when(joinPoint.getTarget()).thenReturn("test");
+
+        var result = AspectUtils.getJoinPointClass(joinPoint);
+        assertThat(result).isEqualTo(String.class);
+    }
+
+    @Test
+    void should_throw_when_getJoinPointClass_with_null_joinPoint() {
+        assertThatThrownBy(() -> AspectUtils.getJoinPointClass(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("joinPoint");
+    }
+
+    // ============== resolvePointCutAnnotation — 方法级 ==============
+
+    @Test
+    void should_resolve_method_level_annotation() throws NoSuchMethodException {
         var method = Helper.class.getMethod("annotatedMethod");
         lenient().when(joinPoint.getSignature()).thenReturn(signature);
         when(signature.getMethod()).thenReturn(method);
 
-        var result = AspectUtils.getJoinPointMethodAnnotation(joinPoint, Deprecated.class);
+        var result = AspectUtils.resolvePointCutAnnotation(joinPoint, Deprecated.class);
         assertThat(result).isNotNull();
     }
 
     @Test
-    void should_return_null_when_no_annotation() throws NoSuchMethodException {
-        var method = Helper.class.getMethod("plainMethod");
+    void should_resolve_class_level_annotation_when_method_has_none() throws NoSuchMethodException {
+        var method = HelperWithClassAnnotation.class.getMethod("plainMethod");
         lenient().when(joinPoint.getSignature()).thenReturn(signature);
         when(signature.getMethod()).thenReturn(method);
+        when(joinPoint.getTarget()).thenReturn(new HelperWithClassAnnotation());
 
-        var result = AspectUtils.getJoinPointMethodAnnotation(joinPoint, Deprecated.class);
-        assertThat(result).isNull();
+        var result = AspectUtils.resolvePointCutAnnotation(joinPoint, Deprecated.class);
+        assertThat(result).isNotNull();
     }
 
     @Test
-    void should_throw_when_getAnnotation_with_null_joinPoint() {
-        assertThatThrownBy(() -> AspectUtils.getJoinPointMethodAnnotation(null, Deprecated.class))
+    void should_return_null_when_no_annotation_found() throws NoSuchMethodException {
+        var method = Helper.class.getMethod("plainMethod");
+        lenient().when(joinPoint.getSignature()).thenReturn(signature);
+        when(signature.getMethod()).thenReturn(method);
+        when(joinPoint.getTarget()).thenReturn(new Helper());
+
+        var result = AspectUtils.resolvePointCutAnnotation(joinPoint, Deprecated.class);
+        assertThat(result).isNull();
+    }
+
+    // ============== resolvePointCutAnnotation — includeClassLevel = false ==============
+
+    @Test
+    void should_not_resolve_class_level_when_includeClassLevel_false() throws NoSuchMethodException {
+        var method = HelperWithClassAnnotation.class.getMethod("plainMethod");
+        lenient().when(joinPoint.getSignature()).thenReturn(signature);
+        when(signature.getMethod()).thenReturn(method);
+
+        var result = AspectUtils.resolvePointCutAnnotation(joinPoint, Deprecated.class, false);
+        assertThat(result).isNull();
+    }
+
+    // ============== resolvePointCutAnnotation — 参数校验 ==============
+
+    @Test
+    void should_throw_when_resolve_with_null_joinPoint() {
+        assertThatThrownBy(() -> AspectUtils.resolvePointCutAnnotation(null, Deprecated.class))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("joinPoint");
     }
 
     @Test
-    void should_throw_when_getAnnotation_with_null_annotationType() {
-        assertThatThrownBy(() -> AspectUtils.getJoinPointMethodAnnotation(joinPoint, null))
+    void should_throw_when_resolve_with_null_annotationType() {
+        assertThatThrownBy(() -> AspectUtils.resolvePointCutAnnotation(joinPoint, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("annotationType");
     }
 
-    // ============== hasJoinPointMethodAnnotation ==============
-
     @Test
-    void should_return_true_when_annotation_present() throws NoSuchMethodException {
-        var method = Helper.class.getMethod("annotatedMethod");
-        lenient().when(joinPoint.getSignature()).thenReturn(signature);
-        when(signature.getMethod()).thenReturn(method);
-
-        assertThat(AspectUtils.hasJoinPointMethodAnnotation(joinPoint, Deprecated.class)).isTrue();
+    void should_throw_when_resolve_with_includeClassLevel_with_null_joinPoint() {
+        assertThatThrownBy(() -> AspectUtils.resolvePointCutAnnotation(null, Deprecated.class, true))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("joinPoint");
     }
 
     @Test
-    void should_return_false_when_annotation_absent() throws NoSuchMethodException {
-        var method = Helper.class.getMethod("plainMethod");
-        lenient().when(joinPoint.getSignature()).thenReturn(signature);
-        when(signature.getMethod()).thenReturn(method);
-
-        assertThat(AspectUtils.hasJoinPointMethodAnnotation(joinPoint, Deprecated.class)).isFalse();
+    void should_throw_when_resolve_with_includeClassLevel_with_null_annotationType() {
+        assertThatThrownBy(() -> AspectUtils.resolvePointCutAnnotation(joinPoint, null, true))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("annotationType");
     }
 
     // ============== helper ==============
@@ -107,4 +144,9 @@ class AspectUtilsTest {
         }
     }
 
+    @Deprecated
+    static class HelperWithClassAnnotation {
+        public void plainMethod() {
+        }
+    }
 }

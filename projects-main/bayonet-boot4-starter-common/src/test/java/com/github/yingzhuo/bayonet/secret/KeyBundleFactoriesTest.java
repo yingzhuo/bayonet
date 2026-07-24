@@ -47,9 +47,10 @@ class KeyBundleFactoriesTest {
     }
 
     @Test
-    void should_throw_when_loadFromStore_typeIsNull() {
+    void should_not_throw_when_loadFromStore_typeIsNull() {
+        // null type 使用默认值 PKCS12，不会因此抛异常
         assertThatThrownBy(() -> KeyBundleFactories.loadFromStore("loc", null, "pass", "alias", null))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isNotInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
