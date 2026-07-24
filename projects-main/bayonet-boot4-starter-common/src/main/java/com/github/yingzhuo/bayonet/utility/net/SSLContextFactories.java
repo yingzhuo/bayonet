@@ -7,7 +7,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 /**
  * {@link SSLContext} 工厂类。
@@ -32,7 +31,7 @@ public final class SSLContextFactories {
     public static SSLContext createInsecure() {
         try {
             var ctx = SSLContext.getInstance("TLS");
-            ctx.init(null, new TrustManager[]{InsecureX509TrustManager.getInstance()}, new SecureRandom());
+            ctx.init(null, new TrustManager[]{InsecureX509TrustManager.getInstance()}, new java.security.SecureRandom());
             return ctx;
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
             throw new IllegalArgumentException(e.getMessage(), e);

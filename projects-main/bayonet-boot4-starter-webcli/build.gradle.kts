@@ -23,15 +23,6 @@ dependencies {
     // bayonet
     api(project(":projects-main:bayonet-boot4-starter-common"))
 
-    // ayza (SSL Context tool)
-    api(platform(libs.ayza.bom))
-    compileOnly("io.github.hakky54:ayza")
-    compileOnly("io.github.hakky54:ayza-for-pem")
-    compileOnly("io.github.hakky54:ayza-for-apache5")
-
-    // apache5
-    compileOnly("org.apache.httpcomponents.client5:httpclient5")
-
     // lombok
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

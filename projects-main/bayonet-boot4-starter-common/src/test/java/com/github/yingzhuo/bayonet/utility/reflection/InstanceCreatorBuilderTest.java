@@ -227,12 +227,12 @@ class InstanceCreatorBuilderTest {
     public static class Baz {
         private String value;
 
-        public void setValue(String value) {
-            throw new RuntimeException("setter failed: " + value);
-        }
-
         public String getValue() {
             return value;
+        }
+
+        public void setValue(String value) {
+            throw new RuntimeException("setter failed: " + value);
         }
     }
 }

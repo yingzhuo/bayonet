@@ -23,7 +23,7 @@ import java.security.UnrecoverableKeyException;
  * @author 应卓
  * @see SslBundle
  * @see SSLContextFactories
- * @since 4.1.0
+ * @since 4.1.1
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SslBundleFactories {
