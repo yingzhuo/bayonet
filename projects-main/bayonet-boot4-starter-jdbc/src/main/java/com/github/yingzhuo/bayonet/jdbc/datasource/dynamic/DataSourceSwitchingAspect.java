@@ -1,14 +1,12 @@
 package com.github.yingzhuo.bayonet.jdbc.datasource.dynamic;
 
+import com.github.yingzhuo.bayonet.utility.AspectUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
-import org.jspecify.annotations.Nullable;
 import org.springframework.core.Ordered;
-import org.springframework.core.annotation.AnnotationUtils;
 
 /**
  * 数据源切换 AOP 切面。
@@ -51,14 +49,14 @@ public class DataSourceSwitchingAspect implements Ordered {
      */
     @Around("pc()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-        var dsSwitch = resolveDataSourceSwitch(joinPoint);
+        var dsSwitch = AspectUtils.resolvePointCutAnnotation(joinPoint, DataSourceSwitch.class);
         if (dsSwitch == null) {
             return joinPoint.proceed();
         }
 
         var datasource = dsSwitch.value();
-        if (log.isDebugEnabled()) {
-            log.debug("Switching to datasource '{}' for method '{}#{}'",
+        if (log.isTraceEnabled()) {
+            log.trace("Switching to datasource '{}' for method '{}#{}'",
                     datasource, joinPoint.getSignature().getDeclaringTypeName(),
                     joinPoint.getSignature().getName());
         }
@@ -68,8 +66,8 @@ public class DataSourceSwitchingAspect implements Ordered {
             return joinPoint.proceed();
         } finally {
             DataSourceContextHolder.clear();
-            if (log.isDebugEnabled()) {
-                log.debug("Cleared datasource context for method '{}#{}'",
+            if (log.isTraceEnabled()) {
+                log.trace("Cleared datasource context for method '{}#{}'",
                         joinPoint.getSignature().getDeclaringTypeName(),
                         joinPoint.getSignature().getName());
             }
@@ -84,21 +82,5 @@ public class DataSourceSwitchingAspect implements Ordered {
     @Override
     public int getOrder() {
         return HIGHEST_PRECEDENCE;
-    }
-
-    // ------
-
-    @Nullable
-    private static DataSourceSwitch resolveDataSourceSwitch(ProceedingJoinPoint joinPoint) {
-        var method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-
-        // 方法级别优先
-        var dsSwitch = AnnotationUtils.findAnnotation(method, DataSourceSwitch.class);
-        if (dsSwitch != null) {
-            return dsSwitch;
-        }
-
-        // 类级别回退
-        return AnnotationUtils.findAnnotation(joinPoint.getTarget().getClass(), DataSourceSwitch.class);
     }
 }
