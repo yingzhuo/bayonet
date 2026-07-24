@@ -2,6 +2,7 @@ package com.github.yingzhuo.bayonet.webcli.factory;
 
 import com.github.yingzhuo.bayonet.webcli.util.SSLFactoryFactories;
 import nl.altindag.ssl.SSLFactory;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
@@ -35,6 +36,8 @@ import static java.util.Objects.requireNonNullElse;
  * @see #destroy()
  * @since 4.1.0
  */
+@ApiStatus.Experimental
+@Deprecated
 public abstract class AbstractClientHttpRequestFactoryBean
         implements FactoryBean<ClientHttpRequestFactory>, InitializingBean, DisposableBean {
     protected static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);

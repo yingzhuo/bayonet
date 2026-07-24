@@ -8,6 +8,7 @@ dependencies {
     // spring-boot
     api("org.springframework.boot:spring-boot-starter-web")
     api("org.springframework.boot:spring-boot-starter-actuator")
+    api("org.springframework.boot:spring-boot-http-client")
 
     // bayonet
     api(platform(project(":projects-main:bayonet-bom")))

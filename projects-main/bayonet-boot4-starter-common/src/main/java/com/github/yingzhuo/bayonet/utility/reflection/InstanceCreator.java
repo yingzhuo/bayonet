@@ -1,5 +1,8 @@
 package com.github.yingzhuo.bayonet.utility.reflection;
 
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+
 /**
  * 反射实例创建器。
  *
@@ -31,7 +34,8 @@ public interface InstanceCreator {
      * @return {@link InstanceCreatorBuilder} 实例
      */
     static InstanceCreatorBuilder builder(Class<?> targetClass) {
-        return InstanceCreatorBuilder.forClass(targetClass);
+        Assert.notNull(targetClass, "targetClass must not be null");
+        return new InstanceCreatorBuilder(targetClass);
     }
 
     /**
@@ -41,7 +45,12 @@ public interface InstanceCreator {
      * @return {@link InstanceCreatorBuilder} 实例
      */
     static InstanceCreatorBuilder builder(String targetClassName) {
-        return InstanceCreatorBuilder.forClass(targetClassName);
+        Assert.hasText(targetClassName, "targetClassName must not be empty");
+        try {
+            return new InstanceCreatorBuilder(ClassUtils.forName(targetClassName, null));
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException("class not found: '" + targetClassName + "'", e);
+        }
     }
 
     /**

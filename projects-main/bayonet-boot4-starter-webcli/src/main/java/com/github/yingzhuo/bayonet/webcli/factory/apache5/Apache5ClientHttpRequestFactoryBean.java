@@ -8,6 +8,7 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -45,6 +46,8 @@ import java.time.Duration;
  * @see HttpComponentsClientHttpRequestFactory
  * @since 4.1.0
  */
+@ApiStatus.Experimental
+@Deprecated
 public class Apache5ClientHttpRequestFactoryBean extends AbstractClientHttpRequestFactoryBean {
 
     private @Nullable HttpComponentsClientHttpRequestFactory requestFactory;
