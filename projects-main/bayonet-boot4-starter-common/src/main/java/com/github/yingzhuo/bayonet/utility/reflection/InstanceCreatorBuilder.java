@@ -1,16 +1,13 @@
 package com.github.yingzhuo.bayonet.utility.reflection;
 
-import org.jspecify.annotations.Nullable;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * {@link InstanceCreator} 的构建器。
@@ -41,46 +38,19 @@ public final class InstanceCreatorBuilder {
      *
      * @param targetClass 目标类型
      */
-    private InstanceCreatorBuilder(Class<?> targetClass) {
+    InstanceCreatorBuilder(Class<?> targetClass) {
         this.targetClass = targetClass;
-    }
-
-    /**
-     * 为指定类型创建构建器。
-     *
-     * @param targetClass 目标类型，不可为 {@code null}
-     * @return 构建器实例
-     */
-    public static InstanceCreatorBuilder forClass(Class<?> targetClass) {
-        Assert.notNull(targetClass, "targetClass must not be null");
-        return new InstanceCreatorBuilder(targetClass);
-    }
-
-    /**
-     * 为指定类型名称创建构建器。
-     * <p>内部使用 {@link ClassUtils#forName(String, ClassLoader)} 加载类。</p>
-     *
-     * @param targetClassName 目标类型全限定名，不可为空
-     * @return 构建器实例
-     * @throws IllegalArgumentException 类加载失败或参数为空时抛出
-     */
-    public static InstanceCreatorBuilder forClass(String targetClassName) {
-        Assert.hasText(targetClassName, "targetClassName must not be empty");
-        try {
-            return forClass(ClassUtils.forName(targetClassName, null));
-        } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException("class not found: " + targetClassName, e);
-        }
     }
 
     /**
      * 指定构造器参数类型列表。
      *
-     * @param paramTypes 参数类型列表，为 {@code null} 或空时表示使用无参构造器
+     * @param paramTypes 参数类型列表，为空时表示使用无参构造器
      * @return 当前构建器
      */
-    public InstanceCreatorBuilder constructorParams(@Nullable Class<?>... paramTypes) {
-        this.paramTypes = Objects.requireNonNullElse(paramTypes, new Class<?>[0]);
+    public InstanceCreatorBuilder constructorParams(Class<?>... paramTypes) {
+        Assert.notNull(paramTypes, "paramTypes must not be null");
+        this.paramTypes = paramTypes;
         return this;
     }
 
