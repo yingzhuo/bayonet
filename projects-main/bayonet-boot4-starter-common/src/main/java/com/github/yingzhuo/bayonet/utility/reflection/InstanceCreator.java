@@ -30,26 +30,26 @@ public interface InstanceCreator {
     /**
      * 创建 {@link InstanceCreatorBuilder}，按指定类型构建创建器。
      *
-     * @param targetClass 目标类型，不可为 {@code null}
+     * @param klass 目标类型，不可为 {@code null}
      * @return {@link InstanceCreatorBuilder} 实例
      */
-    static InstanceCreatorBuilder builder(Class<?> targetClass) {
-        Assert.notNull(targetClass, "targetClass must not be null");
-        return new InstanceCreatorBuilder(targetClass);
+    static InstanceCreatorBuilder builder(Class<?> klass) {
+        Assert.notNull(klass, "targetClass must not be null");
+        return new InstanceCreatorBuilder(klass);
     }
 
     /**
      * 创建 {@link InstanceCreatorBuilder}，按指定类型名称构建创建器。
      *
-     * @param targetClassName 目标类型全限定名，不可为空
+     * @param klassName 目标类型全限定名，不可为空
      * @return {@link InstanceCreatorBuilder} 实例
      */
-    static InstanceCreatorBuilder builder(String targetClassName) {
-        Assert.hasText(targetClassName, "targetClassName must not be empty");
+    static InstanceCreatorBuilder builder(String klassName) {
+        Assert.hasText(klassName, "targetClassName must not be empty");
         try {
-            return new InstanceCreatorBuilder(ClassUtils.forName(targetClassName, null));
+            return new InstanceCreatorBuilder(ClassUtils.forName(klassName, null));
         } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException("class not found: '" + targetClassName + "'", e);
+            throw new IllegalArgumentException("class not found: '" + klassName + "'", e);
         }
     }
 

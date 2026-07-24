@@ -1,5 +1,6 @@
-package com.github.yingzhuo.bayonet.webcli.factory;
+package com.github.yingzhuo.bayonet.webcli.util;
 
+import com.github.yingzhuo.bayonet.utility.net.SSLContextFactories;
 import com.github.yingzhuo.bayonet.utility.ssl.SslBundleFactories;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,10 @@ import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
 import org.springframework.boot.http.client.HttpClientSettings;
 import org.springframework.boot.ssl.SslBundle;
 import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.util.Assert;
 
+import java.net.http.HttpClient;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -21,8 +24,9 @@ import java.util.Objects;
  *
  * @author 应卓
  * @see SslBundleFactories
+ * @see com.github.yingzhuo.bayonet.utility.net.SSLContextFactories
  * @see ClientHttpRequestFactoryBuilder
- * @since 4.1.0
+ * @since 4.1.1
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class RequestFactoryUtils {
@@ -83,6 +87,29 @@ public final class RequestFactoryUtils {
      */
     public static ClientHttpRequestFactory createInsecure(@Nullable Duration connectTimeout, @Nullable Duration readTimeout) {
         return create(SslBundleFactories.createInsecure(), connectTimeout, readTimeout);
+    }
+
+    // ------
+
+    /**
+     * 创建信任所有证书的 {@link JdkClientHttpRequestFactory}。
+     * <p>内部使用 {@link SslBundleFactories#createInsecure()}，
+     * 仅建议在开发或测试环境中使用。</p>
+     *
+     * @param connectTimeout 连接超时，为 {@code null} 时使用 10 秒
+     * @param readTimeout    读取超时，为 {@code null} 时使用 30 秒
+     * @return {@link ClientHttpRequestFactory}（非 {@code null}）
+     */
+    public static JdkClientHttpRequestFactory createInsecureJdk(@Nullable Duration connectTimeout, @Nullable Duration readTimeout) {
+        var sslCtx = SSLContextFactories.createInsecure();
+        var params = sslCtx.getDefaultSSLParameters();
+        params.setEndpointIdentificationAlgorithm(null);
+
+        var httpClient = HttpClient.newBuilder()
+                .sslContext(sslCtx)
+                .sslParameters(params)
+                .build();
+        return new JdkClientHttpRequestFactory(httpClient);
     }
 
 }
