@@ -14,7 +14,7 @@ dependencies {
 
     // spring-boot & spring
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    api("org.springframework.boot:spring-boot-starter-web")
+    api("org.springframework.boot:spring-boot-http-client")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure")
     compileOnly("org.springframework.boot:spring-boot-configuration-processor")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure-processor")
@@ -25,7 +25,7 @@ dependencies {
 
     // ayza (SSL Context tool)
     api(platform(libs.ayza.bom))
-    api("io.github.hakky54:ayza")
+    compileOnly("io.github.hakky54:ayza")
     compileOnly("io.github.hakky54:ayza-for-pem")
     compileOnly("io.github.hakky54:ayza-for-apache5")
 

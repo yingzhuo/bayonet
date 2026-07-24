@@ -2,6 +2,7 @@ package com.github.yingzhuo.bayonet.webcli.factory.jdk11;
 
 import com.github.yingzhuo.bayonet.webcli.factory.AbstractClientHttpRequestFactoryBean;
 import nl.altindag.ssl.SSLFactory;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
@@ -38,6 +39,8 @@ import java.time.Duration;
  * @see JdkClientHttpRequestFactory
  * @since 4.1.0
  */
+@ApiStatus.Experimental
+@Deprecated
 public class JdkClientHttpRequestFactoryBean extends AbstractClientHttpRequestFactoryBean {
 
     /**
