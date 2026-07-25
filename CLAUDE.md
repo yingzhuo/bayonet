@@ -50,6 +50,7 @@
      +--- ':projects-main:bayonet-boot4-starter-security' - SpringSecurity增强
      +--- ':projects-main:bayonet-boot4-starter-validation' - Validation增强
      +--- ':projects-main:bayonet-boot4-starter-webcli' - WebClient增强
+     +--- ':projects-main:bayonet-boot4-starter-webcli-apache5' - WebClient增强(Apache HttpClient5支持)
      +--- ':projects-main:bayonet-boot4-starter-webmvc' - WebMvc增强
      \--- ':projects-main:bayonet-boot4-starter-zxing' - 二维码条形码增强
 ```

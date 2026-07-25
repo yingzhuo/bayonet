@@ -25,6 +25,7 @@ import java.security.UnrecoverableKeyException;
  * @see SSLContextFactories
  * @since 4.1.1
  */
+@Deprecated(since = "4.1.1", forRemoval = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class SslBundleFactories {
 
@@ -33,6 +34,7 @@ public final class SslBundleFactories {
      *
      * @return 系统默认 {@link SslBundle}（非 {@code null}）
      */
+    @Deprecated(since = "4.1.1", forRemoval = true)
     public static SslBundle createDefault() {
         return SslBundle.systemDefault();
     }
@@ -46,6 +48,11 @@ public final class SslBundleFactories {
      * @throws IllegalStateException 初始化失败时抛出
      */
     public static SslBundle createInsecure() {
+        // 这个方法有bug
+        // 无法绕开spring-boot底层机制的硬编码
+        // 见 org.springframework.boot.http.client.HttpComponentsSslBundleTlsStrategy.class 37-42行，硬编码
+        // 见 org.springframework.boot.http.client.JdkHttpClientBuilder 113-119，等同于硬编码
+
         try {
             var kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
             kmf.init(null, null);
