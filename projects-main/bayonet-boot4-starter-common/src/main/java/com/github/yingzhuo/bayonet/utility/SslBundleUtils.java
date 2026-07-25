@@ -38,7 +38,7 @@ public final class SslBundleUtils {
 
         var bundles = SpringUtils.getApplicationContext()
                 .getBeanProvider(SslBundles.class)
-                .getIfUnique();
+                .getIfAvailable();
 
         if (bundles == null) return null;
 
