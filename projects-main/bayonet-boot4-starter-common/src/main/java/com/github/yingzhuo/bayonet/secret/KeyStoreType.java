@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.secret;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 
@@ -14,6 +15,7 @@ import org.jspecify.annotations.Nullable;
  * @author 应卓
  * @since 4.1.0
  */
+@Getter
 @RequiredArgsConstructor
 public enum KeyStoreType {
 
