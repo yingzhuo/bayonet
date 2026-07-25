@@ -44,6 +44,7 @@ public final class Apache5RequestFactoryUtils {
      * <p>直接基于 {@link SSLContextFactories#createInsecure()} 构建 Apache HttpClient 5，
      * 使用 {@link NoopHostnameVerifier} 跳过主机名验证。</p>
      * <p>仅建议在开发或测试环境中使用。</p>
+     * <p>注意: 本方法的产品要放在Spring上下文之中，以防资源泄露。</p>
      *
      * @param connectTimeout 连接超时，为 {@code null} 时 Apache 使用默认值
      * @param readTimeout    读取超时，为 {@code null} 时不设置
@@ -57,9 +58,10 @@ public final class Apache5RequestFactoryUtils {
                 .setTlsSocketStrategy(tlsStrategy);
 
         if (connectTimeout != null) {
-            cmBuilder.setDefaultConnectionConfig(ConnectionConfig.custom()
-                    .setConnectTimeout(connectTimeout.toMillis(), TimeUnit.MILLISECONDS)
-                    .build());
+            cmBuilder.setDefaultConnectionConfig(
+                    ConnectionConfig.custom()
+                            .setConnectTimeout(connectTimeout.toMillis(), TimeUnit.MILLISECONDS).build()
+            );
         }
 
         var httpClient = HttpClientBuilder.create()
