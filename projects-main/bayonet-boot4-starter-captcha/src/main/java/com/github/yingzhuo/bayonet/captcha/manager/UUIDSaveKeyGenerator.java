@@ -25,7 +25,7 @@ public final class UUIDSaveKeyGenerator implements SaveKeyGenerator {
      *
      * @return 单例实例
      */
-    public static UUIDSaveKeyGenerator getInstance() {
+    public static UUIDSaveKeyGenerator getSingletonInstance() {
         return LazyHolder.INSTANCE;
     }
 

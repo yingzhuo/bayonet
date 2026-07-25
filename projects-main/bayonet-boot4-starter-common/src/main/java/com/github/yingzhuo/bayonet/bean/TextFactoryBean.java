@@ -38,8 +38,8 @@ public class TextFactoryBean implements FactoryBean<String>, EnvironmentAware, R
 
     private ResourceLoader resourceLoader;
     private Environment environment;
-    private @Setter String location;
-    private @Setter Charset charset = StandardCharsets.UTF_8;
+    private String location;
+    private Charset charset = StandardCharsets.UTF_8;
     private @Setter boolean trim;
     private @Setter boolean trimEachLine;
 
@@ -94,13 +94,18 @@ public class TextFactoryBean implements FactoryBean<String>, EnvironmentAware, R
         return text;
     }
 
+    public void setLocation(String location) {
+        Assert.hasText(location, "location must not be empty");
+        this.location = location;
+    }
+
     /**
      * 返回 Bean 类型。
      *
      * @return {@link String} 的 {@link Class}
      */
     @Override
-    public Class<?> getObjectType() {
+    public final Class<?> getObjectType() {
         return String.class;
     }
 

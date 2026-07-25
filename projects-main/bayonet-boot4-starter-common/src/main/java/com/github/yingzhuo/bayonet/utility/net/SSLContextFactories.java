@@ -31,7 +31,7 @@ public final class SSLContextFactories {
     public static SSLContext createInsecure() {
         try {
             var ctx = SSLContext.getInstance("TLS");
-            ctx.init(null, new TrustManager[]{InsecureX509TrustManager.getInstance()}, new java.security.SecureRandom());
+            ctx.init(null, new TrustManager[]{InsecureX509TrustManager.getSingletonInstance()}, new java.security.SecureRandom());
             return ctx;
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
