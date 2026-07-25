@@ -12,13 +12,34 @@ spring:
         "server":
           reload-on-update: false
           keystore:
-            location: "classpath:ssl/bayonet.p12"
+            location: "classpath:ssl/bayonet-server.pfx"
             password: "123456"
             type: "PKCS12"
           key:
             alias: "yingzhuo"
-            password: "123456"
-
+      pem:
+        "client":
+          reload-on-update: false
+          truststore:
+            certificate: |
+              -----BEGIN CERTIFICATE-----
+              MIIC1DCCAbygAwIBAgIUXrDgTTxdIzGZ7NFjusgBn5b9QcwwDQYJKoZIhvcNAQEL
+              BQAwEzERMA8GA1UEAwwIeWluZ3podW8wIBcNMjYwNzI1MDE1NjQ3WhgPMjEyNjA3
+              MjUwMTU2NDdaMBMxETAPBgNVBAMMCHlpbmd6aHVvMIIBIjANBgkqhkiG9w0BAQEF
+              AAOCAQ8AMIIBCgKCAQEAxOJW1yLoWnnL0Tp+HnPjYVffpwf+5Wl90F/r9HRoGYAF
+              VEUP7uTh8Dj8wdXa1Y6xda8Of+RkPZBEXCJT0xQ2yIJ8/2ytTIkVUm0fAFlRuNoa
+              5LuB6TsJQ4a/SHcG1ZX3KV3x74S62pQcxN+Bb9KxBxlaCusxoOx+8M5keuIX0bX5
+              zzg4DYWFuEE/4vuqzofX1KfaBafdUi9aBXKwUhoVu+Bmt+uoRSyQ81u4DvaFcxx1
+              VFMOUfFuBeLYbrK+/DsoNroyyAUE3g87WGFOKxNbV/WBrr9J5Z0VEfQkJoGQB46n
+              m96tZLBfo+yLNW8PrfXLWzH/03g95loJSqW8lOXkmQIDAQABox4wHDAaBgNVHREE
+              EzARhwR/AAABgglsb2NhbGhvc3QwDQYJKoZIhvcNAQELBQADggEBAEDBOlRGykVm
+              iKERfAeSnr+als+vB6CsYFGbGaL3iuFg6lvlNHsvtTtHuarElMetymOc9/k0k0qZ
+              jQQGClCj5TGYCdMayOyNSx9hTubzp76sYVSkJrjeFHRu58ZcdhUwnRffKm9969Jp
+              jeMgoyKHhA/5vbqjOPcPAVdqH6vK2FW4NhzalSsiE5zvfG1yRieKeO1xbzB3M4Ra
+              zRjDOFf1P7Bd9UBKiDSY29VikL4RFJy/o3ButaOifk5b0T9VtdWY7dbqo437S7jq
+              tTWj2vwUkj6mlgF/WES6NY8as+JOoRxt2JBOdyDEgPBYhaaSXmeuv3H9XkdXNBnU
+              ULquN5UvAjk=
+              -----END CERTIFICATE-----
 server:
   ssl:
     enabled: true
