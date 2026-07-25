@@ -1,6 +1,5 @@
 package com.github.yingzhuo.bayonet.webcli.util;
 
-import com.github.yingzhuo.bayonet.utility.net.SSLContextFactories;
 import com.github.yingzhuo.bayonet.utility.ssl.SslBundleFactories;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -9,10 +8,9 @@ import org.springframework.boot.http.client.ClientHttpRequestFactoryBuilder;
 import org.springframework.boot.http.client.HttpClientSettings;
 import org.springframework.boot.ssl.SslBundle;
 import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.util.Assert;
 
-import java.net.http.HttpClient;
+import javax.net.ssl.HttpsURLConnection;
 import java.time.Duration;
 import java.util.Objects;
 
@@ -92,24 +90,26 @@ public final class RequestFactoryUtils {
     // ------
 
     /**
-     * 创建信任所有证书的 {@link JdkClientHttpRequestFactory}。
-     * <p>内部使用 {@link SslBundleFactories#createInsecure()}，
+     * 创建信任所有证书的 {@link ClientHttpRequestFactory}。
+     * <p>使用 {@link java.net.HttpURLConnection} 实现，跳过服务端证书校验和主机名验证。
      * 仅建议在开发或测试环境中使用。</p>
      *
      * @param connectTimeout 连接超时，为 {@code null} 时使用 10 秒
      * @param readTimeout    读取超时，为 {@code null} 时使用 30 秒
      * @return {@link ClientHttpRequestFactory}（非 {@code null}）
      */
-    public static JdkClientHttpRequestFactory createInsecureJdk(@Nullable Duration connectTimeout, @Nullable Duration readTimeout) {
-        var sslCtx = SSLContextFactories.createInsecure();
-        var params = sslCtx.getDefaultSSLParameters();
-        params.setEndpointIdentificationAlgorithm(null);
+    public static ClientHttpRequestFactory createInsecureSimple(@Nullable Duration connectTimeout, @Nullable Duration readTimeout) {
+        HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
 
-        var httpClient = HttpClient.newBuilder()
-                .sslContext(sslCtx)
-                .sslParameters(params)
-                .build();
-        return new JdkClientHttpRequestFactory(httpClient);
+        connectTimeout = Objects.requireNonNullElse(connectTimeout, Duration.ofSeconds(10));
+        readTimeout = Objects.requireNonNullElse(readTimeout, Duration.ofSeconds(30));
+
+        var settings = HttpClientSettings.ofSslBundle(SslBundleFactories.createInsecure())
+                .withConnectTimeout(connectTimeout)
+                .withReadTimeout(readTimeout);
+
+        return ClientHttpRequestFactoryBuilder.simple()
+                .build(settings);
     }
 
 }
