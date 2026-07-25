@@ -1,6 +1,6 @@
 package bayonet.test.bean;
 
-import com.github.yingzhuo.bayonet.webcli.util.RequestFactoryUtils;
+import com.github.yingzhuo.bayonet.webcli.factory.Apache5RequestFactoryUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ssl.SslBundles;
 import org.springframework.http.MediaType;
@@ -16,8 +16,8 @@ public class ActuatorAccessor {
     private final RestClient restClient;
 
     public ActuatorAccessor(SslBundles sslBundles) {
-        var sslBundle = sslBundles.getBundle("client");
-        var factory = RequestFactoryUtils.create(sslBundle);
+//        var sslBundle = sslBundles.getBundle("client");
+        var factory = Apache5RequestFactoryUtils.createInsecure();
 
         this.restClient = RestClient.builder()
                 .baseUrl("https://localhost:8443")
