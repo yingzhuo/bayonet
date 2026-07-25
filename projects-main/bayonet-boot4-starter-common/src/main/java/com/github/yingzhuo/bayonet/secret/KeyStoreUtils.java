@@ -1,6 +1,5 @@
 package com.github.yingzhuo.bayonet.secret;
 
-import com.github.yingzhuo.bayonet.utility.CloseUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
@@ -33,22 +32,22 @@ public final class KeyStoreUtils {
 
     /**
      * 从输入流加载 KeyStore。
-     * <p>方法内部会关闭传入的输入流。</p>
+     * <p>方法内部不会关闭传入的输入流。输入流是谁打开的，谁负责关闭。</p>
      *
-     * @param inputStream KeyStore 输入流（非 {@code null}）
+     * @param stream KeyStore 输入流（非 {@code null}）
      * @param type        KeyStore 类型，为 {@code null} 时使用默认类型 {@link KeyStoreType#PKCS12}
      * @param storepass   KeyStore 密码（非 {@code null}）
      * @return 已加载的 {@link KeyStore}（非 {@code null}）
      * @throws IllegalArgumentException 若参数为 {@code null} 或加载失败
      * @throws UncheckedIOException     读取输入流失败时抛出
      */
-    public static KeyStore loadKeyStore(InputStream inputStream, @Nullable KeyStoreType type, String storepass) {
-        Assert.notNull(inputStream, "inputStream is required");
+    public static KeyStore loadKeyStore(InputStream stream, @Nullable KeyStoreType type, String storepass) {
+        Assert.notNull(stream, "inputStream is required");
         Assert.notNull(storepass, "storepass is required");
 
         type = Objects.requireNonNullElseGet(type, KeyStoreType::getDefault);
 
-        try (var input = inputStream) {
+        try (var input = stream) {
             var keyStore = KeyStore.getInstance(type.name());
             keyStore.load(input, storepass.toCharArray());
             return keyStore;
@@ -56,8 +55,6 @@ public final class KeyStoreUtils {
             throw new UncheckedIOException(e);
         } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
-        } finally {
-            CloseUtils.closeQuietly(inputStream);
         }
     }
 
