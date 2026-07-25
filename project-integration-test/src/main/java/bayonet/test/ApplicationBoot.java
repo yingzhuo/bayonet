@@ -1,6 +1,6 @@
 package bayonet.test;
 
-import bayonet.test.hello.GithubAccessor;
+import bayonet.test.bean.ActuatorAccessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -13,11 +13,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @RequiredArgsConstructor
 public class ApplicationBoot implements ApplicationRunner {
 
-    private final GithubAccessor githubAccessor;
+    private final ActuatorAccessor actuatorAccessor;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-        log.info("{}", githubAccessor.getHtmlAboutMe());
+    public void run(ApplicationArguments args) {
+        actuatorAccessor.access();
     }
 
     public static void main(String[] args) {
