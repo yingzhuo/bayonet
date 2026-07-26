@@ -26,6 +26,5 @@ dependencies {
 
         // other bom
         api(libs.bc.bom)
-        api(libs.ayza.bom)
     }
 }

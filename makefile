@@ -8,7 +8,7 @@ endif
 
 .DEFAULT_GOAL := clean
 
-.PHONY: clean purge rebuild-build-logic compile build install publish test
+.PHONY: clean purge rebuild-build-logic compile build install publish test wrapper
 
 .SILENT:
 
@@ -47,3 +47,6 @@ publish: install
 
 test:
 	$(GRADLEW) "test"
+
+wrapper:
+	$(GRADLEW) ":wrapper" -q
