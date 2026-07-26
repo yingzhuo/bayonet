@@ -7,6 +7,7 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * SPI 加载器门面工具类。
@@ -20,7 +21,7 @@ import java.util.List;
  * @since 4.1.1
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class SpiLoaders {
+public final class SPILoaders {
 
     /**
      * 加载指定 SPI 接口的所有实现。
@@ -42,4 +43,21 @@ public final class SpiLoaders {
         list.addAll(ServiceLoaderUtils.load(targetType));
         return Collections.unmodifiableList(list);
     }
+
+    /**
+     * 加载指定 SPI 接口的第一个实现。
+     *
+     * @param targetType SPI 接口类型
+     * @param <T>        SPI 接口类型
+     * @return 第一个 SPI 实现实例的 {@link Optional}，若无实现则返回 {@link Optional#empty()}
+     */
+    public static <T> Optional<T> loadFirst(Class<T> targetType) {
+        var list = load(targetType);
+        if (list.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(list.get(0));
+        }
+    }
+
 }

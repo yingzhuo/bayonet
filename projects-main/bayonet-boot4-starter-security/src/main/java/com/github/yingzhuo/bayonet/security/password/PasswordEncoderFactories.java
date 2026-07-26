@@ -1,6 +1,6 @@
 package com.github.yingzhuo.bayonet.security.password;
 
-import com.github.yingzhuo.bayonet.utility.spi.SpiLoaders;
+import com.github.yingzhuo.bayonet.utility.spi.SPILoaders;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -111,6 +111,6 @@ public final class PasswordEncoderFactories {
     // ------
 
     private static final class LazyHolder {
-        private static final List<NamedPasswordEncoder> SPI_LOADED_PWD_ENCODERS = SpiLoaders.load(NamedPasswordEncoder.class);
+        private static final List<NamedPasswordEncoder> SPI_LOADED_PWD_ENCODERS = SPILoaders.load(NamedPasswordEncoder.class);
     }
 }
