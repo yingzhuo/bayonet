@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.utility;
 
+import com.github.yingzhuo.bayonet.utility.spi.ServiceLoaderUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

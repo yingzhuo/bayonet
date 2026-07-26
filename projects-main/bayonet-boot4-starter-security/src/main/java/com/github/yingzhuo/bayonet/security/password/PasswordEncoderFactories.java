@@ -1,7 +1,6 @@
 package com.github.yingzhuo.bayonet.security.password;
 
-import com.github.yingzhuo.bayonet.utility.ServiceLoaderUtils;
-import com.github.yingzhuo.bayonet.utility.SpringFactoriesUtils;
+import com.github.yingzhuo.bayonet.utility.spi.SpiLoaders;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,6 @@ import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 /**
  * {@link PasswordEncoder} 工厂工具类。
@@ -78,7 +76,7 @@ public final class PasswordEncoderFactories {
         encoders.put("argon2", Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8());
 
         // SPI loading (since 4.1.1)
-        LazyHolder.getSpiLoadedEncoders()
+        LazyHolder.SPI_LOADED_PWD_ENCODERS
                 .forEach(e -> encoders.put(e.getName(), e));
 
         return buildEncoder(DEFAULT_ENCODING_ID, DEFAULT_MATCHES_ID, encoders);
@@ -104,8 +102,6 @@ public final class PasswordEncoderFactories {
         return buildEncoder(DEFAULT_ENCODING_ID, DEFAULT_MATCHES_ID, encoders);
     }
 
-    // ------
-
     private static DelegatingPasswordEncoder buildEncoder(String encodingId, String matchesId, Map<String, PasswordEncoder> encoders) {
         var passwordEncoder = new DelegatingPasswordEncoder(encodingId, encoders);
         passwordEncoder.setDefaultPasswordEncoderForMatches(encoders.get(matchesId));
@@ -115,17 +111,6 @@ public final class PasswordEncoderFactories {
     // ------
 
     private static final class LazyHolder {
-        private static final List<NamedPasswordEncoder> SPI_LOADED_PWD_ENCODERS;
-
-        static {
-            SPI_LOADED_PWD_ENCODERS = Stream.concat(
-                    SpringFactoriesUtils.load(NamedPasswordEncoder.class),
-                    ServiceLoaderUtils.load(NamedPasswordEncoder.class)
-            ).toList();
-        }
-
-        private static List<NamedPasswordEncoder> getSpiLoadedEncoders() {
-            return SPI_LOADED_PWD_ENCODERS;
-        }
+        private static final List<NamedPasswordEncoder> SPI_LOADED_PWD_ENCODERS = SpiLoaders.load(NamedPasswordEncoder.class);
     }
 }

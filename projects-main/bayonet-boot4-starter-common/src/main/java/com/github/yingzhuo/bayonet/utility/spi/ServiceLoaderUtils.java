@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.utility;
+package com.github.yingzhuo.bayonet.utility.spi;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -6,9 +6,9 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.ServiceLoader;
-import java.util.stream.Stream;
 
 /**
  * {@link ServiceLoader} 工具类
@@ -33,7 +33,7 @@ public final class ServiceLoaderUtils {
      * @return 服务实现实例的流，不会为 {@code null}
      * @throws IllegalArgumentException 若 {@code targetType} 为 {@code null}
      */
-    public static <T> Stream<T> load(Class<T> targetType) {
+    public static <T> List<T> load(Class<T> targetType) {
         return load(targetType, null);
     }
 
@@ -46,13 +46,18 @@ public final class ServiceLoaderUtils {
      * @return 服务实现实例的流，不会为 {@code null}
      * @throws IllegalArgumentException 若 {@code targetType} 为 {@code null}
      */
-    public static <T> Stream<T> load(Class<T> targetType, @Nullable ClassLoader classLoader) {
+    public static <T> List<T> load(Class<T> targetType, @Nullable ClassLoader classLoader) {
         Assert.notNull(targetType, "targetType must not be null");
+
+        if (targetType.isPrimitive()) {
+            return List.of();
+        }
 
         classLoader = Objects.requireNonNullElseGet(classLoader, ClassUtils::getDefaultClassLoader);
         return ServiceLoader.load(targetType, classLoader)
                 .stream()
-                .map(ServiceLoader.Provider::get);
+                .map(ServiceLoader.Provider::get)
+                .toList();
     }
 
 }
