@@ -1,17 +1,14 @@
 package com.github.yingzhuo.bayonet.security.password;
 
+import com.github.yingzhuo.bayonet.utility.SpringFactoriesUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.*;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,19 +41,20 @@ public final class PasswordEncoderFactories {
 
     /**
      * 创建完整编码器集合的 {@link DelegatingPasswordEncoder}。
-     * <p>支持以下编码器（按 ID 查找）：</p>
+     * <p>支持以下编码器(按 ID 查找)：</p>
      * <ul>
-     *   <li>{@code bcrypt} — BCrypt（默认编码器）</li>
-     *   <li>{@code ldap} — Ldap SHA（已弃用）</li>
-     *   <li>{@code MD4} — MD4（已弃用）</li>
-     *   <li>{@code MD5} — MD5（已弃用）</li>
-     *   <li>{@code noop} — 明文（用于 matches 兜底）</li>
+     *   <li>{@code bcrypt} — BCrypt (默认编码器)</li>
+     *   <li>{@code ldap} — Ldap SHA (已弃用)</li>
+     *   <li>{@code MD4} — MD4 (已弃用)</li>
+     *   <li>{@code MD5} — MD5 (已弃用)</li>
+     *   <li>{@code noop} — 明文 (用于 matches 兜底)</li>
      *   <li>{@code pbkdf2} — PBKDF2</li>
      *   <li>{@code scrypt} — SCrypt</li>
-     *   <li>{@code SHA-1} — SHA-1（已弃用）</li>
-     *   <li>{@code SHA-256} — SHA-256（已弃用）</li>
-     *   <li>{@code sha256} — Standard SHA-256（已弃用）</li>
+     *   <li>{@code SHA-1} — SHA-1 (已弃用)</li>
+     *   <li>{@code SHA-256} — SHA-256 (已弃用)</li>
+     *   <li>{@code sha256} — Standard SHA-256 (已弃用)</li>
      *   <li>{@code argon2} — Argon2</li>
+     *   <li>{@code SM3} — 国密 SM3 (需要SPI支持)</li>
      * </ul>
      *
      * @return DelegatingPasswordEncoder 实例
@@ -76,10 +74,10 @@ public final class PasswordEncoderFactories {
         encoders.put("sha256", new StandardPasswordEncoder());
         encoders.put("argon2", Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8());
 
-        var sm3Encoder = loadSM3Encoder();
-        if (sm3Encoder != null) {
-            encoders.put("SM3", sm3Encoder);
-        }
+        // SPI loading
+        // since 4.1.1
+        SpringFactoriesUtils.load(NamedPasswordEncoder.class)
+                .forEach(e -> encoders.put(e.getName(), e));
 
         return buildEncoder(DEFAULT_ENCODING_ID, DEFAULT_MATCHES_ID, encoders);
     }
@@ -88,9 +86,9 @@ public final class PasswordEncoderFactories {
      * 创建精简编码器集合的 {@link DelegatingPasswordEncoder}。
      * <p>仅包含以下编码器：</p>
      * <ul>
-     *   <li>{@code bcrypt} — BCrypt（默认编码器）</li>
-     *   <li>{@code MD5} — MD5（已弃用）</li>
-     *   <li>{@code noop} — 明文（用于 matches 兜底）</li>
+     *   <li>{@code bcrypt} — BCrypt(默认编码器)</li>
+     *   <li>{@code MD5} — MD5(已弃用)</li>
+     *   <li>{@code noop} — 明文(用于 matches 兜底)</li>
      * </ul>
      *
      * @return DelegatingPasswordEncoder 实例
@@ -104,27 +102,11 @@ public final class PasswordEncoderFactories {
         return buildEncoder(DEFAULT_ENCODING_ID, DEFAULT_MATCHES_ID, encoders);
     }
 
+    // ------
+
     private static DelegatingPasswordEncoder buildEncoder(String encodingId, String matchesId, Map<String, PasswordEncoder> encoders) {
         var passwordEncoder = new DelegatingPasswordEncoder(encodingId, encoders);
         passwordEncoder.setDefaultPasswordEncoderForMatches(encoders.get(matchesId));
         return passwordEncoder;
-    }
-
-    // ------
-
-    @Nullable
-    private static PasswordEncoder loadSM3Encoder() {
-        try {
-            var clz = ClassUtils.forName("com.github.yingzhuo.bayonet.security.password.SM3PasswordEncoder", null);
-            var constructor = ReflectionUtils.accessibleConstructor(clz);
-            return (PasswordEncoder) constructor.newInstance();
-        } catch (ClassNotFoundException e) {
-            // SM3 module not on classpath, silently skip
-            return null;
-        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
-                 IllegalAccessException e) {
-            log.debug("Failed to load SM3PasswordEncoder", e);
-            return null;
-        }
     }
 }
