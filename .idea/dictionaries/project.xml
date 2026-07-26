@@ -3,8 +3,8 @@
     <words>
       <w>apache</w>
       <w>baos</w>
-      <w>bcprov</w>
       <w>bcpkix</w>
+      <w>bcprov</w>
       <w>hutool</w>
       <w>projectlombok</w>
     </words>

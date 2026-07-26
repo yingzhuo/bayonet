@@ -2,11 +2,16 @@ package com.github.yingzhuo.bayonet.security.password;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.*;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +35,7 @@ import java.util.Map;
  * @see BCryptPasswordEncoder
  * @since 4.1.0
  */
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PasswordEncoderFactories {
 
@@ -70,6 +76,11 @@ public final class PasswordEncoderFactories {
         encoders.put("sha256", new StandardPasswordEncoder());
         encoders.put("argon2", Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8());
 
+        var sm3Encoder = loadSM3Encoder();
+        if (sm3Encoder != null) {
+            encoders.put("SM3", sm3Encoder);
+        }
+
         return buildEncoder(DEFAULT_ENCODING_ID, DEFAULT_MATCHES_ID, encoders);
     }
 
@@ -99,4 +110,21 @@ public final class PasswordEncoderFactories {
         return passwordEncoder;
     }
 
+    // ------
+
+    @Nullable
+    private static PasswordEncoder loadSM3Encoder() {
+        try {
+            var clz = ClassUtils.forName("com.github.yingzhuo.bayonet.security.password.SM3PasswordEncoder", null);
+            var constructor = ReflectionUtils.accessibleConstructor(clz);
+            return (PasswordEncoder) constructor.newInstance();
+        } catch (ClassNotFoundException e) {
+            // SM3 module not on classpath, silently skip
+            return null;
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException |
+                 IllegalAccessException e) {
+            log.debug("Failed to load SM3PasswordEncoder", e);
+            return null;
+        }
+    }
 }
