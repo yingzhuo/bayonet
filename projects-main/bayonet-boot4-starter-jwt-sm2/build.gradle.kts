@@ -3,7 +3,7 @@ plugins {
     id("buildlogic.publish-conventions")
 }
 
-description = "JWT增强 - hutool加密增强"
+description = "JWT增强 - SM2加密"
 
 dependencies {
     compileOnly(libs.jetbrains.annotation)
