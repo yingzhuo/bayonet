@@ -16,14 +16,13 @@ import java.security.MessageDigest;
  * @author 应卓
  * @since 4.1.1
  */
-public class SM3PasswordEncoder implements PasswordEncoder {
+public class SM3PasswordEncoder implements NamedPasswordEncoder {
 
-    /**
-     * 对原始密码进行 SM3 哈希编码。
-     *
-     * @param rawPassword 原始密码，可为 {@code null}
-     * @return SM3 哈希值，输入为 {@code null} 时返回 {@code null}
-     */
+    @Override
+    public String getName() {
+        return "SM3";
+    }
+
     @Override
     public @Nullable String encode(@Nullable CharSequence rawPassword) {
         if (rawPassword == null) {
@@ -32,15 +31,6 @@ public class SM3PasswordEncoder implements PasswordEncoder {
         return SmUtil.sm3(rawPassword.toString());
     }
 
-    /**
-     * 校验原始密码是否与已编码的密码匹配。
-     * <p>使用 {@link MessageDigest#isEqual} 进行恒等时间比较，防止时序攻击。</p>
-     * <p>{@code null} 或空字符串的密码直接返回 {@code false}。</p>
-     *
-     * @param rawPassword     原始密码，可为 {@code null}
-     * @param encodedPassword 已编码的密码，可为 {@code null}
-     * @return 匹配返回 {@code true}，否则 {@code false}
-     */
     @Override
     public boolean matches(@Nullable CharSequence rawPassword, @Nullable String encodedPassword) {
         if (rawPassword == null || encodedPassword == null) {

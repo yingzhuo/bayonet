@@ -1,0 +1,2 @@
+com.github.yingzhuo.bayonet.security.password.NamedPasswordEncoder=\
+com.github.yingzhuo.bayonet.security.password.SM3PasswordEncoder
