@@ -5,8 +5,8 @@ zxing = "3.5.4"
 
 [libraries]
 # BOMs from other organizations
-ayza-bom = { module = "io.github.hakky54:ayza-bom", version = "10.0.5" }
 bc-bom = { module = "org.bouncycastle:bc-jdk18on-bom", version = "1.85" }
+hutool-bom = { module = "cn.hutool:hutool-bom", version = "5.8.47" }
 
 # General Component
 jetbrains-annotation = { module = "org.jetbrains:annotations", version = "26.1.0" }

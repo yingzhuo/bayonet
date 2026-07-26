@@ -2,10 +2,10 @@
   <dictionary name="project">
     <words>
       <w>apache</w>
-      <w>ayza</w>
       <w>baos</w>
       <w>bcprov</w>
-      <w>hakky</w>
+      <w>bcpkix</w>
+      <w>hutool</w>
       <w>projectlombok</w>
     </words>
   </dictionary>

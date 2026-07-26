@@ -3,7 +3,7 @@ plugins {
     id("buildlogic.publish-conventions")
 }
 
-description = "WebClient增强 - Apache HttpClient5支持"
+description = "JWT增强 - hutool加密增强"
 
 dependencies {
     compileOnly(libs.jetbrains.annotation)
@@ -14,14 +14,23 @@ dependencies {
 
     // spring-boot & spring
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    api("org.springframework.boot:spring-boot-autoconfigure")
+    compileOnly("org.springframework.boot:spring-boot-autoconfigure")
     compileOnly("org.springframework.boot:spring-boot-configuration-processor")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure-processor")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
     // bayonet
     api(project(":projects-main:bayonet-boot4-starter-common"))
-    api(project(":projects-main:bayonet-boot4-starter-webcli"))
+    api(project(":projects-main:bayonet-boot4-starter-jwt"))
+
+    // hutool
+    api(platform(libs.hutool.bom))
+    api("cn.hutool:hutool-crypto")
+
+    // BC
+    api(platform(libs.bc.bom))
+    api("org.bouncycastle:bcprov-jdk18on")
+    api("org.bouncycastle:bcpkix-jdk18on")
 
     // lombok
     compileOnly("org.projectlombok:lombok")
@@ -29,7 +38,4 @@ dependencies {
 
     // slf4j
     api("org.slf4j:slf4j-api")
-
-    // apache5
-    api("org.apache.httpcomponents.client5:httpclient5")
 }
