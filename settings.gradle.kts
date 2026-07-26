@@ -7,6 +7,7 @@ pluginManagement {
     }
 }
 
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositories {
         mavenLocal()
@@ -22,17 +23,18 @@ dependencyResolutionManagement {
 rootProject.name = "bayonet"
 
 // 集成测试 (临时性的)
-include(":project-integration-test")
+include("project-integration-test")
 
 // 实际产物
 includeSubmodules("projects-main")
 
-// ------
-fun includeSubmodules(baseDir: String) {
-    file(baseDir).listFiles()
-        ?.filter { it.isDirectory && file("${it.path}/build.gradle.kts").exists() }
-        ?.sortedBy { it.name }
-        ?.forEach { dir ->
-            include(":$baseDir:${dir.name}")
-        }
+fun includeSubmodules(vararg baseDirs: String): Unit {
+    baseDirs.forEach { baseDir ->
+        file(baseDir).listFiles()
+            ?.filter { it.isDirectory && file("${it.path}/build.gradle.kts").exists() }
+            ?.sortedBy { it.name }
+            ?.forEach { dir ->
+                include(":$baseDir:${dir.name}")
+            }
+    }
 }

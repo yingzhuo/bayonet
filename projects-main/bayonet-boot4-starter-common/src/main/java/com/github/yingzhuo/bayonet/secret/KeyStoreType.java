@@ -1,7 +1,5 @@
 package com.github.yingzhuo.bayonet.secret;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -10,29 +8,23 @@ import org.jspecify.annotations.Nullable;
  * <ul>
  *   <li>{@link #PKCS12} — PKCS#12 格式（.p12 / .pfx）</li>
  *   <li>{@link #JKS} — Java KeyStore 格式（.jks）</li>
+ *   <li>其他的类型不打算支持</li>
  * </ul>
  *
  * @author 应卓
  * @since 4.1.0
  */
-@Getter
-@RequiredArgsConstructor
 public enum KeyStoreType {
 
     /**
      * PKCS#12
      */
-    PKCS12("pkcs12"),
+    PKCS12,
 
     /**
      * JKS
      */
-    JKS("jks");
-
-    /**
-     * KeyStore 类型名称（小写），用于底层 API 调用。
-     */
-    private final String name;
+    JKS;
 
     /**
      * 获取默认 KeyStore 类型。
@@ -72,5 +64,4 @@ public enum KeyStoreType {
 
         throw new IllegalArgumentException("Unsupported keystore type: '" + type + "'");
     }
-
 }

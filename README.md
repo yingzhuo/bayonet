@@ -21,8 +21,7 @@
   </a>
 </p>
 
-Bayonet 是应卓开发的 Spring Boot 4.x 增强库，提供可复用的自动配置、工具类和集成支持，涵盖
-Web、安全、数据（JPA/Redis/MongoDB）、校验、日志等领域。
+SpringBoot4.x增强库，提供可复用的自动配置、工具类和集成支持，涵盖 Web、安全、数据、校验等领域。
 
 ### 关于 Claude Code
 

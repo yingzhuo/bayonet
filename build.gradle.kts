@@ -1,10 +1,11 @@
-val gradleWrapperVersion: String = project.property("gradleWrapperVersion").toString()
-
 plugins {
-    id("base")
+    id("buildlogic.root-conventions")
 }
 
-defaultTasks("classes")
+description = "SpringBoot4.x增强库，提供可复用的自动配置、工具类和集成支持，涵盖 Web、安全、数据、校验等领域"
+
+ext {
+}
 
 allprojects {
     group = project.property("bayonetGroup").toString()
@@ -12,14 +13,8 @@ allprojects {
 
     configurations.configureEach {
         resolutionStrategy {
-            cacheChangingModulesFor(72, "hours")
-            cacheDynamicVersionsFor(72, "hours")
+            cacheChangingModulesFor(7, "days")
+            cacheDynamicVersionsFor(7, "days")
         }
     }
-}
-
-tasks.withType<Wrapper>().configureEach {
-    distributionUrl = "https://mirrors.cloud.tencent.com/gradle/gradle-$gradleWrapperVersion-bin.zip"
-    networkTimeout = 30000
-    distributionType = Wrapper.DistributionType.ALL
 }
