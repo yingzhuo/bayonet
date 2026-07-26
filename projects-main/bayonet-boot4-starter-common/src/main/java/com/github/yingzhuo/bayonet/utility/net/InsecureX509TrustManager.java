@@ -15,7 +15,7 @@ import java.security.cert.X509Certificate;
  * <p>使用 {@link #getSingletonInstance()} 获取单例。</p>
  *
  * @author 应卓
- * @see SSLContextFactories
+ * @see SSLFactories
  * @since 4.1.1
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

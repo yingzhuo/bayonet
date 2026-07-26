@@ -1,7 +1,7 @@
 package com.github.yingzhuo.bayonet.webcli.factory;
 
 import com.github.yingzhuo.bayonet.utility.CloseUtils;
-import com.github.yingzhuo.bayonet.utility.net.SSLContextFactories;
+import com.github.yingzhuo.bayonet.utility.net.SSLFactories;
 import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
@@ -13,14 +13,16 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.util.Assert;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
  * 信任所有证书的 {@link HttpComponentsClientHttpRequestFactory} FactoryBean。
  *
- * <p>直接基于 {@link SSLContextFactories#createInsecure()} 构建 Apache HttpClient 5，
+ * <p>直接基于 {@link SSLFactories#createInsecure()} 构建 Apache HttpClient 5，
  * 使用 {@link NoopHostnameVerifier} 跳过主机名验证。
  * 实现 {@link DisposableBean}，容器销毁时自动释放底层资源，避免资源泄漏。</p>
  *
@@ -37,32 +39,40 @@ public final class InsecureHttpComponentsClientHttpRequestFactoryBean
     private final HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory;
 
     /**
-     * 使用默认超时创建实例。
-     * <p>连接超时使用 Apache HttpClient 5 默认值，读取超时不设置。</p>
+     * 使用默认超时创建实例
      */
     public InsecureHttpComponentsClientHttpRequestFactoryBean() {
         this(null, null);
     }
 
     /**
-     * 使用指定超时创建实例。
+     * 使用指定超时创建实例
      *
-     * @param connectTimeout 连接超时，为 {@code null} 时使用 Apache HttpClient 5 默认值
-     * @param readTimeout    读取超时，为 {@code null} 时不设置
+     * @param connectTimeout 连接超时，为 {@code null} 时使用 10 秒
+     * @param readTimeout    读取超时，为 {@code null} 时使用 30 秒
      */
     public InsecureHttpComponentsClientHttpRequestFactoryBean(@Nullable Duration connectTimeout, @Nullable Duration readTimeout) {
-        var sslContext = SSLContextFactories.createInsecure();
+
+        if (connectTimeout != null) {
+            Assert.isTrue(!connectTimeout.isZero() && !connectTimeout.isNegative(), "connect timeout must be a positive duration");
+        }
+
+        if (readTimeout != null) {
+            Assert.isTrue(!readTimeout.isZero() && !readTimeout.isNegative(), "read timeout must be a positive duration");
+        }
+
+        connectTimeout = Objects.requireNonNullElse(connectTimeout, Duration.ofSeconds(10));
+        readTimeout = Objects.requireNonNullElse(readTimeout, Duration.ofSeconds(30));
+
+        var sslContext = SSLFactories.createInsecure().context();
         var tlsStrategy = new DefaultClientTlsStrategy(sslContext, NoopHostnameVerifier.INSTANCE);
 
         var cmBuilder = PoolingHttpClientConnectionManagerBuilder.create()
-                .setTlsSocketStrategy(tlsStrategy);
-
-        if (connectTimeout != null) {
-            cmBuilder.setDefaultConnectionConfig(
+                .setTlsSocketStrategy(tlsStrategy)
+                .setDefaultConnectionConfig(
                     ConnectionConfig.custom()
                             .setConnectTimeout(connectTimeout.toMillis(), TimeUnit.MILLISECONDS).build()
             );
-        }
 
         this.connectionManager = cmBuilder.build();
 
@@ -71,10 +81,7 @@ public final class InsecureHttpComponentsClientHttpRequestFactoryBean
                 .build();
 
         var factory = new HttpComponentsClientHttpRequestFactory(httpClient);
-
-        if (readTimeout != null) {
-            factory.setReadTimeout(readTimeout);
-        }
+        factory.setReadTimeout(readTimeout);
 
         this.httpComponentsClientHttpRequestFactory = factory;
     }
