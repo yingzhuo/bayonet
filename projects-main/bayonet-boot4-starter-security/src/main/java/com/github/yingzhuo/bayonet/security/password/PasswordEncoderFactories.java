@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.security.password;
 
+import com.github.yingzhuo.bayonet.utility.ServiceLoaderUtils;
 import com.github.yingzhuo.bayonet.utility.SpringFactoriesUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,9 @@ import org.springframework.security.crypto.password.*;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * {@link PasswordEncoder} 工厂工具类。
@@ -74,9 +77,8 @@ public final class PasswordEncoderFactories {
         encoders.put("sha256", new StandardPasswordEncoder());
         encoders.put("argon2", Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8());
 
-        // SPI loading
-        // since 4.1.1
-        SpringFactoriesUtils.load(NamedPasswordEncoder.class)
+        // SPI loading (since 4.1.1)
+        LazyHolder.getSpiLoadedEncoders()
                 .forEach(e -> encoders.put(e.getName(), e));
 
         return buildEncoder(DEFAULT_ENCODING_ID, DEFAULT_MATCHES_ID, encoders);
@@ -108,5 +110,22 @@ public final class PasswordEncoderFactories {
         var passwordEncoder = new DelegatingPasswordEncoder(encodingId, encoders);
         passwordEncoder.setDefaultPasswordEncoderForMatches(encoders.get(matchesId));
         return passwordEncoder;
+    }
+
+    // ------
+
+    private static final class LazyHolder {
+        private static final List<NamedPasswordEncoder> SPI_LOADED_PWD_ENCODERS;
+
+        static {
+            SPI_LOADED_PWD_ENCODERS = Stream.concat(
+                    SpringFactoriesUtils.load(NamedPasswordEncoder.class),
+                    ServiceLoaderUtils.load(NamedPasswordEncoder.class)
+            ).toList();
+        }
+
+        private static List<NamedPasswordEncoder> getSpiLoadedEncoders() {
+            return SPI_LOADED_PWD_ENCODERS;
+        }
     }
 }
