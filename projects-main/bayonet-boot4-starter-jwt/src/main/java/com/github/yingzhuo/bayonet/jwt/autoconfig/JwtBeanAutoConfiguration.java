@@ -18,7 +18,7 @@ public class JwtBeanAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnBean(Algorithm.class)
     public BlacklistManager blacklistChecker() {
-        return NoopBlacklistManager.getInstance();
+        return NoopBlacklistManager.getSingletonInstance();
     }
 
     @Bean

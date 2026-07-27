@@ -35,10 +35,11 @@ public final class StreamFactories {
      */
     @SafeVarargs
     public static <T> Stream<T> nullSafeNewStream(@Nullable T... elements) {
-        if (elements == null) {
+        if (elements == null || elements.length == 0) {
             return Stream.empty();
         }
-        return Arrays.stream(elements).filter(Objects::nonNull);
+        return Arrays.stream(elements)
+                .filter(Objects::nonNull);
     }
 
     /**
@@ -52,7 +53,8 @@ public final class StreamFactories {
         if (elements == null) {
             return Stream.empty();
         }
-        return elements.stream().filter(Objects::nonNull);
+        return elements.stream()
+                .filter(Objects::nonNull);
     }
 
     // ------
@@ -84,6 +86,8 @@ public final class StreamFactories {
         return StreamSupport.stream(spliterator, parallel);
     }
 
+    // ------
+
     /**
      * 创建包含 {@link Enumeration} 元素的 Stream（null-safe）。
      *
@@ -109,6 +113,42 @@ public final class StreamFactories {
         }
         var spliterator = Spliterators.spliteratorUnknownSize(new EnumerationIterator<>(enumeration), 0);
         return StreamSupport.stream(spliterator, parallel);
+    }
+
+    // ------
+
+    /**
+     * 合并多个集合的元素为一个 Stream（null-safe）。
+     * <p>自动跳过 {@code null} 集合，但保留集合中的 {@code null} 元素。</p>
+     *
+     * @param collections 可变参数集合列表，可为 {@code null}
+     * @param <T>         元素类型
+     * @return Stream（非 {@code null}）
+     * @since 4.1.1
+     */
+    @SafeVarargs
+    public static <T> Stream<T> flatten(@Nullable Collection<T>... collections) {
+        if (collections == null || collections.length == 0) {
+            return Stream.empty();
+        }
+        return Arrays.stream(collections)
+                .filter(Objects::nonNull)
+                .flatMap(Collection::stream);
+    }
+
+    /**
+     * 合并多个集合的元素为一个 Stream，并跳过 {@code null} 元素。
+     * <p>与 {@link #flatten(Collection[])} 的区别在于，此方法会进一步过滤掉集合中所有 {@code null} 元素。</p>
+     *
+     * @param collections 可变参数集合列表，可为 {@code null}
+     * @param <T>         元素类型
+     * @return Stream（非 {@code null}）
+     * @since 4.1.1
+     */
+    @SafeVarargs
+    public static <T> Stream<T> nullSafeFlatten(@Nullable Collection<T>... collections) {
+        return flatten(collections)
+                .filter(Objects::nonNull);
     }
 
 }

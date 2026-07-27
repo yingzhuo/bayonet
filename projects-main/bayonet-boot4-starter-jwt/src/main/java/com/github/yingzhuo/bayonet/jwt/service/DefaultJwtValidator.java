@@ -80,7 +80,7 @@ public class DefaultJwtValidator implements JwtValidator {
         this.algorithm = algorithm;
         this.verificationCustomizer = Objects.requireNonNullElse(verificationCustomizer, v -> {
         });
-        this.blacklistManager = Objects.requireNonNullElse(blacklistManager, NoopBlacklistManager.getInstance());
+        this.blacklistManager = Objects.requireNonNullElse(blacklistManager, NoopBlacklistManager.getSingletonInstance());
     }
 
     @Override

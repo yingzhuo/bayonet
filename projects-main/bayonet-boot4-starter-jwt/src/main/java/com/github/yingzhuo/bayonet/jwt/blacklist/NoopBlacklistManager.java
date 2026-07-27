@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.jwt.blacklist;
 
+import jakarta.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
  *
  * @author 应卓
  * @see BlacklistManager
+ * @see #getSingletonInstance()
  * @since 4.1.1
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -21,23 +23,21 @@ public final class NoopBlacklistManager implements BlacklistManager {
      *
      * @return 单例实例
      */
-    public static NoopBlacklistManager getInstance() {
+    public static NoopBlacklistManager getSingletonInstance() {
         return LazyHolder.INSTANCE;
     }
 
     @Override
-    public boolean isBlacklisted(String rawToken, String jti) {
+    public boolean isBlacklisted(String rawToken, @Nullable String jti) {
         return false;
     }
 
     @Override
-    public void add(String rawToken, String jti) {
-        // no-op
+    public void add(String rawToken, @Nullable String jti) {
     }
 
     @Override
-    public void remove(String rawToken, String jti) {
-        // no-op
+    public void remove(String rawToken, @Nullable String jti) {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
