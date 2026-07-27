@@ -27,8 +27,6 @@ mavenPublishing {
                 name = "应卓"
                 email = "yingzhor@gmail.com"
                 url = "https://github.com/yingzhuo"
-                roles = listOf("author")
-                timezone = "+8"
             }
         }
 
@@ -49,8 +47,7 @@ tasks.named("publishAllPublicationsToMavenCentralRepository") {
     doFirst {
         if (project.version.toString().endsWith("-SNAPSHOT")) {
             throw GradleException(
-                "Cannot publish SNAPSHOT version '$bayonetVersion' to Maven Central. " +
-                        "Release a non-SNAPSHOT version first."
+                "Cannot publish SNAPSHOT version to Maven Central. Release a non-SNAPSHOT version first."
             )
         }
     }

@@ -49,6 +49,7 @@
      +--- ':projects-main:bayonet-boot4-starter-jwt' - JWT增强
      +--- ':projects-main:bayonet-boot4-starter-jwt-sm2' - JWT增强 - SM2加密
      +--- ':projects-main:bayonet-boot4-starter-security' - SpringSecurity增强
+     +--- ':projects-main:bayonet-boot4-starter-security-sm3' - SpringSecurity增强 - SM3加密
      +--- ':projects-main:bayonet-boot4-starter-validation' - Validation增强
      +--- ':projects-main:bayonet-boot4-starter-webcli' - WebClient增强
      +--- ':projects-main:bayonet-boot4-starter-webcli-apache5' - WebClient增强(Apache HttpClient5支持)
