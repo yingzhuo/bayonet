@@ -18,8 +18,8 @@ import org.springframework.util.StringUtils;
  */
 public class SM2AlgorithmFactoryBean implements FactoryBean<SM2Algorithm>, InitializingBean {
 
-    private @Setter String publicKeyString;
-    private @Setter String privateKeyString;
+    private @Setter String publicKeyText;
+    private @Setter String privateKeyText;
 
     /**
      * 创建 {@link SM2Algorithm} 实例。
@@ -28,7 +28,7 @@ public class SM2AlgorithmFactoryBean implements FactoryBean<SM2Algorithm>, Initi
      */
     @Override
     public SM2Algorithm getObject() {
-        return new SM2Algorithm(publicKeyString, privateKeyString);
+        return new SM2Algorithm(publicKeyText, privateKeyText);
     }
 
     /**
@@ -37,10 +37,10 @@ public class SM2AlgorithmFactoryBean implements FactoryBean<SM2Algorithm>, Initi
      */
     @Override
     public void afterPropertiesSet() {
-        Assert.hasText(publicKeyString, "public key string must not be empty");
-        Assert.hasText(privateKeyString, "private key string must not be empty");
-        this.publicKeyString = StringUtils.trimAllWhitespace(publicKeyString);
-        this.privateKeyString = StringUtils.trimAllWhitespace(privateKeyString);
+        Assert.hasText(publicKeyText, "public key text must not be empty");
+        Assert.hasText(privateKeyText, "private key text must not be empty");
+        this.publicKeyText = StringUtils.trimAllWhitespace(publicKeyText);
+        this.privateKeyText = StringUtils.trimAllWhitespace(privateKeyText);
     }
 
     /**

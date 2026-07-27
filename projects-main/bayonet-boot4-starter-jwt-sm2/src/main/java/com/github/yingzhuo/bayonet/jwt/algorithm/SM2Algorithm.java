@@ -17,7 +17,7 @@ import java.util.Base64;
  *
  * <p>使用 Hutool 的 {@link SM2} 进行签名和验签，支持通过 Hex 编码密钥、字节数组或 Java 原生
  * {@link PublicKey}/{@link PrivateKey} 构造。SM2 是一种基于椭圆曲线密码学的非对称算法，
- * 适用于 JWT 的 RSxxx 类算法的国密替代方案。</p>
+ * 适用于 JWT 的 RSA 等算法的国密替代方案。</p>
  *
  * <p>签名算法名称为 {@code "SM2"}。</p>
  *
@@ -33,16 +33,16 @@ public class SM2Algorithm extends Algorithm {
     private final SM2 sm2;
 
     /**
-     * 使用 Hex 编码的密钥对构造实例。
+     * 使用 Bas64或Hex 编码的密钥对构造实例。
      *
-     * @param publicKeyBase64Encoded  Base64 编码的公钥（非空）
-     * @param privateKeyBase64Encoded Base64 编码的私钥（非空）
+     * @param publicKeyText  Bas64或Hex 编码的公钥（非空）
+     * @param privateKeyText Bas64或Hex 编码的私钥（非空）
      */
-    public SM2Algorithm(String publicKeyBase64Encoded, String privateKeyBase64Encoded) {
+    public SM2Algorithm(String publicKeyText, String privateKeyText) {
         super(NAME, DESCRIPTION);
-        Assert.hasText(publicKeyBase64Encoded, "public key must not be empty");
-        Assert.hasText(privateKeyBase64Encoded, "private key must not be empty");
-        this.sm2 = new SM2(privateKeyBase64Encoded, publicKeyBase64Encoded);
+        Assert.hasText(publicKeyText, "public key text must not be empty");
+        Assert.hasText(privateKeyText, "private key text must not be empty");
+        this.sm2 = new SM2(privateKeyText, publicKeyText);
     }
 
     /**
