@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.utility;
+package com.github.yingzhuo.bayonet.utility.spi;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 /**
  * {@link SpringFactoriesLoader} 工具类
@@ -34,7 +34,7 @@ public final class SpringFactoriesUtils {
      * @return 工厂实现实例的流，不会为 {@code null}
      * @throws IllegalArgumentException 若 {@code targetType} 为 {@code null}
      */
-    public static <T> Stream<T> load(Class<T> targetType) {
+    public static <T> List<T> load(Class<T> targetType) {
         return load(targetType, null, null);
     }
 
@@ -47,7 +47,7 @@ public final class SpringFactoriesUtils {
      * @return 工厂实现实例的流，不会为 {@code null}
      * @throws IllegalArgumentException 若 {@code targetType} 为 {@code null}
      */
-    public static <T> Stream<T> load(Class<T> targetType, @Nullable String springFactoriesResourceLocation) {
+    public static <T> List<T> load(Class<T> targetType, @Nullable String springFactoriesResourceLocation) {
         return load(targetType, springFactoriesResourceLocation, null);
     }
 
@@ -61,8 +61,12 @@ public final class SpringFactoriesUtils {
      * @return 工厂实现实例的流，不会为 {@code null}
      * @throws IllegalArgumentException 若 {@code targetType} 为 {@code null}
      */
-    public static <T> Stream<T> load(Class<T> targetType, @Nullable String springFactoriesResourceLocation, @Nullable ClassLoader classLoader) {
+    public static <T> List<T> load(Class<T> targetType, @Nullable String springFactoriesResourceLocation, @Nullable ClassLoader classLoader) {
         Assert.notNull(targetType, "targetType must not be null");
+
+        if (targetType.isPrimitive()) {
+            return List.of();
+        }
 
         if (!StringUtils.hasText(springFactoriesResourceLocation)) {
             springFactoriesResourceLocation = "META-INF/spring.factories";
@@ -74,6 +78,7 @@ public final class SpringFactoriesUtils {
 
         return SpringFactoriesLoader.forResourceLocation(springFactoriesResourceLocation, classLoader)
                 .load(targetType)
-                .stream();
+                .stream()
+                .toList();
     }
 }

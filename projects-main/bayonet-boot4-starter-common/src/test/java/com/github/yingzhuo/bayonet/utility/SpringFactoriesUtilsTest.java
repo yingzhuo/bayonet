@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.utility;
 
+import com.github.yingzhuo.bayonet.utility.spi.SpringFactoriesUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ProtocolResolver;
 
