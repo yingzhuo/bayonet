@@ -25,11 +25,10 @@ rootProject.name = "bayonet"
 include("project-integration-test")
 includeSubmodules("projects-main")
 
-fun includeSubmodules(vararg baseDirs: String): Unit {
+fun includeSubmodules(vararg baseDirs: String) {
     baseDirs.forEach { baseDir ->
         file(baseDir).listFiles()
             ?.filter { it.isDirectory && file("${it.path}/build.gradle.kts").exists() }
-            ?.sortedBy { it.name }
             ?.forEach { dir ->
                 include(":$baseDir:${dir.name}")
             }

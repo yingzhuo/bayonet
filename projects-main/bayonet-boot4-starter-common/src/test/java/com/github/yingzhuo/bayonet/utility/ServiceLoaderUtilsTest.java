@@ -12,7 +12,7 @@ class ServiceLoaderUtilsTest {
 
     @Test
     void should_load_from_defaultClassLoader() {
-        var services = ServiceLoaderUtils.load(SpiService.class).toList();
+        var services = ServiceLoaderUtils.load(SpiService.class);
         assertThat(services).isNotEmpty();
         assertThat(services.get(0)).isInstanceOf(SpiServiceImpl.class);
     }
@@ -24,13 +24,13 @@ class ServiceLoaderUtilsTest {
         var services = ServiceLoaderUtils.load(
                 SpiService.class,
                 Thread.currentThread().getContextClassLoader()
-        ).toList();
+        );
         assertThat(services).isNotEmpty();
     }
 
     @Test
     void should_useDefault_when_classLoaderIsNull() {
-        var services = ServiceLoaderUtils.load(SpiService.class, (ClassLoader) null).toList();
+        var services = ServiceLoaderUtils.load(SpiService.class, (ClassLoader) null);
         assertThat(services).isNotEmpty();
     }
 
@@ -53,7 +53,7 @@ class ServiceLoaderUtilsTest {
     @Test
     void should_return_empty_when_noServicesFound() {
         // String 没有 SPI 实现
-        var services = ServiceLoaderUtils.load(String.class).toList();
+        var services = ServiceLoaderUtils.load(String.class);
         assertThat(services).isEmpty();
     }
 

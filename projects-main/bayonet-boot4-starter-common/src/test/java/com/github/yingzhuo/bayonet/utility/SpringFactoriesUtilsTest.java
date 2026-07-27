@@ -14,7 +14,7 @@ class SpringFactoriesUtilsTest {
     @Test
     void should_load_from_defaultLocation() {
         // ProtocolResolver 在项目的 spring.factories 中有 2 个实现
-        var result = SpringFactoriesUtils.load(ProtocolResolver.class).toList();
+        var result = SpringFactoriesUtils.load(ProtocolResolver.class);
         assertThat(result).isNotEmpty();
     }
 
@@ -25,19 +25,19 @@ class SpringFactoriesUtilsTest {
         var result = SpringFactoriesUtils.load(
                 ProtocolResolver.class,
                 "META-INF/nonexistent-factories.properties"
-        ).toList();
+        );
         assertThat(result).isEmpty();
     }
 
     @Test
     void should_useDefault_when_locationIsNull() {
-        var result = SpringFactoriesUtils.load(ProtocolResolver.class, (String) null).toList();
+        var result = SpringFactoriesUtils.load(ProtocolResolver.class, (String) null);
         assertThat(result).isNotEmpty();
     }
 
     @Test
     void should_useDefault_when_locationIsEmpty() {
-        var result = SpringFactoriesUtils.load(ProtocolResolver.class, "").toList();
+        var result = SpringFactoriesUtils.load(ProtocolResolver.class, "");
         assertThat(result).isNotEmpty();
     }
 
@@ -49,7 +49,7 @@ class SpringFactoriesUtilsTest {
                 ProtocolResolver.class,
                 null,
                 Thread.currentThread().getContextClassLoader()
-        ).toList();
+        );
         assertThat(result).isNotEmpty();
     }
 
@@ -59,7 +59,7 @@ class SpringFactoriesUtilsTest {
                 ProtocolResolver.class,
                 null,
                 (ClassLoader) null
-        ).toList();
+        );
         assertThat(result).isNotEmpty();
     }
 

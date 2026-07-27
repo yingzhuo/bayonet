@@ -1,7 +1,7 @@
 package com.github.yingzhuo.bayonet.security.password;
 
 import cn.hutool.crypto.SmUtil;
-import org.jspecify.annotations.Nullable;
+import org.springframework.security.crypto.password.AbstractValidatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.nio.charset.StandardCharsets;
@@ -16,7 +16,7 @@ import java.security.MessageDigest;
  * @author 应卓
  * @since 4.1.1
  */
-public class SM3PasswordEncoder implements NamedPasswordEncoder {
+public class SM3PasswordEncoder extends AbstractValidatingPasswordEncoder implements NamedPasswordEncoder {
 
     @Override
     public String getName() {
@@ -24,24 +24,16 @@ public class SM3PasswordEncoder implements NamedPasswordEncoder {
     }
 
     @Override
-    public @Nullable String encode(@Nullable CharSequence rawPassword) {
-        if (rawPassword == null) {
-            return null;
-        }
-        return SmUtil.sm3(rawPassword.toString());
+    protected String encodeNonNullPassword(String rawPassword) {
+        return SmUtil.sm3(rawPassword);
     }
 
     @Override
-    public boolean matches(@Nullable CharSequence rawPassword, @Nullable String encodedPassword) {
-        if (rawPassword == null || encodedPassword == null) {
-            return false;
-        }
-
-        var encodedNow = encode(rawPassword);
+    protected boolean matchesNonNull(String rawPassword, String encodedPassword) {
+        var encodedAgain = encode(rawPassword);
         return MessageDigest.isEqual(
-                encodedNow.getBytes(StandardCharsets.UTF_8),
+                encodedAgain.getBytes(StandardCharsets.UTF_8),
                 encodedPassword.getBytes(StandardCharsets.UTF_8)
         );
     }
-
 }
