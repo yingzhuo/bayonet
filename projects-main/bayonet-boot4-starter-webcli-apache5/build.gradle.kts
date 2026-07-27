@@ -3,7 +3,7 @@ plugins {
     id("buildlogic.publish-conventions")
 }
 
-description = "WebClient增强 - Apache HttpClient5支持"
+description = "WebClient增强 - Apache5支持"
 
 dependencies {
     compileOnly(libs.jetbrains.annotation)

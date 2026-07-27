@@ -17,7 +17,6 @@
 | `make test`    | 运行全部测试（`./gradlew test`）                                                        |
 | `make clean`   | 清理构建产物                                                                            |
 | `make install` | 发布到 Maven 本地仓库（`./gradlew -x test -x check publishToMavenLocal --no-parallel`） |
-| `make publish` | 先发布到本地仓库，再发布到 Maven Central（需输入 yes 确认）                             |
 
 运行单个测试类：
 
@@ -52,18 +51,19 @@
      +--- ':projects-main:bayonet-boot4-starter-security-sm3' - SpringSecurity增强 - SM3加密
      +--- ':projects-main:bayonet-boot4-starter-validation' - Validation增强
      +--- ':projects-main:bayonet-boot4-starter-webcli' - WebClient增强
-     +--- ':projects-main:bayonet-boot4-starter-webcli-apache5' - WebClient增强(Apache HttpClient5支持)
+     +--- ':projects-main:bayonet-boot4-starter-webcli-apache5' - WebClient增强 - Apache5支持
      +--- ':projects-main:bayonet-boot4-starter-webmvc' - WebMvc增强
      \--- ':projects-main:bayonet-boot4-starter-zxing' - 二维码条形码增强
 ```
 
 ### 构建系统
 
-- **Gradle 9.6.1**，JDK 17 目标
+- **Gradle 9.6.1**，JDK 17 目标，使用KotlinDSL。
 - 通过 `buildSrc/` 中的约定插件统一模块配置，各模块按 ID 引用（`buildlogic.java-conventions` 等）
-- 禁用模块元数据生成（发布优化），版本属性统一在 `gradle.properties` 中管理
+- 禁用模块元数据生成（发布优化）。
 
 ### 模块约定
 
 - `projects-main/` 下的模块应用 `buildlogic.java-conventions`，该插件配置 Java 17、`-parameters` javac 标志、JUnit
-  Platform、sources JAR、javadoc JAR 及 Spring Boot 依赖管理
+  Platform、sources JAR、javadoc JAR 及 Spring Boot 依赖管理。应用 `buildlogic.publish-conventions`， 
+  该插件配置上传Maven中央仓库所需的信息。
