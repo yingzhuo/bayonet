@@ -14,6 +14,9 @@
     <!-- log精细配置 -->
     <logger name="com.github.yingzhuo.bayonet" level="trace"/>
     <logger name="org.springframework" level="warn"/>
+    <logger name="_org.springframework.web.servlet.HandlerMapping.Mappings" level="info"/>
+    <logger name="org.hibernate.validator" level="warn"/>
+    <logger name="io.micrometer" level="info"/>
 
     <appender name="STDOUT" class="ConsoleAppender">
         <encoder class="PatternLayoutEncoder">
