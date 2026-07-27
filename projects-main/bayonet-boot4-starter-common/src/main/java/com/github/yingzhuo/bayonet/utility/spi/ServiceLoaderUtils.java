@@ -30,7 +30,7 @@ public final class ServiceLoaderUtils {
      *
      * @param targetType SPI 服务类型
      * @param <T>        SPI 服务类型
-     * @return 服务实现实例的流，不会为 {@code null}
+     * @return 服务实现实例的列表，不会为 {@code null}
      * @throws IllegalArgumentException 若 {@code targetType} 为 {@code null}
      */
     public static <T> List<T> load(Class<T> targetType) {
@@ -43,7 +43,7 @@ public final class ServiceLoaderUtils {
      * @param targetType  SPI 服务类型
      * @param classLoader 类加载器，{@code null} 时使用默认类加载器
      * @param <T>         SPI 服务类型
-     * @return 服务实现实例的流，不会为 {@code null}
+     * @return 服务实现实例的列表，不会为 {@code null}
      * @throws IllegalArgumentException 若 {@code targetType} 为 {@code null}
      */
     public static <T> List<T> load(Class<T> targetType, @Nullable ClassLoader classLoader) {

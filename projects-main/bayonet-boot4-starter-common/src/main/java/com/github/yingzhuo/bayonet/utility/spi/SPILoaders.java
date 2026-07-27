@@ -5,8 +5,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -41,7 +41,9 @@ public final class SPILoaders {
         var list = new ArrayList<T>();
         list.addAll(SpringFactoriesUtils.load(targetType));
         list.addAll(ServiceLoaderUtils.load(targetType));
-        return Collections.unmodifiableList(list);
+        return list.stream()
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     /**

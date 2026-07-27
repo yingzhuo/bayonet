@@ -31,7 +31,7 @@ public final class SpringFactoriesUtils {
      *
      * @param targetType 工厂目标类型
      * @param <T>        工厂目标类型
-     * @return 工厂实现实例的流，不会为 {@code null}
+     * @return 服务实现实例的列表，不会为 {@code null}
      * @throws IllegalArgumentException 若 {@code targetType} 为 {@code null}
      */
     public static <T> List<T> load(Class<T> targetType) {
@@ -44,7 +44,7 @@ public final class SpringFactoriesUtils {
      * @param targetType                      工厂目标类型
      * @param springFactoriesResourceLocation SpringFactories 资源位置，{@code null} 时使用默认位置
      * @param <T>                             工厂目标类型
-     * @return 工厂实现实例的流，不会为 {@code null}
+     * @return 服务实现实例的列表，不会为 {@code null}
      * @throws IllegalArgumentException 若 {@code targetType} 为 {@code null}
      */
     public static <T> List<T> load(Class<T> targetType, @Nullable String springFactoriesResourceLocation) {
@@ -58,7 +58,7 @@ public final class SpringFactoriesUtils {
      * @param springFactoriesResourceLocation SpringFactories 资源位置，{@code null} 时使用默认位置
      * @param classLoader                     类加载器，{@code null} 时使用默认类加载器
      * @param <T>                             工厂目标类型
-     * @return 工厂实现实例的流，不会为 {@code null}
+     * @return 服务实现实例的列表，不会为 {@code null}
      * @throws IllegalArgumentException 若 {@code targetType} 为 {@code null}
      */
     public static <T> List<T> load(Class<T> targetType, @Nullable String springFactoriesResourceLocation, @Nullable ClassLoader classLoader) {
@@ -77,8 +77,6 @@ public final class SpringFactoriesUtils {
         }
 
         return SpringFactoriesLoader.forResourceLocation(springFactoriesResourceLocation, classLoader)
-                .load(targetType)
-                .stream()
-                .toList();
+                .load(targetType);
     }
 }
