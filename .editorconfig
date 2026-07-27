@@ -1,0 +1,72 @@
+# https://editorconfig.org/
+root = true
+
+[*]
+end_of_line = lf
+charset = UTF-8
+tab_width = 4
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{groovy,java,kt,scala}]
+indent_style = tab
+indent_size = 4
+
+[*.sh]
+indent_style = tab
+indent_size = 2
+
+[*.code-workspace]
+indent_style = tab
+indent_size = 2
+
+[*.lua]
+indent_style = tab
+indent_size = 4
+
+[*.xml]
+indent_style = tab
+indent_size = 2
+
+[*.{yaml,yml}]
+indent_style = tab
+indent_size = 2
+
+[*.conf]
+indent_style = tab
+indent_size = 2
+
+[*.ini]
+indent_style = tab
+indent_size = 2
+
+[*.toml]
+indent_style = tab
+indent_size = 2
+
+[*.properties]
+indent_style = space
+indent_size = 2
+
+[spring.factories]
+indent_style = space
+indent_size = 2
+
+[*.{json,json5}]
+indent_style = tab
+indent_size = 2
+
+[*.groovy]
+indent_style = tab
+indent_size = 2
+
+[{makefile,Makefile}]
+indent_style = tab
+indent_size = 2
+
+[*{.gradle,.gradle.kts}]
+indent_style = tab
+indent_size = 2
+
+[*.{bat,cmd}]
+end_of_line = crlf

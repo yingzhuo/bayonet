@@ -22,10 +22,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "bayonet"
 
-// 集成测试 (临时性的)
 include("project-integration-test")
-
-// 实际产物
 includeSubmodules("projects-main")
 
 fun includeSubmodules(vararg baseDirs: String): Unit {
