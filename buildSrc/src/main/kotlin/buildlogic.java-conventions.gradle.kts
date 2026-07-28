@@ -1,4 +1,4 @@
-val jdkVersion: String = project.property("jdkVersion").toString()
+val jdkVersion: Int = project.property("jdkVersion").toString().toInt()
 val springBootVersion: String = project.property("springBootVersion").toString()
 
 plugins {
@@ -8,12 +8,11 @@ plugins {
 }
 
 java {
-    val javaVersionInt = jdkVersion.toInt()
-    sourceCompatibility = JavaVersion.toVersion(javaVersionInt)
-    targetCompatibility = JavaVersion.toVersion(javaVersionInt)
+    sourceCompatibility = JavaVersion.toVersion(jdkVersion)
+    targetCompatibility = JavaVersion.toVersion(jdkVersion)
 
     toolchain {
-        languageVersion = JavaLanguageVersion.of(javaVersionInt)
+        languageVersion = JavaLanguageVersion.of(jdkVersion)
         vendor = JvmVendorSpec.ORACLE
         implementation = JvmImplementation.VENDOR_SPECIFIC
     }
