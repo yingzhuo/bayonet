@@ -1,6 +1,6 @@
 package com.github.yingzhuo.bayonet.autoconfig;
 
-import com.github.yingzhuo.bayonet.converter.KeyStoreTypeConverter;
+import com.github.yingzhuo.bayonet.secret.KeyStoreTypeConverter;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 

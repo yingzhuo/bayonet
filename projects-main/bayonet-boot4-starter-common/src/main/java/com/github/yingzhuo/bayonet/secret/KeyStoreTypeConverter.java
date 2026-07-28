@@ -1,6 +1,5 @@
-package com.github.yingzhuo.bayonet.converter;
+package com.github.yingzhuo.bayonet.secret;
 
-import com.github.yingzhuo.bayonet.secret.KeyStoreType;
 import org.springframework.core.convert.converter.Converter;
 
 /**
