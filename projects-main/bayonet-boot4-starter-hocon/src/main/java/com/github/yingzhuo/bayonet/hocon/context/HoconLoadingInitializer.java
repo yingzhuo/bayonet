@@ -53,22 +53,21 @@ public class HoconLoadingInitializer extends AbstractApplicationContextInitializ
             locationList.add("file:config/" + applicationName + ".conf");
         }
 
-        for (var location : locationList) {
-            var resource = loadResource(ctx, location);
-            if (resource == null) {
-                log.trace("HOCON config not found at: {}", location);
-                continue;
-            }
+        var resource = super.findFirstExistingResource(ctx, locationList);
 
-            try {
-                for (var propertySource : LOADER.load(location, resource)) {
-                    ctx.getEnvironment().getPropertySources().addFirst(propertySource);
-                }
-                log.debug("loaded HOCON config from: {}", location);
-                break;
-            } catch (Exception e) {
-                log.warn("failed to load HOCON config from {}: {}", location, e.getMessage());
+        if (resource == null) {
+            return;
+        }
+
+        var name = super.getResourceFilenameOrElse(resource, "HOCON config");
+
+        try {
+            for (var propertySource : LOADER.load(name, resource)) {
+                ctx.getEnvironment().getPropertySources().addFirst(propertySource);
             }
+            log.debug("loaded HOCON config from: {}", name);
+        } catch (Exception e) {
+            log.warn("failed to load HOCON config from {}: {}", name, e.getMessage());
         }
     }
 

@@ -42,6 +42,7 @@ class HoconLoadingInitializerTest {
         when(r.exists()).thenReturn(true);
         when(r.isReadable()).thenReturn(true);
         when(r.getURL()).thenReturn(new java.net.URL(url));
+        when(r.getFile()).thenThrow(new IOException("stub"));
         return r;
     }
 
@@ -79,7 +80,7 @@ class HoconLoadingInitializerTest {
 
         initializer.initialize(ctx);
 
-        verify(propertySources).addFirst(argThat(ps -> "classpath:default.conf".equals(ps.getName())));
+        verify(propertySources).addFirst(argThat(ps -> "HOCON config".equals(ps.getName())));
     }
 
     // ============== helper ==============
@@ -101,7 +102,7 @@ class HoconLoadingInitializerTest {
 
         initializer.initialize(ctx);
 
-        verify(propertySources).addFirst(argThat(ps -> "file:config/default.conf".equals(ps.getName())));
+        verify(propertySources).addFirst(argThat(ps -> "HOCON config".equals(ps.getName())));
         verify(ctx, never()).getResource("classpath:default.conf");
     }
 
@@ -111,6 +112,7 @@ class HoconLoadingInitializerTest {
         when(resource.exists()).thenReturn(true);
         when(resource.isReadable()).thenReturn(true);
         when(resource.getURL()).thenThrow(new IOException("read error"));
+        when(resource.getFile()).thenThrow(new IOException("stub"));
 
         when(ctx.getResource(anyString())).thenReturn(resource);
         when(ctx.getEnvironment()).thenReturn(environment);
@@ -136,7 +138,7 @@ class HoconLoadingInitializerTest {
 
         initializer.initialize(ctx);
 
-        verify(propertySources).addFirst(argThat(ps -> "classpath:myapp.conf".equals(ps.getName())));
+        verify(propertySources).addFirst(argThat(ps -> "HOCON config".equals(ps.getName())));
     }
 
 }

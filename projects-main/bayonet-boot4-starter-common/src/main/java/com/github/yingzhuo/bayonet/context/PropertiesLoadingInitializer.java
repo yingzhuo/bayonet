@@ -1,14 +1,14 @@
 package com.github.yingzhuo.bayonet.context;
 
-import com.github.yingzhuo.bayonet.utility.PropertiesUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.env.PropertiesPropertySourceLoader;
+import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * 在 Spring 容器初始化前加载外部 properties 文件，将其注册到 {@code Environment} 的 {@code PropertySource} 中。
@@ -36,6 +36,8 @@ public class PropertiesLoadingInitializer extends AbstractApplicationContextInit
             "classpath:config/default.properties"
     );
 
+    private static final PropertySourceLoader LOADER = new PropertiesPropertySourceLoader();
+
     @Override
     public void initialize(ConfigurableApplicationContext ctx) {
         var locationList = new ArrayList<>(DEFAULT_LOCATIONS);
@@ -48,25 +50,21 @@ public class PropertiesLoadingInitializer extends AbstractApplicationContextInit
             locationList.add("file:config/" + applicationName + ".properties");
         }
 
-        for (var location : locationList) {
-            var resource = loadResource(ctx, location);
-            if (resource == null) {
-                log.trace("properties config not found at: {}", location);
-                continue;
-            }
+        var resource = super.findFirstExistingResource(ctx, locationList);
 
-            try (var stream = resource.getInputStream()) {
-                var properties = new Properties();
-                properties.load(stream);
+        if (resource == null) {
+            return;
+        }
 
-                ctx.getEnvironment()
-                        .getPropertySources()
-                        .addFirst(PropertiesUtils.toMapPropertySource(location, properties));
-                log.debug("loaded properties from {}", location);
-                break;
-            } catch (Exception e) {
-                log.warn("failed to load properties from {}: {}", location, e.getMessage());
+        var name = super.getResourceFilenameOrElse(resource, "Properties config");
+
+        try {
+            for (var propertySource : LOADER.load(name, resource)) {
+                ctx.getEnvironment().getPropertySources().addFirst(propertySource);
             }
+            log.debug("loaded properties from: {}", name);
+        } catch (Exception e) {
+            log.warn("failed to load properties from {}: {}", name, e.getMessage());
         }
     }
 

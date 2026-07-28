@@ -29,6 +29,8 @@ import java.util.List;
  * }</pre>
  *
  * @author 应卓
+ * @see ResourceLoader
+ * @see ResourcePatternResolver
  * @since 4.1.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

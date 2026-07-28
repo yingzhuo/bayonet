@@ -64,22 +64,21 @@ public class YamlLoadingInitializer extends AbstractApplicationContextInitialize
             locationList.add("file:config/" + applicationName + ".yml");
         }
 
-        for (var location : locationList) {
-            var resource = loadResource(ctx, location);
-            if (resource == null) {
-                log.trace("YAML config not found at: {}", location);
-                continue;
-            }
+        var resource = super.findFirstExistingResource(ctx, locationList);
 
-            try {
-                for (var propertySource : LOADER.load(location, resource)) {
-                    ctx.getEnvironment().getPropertySources().addFirst(propertySource);
-                }
-                log.debug("loaded YAML config from: {}", location);
-                break;
-            } catch (Exception e) {
-                log.warn("failed to load YAML config from {}: {}", location, e.getMessage());
+        if (resource == null) {
+            return;
+        }
+
+        var name = super.getResourceFilenameOrElse(resource, "YAML config");
+
+        try {
+            for (var propertySource : LOADER.load(name, resource)) {
+                ctx.getEnvironment().getPropertySources().addFirst(propertySource);
             }
+            log.debug("loaded YAML config from: {}", name);
+        } catch (Exception e) {
+            log.warn("failed to load YAML config from {}: {}", name, e.getMessage());
         }
     }
 

@@ -45,6 +45,7 @@ class PropertiesLoadingInitializerTest {
         lenient().when(r.isReadable()).thenReturn(true);
         lenient().when(r.getURL()).thenReturn(new java.net.URL(url));
         lenient().when(r.getInputStream()).thenReturn(urlToInputStream(url));
+        lenient().when(r.getFile()).thenThrow(new IOException("stub"));
         return r;
     }
 
@@ -81,7 +82,7 @@ class PropertiesLoadingInitializerTest {
 
         initializer.initialize(ctx);
 
-        verify(propertySources).addFirst(argThat(ps -> "file:default.properties".equals(ps.getName())));
+        verify(propertySources).addFirst(argThat(ps -> "Properties config".equals(ps.getName())));
         verify(ctx, never()).getResource("file:config/default.properties");
     }
 
@@ -101,7 +102,7 @@ class PropertiesLoadingInitializerTest {
 
         initializer.initialize(ctx);
 
-        verify(propertySources).addFirst(argThat(ps -> "file:config/default.properties".equals(ps.getName())));
+        verify(propertySources).addFirst(argThat(ps -> "Properties config".equals(ps.getName())));
         verify(ctx, never()).getResource("classpath:default.properties");
     }
 
@@ -111,6 +112,7 @@ class PropertiesLoadingInitializerTest {
         when(resource.exists()).thenReturn(true);
         when(resource.isReadable()).thenReturn(true);
         when(resource.getInputStream()).thenThrow(new IOException("read error"));
+        when(resource.getFile()).thenThrow(new IOException("stub"));
 
         when(ctx.getResource(anyString())).thenReturn(resource);
         setupDefaultMocks();
@@ -135,7 +137,7 @@ class PropertiesLoadingInitializerTest {
 
         initializer.initialize(ctx);
 
-        verify(propertySources).addFirst(argThat(ps -> "classpath:myapp.properties".equals(ps.getName())));
+        verify(propertySources).addFirst(argThat(ps -> "Properties config".equals(ps.getName())));
     }
 
 }

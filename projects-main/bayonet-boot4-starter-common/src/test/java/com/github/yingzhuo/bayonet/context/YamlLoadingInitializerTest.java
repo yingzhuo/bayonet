@@ -40,6 +40,7 @@ class YamlLoadingInitializerTest {
         lenient().when(r.exists()).thenReturn(true);
         lenient().when(r.isReadable()).thenReturn(true);
         lenient().when(r.getInputStream()).thenReturn(new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
+        lenient().when(r.getFile()).thenThrow(new IOException("stub"));
         return r;
     }
 
@@ -72,7 +73,7 @@ class YamlLoadingInitializerTest {
 
         initializer.initialize(ctx);
 
-        verify(propertySources).addFirst(argThat(ps -> "file:default.yaml".equals(ps.getName())));
+        verify(propertySources).addFirst(argThat(ps -> "YAML config".equals(ps.getName())));
         verify(ctx, never()).getResource("file:default.yml");
     }
 
@@ -88,7 +89,7 @@ class YamlLoadingInitializerTest {
 
         initializer.initialize(ctx);
 
-        verify(propertySources).addFirst(argThat(ps -> "file:config/default.yaml".equals(ps.getName())));
+        verify(propertySources).addFirst(argThat(ps -> "YAML config".equals(ps.getName())));
         verify(ctx, never()).getResource("classpath:default.yaml");
     }
 
@@ -98,6 +99,7 @@ class YamlLoadingInitializerTest {
         when(resource.exists()).thenReturn(true);
         when(resource.isReadable()).thenReturn(true);
         when(resource.getInputStream()).thenThrow(new IOException("read error"));
+        when(resource.getFile()).thenThrow(new IOException("stub"));
 
         when(ctx.getResource(anyString())).thenReturn(resource);
         setupDefaultMocks();
@@ -118,7 +120,7 @@ class YamlLoadingInitializerTest {
 
         initializer.initialize(ctx);
 
-        verify(propertySources).addFirst(argThat(ps -> "classpath:myapp.yaml".equals(ps.getName())));
+        verify(propertySources).addFirst(argThat(ps -> "YAML config".equals(ps.getName())));
     }
 
 }
