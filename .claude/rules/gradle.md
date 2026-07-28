@@ -1,8 +1,8 @@
 ---
-description: 规范 Gradle 调用方式，确保输出对 Claude Code 等工具友好
+description: 规范 Gradle 调用方式，确保输出对 Claude Code 友好
 ---
 
-# Gradle 输出规范
+# Gradle 规范
 
 ## 适用范围
 
@@ -60,9 +60,11 @@ description: 规范 Gradle 调用方式，确保输出对 Claude Code 等工具�
 
 ## 需要避开的陷阱
 
-- **不要依赖 `NO_COLOR` 环境变量**替代 `--console=plain`。`NO_COLOR` 只抑制颜色，**进度条和光标移动等富输出仍然会输出**，照样干扰解析。
+- **不要依赖 `NO_COLOR` 环境变量**替代 `--console=plain`。`NO_COLOR` 只抑制颜色， **进度条和光标移动等富输出仍然会输出**
+  ，照样干扰解析。
 - **不要使用 `--console=rich` 或 `--console=auto`**。这两种模式会启用进度条和动画，在 Agent 的 Bash 工具里表现为乱码式的重绘序列。
-- **不要在命令中混入 `--console=colored` 除非用户明确要求保留颜色**。`colored` 模式有颜色无进度条，对人类终端友好，但对 Agent 仍有多余的 ANSI 转义。
+- **不要在命令中混入 `--console=colored` 除非用户明确要求保留颜色**。`colored` 模式有颜色无进度条，对人类终端友好，但对
+  Agent 仍有多余的 ANSI 转义。
 
 ## 失败处理流程
 

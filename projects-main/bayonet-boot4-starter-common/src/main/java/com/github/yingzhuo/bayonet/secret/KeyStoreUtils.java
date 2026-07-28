@@ -34,9 +34,9 @@ public final class KeyStoreUtils {
      * 从输入流加载 KeyStore。
      * <p>方法内部不会关闭传入的输入流。输入流是谁打开的，谁负责关闭。</p>
      *
-     * @param stream KeyStore 输入流（非 {@code null}）
-     * @param type        KeyStore 类型，为 {@code null} 时使用默认类型 {@link KeyStoreType#PKCS12}
-     * @param storepass   KeyStore 密码（非 {@code null}）
+     * @param stream    KeyStore 输入流（非 {@code null}）
+     * @param type      KeyStore 类型，为 {@code null} 时使用默认类型 {@link KeyStoreType#PKCS12}
+     * @param storepass KeyStore 密码（非 {@code null}）
      * @return 已加载的 {@link KeyStore}（非 {@code null}）
      * @throws IllegalArgumentException 若参数为 {@code null} 或加载失败
      * @throws UncheckedIOException     读取输入流失败时抛出
