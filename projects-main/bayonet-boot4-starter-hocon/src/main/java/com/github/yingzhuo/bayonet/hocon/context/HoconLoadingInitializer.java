@@ -54,7 +54,6 @@ public class HoconLoadingInitializer extends AbstractApplicationContextInitializ
         }
 
         var resource = super.findFirstExistingResource(ctx, locationList);
-
         if (resource == null) {
             return;
         }
