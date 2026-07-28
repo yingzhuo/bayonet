@@ -23,5 +23,3 @@ maven-publish-plugin = "com.vanniktech.maven.publish:com.vanniktech.maven.publis
 
 [bundles]
 zxing = ["zxing-core", "zxing-javase"]
-
-[plugins] # Unused
