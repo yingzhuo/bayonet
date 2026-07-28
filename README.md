@@ -26,20 +26,19 @@ SpringBoot4.x增强库，提供可复用的自动配置、工具类和集成支�
 ### 关于 Claude Code
 
 本项目使用 Claude Code 作为AI辅助开发Agent。请参考[CLAUDE.md](./CLAUDE.md)。<br>
-大语言模型使用的是 deepseek-v4-flash / deepseek-v4-pro
+大语言模型使用的是 `deepseek-v4-pro`
 
 #### 风险提示
 
 - [ClaudeCode风险提示](docs/claude-code-warning.md)
 
+### GPG信息
+
+- [yingzhor@gmail.com](docs/gpg-information.md)
+
 ### 许可证
 
 - [Apache 2.0](LICENSE.txt)
-
-### GPG
-
-- [yingzhor@gmail.com](docs/gpg-information.md)
-- GPG指纹: `3825 E69D 2277 CFA0 95F9  AA45 6B11 FB7F E9EC A55D`
 
 ### 贡献者
 
