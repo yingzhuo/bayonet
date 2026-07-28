@@ -12,6 +12,7 @@ import org.jspecify.annotations.Nullable;
  * </ul>
  *
  * @author 应卓
+ * @see com.github.yingzhuo.bayonet.converter.KeyStoreTypeConverter
  * @since 4.1.0
  */
 public enum KeyStoreType {
@@ -46,6 +47,7 @@ public enum KeyStoreType {
      * @param type 字符串类型，为 {@code null} 时返回默认值 {@link #PKCS12}
      * @return 匹配的 {@link KeyStoreType}
      * @throws IllegalArgumentException 无法识别的类型字符串
+     * @since 4.1.1
      */
     public static KeyStoreType toKeyStore(@Nullable String type) {
         if (type == null) {
