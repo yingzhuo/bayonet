@@ -33,4 +33,5 @@ dependencies {
     // BC
     api(platform(libs.bc.bom))
     compileOnly("org.bouncycastle:bcprov-jdk18on")
+    compileOnly("org.bouncycastle:bcpkix-jdk18on")
 }

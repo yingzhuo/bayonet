@@ -64,8 +64,8 @@ public final class SslBundleUtils {
     /**
      * 按名称查找 {@link SslBundle}，不存在时通过 {@link Supplier} 延迟计算默认值。
      *
-     * @param name                   SSL Bundle 名称（非空）
-     * @param defaultBundleSupplier  默认值提供者（非 {@code null}）
+     * @param name                  SSL Bundle 名称（非空）
+     * @param defaultBundleSupplier 默认值提供者（非 {@code null}）
      * @return {@link SslBundle}（非 {@code null}）
      */
     public static SslBundle getOrElseGet(String name, Supplier<SslBundle> defaultBundleSupplier) {

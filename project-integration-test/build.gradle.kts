@@ -25,4 +25,5 @@ dependencies {
     // BC
     api(platform(libs.bc.bom))
     api("org.bouncycastle:bcprov-jdk18on")
+    api("org.bouncycastle:bcpkix-jdk18on")
 }

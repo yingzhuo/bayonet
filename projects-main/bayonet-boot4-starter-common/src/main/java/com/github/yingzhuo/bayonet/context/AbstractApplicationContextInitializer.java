@@ -12,6 +12,7 @@ import java.util.Collection;
 
 /**
  * {@link ApplicationContextInitializer} 抽象基类。
+ *
  * @param <T> 应用上下文类型
  * @author 应卓
  * @since 4.1.0

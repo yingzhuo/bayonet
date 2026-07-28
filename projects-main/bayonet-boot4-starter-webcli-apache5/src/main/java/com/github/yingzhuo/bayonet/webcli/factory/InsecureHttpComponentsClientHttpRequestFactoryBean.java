@@ -70,9 +70,9 @@ public final class InsecureHttpComponentsClientHttpRequestFactoryBean
         var cmBuilder = PoolingHttpClientConnectionManagerBuilder.create()
                 .setTlsSocketStrategy(tlsStrategy)
                 .setDefaultConnectionConfig(
-                    ConnectionConfig.custom()
-                            .setConnectTimeout(connectTimeout.toMillis(), TimeUnit.MILLISECONDS).build()
-            );
+                        ConnectionConfig.custom()
+                                .setConnectTimeout(connectTimeout.toMillis(), TimeUnit.MILLISECONDS).build()
+                );
 
         this.connectionManager = cmBuilder.build();
 
