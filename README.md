@@ -36,6 +36,11 @@ SpringBoot4.x增强库，提供可复用的自动配置、工具类和集成支�
 
 - [Apache 2.0](LICENSE.txt)
 
+### GPG
+
+- [yingzhor@gmail.com](docs/gpg-information.md)
+- GPG指纹: `3825 E69D 2277 CFA0 95F9  AA45 6B11 FB7F E9EC A55D`
+
 ### 贡献者
 
 <p style="text-align: center;">
