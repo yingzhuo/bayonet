@@ -13,6 +13,7 @@ dependencies {
     // bayonet
     api(platform(project(":projects-main:bayonet-bom")))
     api(project(":projects-main:bayonet-boot4-starter-common"))
+    api(project(":projects-main:bayonet-boot4-starter-hocon"))
 
     // lombok
     compileOnly("org.projectlombok:lombok")
