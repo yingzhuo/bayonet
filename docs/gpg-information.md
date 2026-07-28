@@ -10,6 +10,14 @@
 gpg --recv-keys 6B11FB7FE9ECA55D
 ```
 
+公钥信息如下
+
+```text
+gpg: key 6B11FB7FE9ECA55D: "yingzhuo <yingzhor@gmail.com>" not changed
+gpg: Total number processed: 1
+gpg:              unchanged: 1
+```
+
 ### 验证指纹
 
 ```bash
