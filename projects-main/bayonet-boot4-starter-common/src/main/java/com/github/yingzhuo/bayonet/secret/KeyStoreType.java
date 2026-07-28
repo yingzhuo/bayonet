@@ -12,7 +12,7 @@ import org.jspecify.annotations.Nullable;
  * </ul>
  *
  * @author 应卓
- * @see com.github.yingzhuo.bayonet.converter.KeyStoreTypeConverter
+ * @see KeyStoreTypeConverter
  * @since 4.1.0
  */
 public enum KeyStoreType {

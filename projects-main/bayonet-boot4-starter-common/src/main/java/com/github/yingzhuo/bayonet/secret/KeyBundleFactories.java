@@ -53,7 +53,7 @@ public final class KeyBundleFactories {
             if (privatekey == null) {
                 throw new IllegalArgumentException("no private key found in PEM: " + location);
             }
-            return new KeyBundleImpl(pc.getCertificates(), privatekey, location);
+            return new KeyBundleImpl(pc.getCertificates(), privatekey);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -115,6 +115,6 @@ public final class KeyBundleFactories {
 
         var certChain = KeyStoreUtils.getCertificateChain(ks, alias);
         var privateKey = KeyStoreUtils.getPrivateKey(ks, alias, keypass);
-        return new KeyBundleImpl(certChain, privateKey, location);
+        return new KeyBundleImpl(certChain, privateKey);
     }
 }
