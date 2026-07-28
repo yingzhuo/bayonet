@@ -64,7 +64,7 @@ public final class InsecureHttpComponentsClientHttpRequestFactoryBean
         connectTimeout = Objects.requireNonNullElse(connectTimeout, Duration.ofSeconds(10));
         readTimeout = Objects.requireNonNullElse(readTimeout, Duration.ofSeconds(30));
 
-        var sslContext = SSLFactories.createInsecure().context();
+        var sslContext = SSLFactories.createInsecure().getRequiredLeft();
         var tlsStrategy = new DefaultClientTlsStrategy(sslContext, NoopHostnameVerifier.INSTANCE);
 
         var cmBuilder = PoolingHttpClientConnectionManagerBuilder.create()

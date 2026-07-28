@@ -32,8 +32,7 @@ import java.util.List;
  * @since 4.1.1
  */
 @Slf4j
-public class YamlLoadingInitializer extends AbstractApplicationContextInitializer<ConfigurableApplicationContext>
-        implements Ordered {
+public class YamlLoadingInitializer extends AbstractApplicationContextInitializer implements Ordered {
 
     private static final List<String> DEFAULT_LOCATIONS = List.of(
             "file:default.yaml",

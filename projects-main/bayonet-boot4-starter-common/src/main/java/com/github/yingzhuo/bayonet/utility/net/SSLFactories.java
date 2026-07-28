@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.utility.net;
 
+import com.github.yingzhuo.bayonet.utility.Pair;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -29,7 +30,7 @@ public final class SSLFactories {
      * @return 不安全的 {@link SSLContext}（非 {@code null}）
      * @throws IllegalArgumentException 创建失败时抛出
      */
-    public static ContextAndParameters createInsecure() {
+    public static Pair<SSLContext, SSLParameters> createInsecure() {
         try {
             var ctx = SSLContext.getInstance("TLS");
             ctx.init(null, new TrustManager[]{InsecureX509TrustManager.getSingletonInstance()}, new java.security.SecureRandom());
@@ -37,7 +38,7 @@ public final class SSLFactories {
             var params = new SSLParameters();
             params.setEndpointIdentificationAlgorithm(null);
 
-            return new ContextAndParameters(ctx, params);
+            return Pair.of(ctx, params);
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
@@ -49,12 +50,9 @@ public final class SSLFactories {
      * @return 默认 {@link SSLContext}（非 {@code null}）
      * @throws IllegalArgumentException 获取失败时抛出
      */
-    public static ContextAndParameters createDefault() {
+    public static Pair<SSLContext, SSLParameters> createDefault() {
         try {
-            return new ContextAndParameters(
-                    SSLContext.getDefault(),
-                    new SSLParameters()
-            );
+            return Pair.of(SSLContext.getDefault(), new SSLParameters());
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
