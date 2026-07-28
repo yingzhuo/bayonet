@@ -13,10 +13,10 @@ endif
 .SILENT:
 
 clean:
-	$(GRADLEW) 'clean' -q
+	$(GRADLEW) 'clean' --console=plain
 
 purge: clean
-	$(GRADLEW) ':buildSrc:clean' -q
+	$(GRADLEW) ':buildSrc:clean' --console=plain
 ifeq ($(OS), Windows_NT)
 	if exist $(MAKEFILE_PATH)\.gradle rmdir /s /q $(MAKEFILE_PATH)\.gradle
 	if exist $(MAKEFILE_PATH)\buildSrc\.gradle rmdir /s /q $(MAKEFILE_PATH)\buildSrc\.gradle
@@ -28,25 +28,25 @@ else
 endif
 
 rebuild-build-logic:
-	$(GRADLEW) ':buildSrc:clean' -q
-	$(GRADLEW) ':buildSrc:jar' -q
+	$(GRADLEW) ':buildSrc:clean' --console=plain
+	$(GRADLEW) ':buildSrc:jar' --console=plain
 
 compile:
-	$(GRADLEW) 'classes'
+	$(GRADLEW) 'classes' --console=plain
 
 build:
-	$(GRADLEW) -x "test" "build"
+	$(GRADLEW) -x "test" "build" --console=plain
 
 install:
-	$(GRADLEW) -x "test" "publishToMavenLocal" --no-parallel
+	$(GRADLEW) -x "test" "publishToMavenLocal" --no-parallel --console=plain
 
 publish: install
 	echo "警告：即将发布到Maven中央仓库！"
 	read -p "确认继续？(yes/no) " confirm && [ $$confirm = "yes" ] || exit 1
-	$(GRADLEW) -x "test" "publishAllPublicationsToMavenCentralRepository" --no-parallel
+	$(GRADLEW) -x "test" "publishAllPublicationsToMavenCentralRepository" --no-parallel --console=plain
 
 test:
-	$(GRADLEW) "test"
+	$(GRADLEW) "test" --console=plain
 
 wrapper:
-	$(GRADLEW) ":wrapper" -q
+	$(GRADLEW) ":wrapper" --console=plain
