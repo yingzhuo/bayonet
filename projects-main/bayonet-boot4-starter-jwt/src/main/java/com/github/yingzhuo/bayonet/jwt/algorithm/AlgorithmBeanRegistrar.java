@@ -1,14 +1,14 @@
 package com.github.yingzhuo.bayonet.jwt.algorithm;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import com.github.yingzhuo.bayonet.beandef.BeanDefinitionRegistrarSupport;
+import com.github.yingzhuo.bayonet.beandef.BeanRegistrarSupport;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 
-sealed abstract class AlgorithmBeanRegistrar extends BeanDefinitionRegistrarSupport
+sealed abstract class AlgorithmBeanRegistrar extends BeanRegistrarSupport
         permits KeyStoreAlgorithmBeanRegistrar, PemAlgorithmBeanRegistrar {
 
     protected AlgorithmBeanRegistrar(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {

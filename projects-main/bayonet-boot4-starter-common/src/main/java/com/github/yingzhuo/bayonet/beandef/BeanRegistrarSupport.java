@@ -35,7 +35,7 @@ import java.util.Arrays;
  * @author 应卓
  * @since 4.1.0
  */
-public abstract class BeanDefinitionRegistrarSupport extends AbstractImportingSupport implements ImportBeanDefinitionRegistrar {
+public abstract class BeanRegistrarSupport extends InternalSupport implements ImportBeanDefinitionRegistrar {
 
     /**
      * 构造器
@@ -45,7 +45,7 @@ public abstract class BeanDefinitionRegistrarSupport extends AbstractImportingSu
      * @param beanFactory     BeanFactory
      * @param beanClassLoader ClassLoader
      */
-    protected BeanDefinitionRegistrarSupport(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
+    protected BeanRegistrarSupport(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
         super(resourceLoader, environment, beanFactory, beanClassLoader);
     }
 
@@ -73,5 +73,4 @@ public abstract class BeanDefinitionRegistrarSupport extends AbstractImportingSu
             registry.registerAlias(beanName, alias);
         });
     }
-
 }
