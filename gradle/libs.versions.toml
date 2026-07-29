@@ -20,6 +20,7 @@ easy-captcha = { module = "com.github.whvcse:easy-captcha", version = "1.6.2" }
 # Plugin Artifacts (for buildSrc dependencies)
 dependency-management-plugin = "io.spring.dependency-management:io.spring.dependency-management.gradle.plugin:1.1.7"
 maven-publish-plugin = "com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:0.37.0"
+code-counting-plugin = "org.cthing.locc:org.cthing.locc.gradle.plugin:3.0.0"
 
 [bundles]
 zxing = ["zxing-core", "zxing-javase"]
