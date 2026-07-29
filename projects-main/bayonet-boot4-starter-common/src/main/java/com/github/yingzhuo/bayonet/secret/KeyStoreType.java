@@ -47,6 +47,7 @@ public enum KeyStoreType {
      * @param type 字符串类型，为 {@code null} 时返回默认值 {@link #PKCS12}
      * @return 匹配的 {@link KeyStoreType}
      * @throws IllegalArgumentException 无法识别的类型字符串
+     * @see KeyStoreTypeConverter
      * @since 4.1.1
      */
     public static KeyStoreType toKeyStore(@Nullable String type) {
@@ -54,20 +55,10 @@ public enum KeyStoreType {
             return getDefault();
         }
 
-        if (type.isBlank()) {
-            throw new IllegalArgumentException("type must not be blank");
-        }
-
-        if (type.equalsIgnoreCase("pkcs12") ||
-                type.equalsIgnoreCase("pkcs#12") ||
-                type.equalsIgnoreCase("pfx") ||
-                type.equalsIgnoreCase("p12")
-        ) {
-            return PKCS12;
-        } else if (type.equalsIgnoreCase("jks")) {
-            return JKS;
-        }
-
-        throw new IllegalArgumentException("Unsupported keystore type: '" + type + "'");
+        return switch (type.toLowerCase()) {
+            case "pkcs12", "pkcs#12", "pfx", "p12" -> PKCS12;
+            case "jks" -> JKS;
+            default -> throw new IllegalArgumentException("unknown keystore type: '" + type + "'");
+        };
     }
 }
