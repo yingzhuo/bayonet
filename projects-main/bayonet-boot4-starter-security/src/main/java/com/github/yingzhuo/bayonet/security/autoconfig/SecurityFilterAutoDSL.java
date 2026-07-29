@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
  * @see FilterConfigurer
  * @since 4.1.0
  */
+@Deprecated // 这个东西做的事情不易理解，收益非常有限
 public class SecurityFilterAutoDSL extends AbstractHttpConfigurer<SecurityFilterAutoDSL, HttpSecurity> {
 
     @Override

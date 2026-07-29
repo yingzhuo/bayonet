@@ -22,6 +22,7 @@ import org.springframework.util.Assert;
  * @author 应卓
  * @since 4.1.0
  */
+@Deprecated // 这个东西做的事情不易理解，收益非常有限
 public interface FilterConfigurer {
 
     /**

@@ -12,6 +12,9 @@ spring:
       - "dev"
     include:
       - "ssl"
+  autoconfigure:
+    exclude:
+      - "org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration"
 server:
   ssl:
     enabled: true
