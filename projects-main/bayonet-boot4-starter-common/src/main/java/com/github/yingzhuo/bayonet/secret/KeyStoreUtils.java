@@ -21,8 +21,7 @@ import java.util.function.Function;
 
 /**
  * KeyStore 操作工具类。
- * <p>提供 KeyStore 加载、密钥/证书查询、别名检查等便捷方法。
- * 所有方法均会关闭传入的输入流。</p>
+ * <p>提供 KeyStore 加载、密钥/证书查询、别名检查等便捷方法。</p>
  *
  * @author 应卓
  * @since 4.1.0
@@ -57,8 +56,6 @@ public final class KeyStoreUtils {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
     }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * 从 KeyStore 中获取指定别名的密钥。
