@@ -10,23 +10,21 @@ import java.security.cert.X509Certificate;
  * 信任所有证书的 {@link X509TrustManager} 实现。
  *
  * <p>所有 {@code checkXxxTrusted} 方法均为空实现，即无条件信任任何服务端或客户端证书。
- * <b>仅建议在开发或测试环境中使用，生产环境存在安全风险。</b></p>
- *
- * <p>使用 {@link #getSingleton()} 获取单例。</p>
+ * 仅建议在开发或测试环境中使用，生产环境存在安全风险。</p>
  *
  * @author 应卓
  * @see SSLFactories
  * @since 4.1.1
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class InsecureX509TrustManager implements X509TrustManager {
+public final class NoopTrustManager implements X509TrustManager {
 
     /**
-     * 获取 {@link InsecureX509TrustManager} 单例实例。
+     * 获取 {@link NoopTrustManager} 单例实例。
      *
      * @return 单例实例
      */
-    public static InsecureX509TrustManager getSingleton() {
+    public static NoopTrustManager getSingleton() {
         return LazyHolder.INSTANCE;
     }
 
@@ -45,9 +43,15 @@ public final class InsecureX509TrustManager implements X509TrustManager {
         return new X509Certificate[0];
     }
 
+    @Override
+    public String toString() {
+        return "NoOp";
+    }
+
     // ------
 
     private static final class LazyHolder {
-        private static final InsecureX509TrustManager INSTANCE = new InsecureX509TrustManager();
+        private static final NoopTrustManager INSTANCE = new NoopTrustManager();
     }
+
 }
