@@ -3,7 +3,6 @@ package com.github.yingzhuo.bayonet.jwt.algorithm;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.github.yingzhuo.bayonet.secret.KeyBundleFactories;
 import com.github.yingzhuo.bayonet.secret.KeyStoreType;
-import org.jetbrains.annotations.ApiStatus;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
@@ -12,10 +11,9 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.StringUtils;
 
-@ApiStatus.Experimental
-class KeyStoreAlgorithmImporting extends AlgorithmImportingSupport {
+final class KeyStoreAlgorithmBeanRegistrar extends AlgorithmBeanRegistrar {
 
-    public KeyStoreAlgorithmImporting(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
+    public KeyStoreAlgorithmBeanRegistrar(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
         super(resourceLoader, environment, beanFactory, beanClassLoader);
     }
 
@@ -55,5 +53,4 @@ class KeyStoreAlgorithmImporting extends AlgorithmImportingSupport {
         var keyBundle = KeyBundleFactories.loadFromStore(location, type, storepass, alias, keypass);
         return AlgorithmFactories.createAlgorithm(algorithmName, keyBundle.getPublicKey(), keyBundle.getPrivateKey());
     }
-
 }

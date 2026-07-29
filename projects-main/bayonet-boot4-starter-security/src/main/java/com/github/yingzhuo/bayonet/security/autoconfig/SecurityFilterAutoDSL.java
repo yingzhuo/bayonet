@@ -1,42 +1,49 @@
 package com.github.yingzhuo.bayonet.security.autoconfig;
 
-import com.github.yingzhuo.bayonet.security.filtercfg.FilterConfigurer;
+import com.github.yingzhuo.bayonet.security.configurer.AdditionalFilterConfig;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
 /**
- * Security 过滤器自动配置 DSL。
- * <p>通过 {@code spring.factories} 自动注册，将容器中所有 {@link FilterConfigurer} 类型的 Bean
- * 按 {@link FilterConfigurer.PositionHint 定位提示} 添加到 Security 过滤器链中的指定位置。</p>
+ * Security 过滤器链自动配置 DSL。
+ * <p>自动发现并应用 {@link AdditionalFilterConfig} Bean，将声明的附加过滤器按指定位置
+ * （{@link com.github.yingzhuo.bayonet.security.configurer.FilterPositionHint#AT AT} /
+ * {@link com.github.yingzhuo.bayonet.security.configurer.FilterPositionHint#BEFORE BEFORE} /
+ * {@link com.github.yingzhuo.bayonet.security.configurer.FilterPositionHint#AFTER AFTER}）
+ * 添加到 Spring Security 过滤器链中。</p>
+ *
+ * <p>配合 {@link com.github.yingzhuo.bayonet.security.configurer.AdditionalSecurityFilter @AdditionalSecurityFilter}
+ * 注解使用，用户通过声明式注解注册过滤器，无需手动操作 {@link HttpSecurity}。</p>
  *
  * @author 应卓
- * @see FilterConfigurer
- * @since 4.1.0
+ * @see AdditionalFilterConfig
+ * @see com.github.yingzhuo.bayonet.security.configurer.AdditionalSecurityFilter
+ * @see com.github.yingzhuo.bayonet.security.configurer.FilterPositionHint
+ * @since 4.1.1
  */
-@Deprecated // 这个东西做的事情不易理解，收益非常有限
 public class SecurityFilterAutoDSL extends AbstractHttpConfigurer<SecurityFilterAutoDSL, HttpSecurity> {
 
     @Override
     public void configure(final HttpSecurity http) {
         super.configure(http);
 
-        var applicationContext = http.getSharedObject(ApplicationContext.class);
-        if (applicationContext == null) { // 其实这里不会为null 大语言模型非要这里防止NPE
+        final var applicationContext = http.getSharedObject(ApplicationContext.class);
+        if (applicationContext == null) {
             return;
         }
 
-        applicationContext.getBeansOfType(FilterConfigurer.class)
+        applicationContext.getBeansOfType(AdditionalFilterConfig.class)
                 .values()
-                .forEach(c -> {
-                    var filter = c.getFilter();
-                    var positionHint = c.getPositionHint();
-                    var positionFilterClz = c.getPositionFilterClass();
+                .forEach(conf -> {
+                    var filter = applicationContext.getBean(conf.filterType());
+                    var positionFilterType = conf.positionFilterType();
+                    var hint = conf.hint();
 
-                    switch (positionHint) {
-                        case BEFORE -> http.addFilterBefore(filter, positionFilterClz);
-                        case AFTER -> http.addFilterAfter(filter, positionFilterClz);
-                        case AT -> http.addFilterAt(filter, positionFilterClz);
+                    switch (hint) {
+                        case AT -> http.addFilterAt(filter, positionFilterType);
+                        case BEFORE -> http.addFilterBefore(filter, positionFilterType);
+                        case AFTER -> http.addFilterAfter(filter, positionFilterType);
                     }
                 });
     }

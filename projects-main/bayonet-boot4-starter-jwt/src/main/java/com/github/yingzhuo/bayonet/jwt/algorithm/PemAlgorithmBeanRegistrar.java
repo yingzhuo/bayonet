@@ -2,7 +2,6 @@ package com.github.yingzhuo.bayonet.jwt.algorithm;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.github.yingzhuo.bayonet.secret.KeyBundleFactories;
-import org.jetbrains.annotations.ApiStatus;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
@@ -11,14 +10,9 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.StringUtils;
 
-/**
- * @author 应卓
- * @since 4.1.0
- */
-@ApiStatus.Experimental
-class PemAlgorithmImporting extends AlgorithmImportingSupport {
+final class PemAlgorithmBeanRegistrar extends AlgorithmBeanRegistrar {
 
-    public PemAlgorithmImporting(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
+    public PemAlgorithmBeanRegistrar(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
         super(resourceLoader, environment, beanFactory, beanClassLoader);
     }
 
@@ -48,5 +42,4 @@ class PemAlgorithmImporting extends AlgorithmImportingSupport {
         var keyBundle = KeyBundleFactories.loadFromPem(location, keypass);
         return AlgorithmFactories.createAlgorithm(algorithmName, keyBundle.getPublicKey(), keyBundle.getPrivateKey());
     }
-
 }
