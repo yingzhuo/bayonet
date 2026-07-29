@@ -13,7 +13,6 @@ import com.github.yingzhuo.bayonet.utility.UUIDUtils;
  * @see com.github.yingzhuo.bayonet.captcha.manager.CaptchaManager
  * @since 4.1.1
  */
-@FunctionalInterface
 public interface SaveKeyGenerator {
 
     /**

@@ -12,7 +12,7 @@ import java.security.cert.X509Certificate;
  * <p>所有 {@code checkXxxTrusted} 方法均为空实现，即无条件信任任何服务端或客户端证书。
  * <b>仅建议在开发或测试环境中使用，生产环境存在安全风险。</b></p>
  *
- * <p>使用 {@link #getSingletonInstance()} 获取单例。</p>
+ * <p>使用 {@link #getSingleton()} 获取单例。</p>
  *
  * @author 应卓
  * @see SSLFactories
@@ -26,7 +26,7 @@ public final class InsecureX509TrustManager implements X509TrustManager {
      *
      * @return 单例实例
      */
-    public static InsecureX509TrustManager getSingletonInstance() {
+    public static InsecureX509TrustManager getSingleton() {
         return LazyHolder.INSTANCE;
     }
 
