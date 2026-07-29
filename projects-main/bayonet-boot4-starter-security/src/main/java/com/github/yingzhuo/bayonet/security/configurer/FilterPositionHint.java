@@ -30,5 +30,5 @@ public enum FilterPositionHint {
      * 添加到参考过滤器之后。
      * <p>将附加过滤器放置在参考过滤器之后执行。</p>
      */
-    AFTER;
+    AFTER
 }

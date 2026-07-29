@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 /**
  * 基于 PEM 文件的 JWT Algorithm 注册注解。
  * <p>标注在 {@link org.springframework.context.annotation.Configuration @Configuration} 类上，
- * 通过 {@link PemAlgorithmImporting} 自动注册一个 {@link com.auth0.jwt.algorithms.Algorithm Algorithm} Bean。
+ * 通过 {@link PemAlgorithmBeanRegistrar} 自动注册一个 {@link com.auth0.jwt.algorithms.Algorithm Algorithm} Bean。
  * 支持 PEM 编码的 X.509 证书和 PKCS#8 私钥。</p>
  *
  * <pre>{@code
@@ -30,7 +30,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(PemAlgorithmImporting.class)
+@Import(PemAlgorithmBeanRegistrar.class)
 @ApiStatus.Experimental
 public @interface PemAlgorithm {
 

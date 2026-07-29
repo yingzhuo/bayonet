@@ -20,9 +20,9 @@ import org.springframework.core.type.AnnotationMetadata;
  * @see AdditionalFilterConfig
  * @since 4.1.1
  */
-class AdditionalSecurityFilterConfiguration extends BeanDefinitionRegistrarSupport {
+class AdditionalSecurityFilterBeanRegistrar extends BeanDefinitionRegistrarSupport {
 
-    public AdditionalSecurityFilterConfiguration(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
+    public AdditionalSecurityFilterBeanRegistrar(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
         super(resourceLoader, environment, beanFactory, beanClassLoader);
     }
 

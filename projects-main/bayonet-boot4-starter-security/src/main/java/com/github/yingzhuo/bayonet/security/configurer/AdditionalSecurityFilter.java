@@ -8,19 +8,17 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import java.lang.annotation.*;
 
 /**
- * 声明附加 {@link Filter} 到 Spring Security 过滤器链的注解。
- * <p>通过 {@code @@Import} 触发 {@link AdditionalSecurityFilterConfiguration} 注册 {@link AdditionalFilterConfig} Bean，
- * 供自动配置读取并将过滤器添加到 Security 过滤器链的指定位置。</p>
+ * 声明附加 {@link Filter} 到 Spring Security 过滤器链的注解
  *
  * <pre>{@code
- * &#064;AdditionalSecurityFilter(filterType = MyFilter.class, hint = FilterPositionHint.AFTER)
- * &#064;Configuration
+ * @Configuration
+ * @AdditionalSecurityFilter(filterType = MyFilter.class, hint = FilterPositionHint.AFTER)
  * public class MyConfig { }
  * }</pre>
  *
  * @author 应卓
  * @see AdditionalFilterConfig
- * @see AdditionalSecurityFilterConfiguration
+ * @see AdditionalSecurityFilterBeanRegistrar
  * @see FilterPositionHint
  * @since 4.1.1
  */
@@ -28,8 +26,8 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
+@Import(AdditionalSecurityFilterBeanRegistrar.class)
 @Repeatable(AdditionalSecurityFilter.List.class)
-@Import(AdditionalSecurityFilterConfiguration.class)
 public @interface AdditionalSecurityFilter {
 
     /**
@@ -77,7 +75,7 @@ public @interface AdditionalSecurityFilter {
     @Documented
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.TYPE)
-    @Import(AdditionalSecurityFilterConfiguration.class)
+    @Import(AdditionalSecurityFilterBeanRegistrar.class)
     @interface List {
 
         /**

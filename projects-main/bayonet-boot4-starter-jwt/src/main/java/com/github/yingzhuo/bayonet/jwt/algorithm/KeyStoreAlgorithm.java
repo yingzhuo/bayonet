@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 /**
  * 基于 KeyStore 的 JWT Algorithm 注册注解。
  * <p>标注在 {@link org.springframework.context.annotation.Configuration @Configuration} 类上，
- * 通过 {@link KeyStoreAlgorithmImporting} 自动注册一个 {@link com.auth0.jwt.algorithms.Algorithm Algorithm} Bean。</p>
+ * 通过 {@link KeyStoreAlgorithmBeanRegistrar} 自动注册一个 {@link com.auth0.jwt.algorithms.Algorithm Algorithm} Bean。</p>
  *
  * <pre>{@code
  * @Configuration
@@ -29,10 +29,10 @@ import java.lang.annotation.*;
  * @since 4.1.0
  */
 @Inherited
+@Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Import(KeyStoreAlgorithmImporting.class)
+@Import(KeyStoreAlgorithmBeanRegistrar.class)
 @ApiStatus.Experimental
 public @interface KeyStoreAlgorithm {
 
