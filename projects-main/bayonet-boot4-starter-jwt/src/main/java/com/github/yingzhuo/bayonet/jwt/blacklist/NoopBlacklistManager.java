@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
  *
  * @author 应卓
  * @see BlacklistManager
- * @see #getSingletonInstance()
+ * @see #getSingleton()()
  * @since 4.1.1
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -23,7 +23,7 @@ public final class NoopBlacklistManager implements BlacklistManager {
      *
      * @return 单例实例
      */
-    public static NoopBlacklistManager getSingletonInstance() {
+    public static NoopBlacklistManager getSingleton() {
         return LazyHolder.INSTANCE;
     }
 

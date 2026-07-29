@@ -33,7 +33,7 @@ public final class SSLFactories {
     public static Pair<SSLContext, SSLParameters> createInsecure() {
         try {
             var ctx = SSLContext.getInstance("TLS");
-            ctx.init(null, new TrustManager[]{InsecureX509TrustManager.getSingletonInstance()}, new java.security.SecureRandom());
+            ctx.init(null, new TrustManager[]{InsecureX509TrustManager.getSingleton()}, new java.security.SecureRandom());
 
             var params = new SSLParameters();
             params.setEndpointIdentificationAlgorithm(null);

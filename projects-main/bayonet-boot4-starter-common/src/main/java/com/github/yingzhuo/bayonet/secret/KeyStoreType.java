@@ -54,6 +54,10 @@ public enum KeyStoreType {
             return getDefault();
         }
 
+        if (type.isBlank()) {
+            throw new IllegalArgumentException("type must not be blank");
+        }
+
         if (type.equalsIgnoreCase("pkcs12") ||
                 type.equalsIgnoreCase("pkcs#12") ||
                 type.equalsIgnoreCase("pfx") ||

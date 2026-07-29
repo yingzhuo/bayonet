@@ -4,13 +4,17 @@
 spring:
   application:
     name: 'integration-test'
+    version: "0.1.0"
   banner:
     location: "classpath:config/banner.txt"
   profiles:
-    default:
+    active:
       - "dev"
     include:
       - "ssl"
+  autoconfigure:
+    exclude:
+      - "org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration"
 server:
   ssl:
     enabled: true
