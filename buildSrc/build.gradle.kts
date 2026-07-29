@@ -18,4 +18,5 @@ if (propertiesFile.exists() && propertiesFile.isFile) {
 dependencies {
     implementation(libs.dependency.management.plugin)
     implementation(libs.maven.publish.plugin)
+    implementation(libs.code.counting.plugin)
 }

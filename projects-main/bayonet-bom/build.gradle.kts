@@ -1,6 +1,7 @@
 plugins {
     id("java-platform")
     id("buildlogic.publish-conventions")
+    id("buildlogic.code-counting-conventions")
 }
 
 description = "BOM"

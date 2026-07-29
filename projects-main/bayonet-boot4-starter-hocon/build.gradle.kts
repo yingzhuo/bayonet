@@ -1,6 +1,7 @@
 plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.publish-conventions")
+    id("buildlogic.code-counting-conventions")
 }
 
 description = "HOCON配置文件增强"

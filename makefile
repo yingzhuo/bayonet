@@ -10,7 +10,7 @@ GRADLE_DEFAULT_PARAMETERS := --console=plain
 
 .DEFAULT_GOAL := clean
 
-.PHONY: clean purge rebuild-build-logic compile build install publish test wrapper
+.PHONY: clean purge rebuild-build-logic compile build install publish test wrapper count-code-lines
 
 .SILENT:
 
@@ -52,3 +52,6 @@ test:
 
 wrapper:
 	$(GRADLEW) ":wrapper" "$(GRADLE_DEFAULT_PARAMETERS)"
+
+count-code-lines:
+	$(GRADLEW) "countCodeLines" "$(GRADLE_DEFAULT_PARAMETERS)"
