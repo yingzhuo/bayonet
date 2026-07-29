@@ -16,9 +16,15 @@ import java.util.stream.Stream;
  * @author 应卓
  * @since 4.1.1
  */
-public class NullSafeCollectionBuilder<T> {
+public final class NullSafeCollector<T> {
 
     private final List<T> elements = new ArrayList<>();
+
+    /**
+     * 私有构造器
+     */
+    private NullSafeCollector() {
+    }
 
     /**
      * 创建新实例。
@@ -26,14 +32,8 @@ public class NullSafeCollectionBuilder<T> {
      * @param <T> 元素类型
      * @return 新构建器实例
      */
-    public static <T> NullSafeCollectionBuilder<T> newInstance() {
-        return new NullSafeCollectionBuilder<>();
-    }
-
-    /**
-     * 私有构造器
-     */
-    private NullSafeCollectionBuilder() {
+    public static <T> NullSafeCollector<T> newInstance() {
+        return new NullSafeCollector<>();
     }
 
     /**
@@ -44,7 +44,7 @@ public class NullSafeCollectionBuilder<T> {
      * @return 当前构建器
      */
     @SafeVarargs
-    public final NullSafeCollectionBuilder<T> add(@Nullable T... values) {
+    public final NullSafeCollector<T> add(@Nullable T... values) {
         if (values != null) {
             for (var v : values) {
                 if (v != null) {
@@ -62,7 +62,7 @@ public class NullSafeCollectionBuilder<T> {
      * @param values 要添加的元素
      * @return 当前构建器
      */
-    public final NullSafeCollectionBuilder<T> add(@Nullable Iterable<T> values) {
+    public NullSafeCollector<T> add(@Nullable Iterable<T> values) {
         if (values != null) {
             for (var v : values) {
                 if (v != null) {
@@ -79,10 +79,8 @@ public class NullSafeCollectionBuilder<T> {
      *
      * @param values 要添加的元素
      * @return 当前构建器
-     * @deprecated stream会被消费掉，这个副作用有风险
      */
-    @Deprecated
-    public final NullSafeCollectionBuilder<T> add(@Nullable Stream<T> values) {
+    public NullSafeCollector<T> add(@Nullable Stream<T> values) {
         if (values != null) {
             values.filter(Objects::nonNull).forEach(elements::add);
         }
@@ -141,6 +139,15 @@ public class NullSafeCollectionBuilder<T> {
      */
     public HashSet<T> toHashSet() {
         return new HashSet<>(this.elements);
+    }
+
+    /**
+     * 返回 {@link TreeSet}（自然排序）。
+     *
+     * @return 有序集合
+     */
+    public TreeSet<T> toTreeSet() {
+        return toTreeSet(null);
     }
 
     /**
