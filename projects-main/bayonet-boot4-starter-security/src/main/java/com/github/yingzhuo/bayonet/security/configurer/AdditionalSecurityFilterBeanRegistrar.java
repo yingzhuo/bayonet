@@ -1,6 +1,6 @@
 package com.github.yingzhuo.bayonet.security.configurer;
 
-import com.github.yingzhuo.bayonet.beandef.BeanDefinitionRegistrarSupport;
+import com.github.yingzhuo.bayonet.beandef.BeanRegistrarSupport;
 import jakarta.servlet.Filter;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -20,7 +20,7 @@ import org.springframework.core.type.AnnotationMetadata;
  * @see AdditionalFilterConfig
  * @since 4.1.1
  */
-class AdditionalSecurityFilterBeanRegistrar extends BeanDefinitionRegistrarSupport {
+class AdditionalSecurityFilterBeanRegistrar extends BeanRegistrarSupport {
 
     public AdditionalSecurityFilterBeanRegistrar(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
         super(resourceLoader, environment, beanFactory, beanClassLoader);

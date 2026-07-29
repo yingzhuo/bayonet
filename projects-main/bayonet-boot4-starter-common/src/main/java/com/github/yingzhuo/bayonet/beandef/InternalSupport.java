@@ -13,7 +13,7 @@ import org.springframework.util.Assert;
 import java.lang.annotation.Annotation;
 import java.util.Set;
 
-abstract class AbstractImportingSupport {
+abstract class InternalSupport {
 
     protected final ResourceLoader resourceLoader;
     protected final ResourcePatternResolver resourcePatternResolver;
@@ -21,22 +21,7 @@ abstract class AbstractImportingSupport {
     protected final BeanFactory beanFactory;
     protected final ClassLoader beanClassLoader;
 
-    /**
-     * 构造器
-     *
-     * @param resourceLoader  ResourceLoader
-     * @param environment     Environment
-     * @param beanFactory     BeanFactory
-     * @param beanClassLoader ClassLoader
-     * @author 应卓
-     * @since 4.1.0
-     */
-    protected AbstractImportingSupport(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
-        Assert.notNull(resourceLoader, "resourceLoader must not be null");
-        Assert.notNull(environment, "environment must not be null");
-        Assert.notNull(beanFactory, "beanFactory must not be null");
-        Assert.notNull(beanClassLoader, "beanClassLoader must not be null");
-
+    protected InternalSupport(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
         this.resourceLoader = resourceLoader;
         this.resourcePatternResolver = ResourcePatternUtils.getResourcePatternResolver(resourceLoader);
         this.environment = environment;

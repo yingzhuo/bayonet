@@ -7,7 +7,7 @@ import org.springframework.core.io.ResourceLoader;
 
 /**
  * {@link ImportSelector} 抽象支持类。
- * <p>提供导入类的 Class、Package、Annotation 等元数据获取工具方法（继承自 {@link AbstractImportingSupport}），
+ * <p>提供导入类的 Class、Package、Annotation 等元数据获取工具方法（继承自 {@link InternalSupport}），
  * 强制子类通过构造函数注入 {@link ResourceLoader}、{@link Environment}、
  * {@link BeanFactory}、{@link ClassLoader} 四个依赖。</p>
  *
@@ -27,10 +27,10 @@ import org.springframework.core.io.ResourceLoader;
  * }</pre>
  *
  * @author 应卓
- * @see BeanDefinitionRegistrarSupport
+ * @see BeanRegistrarSupport
  * @since 4.1.0
  */
-public abstract class ImportSelectorSupport extends AbstractImportingSupport implements ImportSelector {
+public abstract class ImportSelectorSupport extends InternalSupport implements ImportSelector {
 
     /**
      * 构造器
