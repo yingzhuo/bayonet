@@ -26,8 +26,7 @@ import java.util.List;
  * @since 4.1.0
  */
 @Slf4j
-public class PropertiesLoadingInitializer extends AbstractApplicationContextInitializer<ConfigurableApplicationContext>
-        implements Ordered {
+public class PropertiesLoadingInitializer extends AbstractApplicationContextInitializer implements Ordered {
 
     private static final List<String> DEFAULT_LOCATIONS = List.of(
             "file:default.properties",

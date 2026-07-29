@@ -11,14 +11,13 @@ import org.springframework.util.StringUtils;
 import java.util.Collection;
 
 /**
- * {@link ApplicationContextInitializer} 抽象基类。
+ * {@link ApplicationContextInitializer} 抽象基类
  *
- * @param <T> 应用上下文类型
  * @author 应卓
  * @since 4.1.0
  */
-public abstract class AbstractApplicationContextInitializer<T extends ConfigurableApplicationContext>
-        implements ApplicationContextInitializer<T> {
+public abstract class AbstractApplicationContextInitializer
+        implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
     protected final @Nullable Resource findFirstExistingResource(ResourceLoader resourceLoader, Collection<String> locations) {
         if (resourceLoader == null || CollectionUtils.isEmpty(locations)) {
@@ -41,5 +40,4 @@ public abstract class AbstractApplicationContextInitializer<T extends Configurab
             return defaultFilename;
         }
     }
-
 }

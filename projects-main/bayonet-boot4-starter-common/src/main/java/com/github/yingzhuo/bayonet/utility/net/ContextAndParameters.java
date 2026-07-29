@@ -14,6 +14,7 @@ import javax.net.ssl.SSLParameters;
  * @see SSLFactories
  * @since 4.1.1
  */
+@Deprecated(forRemoval = true)
 public record ContextAndParameters(
         SSLContext context,
         SSLParameters parameters
