@@ -32,7 +32,7 @@ import static org.mockito.Mockito.*;
 class TokenBasedAuthenticationFilterTest {
 
     private final MockHttpServletRequest request = new MockHttpServletRequest();
-    private final TokenBasedAuthenticationFilter<UsernamePasswordAuthenticationToken> filter = new TokenBasedAuthenticationFilter<>() {
+    private final TokenBasedAuthFilter<UsernamePasswordAuthenticationToken> filter = new TokenBasedAuthFilter<>() {
     };
     @Mock
     private TokenResolver tokenResolver;

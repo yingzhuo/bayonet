@@ -9,10 +9,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -39,56 +41,55 @@ import java.util.Properties;
  * </p>
  *
  * @author 应卓
- * @see TokenBasedAuthenticationFilter
+ * @see TokenBasedAuthFilter
  * @since 4.1.1
  */
+@Slf4j
 @Setter
-public class DebuggingTokenBasedAuthenticationFilter extends OncePerRequestFilter {
+public class DebugTokenBasedAuthFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
     private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
     private TokenResolver tokenResolver = new BearerHeaderTokenResolver();
 
     /**
-     * 构造器。
+     * 构造器
      *
      * @param propertiesLocation Properties 文件路径，支持 classpath:/、file:/ 等 Spring 资源路径
      */
-    public DebuggingTokenBasedAuthenticationFilter(String propertiesLocation) {
+    public DebugTokenBasedAuthFilter(String propertiesLocation) {
         this(propertiesLocation, false);
     }
 
     /**
-     * 构造器。
+     * 构造器
      *
      * @param propertiesLocation Properties 文件路径，支持 classpath:/、file:/ 等 Spring 资源路径
      * @param xmlFormat          是否为 XML 格式
      */
-    public DebuggingTokenBasedAuthenticationFilter(String propertiesLocation, boolean xmlFormat) {
+    public DebugTokenBasedAuthFilter(String propertiesLocation, boolean xmlFormat) {
         this(PropertiesUtils.loadProperties(propertiesLocation, xmlFormat));
     }
 
     /**
-     * 构造器。
+     * 构造器
      *
      * @param usersProperties 用户属性配置
      */
-    public DebuggingTokenBasedAuthenticationFilter(Properties usersProperties) {
+    public DebugTokenBasedAuthFilter(Properties usersProperties) {
         Assert.notEmpty(usersProperties, "usersProperties cannot be empty");
         this.userDetailsService = new InMemoryUserDetailsManager(usersProperties);
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (!AuthenticationFilterUtils.authenticationIsRequired(securityContextHolderStrategy)) {
+        if (AuthFilterUtils.authenticationIsNotRequired(securityContextHolderStrategy)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        var currentWebRequest = new ServletWebRequest(request, response);
-
         // 解析 token, token 即用户名
-        var username = tokenResolver.resolve(currentWebRequest);
+        var username = tokenResolver.resolve(new ServletWebRequest(request, response));
         if (!StringUtils.hasText(username)) {
             filterChain.doFilter(request, response);
             return;
@@ -101,8 +102,12 @@ public class DebuggingTokenBasedAuthenticationFilter extends OncePerRequestFilte
                 var auth = new UserDetailsAuth(userDetails);
                 securityContextHolderStrategy.getContext().setAuthentication(auth);
             }
+        } catch (UsernameNotFoundException ignored) {
+            // noop
         } catch (AuthenticationException e) {
             securityContextHolderStrategy.clearContext();
+        } catch (Exception e) {
+            log.debug(e.getMessage(), e);
         }
 
         filterChain.doFilter(request, response);

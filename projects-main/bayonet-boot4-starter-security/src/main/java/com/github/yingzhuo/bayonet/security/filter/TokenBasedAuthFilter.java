@@ -51,10 +51,10 @@ import java.io.IOException;
  * @since 4.1.0
  */
 @Setter
-public class TokenBasedAuthenticationFilter<A extends Authentication> extends OncePerRequestFilter {
+public class TokenBasedAuthFilter<A extends Authentication> extends OncePerRequestFilter {
 
-    public static final String ATTRIBUTE_TOKEN_NAME = TokenBasedAuthenticationFilter.class.getName() + "#token";
-    public static final String ATTRIBUTE_AUTHENTICATION_NAME = TokenBasedAuthenticationFilter.class.getName() + "#authentication";
+    public static final String ATTRIBUTE_TOKEN_NAME = TokenBasedAuthFilter.class.getName() + "#token";
+    public static final String ATTRIBUTE_AUTHENTICATION_NAME = TokenBasedAuthFilter.class.getName() + "#authentication";
 
     private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
     private TokenResolver tokenResolver = new BearerHeaderTokenResolver();
@@ -69,7 +69,7 @@ public class TokenBasedAuthenticationFilter<A extends Authentication> extends On
         Assert.notNull(tokenResolver, "tokenResolver is required");
         Assert.notNull(tokenConverter, "tokenConverter is required");
 
-        if (!AuthenticationFilterUtils.authenticationIsRequired(securityContextHolderStrategy)) {
+        if (AuthFilterUtils.authenticationIsNotRequired(securityContextHolderStrategy)) {
             filterChain.doFilter(request, response);
             return;
         }

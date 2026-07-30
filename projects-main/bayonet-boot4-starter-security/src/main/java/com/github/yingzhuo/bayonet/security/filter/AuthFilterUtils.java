@@ -9,17 +9,16 @@ import org.springframework.security.core.context.SecurityContextHolderStrategy;
  * 内部工具
  *
  * @author 应卓
- * @since 4.1.1
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class AuthenticationFilterUtils {
+public final class AuthFilterUtils {
 
-    public static boolean authenticationIsRequired(SecurityContextHolderStrategy strategy) {
+    public static boolean authenticationIsNotRequired(SecurityContextHolderStrategy strategy) {
         var existingAuth = strategy.getContext().getAuthentication();
         if (existingAuth == null || !existingAuth.isAuthenticated()) {
-            return true;
+            return false;
         }
-        return (existingAuth instanceof AnonymousAuthenticationToken);
+        return (!(existingAuth instanceof AnonymousAuthenticationToken));
     }
 
 }
