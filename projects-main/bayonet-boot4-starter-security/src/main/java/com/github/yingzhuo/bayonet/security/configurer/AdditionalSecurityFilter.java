@@ -64,6 +64,14 @@ public @interface AdditionalSecurityFilter {
      */
     FilterPositionHint hint() default FilterPositionHint.AFTER;
 
+    /**
+     * 跳过此过滤器的 Profile 条件。
+     * <p>当任一指定的 Profile 处于激活状态时，此过滤器不会被注册到 Security 过滤器链中。</p>
+     *
+     * @return Profile 名称数组
+     */
+    String[] skipIfAnyProfileActivated() default {};
+
     // ------
 
     /**

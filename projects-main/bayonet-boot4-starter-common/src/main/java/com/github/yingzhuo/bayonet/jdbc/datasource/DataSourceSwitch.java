@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.jdbc.datasource.dynamic;
+package com.github.yingzhuo.bayonet.jdbc.datasource;
 
 import java.lang.annotation.*;
 
