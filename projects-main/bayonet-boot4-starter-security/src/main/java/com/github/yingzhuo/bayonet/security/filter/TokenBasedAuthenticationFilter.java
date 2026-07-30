@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Setter;
 import org.jspecify.annotations.Nullable;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -70,7 +69,7 @@ public class TokenBasedAuthenticationFilter<A extends Authentication> extends On
         Assert.notNull(tokenResolver, "tokenResolver is required");
         Assert.notNull(tokenConverter, "tokenConverter is required");
 
-        if (!authenticationIsRequired()) {
+        if (!AuthenticationFilterUtils.authenticationIsRequired(securityContextHolderStrategy)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -145,14 +144,6 @@ public class TokenBasedAuthenticationFilter<A extends Authentication> extends On
             auth.setAuthenticated(true);
         } catch (IllegalArgumentException ignored) {
         }
-    }
-
-    private boolean authenticationIsRequired() {
-        var existingAuth = securityContextHolderStrategy.getContext().getAuthentication();
-        if (existingAuth == null || !existingAuth.isAuthenticated()) {
-            return true;
-        }
-        return (existingAuth instanceof AnonymousAuthenticationToken);
     }
 
 }
