@@ -37,7 +37,7 @@ public class InMemoryUserDetailsService implements UserDetailsService {
     private final Map<String, UserDetails> users = new HashMap<>();
 
     /**
-     * 构造实例。
+     * 构造器
      *
      * @param users 用户集合
      */
@@ -49,7 +49,7 @@ public class InMemoryUserDetailsService implements UserDetailsService {
     }
 
     /**
-     * 构造实例。
+     * 构造器
      *
      * @param users 用户变长参数
      */
@@ -61,7 +61,7 @@ public class InMemoryUserDetailsService implements UserDetailsService {
     }
 
     /**
-     * 构造实例。
+     * 构造器
      *
      * @param users Properties 配置
      */
@@ -78,6 +78,10 @@ public class InMemoryUserDetailsService implements UserDetailsService {
         }
     }
 
+    private static User createUserDetails(String name, UserAttribute attr) {
+        return new User(name, attr.getPassword(), attr.isEnabled(), true, true, true, attr.getAuthorities());
+    }
+
     /**
      * 设置用户集合。
      * <p>会清空已有用户。</p>
@@ -90,10 +94,6 @@ public class InMemoryUserDetailsService implements UserDetailsService {
         for (var user : users) {
             put(user);
         }
-    }
-
-    private static User createUserDetails(String name, UserAttribute attr) {
-        return new User(name, attr.getPassword(), attr.isEnabled(), true, true, true, attr.getAuthorities());
     }
 
     private void put(UserDetails user) {
