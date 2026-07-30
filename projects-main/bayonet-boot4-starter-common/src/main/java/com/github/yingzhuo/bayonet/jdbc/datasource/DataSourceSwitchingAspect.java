@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.jdbc.datasource.dynamic;
+package com.github.yingzhuo.bayonet.jdbc.datasource;
 
 import com.github.yingzhuo.bayonet.utility.AspectUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -34,8 +34,8 @@ public class DataSourceSwitchingAspect implements Ordered {
     /**
      * 拦截标注了 {@link DataSourceSwitch} 的方法或类。
      */
-    @Pointcut("@annotation(com.github.yingzhuo.bayonet.jdbc.datasource.dynamic.DataSourceSwitch) || " +
-            "@within(com.github.yingzhuo.bayonet.jdbc.datasource.dynamic.DataSourceSwitch)")
+    @Pointcut("@annotation(com.github.yingzhuo.bayonet.jdbc.datasource.DataSourceSwitch) || " +
+            "@within(com.github.yingzhuo.bayonet.jdbc.datasource.DataSourceSwitch)")
     private void pc() {
     }
 

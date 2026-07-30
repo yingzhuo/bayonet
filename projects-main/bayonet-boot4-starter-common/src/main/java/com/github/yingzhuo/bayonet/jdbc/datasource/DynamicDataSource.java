@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.jdbc.datasource.dynamic;
+package com.github.yingzhuo.bayonet.jdbc.datasource;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
