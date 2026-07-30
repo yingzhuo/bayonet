@@ -29,6 +29,12 @@ public final class Tuple<L, M, R> implements java.io.Serializable {
     private final @Nullable M middle;
     private final @Nullable R right;
 
+    private Tuple(@Nullable L left, @Nullable M middle, @Nullable R right) {
+        this.left = left;
+        this.middle = middle;
+        this.right = right;
+    }
+
     /**
      * 创建可包含 {@code null} 元素的 Tuple。
      *
@@ -61,12 +67,6 @@ public final class Tuple<L, M, R> implements java.io.Serializable {
         Assert.notNull(middle, "middle element must not be null");
         Assert.notNull(right, "right element must not be null");
         return new Tuple<>(left, middle, right);
-    }
-
-    private Tuple(@Nullable L left, @Nullable M middle, @Nullable R right) {
-        this.left = left;
-        this.middle = middle;
-        this.right = right;
     }
 
     /**
