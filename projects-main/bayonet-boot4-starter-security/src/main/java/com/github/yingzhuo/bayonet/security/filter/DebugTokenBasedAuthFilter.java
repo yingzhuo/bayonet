@@ -24,6 +24,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -89,10 +90,24 @@ public class DebugTokenBasedAuthFilter extends OncePerRequestFilter {
      */
     public DebugTokenBasedAuthFilter(UserDetails... users) {
         Assert.notEmpty(users, "users cannot be empty");
-
         this.userDetailsService =
                 new InMemoryUserDetailsService(
                         Arrays.stream(users)
+                                .filter(Objects::nonNull)
+                                .toList()
+                );
+    }
+
+    /**
+     * 构造器
+     *
+     * @param users 用户
+     */
+    public DebugTokenBasedAuthFilter(Collection<UserDetails> users) {
+        Assert.notEmpty(users, "users cannot be empty");
+        this.userDetailsService =
+                new InMemoryUserDetailsService(
+                        users.stream()
                                 .filter(Objects::nonNull)
                                 .toList()
                 );
