@@ -33,6 +33,21 @@ public final class SecretKeyFactories {
      * @param type      KeyStore 类型，为 {@code null} 时使用默认类型 {@link KeyStoreType#PKCS12}
      * @param storepass KeyStore 密码（非空）
      * @param alias     密钥别名（非空）
+     * @return {@link SecretKey}（非 {@code null}）
+     * @throws IllegalArgumentException 若参数非法或 KeyStore 操作失败
+     * @throws IllegalStateException    若指定别名下未找到对称密钥
+     */
+    public static SecretKey loadFromKeyStore(String location, @Nullable KeyStoreType type, String storepass, String alias) {
+        return loadFromKeyStore(location, type, storepass, alias, null);
+    }
+
+    /**
+     * 从 KeyStore 文件中加载 {@link SecretKey}。
+     *
+     * @param location  KeyStore 资源位置，支持 classpath:/、file:/ 等 Spring 资源路径（非空）
+     * @param type      KeyStore 类型，为 {@code null} 时使用默认类型 {@link KeyStoreType#PKCS12}
+     * @param storepass KeyStore 密码（非空）
+     * @param alias     密钥别名（非空）
      * @param keypass   密钥密码，为 {@code null} 时使用 {@code storepass}
      * @return {@link SecretKey}（非 {@code null}）
      * @throws IllegalArgumentException 若参数非法或 KeyStore 操作失败

@@ -14,6 +14,7 @@ import java.util.stream.Stream;
  *
  * @param <T> 元素类型
  * @author 应卓
+ * @see StringCollector
  * @since 4.1.1
  */
 public final class NullSafeCollector<T> {
@@ -83,6 +84,24 @@ public final class NullSafeCollector<T> {
     public NullSafeCollector<T> add(@Nullable Stream<T> values) {
         if (values != null) {
             values.filter(Objects::nonNull).forEach(elements::add);
+        }
+        return this;
+    }
+
+    /**
+     * 添加元素（{@link Enumeration}）。
+     * <p>{@code null} 值和 {@code null} 元素会被自动忽略。</p>
+     *
+     * @param values 要添加的元素
+     * @return 当前构建器
+     */
+    public NullSafeCollector<T> add(@Nullable Enumeration<T> values) {
+        if (values != null) {
+            values.asIterator().forEachRemaining(v -> {
+                if (v != null) {
+                    elements.add(v);
+                }
+            });
         }
         return this;
     }

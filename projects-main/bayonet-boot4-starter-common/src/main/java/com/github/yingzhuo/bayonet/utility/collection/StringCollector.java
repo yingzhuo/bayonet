@@ -13,6 +13,7 @@ import java.util.stream.Stream;
  * <p>非线程安全。</p>
  *
  * @author 应卓
+ * @see NullSafeCollector
  * @since 4.1.1
  */
 public final class StringCollector {
@@ -21,6 +22,12 @@ public final class StringCollector {
     private final boolean blankAllowed;
     private final List<String> elements = new ArrayList<>();
 
+    /**
+     * 私有构造器。
+     *
+     * @param emptyAllowed 允许空字符串
+     * @param blankAllowed 允许空白字符串
+     */
     private StringCollector(boolean emptyAllowed, boolean blankAllowed) {
         this.emptyAllowed = emptyAllowed;
         this.blankAllowed = blankAllowed;
@@ -111,6 +118,24 @@ public final class StringCollector {
     public StringCollector add(@Nullable Stream<String> values) {
         if (values != null) {
             values.filter(this::accept).forEach(elements::add);
+        }
+        return this;
+    }
+
+    /**
+     * 添加字符串（{@link Enumeration}）。
+     * <p>不符合条件的字符串会被自动忽略。</p>
+     *
+     * @param values 要添加的字符串
+     * @return 当前收集器
+     */
+    public StringCollector add(@Nullable Enumeration<String> values) {
+        if (values != null) {
+            values.asIterator().forEachRemaining(v -> {
+                if (accept(v)) {
+                    elements.add(v);
+                }
+            });
         }
         return this;
     }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.boot.ssl.pem.PemContent;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -106,15 +107,19 @@ public final class KeyBundleFactories {
 
         type = Objects.requireNonNullElseGet(type, KeyStoreType::getDefault);
 
-        var input = ResourceUtils.loadAsInputStream(location);
-        var ks = KeyStoreUtils.loadKeyStore(input, type, storepass); // close stream here
+        try (var input = ResourceUtils.loadAsInputStream(location)) {
+            var ks = KeyStoreUtils.loadKeyStore(input, type, storepass);
 
-        if (keypass == null || keypass.isBlank()) {
-            keypass = storepass;
+            if (!StringUtils.hasText(keypass)) {
+                keypass = storepass;
+            }
+
+            var certChain = KeyStoreUtils.getCertificateChain(ks, alias);
+            var privateKey = KeyStoreUtils.getPrivateKey(ks, alias, keypass);
+            return new KeyBundleImpl(certChain, privateKey);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
-
-        var certChain = KeyStoreUtils.getCertificateChain(ks, alias);
-        var privateKey = KeyStoreUtils.getPrivateKey(ks, alias, keypass);
-        return new KeyBundleImpl(certChain, privateKey);
     }
+
 }

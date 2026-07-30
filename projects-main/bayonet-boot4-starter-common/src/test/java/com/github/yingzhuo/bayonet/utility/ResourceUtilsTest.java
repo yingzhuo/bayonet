@@ -3,6 +3,7 @@ package com.github.yingzhuo.bayonet.utility;
 import org.junit.jupiter.api.Test;
 
 import java.io.UncheckedIOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +51,7 @@ class ResourceUtilsTest {
     @Test
     void should_loadText_withNullCharset() {
         // null charset -> 默认 UTF_8
-        var text = ResourceUtils.loadText(EXISTS, null);
+        var text = ResourceUtils.loadText(EXISTS, (Charset) null);
         assertThat(text).startsWith("Hello, ResourceUtils!");
     }
 
