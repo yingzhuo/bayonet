@@ -14,9 +14,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * 资源加载工具类。
@@ -80,7 +83,7 @@ public final class ResourceUtils {
      * @see #loadText(String, Charset)
      */
     public static String loadText(String location) {
-        return loadText(location, StandardCharsets.UTF_8);
+        return loadText(location, (Charset) null);
     }
 
     /**
@@ -97,10 +100,25 @@ public final class ResourceUtils {
 
         try {
             var resource = getResourceLoader().getResource(location);
-            return resource.getContentAsString(charset != null ? charset : StandardCharsets.UTF_8);
+            return resource.getContentAsString(charset != null ? charset : UTF_8);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    /**
+     * 加载资源为字符串（指定编码）。
+     *
+     * @param location 资源位置
+     * @param charset  字符编码，{@code null} 时使用 UTF-8
+     * @return 资源内容的字符串
+     * @throws IllegalArgumentException    若 {@code location} 为空
+     * @throws UncheckedIOException        若读取资源失败
+     * @throws UnsupportedCharsetException charset不正确
+     */
+    public static String loadText(String location, @Nullable String charset) {
+        var cs = Objects.isNull(charset) ? UTF_8 : Charset.forName(charset);
+        return loadText(location, cs);
     }
 
     /**
@@ -162,10 +180,6 @@ public final class ResourceUtils {
 
     // ------
 
-    /**
-     * 延迟初始化持有者。
-     * <p>使用初始化-on-demand holder 模式，在首次访问时才创建默认 {@link ResourceLoader}。</p>
-     */
     private static class LazyHolder {
         private static final ResourceLoader DEFAULT_RESOURCE_LOADER =
                 ApplicationResourceLoader.get();
