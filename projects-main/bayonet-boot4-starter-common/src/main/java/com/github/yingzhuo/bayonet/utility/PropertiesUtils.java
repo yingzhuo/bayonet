@@ -32,7 +32,7 @@ public final class PropertiesUtils {
     /**
      * 加载 Properties 文件。
      *
-     * @param location 资源位置，支持 classpath:/、file:/ 等 Spring 资源路径
+     * @param location  资源位置，支持 classpath:/、file:/ 等 Spring 资源路径
      * @param xmlFormat 是否为 XML 格式。{@code true} 使用 {@link Properties#loadFromXML}，
      *                  {@code false} 使用 {@link Properties#load}
      * @return {@link Properties} 实例

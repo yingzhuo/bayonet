@@ -25,7 +25,7 @@ import java.lang.annotation.*;
 @Inherited
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Import(AdditionalSecurityFilterBeanRegistrar.class)
 @Repeatable(AdditionalSecurityFilter.List.class)
 public @interface AdditionalSecurityFilter {
@@ -82,7 +82,7 @@ public @interface AdditionalSecurityFilter {
     @Inherited
     @Documented
     @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
+    @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
     @Import(AdditionalSecurityFilterBeanRegistrar.class)
     @interface List {
 

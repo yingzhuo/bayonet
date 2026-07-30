@@ -27,6 +27,11 @@ public final class Pair<L, R> implements java.io.Serializable {
     private final @Nullable L left;
     private final @Nullable R right;
 
+    private Pair(@Nullable L left, @Nullable R right) {
+        this.left = left;
+        this.right = right;
+    }
+
     /**
      * 创建可包含 {@code null} 元素的 Pair。
      *
@@ -54,11 +59,6 @@ public final class Pair<L, R> implements java.io.Serializable {
         Assert.notNull(left, "left element must not be null");
         Assert.notNull(right, "right element must not be null");
         return new Pair<>(left, right);
-    }
-
-    private Pair(@Nullable L left, @Nullable R right) {
-        this.left = left;
-        this.right = right;
     }
 
     /**

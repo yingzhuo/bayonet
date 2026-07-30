@@ -1,6 +1,6 @@
 package com.github.yingzhuo.bayonet.security.mvc;
 
-import com.github.yingzhuo.bayonet.security.filter.TokenBasedAuthenticationFilter;
+import com.github.yingzhuo.bayonet.security.filter.TokenBasedAuthFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.jspecify.annotations.Nullable;
 import org.springframework.core.MethodParameter;
@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * 解析 {@link CurrentToken @CurrentToken} 注解参数的 {@link HandlerMethodArgumentResolver}。
  *
- * <p>从 {@link TokenBasedAuthenticationFilter} 存储在 request attribute 中的 token 取值，
+ * <p>从 {@link TokenBasedAuthFilter} 存储在 request attribute 中的 token 取值，
  * 支持 {@link String} 和 {@link Optional Optional&lt;String&gt;} 两种参数类型。</p>
  *
  * <p><b>使用示例</b></p>
@@ -32,7 +32,7 @@ import java.util.Optional;
  *
  * @author 应卓
  * @see CurrentToken
- * @see TokenBasedAuthenticationFilter
+ * @see TokenBasedAuthFilter
  * @since 4.1.1
  */
 public class CurrentTokenHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
@@ -58,7 +58,7 @@ public class CurrentTokenHandlerMethodArgumentResolver implements HandlerMethodA
             return resolveEmpty(parameter);
         }
 
-        var token = servletRequest.getAttribute(TokenBasedAuthenticationFilter.ATTRIBUTE_TOKEN_NAME);
+        var token = servletRequest.getAttribute(TokenBasedAuthFilter.ATTRIBUTE_TOKEN_NAME);
         if (String.class.isAssignableFrom(parameter.getParameterType())) {
             return token;
         }
