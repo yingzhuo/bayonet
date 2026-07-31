@@ -9,17 +9,15 @@ import java.security.Security;
 @Slf4j
 public class BouncyCastleInstallingInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-    private static final String PROVIDER_NAME = "BC";
-    private static final String PROVIDER_CLASS_NAME = "org.bouncycastle.jce.provider.BouncyCastleProvider";
 
     @Override
     public void initialize(ConfigurableApplicationContext ctx) {
         try {
-            if (Security.getProvider(PROVIDER_NAME) != null) {
+            if (Security.getProvider(BouncyCastleConstants.BC_PROVIDER_NAME) != null) {
                 return;
             }
 
-            var clazz = Class.forName(PROVIDER_CLASS_NAME);
+            var clazz = Class.forName(BouncyCastleConstants.BC_PROVIDER_CLASS_NAME);
             Security.addProvider((java.security.Provider) clazz.getConstructor().newInstance());
             log.debug("BouncyCastle JCE provider initialization complete.");
         } catch (ClassNotFoundException ignored) {
