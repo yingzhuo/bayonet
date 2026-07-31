@@ -20,6 +20,16 @@ public sealed interface LogLevel permits
     /**
      * 创建 TRACE 级别。
      *
+     * @param name 日志名称
+     * @return TRACE 级别实例
+     */
+    static LogLevel trace(String name) {
+        return trace(LoggerFactory.getLogger(name));
+    }
+
+    /**
+     * 创建 TRACE 级别。
+     *
      * @param clazz 日志来源类
      * @return TRACE 级别实例
      */
@@ -35,6 +45,16 @@ public sealed interface LogLevel permits
      */
     static LogLevel trace(Logger logger) {
         return new Trace(logger);
+    }
+
+    /**
+     * 创建 DEBUG 级别。
+     *
+     * @param name 日志名称
+     * @return DEBUG 级别实例
+     */
+    static LogLevel debug(String name) {
+        return debug(LoggerFactory.getLogger(name));
     }
 
     /**
@@ -60,6 +80,16 @@ public sealed interface LogLevel permits
     /**
      * 创建 INFO 级别。
      *
+     * @param name 日志名称
+     * @return INFO 级别实例
+     */
+    static LogLevel info(String name) {
+        return info(LoggerFactory.getLogger(name));
+    }
+
+    /**
+     * 创建 INFO 级别。
+     *
      * @param clazz 日志来源类
      * @return INFO 级别实例
      */
@@ -80,6 +110,16 @@ public sealed interface LogLevel permits
     /**
      * 创建 WARNING 级别。
      *
+     * @param name 日志名称
+     * @return WARNING 级别实例
+     */
+    static LogLevel warning(String name) {
+        return warning(LoggerFactory.getLogger(name));
+    }
+
+    /**
+     * 创建 WARNING 级别。
+     *
      * @param clazz 日志来源类
      * @return WARNING 级别实例
      */
@@ -95,6 +135,16 @@ public sealed interface LogLevel permits
      */
     static LogLevel warning(Logger logger) {
         return new Warning(logger);
+    }
+
+    /**
+     * 创建 ERROR 级别。
+     *
+     * @param name 日志名称
+     * @return ERROR 级别实例
+     */
+    static LogLevel error(String name) {
+        return error(LoggerFactory.getLogger(name));
     }
 
     /**
