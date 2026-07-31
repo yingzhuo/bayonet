@@ -43,6 +43,24 @@ public class LoggingFilter extends OncePerRequestFilter {
         this.logLevel = logLevel;
     }
 
+    private static String getRequestPath(HttpServletRequest request) {
+        var uri = request.getRequestURI();
+        var query = request.getQueryString();
+        return query != null ? uri + "?" + query : uri;
+    }
+
+    private static Map<String, String> getParams(HttpServletRequest request) {
+        var params = request.getParameterMap();
+        if (params.isEmpty()) {
+            return Map.of();
+        }
+        var result = new LinkedHashMap<String, String>();
+        for (var entry : params.entrySet()) {
+            result.put(entry.getKey(), String.join(",", entry.getValue()));
+        }
+        return Map.copyOf(result);
+    }
+
     /**
      * 设置敏感头部。
      * <p>匹配到的头部不会出现在日志中，匹配不区分大小写。</p>
@@ -66,24 +84,6 @@ public class LoggingFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-    }
-
-    private static String getRequestPath(HttpServletRequest request) {
-        var uri = request.getRequestURI();
-        var query = request.getQueryString();
-        return query != null ? uri + "?" + query : uri;
-    }
-
-    private static Map<String, String> getParams(HttpServletRequest request) {
-        var params = request.getParameterMap();
-        if (params.isEmpty()) {
-            return Map.of();
-        }
-        var result = new LinkedHashMap<String, String>();
-        for (var entry : params.entrySet()) {
-            result.put(entry.getKey(), String.join(",", entry.getValue()));
-        }
-        return Map.copyOf(result);
     }
 
     private Map<String, String> getHeaders(HttpServletRequest request) {
