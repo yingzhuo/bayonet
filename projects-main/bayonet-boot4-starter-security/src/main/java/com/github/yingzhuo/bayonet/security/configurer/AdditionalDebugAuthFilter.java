@@ -52,7 +52,7 @@ public @interface AdditionalDebugAuthFilter {
      * @see FilterPositionHint
      */
     @AliasFor(annotation = AdditionalSecurityFilter.class, attribute = "hint")
-    FilterPositionHint positionHint() default FilterPositionHint.BEFORE;
+    FilterPositionHint hint() default FilterPositionHint.BEFORE;
 
     /**
      * 跳过此过滤器的 Profile 条件。
