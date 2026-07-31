@@ -5,10 +5,8 @@ spring:
         "server":
           reload-on-update: false
           keystore:
-            location: "classpath:config/secret-box.pfx"
+            location: "classpath:secret/ssl.pfx"
             password: "123456"
-          key:
-            alias: "tomcat-ssl"
       pem:
         "client":
           reload-on-update: false
