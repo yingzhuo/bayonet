@@ -47,12 +47,14 @@ public final class KeyStoreUtils {
         type = Objects.requireNonNullElseGet(type, KeyStoreType::getDefault);
 
         try (var input = stream) {
-            var keyStore = KeyStore.getInstance(type.name());
+            var keyStore = type == KeyStoreType.BCFKS
+                    ? KeyStore.getInstance("BCFKS", "BCFIPS") // BCFKS 仅由 BCFIPS Provider 提供
+                    : KeyStore.getInstance(type.name());
             keyStore.load(input, storepass.toCharArray());
             return keyStore;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
-        } catch (KeyStoreException | NoSuchAlgorithmException | CertificateException e) {
+        } catch (KeyStoreException | NoSuchAlgorithmException | NoSuchProviderException | CertificateException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
         }
     }

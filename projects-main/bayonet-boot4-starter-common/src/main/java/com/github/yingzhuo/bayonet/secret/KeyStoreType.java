@@ -8,7 +8,7 @@ import org.jspecify.annotations.Nullable;
  * <ul>
  *   <li>{@link #PKCS12} — PKCS#12 格式（.p12 / .pfx）</li>
  *   <li>{@link #JKS} — Java KeyStore 格式（.jks）</li>
- *   <li>其他的类型不打算支持</li>
+ *   <li>{@link #BCFKS} — Bouncy Castle FIPS KeyStore 格式（需安装 BCFIPS Provider）</li>
  * </ul>
  *
  * @author 应卓
@@ -25,7 +25,13 @@ public enum KeyStoreType {
     /**
      * JKS
      */
-    JKS;
+    JKS,
+
+    /**
+     * BCFKS（Bouncy Castle FIPS KeyStore）。
+     * <p>仅在 BCFIPS Provider 已安装时可用。</p>
+     */
+    BCFKS;
 
     /**
      * 获取默认 KeyStore 类型。
@@ -42,6 +48,7 @@ public enum KeyStoreType {
      * <ul>
      *   <li>{@code pkcs12}、{@code pkcs#12}、{@code pfx}、{@code p12} → {@link #PKCS12}</li>
      *   <li>{@code jks} → {@link #JKS}</li>
+     *   <li>{@code bcfks} → {@link #BCFKS}</li>
      * </ul>
      *
      * @param type 字符串类型，为 {@code null} 时返回默认值 {@link #PKCS12}
@@ -58,6 +65,7 @@ public enum KeyStoreType {
         return switch (type.toLowerCase()) {
             case "pkcs12", "pkcs#12", "pfx", "p12" -> PKCS12;
             case "jks" -> JKS;
+            case "bcfks" -> BCFKS;
             default -> throw new IllegalArgumentException("unknown keystore type: '" + type + "'");
         };
     }
