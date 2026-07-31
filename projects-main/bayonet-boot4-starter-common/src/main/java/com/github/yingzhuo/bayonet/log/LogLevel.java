@@ -10,12 +10,7 @@ import org.slf4j.LoggerFactory;
  * @author 应卓
  * @since 4.1.1
  */
-public sealed interface LogLevel permits
-        LogLevel.Trace,
-        LogLevel.Debug,
-        LogLevel.Info,
-        LogLevel.Warning,
-        LogLevel.Error {
+public sealed interface LogLevel {
 
     /**
      * 创建 TRACE 级别。
@@ -181,94 +176,61 @@ public sealed interface LogLevel permits
      * @param args   参数
      */
     void log(String format, Object... args);
+}
 
-    /**
-     * TRACE 级别。
-     *
-     * @param logger SLF4J 日志对象
-     */
-    record Trace(Logger logger) implements LogLevel {
+// 实现:
 
-        @Override
-        public boolean isEnabled() {
-            return logger.isTraceEnabled();
-        }
+record Trace(Logger logger) implements LogLevel {
 
-        @Override
-        public void log(String format, Object... args) {
-            logger.trace(format, args);
-        }
+    public boolean isEnabled() {
+        return logger.isTraceEnabled();
     }
 
-    /**
-     * DEBUG 级别。
-     *
-     * @param logger SLF4J 日志对象
-     */
-    record Debug(Logger logger) implements LogLevel {
+    public void log(String format, Object... args) {
+        logger.trace(format, args);
+    }
+}
 
-        @Override
-        public boolean isEnabled() {
-            return logger.isDebugEnabled();
-        }
+record Debug(Logger logger) implements LogLevel {
 
-        @Override
-        public void log(String format, Object... args) {
-            logger.debug(format, args);
-        }
+    public boolean isEnabled() {
+        return logger.isDebugEnabled();
     }
 
-    /**
-     * INFO 级别。
-     *
-     * @param logger SLF4J 日志对象
-     */
-    record Info(Logger logger) implements LogLevel {
+    public void log(String format, Object... args) {
+        logger.debug(format, args);
+    }
+}
 
-        @Override
-        public boolean isEnabled() {
-            return logger.isInfoEnabled();
-        }
+record Info(Logger logger) implements LogLevel {
 
-        @Override
-        public void log(String format, Object... args) {
-            logger.info(format, args);
-        }
+    public boolean isEnabled() {
+        return logger.isInfoEnabled();
     }
 
-    /**
-     * WARNING 级别。
-     *
-     * @param logger SLF4J 日志对象
-     */
-    record Warning(Logger logger) implements LogLevel {
+    public void log(String format, Object... args) {
+        logger.info(format, args);
+    }
+}
 
-        @Override
-        public boolean isEnabled() {
-            return logger.isWarnEnabled();
-        }
+record Warning(Logger logger) implements LogLevel {
 
-        @Override
-        public void log(String format, Object... args) {
-            logger.warn(format, args);
-        }
+    public boolean isEnabled() {
+        return logger.isWarnEnabled();
     }
 
-    /**
-     * ERROR 级别。
-     *
-     * @param logger SLF4J 日志对象
-     */
-    record Error(Logger logger) implements LogLevel {
+    public void log(String format, Object... args) {
+        logger.warn(format, args);
+    }
+}
 
-        @Override
-        public boolean isEnabled() {
-            return logger.isErrorEnabled();
-        }
+record Error(Logger logger) implements LogLevel {
 
-        @Override
-        public void log(String format, Object... args) {
-            logger.error(format, args);
-        }
+    public boolean isEnabled() {
+        return logger.isErrorEnabled();
+    }
+
+    public void log(String format, Object... args) {
+        logger.error(format, args);
     }
 }
