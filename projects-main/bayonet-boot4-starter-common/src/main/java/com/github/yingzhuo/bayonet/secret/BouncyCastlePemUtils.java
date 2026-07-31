@@ -24,7 +24,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.Security;
 
 /**
  * 基于 Bouncy Castle 的 PEM 文件工具类。
@@ -36,10 +35,6 @@ import java.security.Security;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class BouncyCastlePemUtils {
-
-    static {
-        Security.addProvider(new BouncyCastleProvider());
-    }
 
     /**
      * 从 PEM 资源文件中加载公钥。
