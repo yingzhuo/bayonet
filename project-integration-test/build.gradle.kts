@@ -5,9 +5,9 @@ plugins {
 description = "集成测试 (临时)"
 
 configurations.configureEach {
-    exclude(group = "org.bouncycastle", module = "bcprov-jdk18on")
-    exclude(group = "org.bouncycastle", module = "bcpkix-jdk18on")
-    exclude(group = "org.bouncycastle", module = "bcutil-jdk18on")
+//    exclude(group = "org.bouncycastle", module = "bcprov-jdk18on")
+//    exclude(group = "org.bouncycastle", module = "bcpkix-jdk18on")
+//    exclude(group = "org.bouncycastle", module = "bcutil-jdk18on")
 }
 
 dependencies {
@@ -34,10 +34,6 @@ dependencies {
 
     // BC
     api(platform(libs.bc.bom))
-    //api("org.bouncycastle:bcprov-jdk18on")
-    //api("org.bouncycastle:bcpkix-jdk18on")
-
-    // BC (fips)
-    api(libs.bc.fips)
-    api(libs.bcpkix.fips)
+    api("org.bouncycastle:bcprov-jdk18on")
+    api("org.bouncycastle:bcpkix-jdk18on")
 }

@@ -3,7 +3,6 @@ com.github.yingzhuo.bayonet.utility.SpringUtils.Hook
 org.springframework.boot.EnvironmentPostProcessor=\
 com.github.yingzhuo.bayonet.utility.SpringUtils.Hook
 org.springframework.context.ApplicationContextInitializer=\
-com.github.yingzhuo.bayonet.context.BCFipsProviderInstallingInitializer,\
 com.github.yingzhuo.bayonet.context.BouncyCastleInstallingInitializer,\
 com.github.yingzhuo.bayonet.context.PropertiesLoadingInitializer,\
 com.github.yingzhuo.bayonet.context.YamlLoadingInitializer

@@ -25,9 +25,6 @@ dependencies {
         api(libs.bundles.zxing)
         api(libs.easy.captcha)
 
-        api(libs.bc.fips)
-        api(libs.bcpkix.fips)
-
         // other bom
         api(libs.bc.bom)
     }

@@ -17,9 +17,6 @@ zxing-javase = { module = "com.google.zxing:javase", version.ref = "zxing" }
 freemarker = { module = "org.freemarker:freemarker", version = "2.3.34" }
 easy-captcha = { module = "com.github.whvcse:easy-captcha", version = "1.6.2" }
 
-bc-fips = { module = "org.bouncycastle:bc-fips", version = "2.1.3" }
-bcpkix-fips = { module = "org.bouncycastle:bcpkix-fips", version = "2.1.12" }
-
 # Plugin Artifacts (for buildSrc dependencies)
 dependency-management-plugin = "io.spring.dependency-management:io.spring.dependency-management.gradle.plugin:1.1.7"
 maven-publish-plugin = "com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:0.37.0"

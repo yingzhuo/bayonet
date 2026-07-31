@@ -48,7 +48,7 @@ public final class KeyStoreUtils {
 
         try (var input = stream) {
             var keyStore = type == KeyStoreType.BCFKS
-                    ? KeyStore.getInstance("BCFKS", "BCFIPS") // BCFKS 仅由 BCFIPS Provider 提供
+                    ? KeyStore.getInstance("BCFKS", "BC") // BCFKS 由 BouncyCastleProvider 提供
                     : KeyStore.getInstance(type.name());
             keyStore.load(input, storepass.toCharArray());
             return keyStore;
