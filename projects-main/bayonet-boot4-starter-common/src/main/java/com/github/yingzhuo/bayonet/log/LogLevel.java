@@ -178,59 +178,45 @@ public sealed interface LogLevel {
     void log(String format, Object... args);
 }
 
-// 实现:
-
+// @formatter:off
 record Trace(Logger logger) implements LogLevel {
-
     public boolean isEnabled() {
         return logger.isTraceEnabled();
     }
-
     public void log(String format, Object... args) {
         logger.trace(format, args);
     }
 }
-
 record Debug(Logger logger) implements LogLevel {
-
     public boolean isEnabled() {
         return logger.isDebugEnabled();
     }
-
     public void log(String format, Object... args) {
         logger.debug(format, args);
     }
 }
-
 record Info(Logger logger) implements LogLevel {
-
     public boolean isEnabled() {
         return logger.isInfoEnabled();
     }
-
     public void log(String format, Object... args) {
         logger.info(format, args);
     }
 }
-
 record Warning(Logger logger) implements LogLevel {
-
     public boolean isEnabled() {
         return logger.isWarnEnabled();
     }
-
     public void log(String format, Object... args) {
         logger.warn(format, args);
     }
 }
-
 record Error(Logger logger) implements LogLevel {
-
     public boolean isEnabled() {
         return logger.isErrorEnabled();
     }
-
     public void log(String format, Object... args) {
         logger.error(format, args);
     }
 }
+// @formatter:on

@@ -1,24 +1,28 @@
 package bayonet.test;
 
-import com.github.yingzhuo.bayonet.secret.SecretKeyFactories;
-import com.github.yingzhuo.bayonet.utility.AES;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.github.yingzhuo.bayonet.jwt.algorithm.SM2Algorithm;
+import com.github.yingzhuo.bayonet.secret.KeyStoreType;
+import com.github.yingzhuo.bayonet.secret.SecretBox;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.crypto.SecretKey;
+import org.springframework.core.io.ClassPathResource;
 
 @Configuration
 public class ApplicationBootBean {
 
     @Bean
-    public SecretKey aesSecretKey() {
-        return SecretKeyFactories.loadFromKeyStore("classpath:config/secretdb.pfx", null, "123456", "aes", null);
+    public SecretBox secretBox() {
+        return SecretBox.builder()
+                .resource(new ClassPathResource("config/secret-box.bcfks"))
+                .type(KeyStoreType.BCFKS)
+                .storepass("123456")
+                .build();
     }
 
     @Bean
-    public AES aesBean(@Qualifier("aesSecretKey") SecretKey aesSecretKey) {
-        return new AES(aesSecretKey);
+    public SM2Algorithm hello(SecretBox secretBox) {
+        var kp = secretBox.getKeyPair("SM2");
+        return new SM2Algorithm(kp.getPublic(), kp.getPrivate());
     }
 
 }
