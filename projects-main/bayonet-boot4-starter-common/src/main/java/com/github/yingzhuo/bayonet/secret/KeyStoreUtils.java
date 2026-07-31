@@ -254,7 +254,7 @@ public final class KeyStoreUtils {
         }
     }
 
-    // ---
+    // ------
 
     private static <T> T getSigAlgAttr(KeyStore keyStore, String alias, Function<X509Certificate, T> extractor, String attrName) {
         var cert = getCertificate(keyStore, alias);

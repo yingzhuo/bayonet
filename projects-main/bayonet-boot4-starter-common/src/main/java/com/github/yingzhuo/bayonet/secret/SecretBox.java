@@ -13,6 +13,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +77,7 @@ public final class SecretBox {
      * @return 不可变映射
      */
     public Map<String, String> getAliasToKeypassMapping() {
-        return aliasToKeypass;
+        return Collections.unmodifiableMap(aliasToKeypass);
     }
 
     /**
@@ -286,7 +287,9 @@ public final class SecretBox {
          */
         public Builder aliasToKeypass(Map<String, String> map) {
             Assert.notNull(map, "map must not be null");
-            this.aliasToKeypass.putAll(map);
+            if (!map.isEmpty()) {
+                this.aliasToKeypass.putAll(map);
+            }
             return this;
         }
 

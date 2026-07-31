@@ -3,7 +3,6 @@ package bayonet.test;
 import com.github.yingzhuo.bayonet.secret.KeyStoreType;
 import com.github.yingzhuo.bayonet.secret.SecretBox;
 import com.github.yingzhuo.bayonet.utility.AES;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -14,19 +13,18 @@ import javax.crypto.SecretKey;
 public class ApplicationBootBean {
 
     @Bean
-    public SecretKey aesSecretKey() {
+    public SecretBox secretBox() {
         return SecretBox.builder()
-                .resource(new ClassPathResource("config/secretdb.pfx"))
+                .resource(new ClassPathResource("config/secret-box.pfx"))
                 .type(KeyStoreType.PKCS12)
                 .storepass("123456")
                 .alias("aes")
-                .build()
-                .getSecretKey("aes");
+                .build();
     }
 
     @Bean
-    public AES aesBean(@Qualifier("aesSecretKey") SecretKey aesSecretKey) {
-        return new AES(aesSecretKey);
+    public AES aesBean(SecretBox secretBox) {
+        return new AES(secretBox.<SecretKey>getSecretKey("aes"));
     }
 
 }
