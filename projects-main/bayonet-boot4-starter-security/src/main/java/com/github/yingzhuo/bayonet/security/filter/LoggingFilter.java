@@ -10,9 +10,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 请求日志过滤器。
@@ -25,7 +27,12 @@ public class LoggingFilter extends OncePerRequestFilter {
 
     private final LogLevel logLevel;
 
-    private Set<String> sensitiveHeaders = Set.of(HttpHeaders.COOKIE, HttpHeaders.SET_COOKIE, "X-Api-Key");
+    private Set<String> sensitiveHeaders = new HashSet<>();
+
+    {
+        sensitiveHeaders.add(HttpHeaders.COOKIE);
+        sensitiveHeaders.add(HttpHeaders.SET_COOKIE);
+    }
 
     /**
      * 构造器 (Debug级别)
@@ -73,14 +80,33 @@ public class LoggingFilter extends OncePerRequestFilter {
                 : Set.of();
     }
 
+    private static String formatParams(Map<String, String> params) {
+        if (params.isEmpty()) {
+            return "        (none)";
+        }
+        return params.entrySet().stream()
+                .map(e -> "        " + e.getKey() + ": " + e.getValue())
+                .collect(Collectors.joining("\n"));
+    }
+
+    private static String formatHeaders(Map<String, String> headers) {
+        if (headers.isEmpty()) {
+            return "        (none)";
+        }
+        return headers.entrySet().stream()
+                .map(e -> "        " + e.getKey() + ": " + e.getValue())
+                .collect(Collectors.joining("\n"));
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (logLevel.isEnabled()) {
-            logLevel.log("{} {} | params: {} | headers: {}",
-                    request.getMethod(),
-                    getRequestPath(request),
-                    getParams(request),
-                    getHeaders(request));
+            var message = "\n==> " + request.getMethod() + " " + getRequestPath(request) + "\n"
+                    + "    Params:\n"
+                    + formatParams(getParams(request)) + "\n"
+                    + "    Headers:\n"
+                    + formatHeaders(getHeaders(request));
+            logLevel.log(message);
         }
 
         filterChain.doFilter(request, response);
