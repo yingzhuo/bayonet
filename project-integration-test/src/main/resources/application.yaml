@@ -5,8 +5,6 @@ spring:
   application:
     name: 'integration-test'
     version: "0.1.0"
-  banner:
-    location: "classpath:config/banner.txt"
   profiles:
     active:
       - "dev"

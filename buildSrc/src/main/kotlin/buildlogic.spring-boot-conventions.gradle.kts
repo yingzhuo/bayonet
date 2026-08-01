@@ -1,8 +1,11 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
+val excludeBouncyCastle = (project.findProperty("excludeBouncyCastle") as? String)?.toBoolean() ?: false
+
 plugins {
     id("org.springframework.boot")
+    id("com.gorylenko.gradle-git-properties")
 }
 
 springBoot {
@@ -10,8 +13,6 @@ springBoot {
         excludes = setOf("time")
     }
 }
-
-val excludeBouncyCastle = (project.findProperty("excludeBouncyCastle") as? String)?.toBoolean() ?: false
 
 
 tasks.named<BootJar>("bootJar") {
@@ -38,4 +39,13 @@ tasks.named<Jar>("jar") {
 
 tasks.named<BootBuildImage>("bootBuildImage") {
     enabled = false
+}
+
+gitProperties {
+    dotGitDirectory = rootProject.layout.projectDirectory.dir(".git/")
+    gitPropertiesName = "git.properties"
+    failOnNoGitDirectory = false
+    keys = listOf(
+        "git.branch", "git.commit.id", "git.commit.id.abbrev", "git.commit.time", "git.dirty"
+    )
 }
