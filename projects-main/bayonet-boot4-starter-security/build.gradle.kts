@@ -31,4 +31,9 @@ dependencies {
 
     // slf4j
     api("org.slf4j:slf4j-api")
+
+    // BC
+    api(platform(libs.bc.bom))
+    compileOnly("org.bouncycastle:bcprov-jdk18on")
+    compileOnly("org.bouncycastle:bcpkix-jdk18on")
 }

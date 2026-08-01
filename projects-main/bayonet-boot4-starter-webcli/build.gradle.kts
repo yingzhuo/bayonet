@@ -30,4 +30,8 @@ dependencies {
 
     // slf4j
     api("org.slf4j:slf4j-api")
+
+    // apache5
+    compileOnly("org.apache.httpcomponents.client5:httpclient5")
+
 }
