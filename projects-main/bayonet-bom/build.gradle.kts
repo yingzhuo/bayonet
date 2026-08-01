@@ -12,7 +12,6 @@ javaPlatform {
 
 dependencies {
     constraints {
-        // 除了 'bayonet-bom' 自身的产物都要纳入物料清单
         rootProject.findProject("projects-main")
             ?.subprojects
             ?.filter { it.name != "bayonet-bom" }

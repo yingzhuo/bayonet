@@ -16,7 +16,9 @@ if (propertiesFile.exists() && propertiesFile.isFile) {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-gradle-plugin:${project.findProperty("springBootVersion")}")
     implementation(libs.dependency.management.plugin)
     implementation(libs.maven.publish.plugin)
     implementation(libs.code.counting.plugin)
+    implementation(libs.git.properties.plugin)
 }
