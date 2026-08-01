@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.security.memory;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,6 +33,7 @@ import java.util.*;
  * @author 应卓
  * @since 4.1.1
  */
+@ApiStatus.Experimental
 public class InMemoryUserDetailsService implements UserDetailsService {
 
     private final Map<String, UserDetails> users = new HashMap<>();

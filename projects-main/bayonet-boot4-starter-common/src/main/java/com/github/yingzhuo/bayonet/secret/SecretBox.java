@@ -5,18 +5,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 
 import javax.crypto.SecretKey;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * 对 {@link KeyStore} 的封装，提供便利的密钥/证书查询方法。
@@ -28,16 +24,17 @@ import java.util.Map;
  *         .type(KeyStoreType.PKCS12)
  *         .storepass("storepass")
  *         .alias("jwt", "keypass")
- *         .alias("legacy")
  *         .build();
  * }</pre>
+ *
+ * <p>实现 {@link Iterable}，可直接迭代 KeyStore 中所有别名。</p>
  *
  * @author 应卓
  * @see KeyStoreType
  * @see KeyStoreUtils
  * @since 4.1.1
  */
-public final class SecretBox {
+public final class SecretBox implements Iterable<String> {
 
     private final Resource resource;
     private final KeyStoreType type;
@@ -134,6 +131,39 @@ public final class SecretBox {
     }
 
     /**
+     * 获取指定别名的证书生效时间（NotBefore）。
+     *
+     * @param alias 别名
+     * @return 证书生效时间（非 {@code null}）
+     * @throws IllegalArgumentException 别名不存在或证书非 {@link X509Certificate}
+     */
+    public LocalDateTime getCertificateNotBefore(String alias) {
+        return KeyStoreUtils.getCertificateNotBefore(getKeyStore(), alias);
+    }
+
+    /**
+     * 获取指定别名的证书过期时间（NotAfter）。
+     *
+     * @param alias 别名
+     * @return 证书过期时间（非 {@code null}）
+     * @throws IllegalArgumentException 别名不存在或证书非 {@link X509Certificate}
+     */
+    public LocalDateTime getCertificateNotAfter(String alias) {
+        return KeyStoreUtils.getCertificateNotAfter(getKeyStore(), alias);
+    }
+
+    /**
+     * 判断当前时间是否在证书有效期内。
+     *
+     * @param alias 别名
+     * @return {@code true} 表示当前时间在有效期内（{@code notBefore < now < notAfter}）
+     * @throws IllegalArgumentException 别名不存在或证书非 {@link X509Certificate}
+     */
+    public boolean isCertificateValid(String alias) {
+        return KeyStoreUtils.isCertificateValid(getKeyStore(), alias);
+    }
+
+    /**
      * 获取指定别名的公钥。
      *
      * @param alias 别名
@@ -168,6 +198,26 @@ public final class SecretBox {
         return new KeyPair(getPublicKey(alias), getPrivateKey(alias));
     }
 
+    /**
+     * 返回别名的迭代器。
+     *
+     * @return 别名迭代器（非 {@code null}）
+     */
+    @Override
+    public Iterator<String> iterator() {
+        return getAliases().iterator();
+    }
+
+    /**
+     * 返回包含所有别名的字符串表示。
+     *
+     * @return 字符串表示（非 {@code null}）
+     */
+    @Override
+    public String toString() {
+        return "SecretBox{aliases=" + getAliases() + '}';
+    }
+
     // ------
 
     private String getKeypass(String alias) {
@@ -180,11 +230,12 @@ public final class SecretBox {
             synchronized (this) {
                 result = keyStore;
                 if (result == null) {
-                    try (var in = resource.getInputStream()) {
-                        result = KeyStoreUtils.loadKeyStore(in, type, storepass);
-                    } catch (IOException e) {
-                        throw new UncheckedIOException(e);
-                    }
+//                    try (var in = resource.getInputStream()) {
+//                        result = KeyStoreUtils.loadKeyStore(in, type, storepass);
+//                    } catch (IOException e) {
+//                        throw new UncheckedIOException(e);
+//                    }
+                    result = KeyStoreUtils.loadKeyStore(resource, type, storepass);
                     keyStore = result;
                 }
             }
@@ -203,9 +254,6 @@ public final class SecretBox {
         private @Nullable Resource resource;
         private KeyStoreType type = KeyStoreType.getDefault();
         private @Nullable String storepass;
-
-        private Builder() {
-        }
 
         /**
          * 设置 KeyStore 资源。

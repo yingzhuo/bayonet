@@ -4,6 +4,8 @@ import com.github.yingzhuo.bayonet.security.configurer.AdditionalDebugAuthFilter
 import com.github.yingzhuo.bayonet.security.configurer.AdditionalSecurityFilter;
 import com.github.yingzhuo.bayonet.security.filter.DebugTokenBasedAuthFilter;
 import com.github.yingzhuo.bayonet.security.filter.LoggingFilter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -21,8 +23,10 @@ import tools.jackson.databind.ObjectMapper;
 
 import static org.springframework.http.HttpMethod.GET;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @AdditionalDebugAuthFilter
 @AdditionalSecurityFilter(value = LoggingFilter.class, positionFilterType = DisableEncodeUrlFilter.class)
 public class ApplicationBootSecurity {

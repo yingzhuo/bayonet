@@ -1,8 +1,10 @@
 package com.github.yingzhuo.bayonet.secret;
 
+import com.github.yingzhuo.bayonet.utility.TimeConvertingUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
+import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 
 import javax.crypto.SecretKey;
@@ -13,6 +15,7 @@ import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -46,16 +49,36 @@ public final class KeyStoreUtils {
 
         type = Objects.requireNonNullElseGet(type, KeyStoreType::getDefault);
 
-        try (var input = stream) {
+        try {
             var keyStore = type == KeyStoreType.BCFKS
                     ? KeyStore.getInstance("BCFKS", "BC") // BCFKS 由 BouncyCastleProvider 提供
                     : KeyStore.getInstance(type.name());
-            keyStore.load(input, storepass.toCharArray());
+            keyStore.load(stream, storepass.toCharArray());
             return keyStore;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         } catch (KeyStoreException | NoSuchAlgorithmException | NoSuchProviderException | CertificateException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 从 {@link Resource} 加载 KeyStore。
+     * <p>本方法负责打开并关闭资源流。</p>
+     *
+     * @param resource  KeyStore 资源（非 {@code null}）
+     * @param type      KeyStore 类型，为 {@code null} 时使用默认类型 {@link KeyStoreType#PKCS12}
+     * @param storepass KeyStore 密码（非 {@code null}）
+     * @return 已加载的 {@link KeyStore}（非 {@code null}）
+     * @throws IllegalArgumentException 若参数为 {@code null} 或加载失败
+     * @throws UncheckedIOException     读取资源失败时抛出
+     */
+    public static KeyStore loadKeyStore(Resource resource, @Nullable KeyStoreType type, String storepass) {
+        Assert.notNull(resource, "resource is required");
+        try (var in = resource.getInputStream()) {
+            return loadKeyStore(in, type, storepass);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -191,7 +214,7 @@ public final class KeyStoreUtils {
      * @throws IllegalArgumentException 若参数非法或证书非 {@link X509Certificate}
      */
     public static String getSigAlgName(KeyStore keyStore, String alias) {
-        return getSigAlgAttr(keyStore, alias, X509Certificate::getSigAlgName, "SigAlgName");
+        return getCertificateAttr(keyStore, alias, X509Certificate::getSigAlgName, "SigAlgName");
     }
 
     /**
@@ -203,7 +226,45 @@ public final class KeyStoreUtils {
      * @throws IllegalArgumentException 若参数非法或证书非 {@link X509Certificate}
      */
     public static String getSigAlgOID(KeyStore keyStore, String alias) {
-        return getSigAlgAttr(keyStore, alias, X509Certificate::getSigAlgOID, "SigAlgOID");
+        return getCertificateAttr(keyStore, alias, X509Certificate::getSigAlgOID, "SigAlgOID");
+    }
+
+    /**
+     * 获取指定别名的证书生效时间（NotBefore）。
+     *
+     * @param keyStore 已加载的 KeyStore（非 {@code null}）
+     * @param alias    别名（非空）
+     * @return 证书生效时间（非 {@code null}）
+     * @throws IllegalArgumentException 若参数非法或证书非 {@link X509Certificate}
+     */
+    public static LocalDateTime getCertificateNotBefore(KeyStore keyStore, String alias) {
+        return TimeConvertingUtils.toLocalDateTime(getCertificateAttr(keyStore, alias, X509Certificate::getNotBefore, "NotBefore"));
+    }
+
+    /**
+     * 获取指定别名的证书过期时间（NotAfter）。
+     *
+     * @param keyStore 已加载的 KeyStore（非 {@code null}）
+     * @param alias    别名（非空）
+     * @return 证书过期时间（非 {@code null}）
+     * @throws IllegalArgumentException 若参数非法或证书非 {@link X509Certificate}
+     */
+    public static LocalDateTime getCertificateNotAfter(KeyStore keyStore, String alias) {
+        return TimeConvertingUtils.toLocalDateTime(getCertificateAttr(keyStore, alias, X509Certificate::getNotAfter, "NotAfter"));
+    }
+
+    /**
+     * 判断当前时间是否在证书有效期内。
+     *
+     * @param keyStore 已加载的 KeyStore（非 {@code null}）
+     * @param alias    别名（非空）
+     * @return {@code true} 表示当前时间在有效期内（{@code notBefore < now < notAfter}）
+     * @throws IllegalArgumentException 若参数非法或证书非 {@link X509Certificate}
+     */
+    public static boolean isCertificateValid(KeyStore keyStore, String alias) {
+        var now = LocalDateTime.now();
+        return getCertificateNotBefore(keyStore, alias).isBefore(now)
+                && getCertificateNotAfter(keyStore, alias).isAfter(now);
     }
 
     /**
@@ -258,7 +319,7 @@ public final class KeyStoreUtils {
 
     // ------
 
-    private static <T> T getSigAlgAttr(KeyStore keyStore, String alias, Function<X509Certificate, T> extractor, String attrName) {
+    private static <T> T getCertificateAttr(KeyStore keyStore, String alias, Function<X509Certificate, T> extractor, String attrName) {
         var cert = getCertificate(keyStore, alias);
         if (cert instanceof X509Certificate x509Cert) {
             return extractor.apply(x509Cert);
