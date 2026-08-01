@@ -13,6 +13,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -98,26 +99,6 @@ public final class SecretBox implements Iterable<String> {
     }
 
     /**
-     * 返回别名的迭代器。
-     *
-     * @return 别名迭代器（非 {@code null}）
-     */
-    @Override
-    public Iterator<String> iterator() {
-        return getAliases().iterator();
-    }
-
-    /**
-     * 返回包含所有别名的字符串表示。
-     *
-     * @return 字符串表示（非 {@code null}）
-     */
-    @Override
-    public String toString() {
-        return "SecretBox{aliases=" + getAliases() + '}';
-    }
-
-    /**
      * 获取指定别名的对称密钥。
      *
      * @param alias 别名
@@ -149,6 +130,39 @@ public final class SecretBox implements Iterable<String> {
      */
     public <T extends Certificate> T getCertificate(String alias) {
         return KeyStoreUtils.getCertificate(getKeyStore(), alias);
+    }
+
+    /**
+     * 获取指定别名的证书生效时间（NotBefore）。
+     *
+     * @param alias 别名
+     * @return 证书生效时间（非 {@code null}）
+     * @throws IllegalArgumentException 别名不存在或证书非 {@link X509Certificate}
+     */
+    public LocalDateTime getCertificateNotBefore(String alias) {
+        return KeyStoreUtils.getCertificateNotBefore(getKeyStore(), alias);
+    }
+
+    /**
+     * 获取指定别名的证书过期时间（NotAfter）。
+     *
+     * @param alias 别名
+     * @return 证书过期时间（非 {@code null}）
+     * @throws IllegalArgumentException 别名不存在或证书非 {@link X509Certificate}
+     */
+    public LocalDateTime getCertificateNotAfter(String alias) {
+        return KeyStoreUtils.getCertificateNotAfter(getKeyStore(), alias);
+    }
+
+    /**
+     * 判断当前时间是否在证书有效期内。
+     *
+     * @param alias 别名
+     * @return {@code true} 表示当前时间在有效期内（{@code notBefore < now < notAfter}）
+     * @throws IllegalArgumentException 别名不存在或证书非 {@link X509Certificate}
+     */
+    public boolean isCertificateValid(String alias) {
+        return KeyStoreUtils.isCertificateValid(getKeyStore(), alias);
     }
 
     /**
@@ -186,6 +200,26 @@ public final class SecretBox implements Iterable<String> {
         return new KeyPair(getPublicKey(alias), getPrivateKey(alias));
     }
 
+    /**
+     * 返回别名的迭代器。
+     *
+     * @return 别名迭代器（非 {@code null}）
+     */
+    @Override
+    public Iterator<String> iterator() {
+        return getAliases().iterator();
+    }
+
+    /**
+     * 返回包含所有别名的字符串表示。
+     *
+     * @return 字符串表示（非 {@code null}）
+     */
+    @Override
+    public String toString() {
+        return "SecretBox{aliases=" + getAliases() + '}';
+    }
+
     // ------
 
     private String getKeypass(String alias) {
@@ -221,9 +255,6 @@ public final class SecretBox implements Iterable<String> {
         private @Nullable Resource resource;
         private KeyStoreType type = KeyStoreType.getDefault();
         private @Nullable String storepass;
-
-        private Builder() {
-        }
 
         /**
          * 设置 KeyStore 资源。
@@ -292,9 +323,7 @@ public final class SecretBox implements Iterable<String> {
          *
          * @param alias 别名
          * @return 当前构建器
-         * @deprecated 不用显示添加
          */
-        @Deprecated
         public Builder alias(String alias) {
             return alias(alias, null);
         }

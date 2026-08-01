@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.secret;
 
+import com.github.yingzhuo.bayonet.utility.TimeConvertingUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
@@ -13,6 +14,7 @@ import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -191,7 +193,7 @@ public final class KeyStoreUtils {
      * @throws IllegalArgumentException 若参数非法或证书非 {@link X509Certificate}
      */
     public static String getSigAlgName(KeyStore keyStore, String alias) {
-        return getSigAlgAttr(keyStore, alias, X509Certificate::getSigAlgName, "SigAlgName");
+        return getCertificateAttr(keyStore, alias, X509Certificate::getSigAlgName, "SigAlgName");
     }
 
     /**
@@ -203,7 +205,45 @@ public final class KeyStoreUtils {
      * @throws IllegalArgumentException 若参数非法或证书非 {@link X509Certificate}
      */
     public static String getSigAlgOID(KeyStore keyStore, String alias) {
-        return getSigAlgAttr(keyStore, alias, X509Certificate::getSigAlgOID, "SigAlgOID");
+        return getCertificateAttr(keyStore, alias, X509Certificate::getSigAlgOID, "SigAlgOID");
+    }
+
+    /**
+     * 获取指定别名的证书生效时间（NotBefore）。
+     *
+     * @param keyStore 已加载的 KeyStore（非 {@code null}）
+     * @param alias    别名（非空）
+     * @return 证书生效时间（非 {@code null}）
+     * @throws IllegalArgumentException 若参数非法或证书非 {@link X509Certificate}
+     */
+    public static LocalDateTime getCertificateNotBefore(KeyStore keyStore, String alias) {
+        return TimeConvertingUtils.toLocalDateTime(getCertificateAttr(keyStore, alias, X509Certificate::getNotBefore, "NotBefore"));
+    }
+
+    /**
+     * 获取指定别名的证书过期时间（NotAfter）。
+     *
+     * @param keyStore 已加载的 KeyStore（非 {@code null}）
+     * @param alias    别名（非空）
+     * @return 证书过期时间（非 {@code null}）
+     * @throws IllegalArgumentException 若参数非法或证书非 {@link X509Certificate}
+     */
+    public static LocalDateTime getCertificateNotAfter(KeyStore keyStore, String alias) {
+        return TimeConvertingUtils.toLocalDateTime(getCertificateAttr(keyStore, alias, X509Certificate::getNotAfter, "NotAfter"));
+    }
+
+    /**
+     * 判断当前时间是否在证书有效期内。
+     *
+     * @param keyStore 已加载的 KeyStore（非 {@code null}）
+     * @param alias    别名（非空）
+     * @return {@code true} 表示当前时间在有效期内（{@code notBefore < now < notAfter}）
+     * @throws IllegalArgumentException 若参数非法或证书非 {@link X509Certificate}
+     */
+    public static boolean isCertificateValid(KeyStore keyStore, String alias) {
+        var now = LocalDateTime.now();
+        return getCertificateNotBefore(keyStore, alias).isBefore(now)
+                && getCertificateNotAfter(keyStore, alias).isAfter(now);
     }
 
     /**
@@ -258,7 +298,7 @@ public final class KeyStoreUtils {
 
     // ------
 
-    private static <T> T getSigAlgAttr(KeyStore keyStore, String alias, Function<X509Certificate, T> extractor, String attrName) {
+    private static <T> T getCertificateAttr(KeyStore keyStore, String alias, Function<X509Certificate, T> extractor, String attrName) {
         var cert = getCertificate(keyStore, alias);
         if (cert instanceof X509Certificate x509Cert) {
             return extractor.apply(x509Cert);
