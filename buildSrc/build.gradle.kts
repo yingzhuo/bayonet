@@ -19,4 +19,5 @@ dependencies {
     implementation(libs.dependency.management.plugin)
     implementation(libs.maven.publish.plugin)
     implementation(libs.code.counting.plugin)
+    implementation("org.springframework.boot:spring-boot-gradle-plugin:${project.findProperty("springBootVersion")}")
 }

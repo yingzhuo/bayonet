@@ -1,13 +1,11 @@
 plugins {
     id("buildlogic.java-conventions")
+    id("buildlogic.spring-boot-conventions")
 }
 
 description = "集成测试 (临时)"
 
 configurations.configureEach {
-//    exclude(group = "org.bouncycastle", module = "bcprov-jdk18on")
-//    exclude(group = "org.bouncycastle", module = "bcpkix-jdk18on")
-//    exclude(group = "org.bouncycastle", module = "bcutil-jdk18on")
 }
 
 dependencies {
