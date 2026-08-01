@@ -1,8 +1,8 @@
 org.springframework.context.ApplicationListener=\
 com.github.yingzhuo.bayonet.utility.SpringUtils.Hook
 org.springframework.boot.EnvironmentPostProcessor=\
-com.github.yingzhuo.bayonet.utility.SpringUtils.Hook
+com.github.yingzhuo.bayonet.utility.SpringUtils.Hook,\
+com.github.yingzhuo.bayonet.context.BouncyCastleInstallingEnvironmentPostProcessor
 org.springframework.context.ApplicationContextInitializer=\
-com.github.yingzhuo.bayonet.context.BouncyCastleInstallingInitializer,\
 com.github.yingzhuo.bayonet.context.PropertiesLoadingInitializer,\
 com.github.yingzhuo.bayonet.context.YamlLoadingInitializer
