@@ -13,10 +13,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 对 {@link KeyStore} 的封装，提供便利的密钥/证书查询方法。
@@ -28,16 +25,17 @@ import java.util.Map;
  *         .type(KeyStoreType.PKCS12)
  *         .storepass("storepass")
  *         .alias("jwt", "keypass")
- *         .alias("legacy")
  *         .build();
  * }</pre>
+ *
+ * <p>实现 {@link Iterable}，可直接迭代 KeyStore 中所有别名。</p>
  *
  * @author 应卓
  * @see KeyStoreType
  * @see KeyStoreUtils
  * @since 4.1.1
  */
-public final class SecretBox {
+public final class SecretBox implements Iterable<String> {
 
     private final Resource resource;
     private final KeyStoreType type;
@@ -97,6 +95,26 @@ public final class SecretBox {
      */
     public List<String> getAliases() {
         return KeyStoreUtils.getAliases(getKeyStore());
+    }
+
+    /**
+     * 返回别名的迭代器。
+     *
+     * @return 别名迭代器（非 {@code null}）
+     */
+    @Override
+    public Iterator<String> iterator() {
+        return getAliases().iterator();
+    }
+
+    /**
+     * 返回包含所有别名的字符串表示。
+     *
+     * @return 字符串表示（非 {@code null}）
+     */
+    @Override
+    public String toString() {
+        return "SecretBox{aliases=" + getAliases() + '}';
     }
 
     /**
@@ -274,7 +292,9 @@ public final class SecretBox {
          *
          * @param alias 别名
          * @return 当前构建器
+         * @deprecated 不用显示添加
          */
+        @Deprecated
         public Builder alias(String alias) {
             return alias(alias, null);
         }
