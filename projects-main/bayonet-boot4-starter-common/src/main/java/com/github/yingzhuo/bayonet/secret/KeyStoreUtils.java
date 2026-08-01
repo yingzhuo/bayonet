@@ -4,6 +4,7 @@ import com.github.yingzhuo.bayonet.utility.TimeConvertingUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
+import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 
 import javax.crypto.SecretKey;
@@ -48,16 +49,36 @@ public final class KeyStoreUtils {
 
         type = Objects.requireNonNullElseGet(type, KeyStoreType::getDefault);
 
-        try (var input = stream) {
+        try {
             var keyStore = type == KeyStoreType.BCFKS
                     ? KeyStore.getInstance("BCFKS", "BC") // BCFKS 由 BouncyCastleProvider 提供
                     : KeyStore.getInstance(type.name());
-            keyStore.load(input, storepass.toCharArray());
+            keyStore.load(stream, storepass.toCharArray());
             return keyStore;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         } catch (KeyStoreException | NoSuchAlgorithmException | NoSuchProviderException | CertificateException e) {
             throw new IllegalArgumentException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 从 {@link Resource} 加载 KeyStore。
+     * <p>本方法负责打开并关闭资源流。</p>
+     *
+     * @param resource  KeyStore 资源（非 {@code null}）
+     * @param type      KeyStore 类型，为 {@code null} 时使用默认类型 {@link KeyStoreType#PKCS12}
+     * @param storepass KeyStore 密码（非 {@code null}）
+     * @return 已加载的 {@link KeyStore}（非 {@code null}）
+     * @throws IllegalArgumentException 若参数为 {@code null} 或加载失败
+     * @throws UncheckedIOException     读取资源失败时抛出
+     */
+    public static KeyStore loadKeyStore(Resource resource, @Nullable KeyStoreType type, String storepass) {
+        Assert.notNull(resource, "resource is required");
+        try (var in = resource.getInputStream()) {
+            return loadKeyStore(in, type, storepass);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 

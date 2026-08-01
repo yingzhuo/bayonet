@@ -5,8 +5,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 
 import javax.crypto.SecretKey;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -232,11 +230,12 @@ public final class SecretBox implements Iterable<String> {
             synchronized (this) {
                 result = keyStore;
                 if (result == null) {
-                    try (var in = resource.getInputStream()) {
-                        result = KeyStoreUtils.loadKeyStore(in, type, storepass);
-                    } catch (IOException e) {
-                        throw new UncheckedIOException(e);
-                    }
+//                    try (var in = resource.getInputStream()) {
+//                        result = KeyStoreUtils.loadKeyStore(in, type, storepass);
+//                    } catch (IOException e) {
+//                        throw new UncheckedIOException(e);
+//                    }
+                    result = KeyStoreUtils.loadKeyStore(resource, type, storepass);
                     keyStore = result;
                 }
             }

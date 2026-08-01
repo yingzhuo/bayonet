@@ -37,7 +37,7 @@ class KeyStoreUtilsTest {
 
     @Test
     void should_throw_when_loadKeyStore_inputStreamIsNull() {
-        assertThatThrownBy(() -> KeyStoreUtils.loadKeyStore(null, KeyStoreType.PKCS12, "pass"))
+        assertThatThrownBy(() -> KeyStoreUtils.loadKeyStore((InputStream) null, KeyStoreType.PKCS12, "pass"))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
