@@ -68,18 +68,6 @@ public class LoggingFilter extends OncePerRequestFilter {
         return Map.copyOf(result);
     }
 
-    /**
-     * 设置敏感头部。
-     * <p>匹配到的头部不会出现在日志中，匹配不区分大小写。</p>
-     *
-     * @param sensitiveHeaders 敏感头部名称集合
-     */
-    public void setSensitiveHeaders(@Nullable Set<String> sensitiveHeaders) {
-        this.sensitiveHeaders = sensitiveHeaders != null
-                ? Set.copyOf(sensitiveHeaders)
-                : Set.of();
-    }
-
     private static String formatParams(Map<String, String> params) {
         if (params.isEmpty()) {
             return "        (none)";
@@ -96,6 +84,18 @@ public class LoggingFilter extends OncePerRequestFilter {
         return headers.entrySet().stream()
                 .map(e -> "        " + e.getKey() + ": " + e.getValue())
                 .collect(Collectors.joining("\n"));
+    }
+
+    /**
+     * 设置敏感头部。
+     * <p>匹配到的头部不会出现在日志中，匹配不区分大小写。</p>
+     *
+     * @param sensitiveHeaders 敏感头部名称集合
+     */
+    public void setSensitiveHeaders(@Nullable Set<String> sensitiveHeaders) {
+        this.sensitiveHeaders = sensitiveHeaders != null
+                ? Set.copyOf(sensitiveHeaders)
+                : Set.of();
     }
 
     @Override

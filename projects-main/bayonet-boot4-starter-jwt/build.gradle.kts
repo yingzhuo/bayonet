@@ -27,12 +27,17 @@ dependencies {
     // jwt tool
     api(libs.java.jwt)
 
+    // caffeine
+    compileOnly("com.github.ben-manes.caffeine:caffeine") // optional 为了黑名单
+
+    // BC
+    api(platform(libs.bc.bom))
+    compileOnly("org.bouncycastle:bcprov-jdk18on")
+    compileOnly("org.bouncycastle:bcpkix-jdk18on")
+
     // lombok
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
-
-    // caffeine
-    compileOnly("com.github.ben-manes.caffeine:caffeine") // optional 为了黑名单
 
     // slf4j
     api("org.slf4j:slf4j-api")

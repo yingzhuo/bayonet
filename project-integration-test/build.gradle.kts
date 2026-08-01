@@ -23,7 +23,6 @@ dependencies {
     api(project(":projects-main:bayonet-boot4-starter-hocon"))
     api(project(":projects-main:bayonet-boot4-starter-security"))
     api(project(":projects-main:bayonet-boot4-starter-jwt"))
-    api(project(":projects-main:bayonet-boot4-starter-jwt-sm2"))
 
     // lombok
     compileOnly("org.projectlombok:lombok")

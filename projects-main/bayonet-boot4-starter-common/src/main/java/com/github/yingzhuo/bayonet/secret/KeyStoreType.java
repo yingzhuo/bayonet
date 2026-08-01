@@ -30,6 +30,7 @@ public enum KeyStoreType {
     /**
      * BCFKS（Bouncy Castle FIPS KeyStore）。
      * <p>由 {@code BouncyCastleProvider}（"BC"）提供支持。</p>
+     *
      * @since 4.1.1
      */
     BCFKS;

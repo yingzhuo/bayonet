@@ -199,10 +199,10 @@ public final class SecretBox {
      */
     public static final class Builder {
 
+        private final Map<String, String> aliasToKeypass = new LinkedHashMap<>();
         private @Nullable Resource resource;
         private KeyStoreType type = KeyStoreType.getDefault();
         private @Nullable String storepass;
-        private final Map<String, String> aliasToKeypass = new LinkedHashMap<>();
 
         private Builder() {
         }
