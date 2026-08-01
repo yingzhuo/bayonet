@@ -230,11 +230,6 @@ public final class SecretBox implements Iterable<String> {
             synchronized (this) {
                 result = keyStore;
                 if (result == null) {
-//                    try (var in = resource.getInputStream()) {
-//                        result = KeyStoreUtils.loadKeyStore(in, type, storepass);
-//                    } catch (IOException e) {
-//                        throw new UncheckedIOException(e);
-//                    }
                     result = KeyStoreUtils.loadKeyStore(resource, type, storepass);
                     keyStore = result;
                 }
