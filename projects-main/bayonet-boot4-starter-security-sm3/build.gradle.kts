@@ -26,10 +26,6 @@ dependencies {
     api(project(":projects-main:bayonet-boot4-starter-common"))
     api(project(":projects-main:bayonet-boot4-starter-security"))
 
-    // hutool
-    api(platform(libs.hutool.bom))
-    api("cn.hutool:hutool-crypto")
-
     // BC
     api(platform(libs.bc.bom))
     api("org.bouncycastle:bcprov-jdk18on")

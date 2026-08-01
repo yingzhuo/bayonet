@@ -24,13 +24,9 @@ dependencies {
     api(project(":projects-main:bayonet-boot4-starter-common"))
     api(project(":projects-main:bayonet-boot4-starter-jwt"))
 
-    // hutool
-    api(platform(libs.hutool.bom))
-    api("cn.hutool:hutool-crypto")
-
     // BC
     api(platform(libs.bc.bom))
-    compileOnly("org.bouncycastle:bcprov-jdk18on")
+    api("org.bouncycastle:bcprov-jdk18on")
     compileOnly("org.bouncycastle:bcpkix-jdk18on")
 
     // lombok
