@@ -1,8 +1,11 @@
 package com.github.yingzhuo.bayonet.context;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.jspecify.annotations.Nullable;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.Ordered;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.CollectionUtils;
@@ -17,7 +20,11 @@ import java.util.Collection;
  * @since 4.1.0
  */
 public abstract class AbstractApplicationContextInitializer
-        implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+        implements ApplicationContextInitializer<ConfigurableApplicationContext>, Ordered {
+
+    @Getter
+    @Setter
+    private int order;
 
     protected final @Nullable Resource findFirstExistingResource(ResourceLoader resourceLoader, Collection<String> locations) {
         if (resourceLoader == null || CollectionUtils.isEmpty(locations)) {

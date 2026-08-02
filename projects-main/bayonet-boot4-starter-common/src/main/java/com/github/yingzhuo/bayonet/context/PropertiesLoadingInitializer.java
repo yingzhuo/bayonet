@@ -37,6 +37,10 @@ public class PropertiesLoadingInitializer extends AbstractApplicationContextInit
 
     private static final PropertySourceLoader LOADER = new PropertiesPropertySourceLoader();
 
+    public PropertiesLoadingInitializer() {
+        setOrder(110);
+    }
+
     @Override
     public void initialize(ConfigurableApplicationContext ctx) {
         var locationList = new ArrayList<>(DEFAULT_LOCATIONS);
@@ -65,10 +69,5 @@ public class PropertiesLoadingInitializer extends AbstractApplicationContextInit
         } catch (Exception e) {
             log.warn("failed to load properties from {}: {}", name, e.getMessage());
         }
-    }
-
-    @Override
-    public int getOrder() {
-        return 110;
     }
 }

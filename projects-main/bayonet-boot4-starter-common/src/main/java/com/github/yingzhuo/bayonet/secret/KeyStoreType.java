@@ -8,7 +8,7 @@ import org.jspecify.annotations.Nullable;
  * <ul>
  *   <li>{@link #PKCS12} — PKCS#12 格式（.p12 / .pfx）</li>
  *   <li>{@link #JKS} — Java KeyStore 格式（.jks）</li>
- *   <li>{@link #BCFKS} — Bouncy Castle FIPS KeyStore 格式（由 BouncyCastleProvider 提供）</li>
+ *   <li>{@link #BCFKS} — Bouncy Castle KeyStore 格式（由 BouncyCastleProvider 提供）</li>
  * </ul>
  *
  * @author 应卓
@@ -28,7 +28,7 @@ public enum KeyStoreType {
     JKS,
 
     /**
-     * BCFKS（Bouncy Castle FIPS KeyStore）。
+     * BCFKS（Bouncy Castle KeyStore）。
      * <p>由 {@code BouncyCastleProvider}（"BC"）提供支持。</p>
      *
      * @since 4.1.1
