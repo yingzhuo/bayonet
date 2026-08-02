@@ -1,7 +1,9 @@
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import org.springframework.boot.gradle.tasks.bundling.BootJar
+import org.springframework.boot.gradle.tasks.run.BootRun
 
 val excludeBouncyCastle = (project.findProperty("excludeBouncyCastle") as? String)?.toBoolean() ?: false
+val bootRunSpringProfiles = (project.findProperty("bootRunSpringProfiles") as? String) ?: "dev"
 
 plugins {
     id("org.springframework.boot")
@@ -27,6 +29,13 @@ tasks.named<BootJar>("bootJar") {
         enabled = false
     }
 
+    exclude(
+        "**/.DS_Store",
+        "**/.gitkeep",
+        "**/netty-*-macos*.jar",
+        "**/netty-*-osx*.jar"
+    )
+
     if (excludeBouncyCastle) {
         exclude("**/bc*-jdk18on-*.jar")
     }
@@ -37,7 +46,15 @@ tasks.named<Jar>("jar") {
 }
 
 tasks.named<BootBuildImage>("bootBuildImage") {
-    enabled = false
+    enabled = false // 不允许用 spring-boot 插件构建docker镜像
+}
+
+tasks.named<BootRun>("bootRun") {
+    args("--spring.profiles.active=$bootRunSpringProfiles")
+}
+
+tasks.named<DefaultTask>("build") {
+    finalizedBy("cleanResolveMainClassName")
 }
 
 gitProperties {
