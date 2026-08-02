@@ -1,9 +1,12 @@
 package com.github.yingzhuo.bayonet.context;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.EnvironmentPostProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.logging.DeferredLogFactory;
+import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 /**
@@ -15,9 +18,13 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * @see DeferredLogFactory
  * @since 4.1.1
  */
-public abstract class AbstractEnvironmentPostProcessor implements EnvironmentPostProcessor {
+public abstract class AbstractEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
     protected final DeferredLogFactory logFactory;
+
+    @Getter
+    @Setter
+    protected int order = 0;
 
     /**
      * 构造器

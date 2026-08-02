@@ -47,6 +47,10 @@ public class YamlLoadingInitializer extends AbstractApplicationContextInitialize
 
     private static final PropertySourceLoader LOADER = new YamlPropertySourceLoader();
 
+    public YamlLoadingInitializer() {
+        setOrder(100);
+    }
+
     @Override
     public void initialize(ConfigurableApplicationContext ctx) {
         var locationList = new ArrayList<>(DEFAULT_LOCATIONS);
@@ -79,10 +83,5 @@ public class YamlLoadingInitializer extends AbstractApplicationContextInitialize
         } catch (Exception e) {
             log.warn("failed to load YAML config from {}: {}", name, e.getMessage());
         }
-    }
-
-    @Override
-    public int getOrder() {
-        return 100;
     }
 }

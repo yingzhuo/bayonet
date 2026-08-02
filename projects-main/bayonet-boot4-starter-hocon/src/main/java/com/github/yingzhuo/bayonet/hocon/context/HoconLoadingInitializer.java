@@ -40,6 +40,10 @@ public class HoconLoadingInitializer extends AbstractApplicationContextInitializ
 
     private static final PropertySourceLoader LOADER = new HoconPropertySourceLoader();
 
+    public HoconLoadingInitializer() {
+        setOrder(120);
+    }
+
     @Override
     public void initialize(ConfigurableApplicationContext ctx) {
         var locationList = new ArrayList<>(DEFAULT_LOCATIONS);
@@ -67,10 +71,5 @@ public class HoconLoadingInitializer extends AbstractApplicationContextInitializ
         } catch (Exception e) {
             log.warn("failed to load HOCON config from {}: {}", name, e.getMessage());
         }
-    }
-
-    @Override
-    public int getOrder() {
-        return 120;
     }
 }
