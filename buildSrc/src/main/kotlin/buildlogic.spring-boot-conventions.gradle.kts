@@ -14,7 +14,6 @@ springBoot {
     }
 }
 
-
 tasks.named<BootJar>("bootJar") {
     manifest {
         attributes("Main-Class" to "org.springframework.boot.loader.launch.PropertiesLauncher")
@@ -29,7 +28,7 @@ tasks.named<BootJar>("bootJar") {
     }
 
     if (excludeBouncyCastle) {
-        exclude("**/bc*-jdk18on-*.jar", "mysql-connector-java*.jar")
+        exclude("**/bc*-jdk18on-*.jar")
     }
 }
 
