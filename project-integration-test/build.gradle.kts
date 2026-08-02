@@ -18,7 +18,8 @@ dependencies {
     // bayonet
     api(platform(project(":projects-main:bayonet-bom")))
     api(project(":projects-main:bayonet-boot4-starter-common"))
-    api(project(":projects-main:bayonet-boot4-starter-hocon"))
+    api(project(":projects-main:bayonet-boot4-starter-config-hocon"))
+    api(project(":projects-main:bayonet-boot4-starter-config-toml"))
     api(project(":projects-main:bayonet-boot4-starter-security"))
     api(project(":projects-main:bayonet-boot4-starter-jwt"))
 

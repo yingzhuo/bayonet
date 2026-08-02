@@ -17,7 +17,8 @@
      +--- ':projects-main:bayonet-boot4-starter-common' - 基础工具和公共代码
      +--- ':projects-main:bayonet-boot4-starter-captcha' - 图形验证码增强
      +--- ':projects-main:bayonet-boot4-starter-freemarker' - FreeMarker模板引擎增强
-     +--- ':projects-main:bayonet-boot4-starter-hocon' - HOCON配置文件增强
+     +--- ':projects-main:bayonet-boot4-starter-config-hocon' - HOCON配置文件增强
+     +--- ':projects-main:bayonet-boot4-starter-config-toml' - TOML配置文件增强
      +--- ':projects-main:bayonet-boot4-starter-jwt' - JWT增强
      +--- ':projects-main:bayonet-boot4-starter-jwt-sm2' - JWT增强 - SM2加密
      +--- ':projects-main:bayonet-boot4-starter-security' - SpringSecurity增强
