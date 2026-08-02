@@ -15,6 +15,7 @@
 \--- ':projects-main'
      +--- ':projects-main:bayonet-bom' - BOM
      +--- ':projects-main:bayonet-boot4-starter-common' - 基础工具和公共代码
+     +--- ':projects-main:bayonet-boot4-starter-actuator' - SpringBoot Actuator 增强
      +--- ':projects-main:bayonet-boot4-starter-captcha' - 图形验证码增强
      +--- ':projects-main:bayonet-boot4-starter-freemarker' - FreeMarker模板引擎增强
      +--- ':projects-main:bayonet-boot4-starter-config-hocon' - HOCON配置文件增强
