@@ -1,6 +1,5 @@
 package com.github.yingzhuo.bayonet.security.memory;
 
-import org.jetbrains.annotations.ApiStatus;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -9,7 +8,10 @@ import org.springframework.security.core.userdetails.memory.UserAttribute;
 import org.springframework.security.core.userdetails.memory.UserAttributeEditor;
 import org.springframework.util.Assert;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * 基于内存的 {@link UserDetailsService} 实现。
@@ -33,7 +35,6 @@ import java.util.*;
  * @author 应卓
  * @since 4.1.1
  */
-@ApiStatus.Experimental
 public class InMemoryUserDetailsService implements UserDetailsService {
 
     private final Map<String, UserDetails> users = new HashMap<>();
@@ -80,7 +81,7 @@ public class InMemoryUserDetailsService implements UserDetailsService {
         }
     }
 
-    private static User createUserDetails(String name, UserAttribute attr) {
+    private User createUserDetails(String name, UserAttribute attr) {
         return new User(name, attr.getPassword(), attr.isEnabled(), true, true, true, attr.getAuthorities());
     }
 
@@ -99,12 +100,12 @@ public class InMemoryUserDetailsService implements UserDetailsService {
     }
 
     private void put(UserDetails user) {
-        this.users.put(user.getUsername().toLowerCase(Locale.ROOT), user);
+        this.users.put(user.getUsername().toLowerCase(), user);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var key = username.toLowerCase(Locale.ROOT);
+        var key = username.toLowerCase();
         var user = this.users.get(key);
         if (user == null) {
             throw new UsernameNotFoundException("User not found: " + username);
