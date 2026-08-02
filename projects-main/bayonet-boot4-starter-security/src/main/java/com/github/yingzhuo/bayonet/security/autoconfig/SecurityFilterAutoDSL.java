@@ -1,6 +1,11 @@
 package com.github.yingzhuo.bayonet.security.autoconfig;
 
 import com.github.yingzhuo.bayonet.security.configurer.AdditionalFilterConfig;
+import jakarta.servlet.Filter;
+import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -22,13 +27,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
  * @see com.github.yingzhuo.bayonet.security.configurer.FilterPositionHint
  * @since 4.1.1
  */
+@Slf4j
 public class SecurityFilterAutoDSL extends AbstractHttpConfigurer<SecurityFilterAutoDSL, HttpSecurity> {
 
     @Override
-    public void configure(final HttpSecurity http) {
-        super.configure(http);
-
-        final var applicationContext = http.getSharedObject(ApplicationContext.class);
+    public void configure(HttpSecurity http) {
+        var applicationContext = http.getSharedObject(ApplicationContext.class);
         if (applicationContext == null) {
             return;
         }
@@ -36,7 +40,10 @@ public class SecurityFilterAutoDSL extends AbstractHttpConfigurer<SecurityFilter
         applicationContext.getBeansOfType(AdditionalFilterConfig.class)
                 .values()
                 .forEach(conf -> {
-                    var filter = applicationContext.getBean(conf.filterType());
+                    var filter = getFilterBean(applicationContext, conf.filterType());
+                    if (filter == null) {
+                        return;
+                    }
                     var positionFilterType = conf.positionFilterType();
                     var hint = conf.hint();
 
@@ -48,4 +55,13 @@ public class SecurityFilterAutoDSL extends AbstractHttpConfigurer<SecurityFilter
                 });
     }
 
+    @Nullable
+    private Filter getFilterBean(ApplicationContext applicationContext, Class<? extends Filter> filterType) {
+        try {
+            return applicationContext.getBeanProvider(filterType).getObject();
+        } catch (NoSuchBeanDefinitionException e) {
+            log.warn(e.getMessage(), e);
+            return null;
+        }
+    }
 }
