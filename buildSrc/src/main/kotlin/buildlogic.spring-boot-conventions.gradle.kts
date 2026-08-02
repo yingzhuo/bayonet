@@ -2,7 +2,7 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
 
-val excludeBouncyCastle = (project.findProperty("excludeBouncyCastle") as? String)?.toBoolean() ?: false
+val buildExcludeBouncyCastle = (project.findProperty("buildExcludeBouncyCastle") as? String)?.toBoolean() ?: false
 val bootRunSpringProfiles = (project.findProperty("bootRunSpringProfiles") as? String) ?: "dev"
 
 plugins {
@@ -36,7 +36,7 @@ tasks.named<BootJar>("bootJar") {
         "**/netty-*-osx*.jar"
     )
 
-    if (excludeBouncyCastle) {
+    if (buildExcludeBouncyCastle) {
         exclude("**/bc*-jdk18on-*.jar")
     }
 }

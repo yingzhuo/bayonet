@@ -10,7 +10,7 @@ GRADLE_DEFAULT_PARAMETERS := --console=plain
 
 .DEFAULT_GOAL := clean
 
-.PHONY: clean purge rebuild-build-logic compile build install publish test wrapper count-code-lines
+.PHONY: clean purge rebuild-build-logic compile build install publish test wrapper count-code-lines docker-build
 
 .SILENT:
 
@@ -55,3 +55,6 @@ wrapper:
 
 count-code-lines:
 	$(GRADLEW) "countCodeLines" "$(GRADLE_DEFAULT_PARAMETERS)"
+
+docker-build:
+	$(GRADLEW) ':project-integration-test:jibDockerBuild' "$(GRADLE_DEFAULT_PARAMETERS)"
