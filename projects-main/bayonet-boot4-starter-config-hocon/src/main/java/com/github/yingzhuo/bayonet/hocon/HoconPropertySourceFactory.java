@@ -1,6 +1,6 @@
 package com.github.yingzhuo.bayonet.hocon;
 
-import com.github.yingzhuo.bayonet.context.AbstractPropertySourceFactory;
+import com.github.yingzhuo.bayonet.config.AbstractPropertySourceFactory;
 
 /**
  * HOCON 配置文件的 {@link org.springframework.core.io.support.PropertySourceFactory} 实现。

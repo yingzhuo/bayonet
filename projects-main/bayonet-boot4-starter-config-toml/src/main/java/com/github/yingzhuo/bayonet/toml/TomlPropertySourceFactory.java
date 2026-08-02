@@ -1,6 +1,6 @@
 package com.github.yingzhuo.bayonet.toml;
 
-import com.github.yingzhuo.bayonet.context.AbstractPropertySourceFactory;
+import com.github.yingzhuo.bayonet.config.AbstractPropertySourceFactory;
 
 /**
  * TOML 配置文件的 {@link org.springframework.core.io.support.PropertySourceFactory} 实现。

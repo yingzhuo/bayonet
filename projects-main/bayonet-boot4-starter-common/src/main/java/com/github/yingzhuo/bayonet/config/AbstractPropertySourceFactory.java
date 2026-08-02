@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.context;
+package com.github.yingzhuo.bayonet.config;
 
 import com.github.yingzhuo.bayonet.utility.UUIDUtils;
 import org.jspecify.annotations.Nullable;
