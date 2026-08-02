@@ -28,6 +28,7 @@ tasks.withType<JavaCompile>().configureEach {
     options.compilerArgs.addAll(
         listOf(
             "-parameters",
+            "-Werror",
             "-Xlint:unchecked",
             "-Xlint:cast",
             "-Xlint:rawtypes",

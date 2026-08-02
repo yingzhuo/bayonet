@@ -8,6 +8,7 @@
       <w>bcprov</w>
       <w>hutool</w>
       <w>projectlombok</w>
+      <w>securityproviders</w>
     </words>
   </dictionary>
 </component>

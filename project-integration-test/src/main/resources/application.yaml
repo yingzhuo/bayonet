@@ -51,4 +51,4 @@ management:
     web:
       base-path: "/actuator"
       exposure:
-        include: [ "health", "info", "metrics", "env", "beans" ]
+        include: [ "health", "info", "metrics", "env", "beans", "securityproviders" ]
