@@ -21,4 +21,5 @@ dependencies {
     implementation(libs.maven.publish.plugin)
     implementation(libs.code.counting.plugin)
     implementation(libs.git.properties.plugin)
+    implementation(libs.jib.gradle.plugin)
 }

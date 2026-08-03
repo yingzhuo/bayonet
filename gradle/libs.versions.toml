@@ -22,6 +22,7 @@ dependency-management-plugin = "io.spring.dependency-management:io.spring.depend
 maven-publish-plugin = "com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:0.37.0"
 code-counting-plugin = "org.cthing.locc:org.cthing.locc.gradle.plugin:3.0.0"
 git-properties-plugin = "com.gorylenko.gradle-git-properties:gradle-git-properties:4.0.1"
+jib-gradle-plugin = "com.google.cloud.tools:jib-gradle-plugin:3.5.4"
 
 [bundles]
 zxing = ["zxing-core", "zxing-javase"]

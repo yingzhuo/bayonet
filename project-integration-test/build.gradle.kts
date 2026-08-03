@@ -1,6 +1,7 @@
 plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.spring-boot-conventions")
+    id("buildlogic.docker-conventions")
 }
 
 description = "集成测试 (临时)"

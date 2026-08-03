@@ -9,6 +9,7 @@
       <w>hutool</w>
       <w>projectlombok</w>
       <w>securityproviders</w>
+      <w>threaddump</w>
     </words>
   </dictionary>
 </component>
