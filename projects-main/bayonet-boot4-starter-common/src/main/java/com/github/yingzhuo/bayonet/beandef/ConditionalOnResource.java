@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.beandef;
 
+import com.github.yingzhuo.bayonet.common.Logic;
 import org.springframework.context.annotation.Conditional;
 
 import java.lang.annotation.*;
@@ -23,6 +24,7 @@ import java.lang.annotation.*;
  * @author 应卓
  * @since 4.1.1
  */
+@Inherited
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
