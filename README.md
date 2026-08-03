@@ -1,10 +1,6 @@
 # bayonet
 
 <p style="text-align: center;">
-<!-- Maven Central 徽章 -->
-  <a href="https://central.sonatype.com/search?q=g%3Acom.github.yingzhuo%20a%3Abayonet-bom">
-    <img src="https://img.shields.io/maven-central/v/com.github.yingzhuo/bayonet-bom?style=for-the-badge&logo=apachemaven&logoColor=white&color=007ec6&label=Maven%20Central" alt="Maven Central" />
-  </a>
   <!-- 开源协议 -->
   <a href="https://github.com/yingzhuo/bayonet/blob/main/LICENSE.txt">
     <img src="https://img.shields.io/github/license/yingzhuo/bayonet?style=for-the-badge&color=4ea8de" alt="License" />
@@ -18,6 +14,10 @@
   <!-- Fork 徽章 -->
   <a href="https://github.com/yingzhuo/bayonet/network/members">
     <img src="https://img.shields.io/github/forks/yingzhuo/bayonet?style=for-the-badge&color=ffbe0b" alt="Forks" />
+  </a>
+  <!-- Maven Central 徽章 -->
+  <a href="https://central.sonatype.com/search?q=g%3Acom.github.yingzhuo%20a%3Abayonet-bom">
+    <img src="https://img.shields.io/maven-central/v/com.github.yingzhuo/bayonet-bom?style=for-the-badge&logo=apachemaven&logoColor=white&color=007ec6&label=Maven%20Central" alt="Maven Central" />
   </a>
 </p>
 
@@ -38,7 +38,7 @@ SpringBoot4.x增强库，提供可复用的自动配置、工具类和集成支�
 
 ### 项目笔记
 
-- [项目笔记](note/)
+- [项目笔记](docs/note/README.md)
 
 ### 许可证
 
