@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.context.annotation.ConditionContext;
-import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.Assert;
 
@@ -27,11 +26,8 @@ class ConditionalOnResourceCondition extends SpringBootCondition {
         var loader = context.getResourceLoader();
         var environment = context.getEnvironment();
 
-        var attributesMap = metadata
-                .getAnnotationAttributes(ConditionalOnResource.class.getName(), true);
+        var attributes = BeanRegistrarHelper.getRequiredAnnotationAttributes(metadata, ConditionalOnResource.class);
 
-        Assert.state(attributesMap != null, "'attributes' must not be null");
-        var attributes = AnnotationAttributes.fromMap(attributesMap);
         var logic = attributes.<Logic>getEnum("logic");
         var locations = new ArrayList<>(Arrays.asList(attributes.getStringArray("resources")));
 
@@ -68,5 +64,4 @@ class ConditionalOnResourceCondition extends SpringBootCondition {
             }
         }
     }
-
 }
