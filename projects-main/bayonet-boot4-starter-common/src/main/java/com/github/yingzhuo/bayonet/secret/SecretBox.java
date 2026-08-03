@@ -42,8 +42,8 @@ public interface SecretBox extends Iterable<String> {
      *
      * @return Builder 实例
      */
-    static Builder fromKeyStore() {
-        return new Builder();
+    static KeyStoreKindBuilder fromKeyStore() {
+        return new KeyStoreKindBuilder();
     }
 
     /**
@@ -185,9 +185,9 @@ public interface SecretBox extends Iterable<String> {
     // ------
 
     /**
-     * {@link SecretBox} 构建器。
+     * {@link SecretBox} 构建器
      */
-    final class Builder {
+    final class KeyStoreKindBuilder {
 
         private final Map<String, String> aliasToKeypass = new LinkedHashMap<>();
         private @Nullable Resource resource;
@@ -200,7 +200,7 @@ public interface SecretBox extends Iterable<String> {
          * @param resource KeyStore 资源（非 {@code null}）
          * @return 当前构建器
          */
-        public Builder resource(Resource resource) {
+        public KeyStoreKindBuilder resource(Resource resource) {
             this.resource = resource;
             return this;
         }
@@ -212,7 +212,7 @@ public interface SecretBox extends Iterable<String> {
          * @return 当前构建器
          * @see KeyStoreType
          */
-        public Builder type(@Nullable KeyStoreType type) {
+        public KeyStoreKindBuilder type(@Nullable KeyStoreType type) {
             this.type = type != null ? type : KeyStoreType.getDefault();
             return this;
         }
@@ -224,7 +224,7 @@ public interface SecretBox extends Iterable<String> {
          * @return 当前构建器
          * @see KeyStoreType#toKeyStore(String)
          */
-        public Builder type(@Nullable String type) {
+        public KeyStoreKindBuilder type(@Nullable String type) {
             this.type = KeyStoreType.toKeyStore(type);
             return this;
         }
@@ -235,7 +235,7 @@ public interface SecretBox extends Iterable<String> {
          * @param storepass 存储密码（非空）
          * @return 当前构建器
          */
-        public Builder storepass(String storepass) {
+        public KeyStoreKindBuilder storepass(String storepass) {
             this.storepass = storepass;
             return this;
         }
@@ -248,7 +248,7 @@ public interface SecretBox extends Iterable<String> {
          * @param keypass 密钥密码
          * @return 当前构建器
          */
-        public Builder alias(String alias, @Nullable String keypass) {
+        public KeyStoreKindBuilder alias(String alias, @Nullable String keypass) {
             Assert.hasText(alias, "alias must not be empty");
             if (keypass != null) {
                 this.aliasToKeypass.put(alias, keypass);
@@ -262,7 +262,7 @@ public interface SecretBox extends Iterable<String> {
          * @param alias 别名
          * @return 当前构建器
          */
-        public Builder alias(String alias) {
+        public KeyStoreKindBuilder alias(String alias) {
             return alias(alias, null);
         }
 
@@ -272,7 +272,7 @@ public interface SecretBox extends Iterable<String> {
          * @param map 别名到密钥密码的映射
          * @return 当前构建器
          */
-        public Builder aliasToKeypass(Map<String, String> map) {
+        public KeyStoreKindBuilder aliasToKeypass(Map<String, String> map) {
             Assert.notNull(map, "map must not be null");
             if (!map.isEmpty()) {
                 this.aliasToKeypass.putAll(map);
