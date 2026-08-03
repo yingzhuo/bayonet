@@ -2,12 +2,7 @@ package com.github.yingzhuo.bayonet.toml.configdata;
 
 import org.apache.commons.logging.Log;
 import org.jspecify.annotations.Nullable;
-import org.springframework.boot.context.config.ConfigDataLocation;
-import org.springframework.boot.context.config.ConfigDataLocationNotFoundException;
-import org.springframework.boot.context.config.ConfigDataLocationResolver;
-import org.springframework.boot.context.config.ConfigDataLocationResolverContext;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
-import org.springframework.boot.context.config.Profiles;
+import org.springframework.boot.context.config.*;
 import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.ResourceLoader;
@@ -75,7 +70,7 @@ public class TomlConfigDataLocationResolver implements ConfigDataLocationResolve
 
     @Override
     public List<TomlConfigDataResource> resolveProfileSpecific(ConfigDataLocationResolverContext context,
-            ConfigDataLocation location, Profiles profiles) throws ConfigDataLocationNotFoundException {
+                                                               ConfigDataLocation location, Profiles profiles) throws ConfigDataLocationNotFoundException {
         var result = new ArrayList<TomlConfigDataResource>();
         for (var profile : profiles) {
             result.addAll(resolve(location, profile));
@@ -100,11 +95,11 @@ public class TomlConfigDataLocationResolver implements ConfigDataLocationResolve
         return List.of(new TomlConfigDataResource(resource));
     }
 
-    private static boolean isDirectory(String resourceLocation) {
+    private boolean isDirectory(String resourceLocation) {
         return resourceLocation.endsWith("/");
     }
 
-    private static String profileSuffix(@Nullable String profile) {
+    private String profileSuffix(@Nullable String profile) {
         return profile != null ? "-" + profile : "";
     }
 }

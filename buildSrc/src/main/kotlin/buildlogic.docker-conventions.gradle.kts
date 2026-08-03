@@ -1,9 +1,9 @@
+val dockerImage = (project.findProperty("dockerImage") as? String)
+    ?: "bayonet/${project.name}:${project.version}"
+
 plugins {
     id("com.google.cloud.tools.jib")
 }
-
-val dockerImage = (project.findProperty("dockerImage") as? String)
-    ?: "bayonet/${project.name}:${project.version}"
 
 jib {
     from {
