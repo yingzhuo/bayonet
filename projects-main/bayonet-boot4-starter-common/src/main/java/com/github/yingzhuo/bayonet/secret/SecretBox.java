@@ -16,10 +16,10 @@ import java.util.*;
 
 /**
  * 对 {@link KeyStore} 的封装，提供便利的密钥/证书查询方法。
- * <p>通过 {@link #builder()} 构建实例，支持按别名查询密钥、证书链、公钥和私钥。</p>
+ * <p>通过 {@link #fromKeyStore()} 构建实例，支持按别名查询密钥、证书链、公钥和私钥。</p>
  *
  * <pre>{@code
- * var box = SecretBox.builder()
+ * var box = SecretBox.fromKeyStore()
  *         .resource(new ClassPathResource("keystore.p12"))
  *         .type(KeyStoreType.PKCS12)
  *         .storepass("storepass")
@@ -32,29 +32,17 @@ import java.util.*;
  * @author 应卓
  * @see KeyStoreType
  * @see KeyStoreUtils
+ * @see KeyStoreSecretBox
  * @since 4.1.1
  */
-public final class SecretBox implements Iterable<String> {
-
-    private final Resource resource;
-    private final KeyStoreType type;
-    private final String storepass;
-    private final Map<String, String> aliasToKeypass;
-    private volatile @Nullable KeyStore keyStore;
-
-    private SecretBox(Resource resource, KeyStoreType type, String storepass, Map<String, String> aliasToKeypass) {
-        this.resource = resource;
-        this.type = type;
-        this.storepass = storepass;
-        this.aliasToKeypass = aliasToKeypass;
-    }
+public interface SecretBox extends Iterable<String> {
 
     /**
      * 获取 Builder 实例。
      *
      * @return Builder 实例
      */
-    public static Builder builder() {
+    static Builder fromKeyStore() {
         return new Builder();
     }
 
@@ -63,9 +51,7 @@ public final class SecretBox implements Iterable<String> {
      *
      * @return 存储密码
      */
-    public String getStorePassword() {
-        return storepass;
-    }
+    String getStorePassword();
 
     /**
      * 获取别名到密钥密码的映射。
@@ -73,9 +59,7 @@ public final class SecretBox implements Iterable<String> {
      *
      * @return 不可变映射
      */
-    public Map<String, String> getAliasToKeypassMapping() {
-        return Collections.unmodifiableMap(aliasToKeypass);
-    }
+    Map<String, String> getAliasToKeypassMapping();
 
     /**
      * 判断是否包含指定别名。
@@ -83,17 +67,22 @@ public final class SecretBox implements Iterable<String> {
      * @param alias 别名
      * @return {@code true} 表示包含
      */
-    public boolean containsAlias(String alias) {
-        return getAliases().contains(alias);
-    }
+    boolean containsAlias(String alias);
 
     /**
      * 获取所有别名。
      *
      * @return 别名列表（不可变，非 {@code null}）
      */
-    public List<String> getAliases() {
-        return KeyStoreUtils.getAliases(getKeyStore());
+    List<String> getAliases();
+
+    /**
+     * 获取包含的别名数量。
+     *
+     * @return 别名数量
+     */
+    default int size() {
+        return getAliases().size();
     }
 
     /**
@@ -102,21 +91,18 @@ public final class SecretBox implements Iterable<String> {
      * @param alias 别名
      * @param <T>   密钥类型
      * @return 对称密钥（非 {@code null}）
-     * @throws IllegalArgumentException 别名不存在或获取失败
+     * @throws NoSuchElementException 别名不存在
      */
-    public <T extends SecretKey> T getSecretKey(String alias) {
-        return KeyStoreUtils.getSecretKey(getKeyStore(), alias, getKeypass(alias));
-    }
+    <T extends SecretKey> T getSecretKey(String alias);
 
     /**
      * 获取指定别名的证书链。
      *
      * @param alias 别名
      * @return 证书链（可能为空）
+     * @throws NoSuchElementException 别名不存在
      */
-    public List<X509Certificate> getCertificateChain(String alias) {
-        return KeyStoreUtils.getCertificateChain(getKeyStore(), alias);
-    }
+    List<X509Certificate> getCertificateChain(String alias);
 
     /**
      * 获取指定别名的证书。
@@ -124,44 +110,36 @@ public final class SecretBox implements Iterable<String> {
      * @param alias 别名
      * @param <T>   证书类型
      * @return 证书（非 {@code null}）
-     * @throws IllegalArgumentException 别名不存在或获取失败
+     * @throws NoSuchElementException 别名不存在
      */
-    public <T extends Certificate> T getCertificate(String alias) {
-        return KeyStoreUtils.getCertificate(getKeyStore(), alias);
-    }
+    <T extends Certificate> T getCertificate(String alias);
 
     /**
      * 获取指定别名的证书生效时间（NotBefore）。
      *
      * @param alias 别名
      * @return 证书生效时间（非 {@code null}）
-     * @throws IllegalArgumentException 别名不存在或证书非 {@link X509Certificate}
+     * @throws NoSuchElementException 别名不存在
      */
-    public LocalDateTime getCertificateNotBefore(String alias) {
-        return KeyStoreUtils.getCertificateNotBefore(getKeyStore(), alias);
-    }
+    LocalDateTime getCertificateNotBefore(String alias);
 
     /**
      * 获取指定别名的证书过期时间（NotAfter）。
      *
      * @param alias 别名
      * @return 证书过期时间（非 {@code null}）
-     * @throws IllegalArgumentException 别名不存在或证书非 {@link X509Certificate}
+     * @throws NoSuchElementException 别名不存在
      */
-    public LocalDateTime getCertificateNotAfter(String alias) {
-        return KeyStoreUtils.getCertificateNotAfter(getKeyStore(), alias);
-    }
+    LocalDateTime getCertificateNotAfter(String alias);
 
     /**
      * 判断当前时间是否在证书有效期内。
      *
      * @param alias 别名
      * @return {@code true} 表示当前时间在有效期内（{@code notBefore < now < notAfter}）
-     * @throws IllegalArgumentException 别名不存在或证书非 {@link X509Certificate}
+     * @throws NoSuchElementException 别名不存在
      */
-    public boolean isCertificateValid(String alias) {
-        return KeyStoreUtils.isCertificateValid(getKeyStore(), alias);
-    }
+    boolean isCertificateValid(String alias);
 
     /**
      * 获取指定别名的公钥。
@@ -169,11 +147,9 @@ public final class SecretBox implements Iterable<String> {
      * @param alias 别名
      * @param <T>   公钥类型
      * @return 公钥（非 {@code null}）
-     * @throws IllegalArgumentException 别名不存在或获取失败
+     * @throws NoSuchElementException 别名不存在
      */
-    public <T extends PublicKey> T getPublicKey(String alias) {
-        return KeyStoreUtils.getPublicKey(getKeyStore(), alias);
-    }
+    <T extends PublicKey> T getPublicKey(String alias);
 
     /**
      * 获取指定别名的私钥。
@@ -181,20 +157,18 @@ public final class SecretBox implements Iterable<String> {
      * @param alias 别名
      * @param <T>   私钥类型
      * @return 私钥（非 {@code null}）
-     * @throws IllegalArgumentException 别名不存在或获取失败
+     * @throws NoSuchElementException 别名不存在
      */
-    public <T extends PrivateKey> T getPrivateKey(String alias) {
-        return KeyStoreUtils.getPrivateKey(getKeyStore(), alias, getKeypass(alias));
-    }
+    <T extends PrivateKey> T getPrivateKey(String alias);
 
     /**
      * 获取指定别名的 {@link KeyPair}。
      *
      * @param alias 别名
      * @return {@link KeyPair}（非 {@code null}）
-     * @throws IllegalArgumentException 别名不存在或获取失败
+     * @throws NoSuchElementException 别名不存在
      */
-    public KeyPair getKeyPair(String alias) {
+    default KeyPair getKeyPair(String alias) {
         return new KeyPair(getPublicKey(alias), getPrivateKey(alias));
     }
 
@@ -204,38 +178,8 @@ public final class SecretBox implements Iterable<String> {
      * @return 别名迭代器（非 {@code null}）
      */
     @Override
-    public Iterator<String> iterator() {
+    default Iterator<String> iterator() {
         return getAliases().iterator();
-    }
-
-    /**
-     * 返回包含所有别名的字符串表示。
-     *
-     * @return 字符串表示（非 {@code null}）
-     */
-    @Override
-    public String toString() {
-        return "SecretBox{aliases=" + getAliases() + '}';
-    }
-
-    // ------
-
-    private String getKeypass(String alias) {
-        return aliasToKeypass.getOrDefault(alias, storepass);
-    }
-
-    private KeyStore getKeyStore() {
-        var result = keyStore;
-        if (result == null) {
-            synchronized (this) {
-                result = keyStore;
-                if (result == null) {
-                    result = KeyStoreUtils.loadKeyStore(resource, type, storepass);
-                    keyStore = result;
-                }
-            }
-        }
-        return result;
     }
 
     // ------
@@ -243,7 +187,7 @@ public final class SecretBox implements Iterable<String> {
     /**
      * {@link SecretBox} 构建器。
      */
-    public static final class Builder {
+    final class Builder {
 
         private final Map<String, String> aliasToKeypass = new LinkedHashMap<>();
         private @Nullable Resource resource;
@@ -345,7 +289,7 @@ public final class SecretBox implements Iterable<String> {
         public SecretBox build() {
             Assert.notNull(resource, "resource is required");
             Assert.hasText(storepass, "storepass is required");
-            return new SecretBox(resource, type, storepass, Map.copyOf(aliasToKeypass));
+            return new KeyStoreSecretBox(resource, type, storepass, Map.copyOf(aliasToKeypass));
         }
     }
 }

@@ -19,7 +19,7 @@ public class ApplicationBootSecret {
 
     @Bean
     public SecretBox secretBox() {
-        var sb = SecretBox.builder()
+        var sb = SecretBox.fromKeyStore()
                 .resource(new ClassPathResource("secret/secret-box.bcfks"))
                 .type(KeyStoreType.BCFKS)
                 .storepass("123456")
