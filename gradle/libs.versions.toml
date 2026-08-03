@@ -18,11 +18,11 @@ freemarker = { module = "org.freemarker:freemarker", version = "2.3.34" }
 easy-captcha = { module = "com.github.whvcse:easy-captcha", version = "1.6.2" }
 
 # Plugin Artifacts (for buildSrc dependencies)
-dependency-management-plugin = "io.spring.dependency-management:io.spring.dependency-management.gradle.plugin:1.1.7"
-maven-publish-plugin = "com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:0.37.0"
-code-counting-plugin = "org.cthing.locc:org.cthing.locc.gradle.plugin:3.0.0"
-git-properties-plugin = "com.gorylenko.gradle-git-properties:gradle-git-properties:4.0.1"
-jib-gradle-plugin = "com.google.cloud.tools:jib-gradle-plugin:3.5.4"
+dependency-management-plugin = "io.spring.dependency-management:io.spring.dependency-management.gradle.plugin:1.1.7" # id: io.spring.dependency-management
+maven-publish-plugin = "com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin:0.37.0" # id: com.vanniktech.maven.publish
+code-counting-plugin = "org.cthing.locc:org.cthing.locc.gradle.plugin:3.0.0" # id: org.cthing.locc
+git-properties-plugin = "com.gorylenko.gradle-git-properties:gradle-git-properties:4.0.1" # id: com.gorylenko.gradle-git-properties
+jib-gradle-plugin = "com.google.cloud.tools:jib-gradle-plugin:3.5.4" # id: com.google.cloud.tools.jib
 
 [bundles]
 zxing = ["zxing-core", "zxing-javase"]
