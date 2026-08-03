@@ -8,11 +8,26 @@ endif
 
 GRADLE_DEFAULT_PARAMETERS := --console=plain
 
-.DEFAULT_GOAL := clean
+.DEFAULT_GOAL := usage
 
-.PHONY: clean purge rebuild-build-logic compile build install publish test wrapper count-code-lines docker-build
+.PHONY: usage clean purge rebuild-build-logic compile build install publish test wrapper count-code-lines docker-build
 
 .SILENT:
+
+usage:
+	echo "Usage: make [target]"
+	echo ""
+	echo "  clean                删除构建产物"
+	echo "  purge                彻底清理（含 Gradle 缓存）"
+	echo "  rebuild-build-logic  重建 buildSrc 构建逻辑"
+	echo "  compile              编译主代码"
+	echo "  build                编译并打包（跳过测试）"
+	echo "  install              发布到本地 Maven 仓库"
+	echo "  publish              发布到 Maven 中央仓库"
+	echo "  test                 运行测试"
+	echo "  wrapper              升级 Gradle wrapper"
+	echo "  count-code-lines     统计代码行数"
+	echo "  docker-build         构建 docker 镜像"
 
 clean:
 	$(GRADLEW) 'clean' "$(GRADLE_DEFAULT_PARAMETERS)"
