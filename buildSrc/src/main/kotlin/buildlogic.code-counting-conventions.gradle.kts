@@ -10,8 +10,8 @@ locc {
 
 tasks.withType<LoccTask>().configureEach {
     reports {
-        xml.required.set(false)
-        html.required.set(true)
-        json.required.set(false)
+        xml.required = false
+        html.required = true
+        json.required = false
     }
 }

@@ -36,6 +36,10 @@ SpringBoot4.x增强库，提供可复用的自动配置、工具类和集成支�
 
 - [yingzhor@gmail.com](docs/gpg-information.md)
 
+### 项目笔记
+
+- [项目笔记](note/)
+
 ### 许可证
 
 - [Apache 2.0](LICENSE.txt)
