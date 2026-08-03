@@ -1,13 +1,12 @@
 package com.github.yingzhuo.bayonet.security.configurer;
 
-import com.github.yingzhuo.bayonet.beandef.BeanRegistrarSupport;
+import com.github.yingzhuo.bayonet.beandef.BeanRegistrarHelper;
 import jakarta.servlet.Filter;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
+import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 
 import java.util.Arrays;
@@ -23,16 +22,18 @@ import java.util.List;
  * @see AdditionalFilterConfig
  * @since 4.1.1
  */
-class AdditionalSecurityFilterBeanRegistrar extends BeanRegistrarSupport {
+class AdditionalSecurityFilterBeanRegistrar implements ImportBeanDefinitionRegistrar {
 
-    public AdditionalSecurityFilterBeanRegistrar(ResourceLoader resourceLoader, Environment environment, BeanFactory beanFactory, ClassLoader beanClassLoader) {
-        super(resourceLoader, environment, beanFactory, beanClassLoader);
+    private final Environment environment;
+
+    public AdditionalSecurityFilterBeanRegistrar(Environment environment) {
+        this.environment = environment;
     }
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {
 
-        var attributesSet = super.getAnnotationAttributesSet(importingClassMetadata,
+        var attributesSet = BeanRegistrarHelper.getAnnotationAttributes(importingClassMetadata,
                 AdditionalSecurityFilter.class,
                 AdditionalSecurityFilter.List.class
         );
@@ -42,7 +43,7 @@ class AdditionalSecurityFilterBeanRegistrar extends BeanRegistrarSupport {
 
             // 当任一指定 Profile 激活时，跳过此过滤器
             if (skipIfAnyProfileActivated.length > 0) {
-                var activeProfiles = List.of(super.environment.getActiveProfiles());
+                var activeProfiles = List.of(environment.getActiveProfiles());
                 var shouldSkip = Arrays.stream(skipIfAnyProfileActivated).anyMatch(activeProfiles::contains);
                 if (shouldSkip) {
                     continue;
