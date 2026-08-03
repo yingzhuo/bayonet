@@ -47,6 +47,15 @@ public record CompositeTokenResolver(Collection<TokenResolver> resolvers) implem
     }
 
     /**
+     * 构造器（变参）
+     *
+     * @param resolvers 子解析器列表
+     */
+    public CompositeTokenResolver(TokenResolver... resolvers) {
+        this(Arrays.asList(resolvers));
+    }
+
+    /**
      * 创建组合解析器（变参便捷方法）
      *
      * @param resolvers 子解析器列表
@@ -59,7 +68,7 @@ public record CompositeTokenResolver(Collection<TokenResolver> resolvers) implem
         if (ArrayUtils.size(resolvers) == 1) {
             return resolvers[0];
         }
-        return new CompositeTokenResolver(Arrays.asList(resolvers));
+        return new CompositeTokenResolver(resolvers);
     }
 
     @Override
