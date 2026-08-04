@@ -2,6 +2,8 @@ package com.github.yingzhuo.bayonet.secret;
 
 import org.jspecify.annotations.Nullable;
 
+import java.util.Locale;
+
 /**
  * 支持的 KeyStore 类型。
  *
@@ -64,7 +66,7 @@ public enum KeyStoreType {
             return getDefault();
         }
 
-        return switch (type.toLowerCase()) {
+        return switch (type.toLowerCase(Locale.ROOT)) {
             case "pkcs12", "pkcs#12", "pfx", "p12" -> PKCS12;
             case "jks" -> JKS;
             case "bcfks" -> BCFKS;

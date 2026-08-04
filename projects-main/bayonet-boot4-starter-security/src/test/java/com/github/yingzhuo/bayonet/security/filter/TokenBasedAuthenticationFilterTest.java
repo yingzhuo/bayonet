@@ -19,8 +19,10 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.RememberMeServices;
 
@@ -32,12 +34,12 @@ import static org.mockito.Mockito.*;
 class TokenBasedAuthenticationFilterTest {
 
     private final MockHttpServletRequest request = new MockHttpServletRequest();
-    private final TokenBasedAuthFilter<UsernamePasswordAuthenticationToken> filter = new TokenBasedAuthFilter<>() {
+    private final TokenBasedAuthFilter filter = new TokenBasedAuthFilter() {
     };
     @Mock
     private TokenResolver tokenResolver;
     @Mock
-    private TokenConverter<UsernamePasswordAuthenticationToken> tokenConverter;
+    private TokenConverter tokenConverter;
     @Mock
     private FilterChain filterChain;
     @Mock
@@ -87,13 +89,16 @@ class TokenBasedAuthenticationFilterTest {
 
     @Test
     void should_authenticate_when_tokenValid() throws Exception {
-        var auth = UsernamePasswordAuthenticationToken.authenticated("user", null, java.util.List.of());
+        var userDetails = new User("user", "password", java.util.List.of());
         when(tokenResolver.resolve(any())).thenReturn("valid-token");
-        when(tokenConverter.convert("valid-token")).thenReturn(auth);
+        when(tokenConverter.convert("valid-token")).thenReturn(userDetails);
 
         filter.doFilterInternal(request, response, filterChain);
 
-        assertThat(SecurityContextHolder.getContext().getAuthentication()).isSameAs(auth);
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        assertThat(auth).isNotNull();
+        assertThat(auth.isAuthenticated()).isTrue();
+        assertThat(auth.getPrincipal()).isEqualTo("user");
     }
 
     // ============== token 解析失败 ==============
@@ -178,13 +183,13 @@ class TokenBasedAuthenticationFilterTest {
     void should_invoke_rememberMeLoginSuccess_on_authSuccess() throws Exception {
         filter.setRememberMeServices(rememberMeServices);
 
-        var auth = UsernamePasswordAuthenticationToken.authenticated("user", null, java.util.List.of());
+        var userDetails = new User("user", "password", java.util.List.of());
         when(tokenResolver.resolve(any())).thenReturn("valid-token");
-        when(tokenConverter.convert("valid-token")).thenReturn(auth);
+        when(tokenConverter.convert("valid-token")).thenReturn(userDetails);
 
         filter.doFilterInternal(request, response, filterChain);
 
-        verify(rememberMeServices).loginSuccess(request, response, auth);
+        verify(rememberMeServices).loginSuccess(eq(request), eq(response), any(Authentication.class));
     }
 
     @Test
@@ -203,7 +208,7 @@ class TokenBasedAuthenticationFilterTest {
     void should_notInvoke_rememberMe_when_notSet() throws Exception {
         when(tokenResolver.resolve(any())).thenReturn("valid-token");
         when(tokenConverter.convert("valid-token")).thenReturn(
-                UsernamePasswordAuthenticationToken.authenticated("user", null, java.util.List.of())
+                new User("user", "password", java.util.List.of())
         );
 
         filter.doFilterInternal(request, response, filterChain);
@@ -218,9 +223,9 @@ class TokenBasedAuthenticationFilterTest {
     void should_publish_TokenResolvedEvent_and_AuthenticationSuccessEvent_on_success() throws Exception {
         filter.setApplicationEventPublisher(eventPublisher);
 
-        var auth = UsernamePasswordAuthenticationToken.authenticated("user", null, java.util.List.of());
+        var userDetails = new User("user", "password", java.util.List.of());
         when(tokenResolver.resolve(any())).thenReturn("my-token");
-        when(tokenConverter.convert("my-token")).thenReturn(auth);
+        when(tokenConverter.convert("my-token")).thenReturn(userDetails);
 
         filter.doFilterInternal(request, response, filterChain);
         verify(eventPublisher, times(2)).publishEvent(eventCaptor.capture());
@@ -256,7 +261,7 @@ class TokenBasedAuthenticationFilterTest {
     void should_notPublish_events_when_publisherNotSet() throws Exception {
         when(tokenResolver.resolve(any())).thenReturn("valid-token");
         when(tokenConverter.convert("valid-token")).thenReturn(
-                UsernamePasswordAuthenticationToken.authenticated("user", null, java.util.List.of())
+                new User("user", "password", java.util.List.of())
         );
 
         filter.doFilterInternal(request, response, filterChain);

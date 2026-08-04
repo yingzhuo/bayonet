@@ -10,10 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -120,7 +117,7 @@ public class LoggingFilter extends OncePerRequestFilter {
         var result = new LinkedHashMap<String, String>();
         while (names.hasMoreElements()) {
             var name = names.nextElement();
-            if (!this.sensitiveHeaders.contains(name.toLowerCase())) {
+            if (!this.sensitiveHeaders.contains(name.toLowerCase(Locale.ROOT))) {
                 result.put(name, request.getHeader(name));
             }
         }

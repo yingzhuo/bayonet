@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.security.filter;
 
+import com.github.yingzhuo.bayonet.security.authentication.UserDetailsAuth;
 import com.github.yingzhuo.bayonet.security.event.AuthenticationFailureEvent;
 import com.github.yingzhuo.bayonet.security.event.AuthenticationSuccessEvent;
 import com.github.yingzhuo.bayonet.security.event.TokenResolvedEvent;
@@ -17,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.util.Assert;
@@ -26,9 +28,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static com.github.yingzhuo.bayonet.security.filter.AuthFilterHelper.ATTRIBUTE_AUTHENTICATION_NAME;
+import static com.github.yingzhuo.bayonet.security.filter.AuthFilterHelper.ATTRIBUTE_TOKEN_NAME;
+
 /**
  * 基于 Token 的认证过滤器。
- * <p>从请求中提取 Token → 通过 {@link TokenConverter} 转换为 {@link Authentication} → 设置 SecurityContext。
+ * <p>从请求中提取 Token → 通过 {@link TokenConverter} 转换为 {@link UserDetails}
+ * → 包装为 {@link UserDetailsAuth} 并设置 SecurityContext。
  * 可配合 {@link TokenResolver} 和 {@link TokenConverter} 灵活配置。</p>
  *
  * <p>此外还支持：</p>
@@ -38,7 +44,7 @@ import java.io.IOException;
  * </ul>
  *
  * <pre>{@code
- * var filter = new TokenBasedAuthenticationFilter<JwtAuthentication>();
+ * var filter = new TokenBasedAuthFilter();
  * filter.setTokenResolver(new BearerHeaderTokenResolver());
  * filter.setTokenConverter(new JwtTokenConverter());
  * filter.setAuthenticationEntryPoint(new Http403ForbiddenEntryPoint());
@@ -46,19 +52,15 @@ import java.io.IOException;
  * filter.setApplicationEventPublisher(applicationEventPublisher);
  * }</pre>
  *
- * @param <A> Authentication 类型
  * @author 应卓
  * @since 4.1.0
  */
 @Setter
-public class TokenBasedAuthFilter<A extends Authentication> extends OncePerRequestFilter {
-
-    public static final String ATTRIBUTE_TOKEN_NAME = TokenBasedAuthFilter.class.getName() + "#token";
-    public static final String ATTRIBUTE_AUTHENTICATION_NAME = TokenBasedAuthFilter.class.getName() + "#authentication";
+public class TokenBasedAuthFilter extends OncePerRequestFilter {
 
     private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
     private TokenResolver tokenResolver = new BearerHeaderTokenResolver();
-    private TokenConverter<A> tokenConverter;
+    private TokenConverter tokenConverter;
     private @Nullable RememberMeServices rememberMeServices;
     private @Nullable AuthenticationEntryPoint authenticationEntryPoint;
     private @Nullable ApplicationEventPublisher applicationEventPublisher;
@@ -69,7 +71,7 @@ public class TokenBasedAuthFilter<A extends Authentication> extends OncePerReque
         Assert.notNull(tokenResolver, "tokenResolver is required");
         Assert.notNull(tokenConverter, "tokenConverter is required");
 
-        if (AuthFilterUtils.authenticationIsNotRequired(securityContextHolderStrategy)) {
+        if (AuthFilterHelper.authenticationIsNotRequired(securityContextHolderStrategy)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -91,12 +93,14 @@ public class TokenBasedAuthFilter<A extends Authentication> extends OncePerReque
 
         // 认证
         try {
-            var auth = tokenConverter.convert(token);
+            var userDetails = tokenConverter.convert(token);
 
-            if (auth == null) {
+            if (userDetails == null) {
                 filterChain.doFilter(request, response);
                 return;
             }
+
+            var auth = new UserDetailsAuth(userDetails);
 
             onAuthenticationSuccess(auth, currentWebRequest);
 
@@ -139,7 +143,7 @@ public class TokenBasedAuthFilter<A extends Authentication> extends OncePerReque
      * @param currentRequest 当前 Web 请求
      * @throws AuthenticationException 回调中可抛出异常中断认证
      */
-    protected void onAuthenticationSuccess(A auth, WebRequest currentRequest) throws AuthenticationException {
+    protected void onAuthenticationSuccess(Authentication auth, WebRequest currentRequest) throws AuthenticationException {
         try {
             auth.setAuthenticated(true);
         } catch (IllegalArgumentException | UnsupportedOperationException ignored) {
