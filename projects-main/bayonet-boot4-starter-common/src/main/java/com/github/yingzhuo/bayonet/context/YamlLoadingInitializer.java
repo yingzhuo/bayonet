@@ -46,6 +46,9 @@ public class YamlLoadingInitializer extends AbstractApplicationContextInitialize
 
     private static final PropertySourceLoader LOADER = new YamlPropertySourceLoader();
 
+    /**
+     * 默认构造器
+     */
     public YamlLoadingInitializer() {
         setOrder(100);
     }

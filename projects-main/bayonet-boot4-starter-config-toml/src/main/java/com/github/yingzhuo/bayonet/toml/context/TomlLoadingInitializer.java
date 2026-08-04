@@ -38,6 +38,9 @@ public class TomlLoadingInitializer extends AbstractApplicationContextInitialize
 
     private static final PropertySourceLoader LOADER = new TomlPropertySourceLoader();
 
+    /**
+     * 默认构造器
+     */
     public TomlLoadingInitializer() {
         setOrder(120);
     }

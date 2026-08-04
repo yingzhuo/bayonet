@@ -38,6 +38,9 @@ public class HoconLoadingInitializer extends AbstractApplicationContextInitializ
 
     private static final PropertySourceLoader LOADER = new HoconPropertySourceLoader();
 
+    /**
+     * 默认构造器
+     */
     public HoconLoadingInitializer() {
         setOrder(110);
     }

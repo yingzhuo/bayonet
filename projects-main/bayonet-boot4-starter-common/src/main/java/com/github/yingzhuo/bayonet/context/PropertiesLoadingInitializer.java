@@ -36,6 +36,9 @@ public class PropertiesLoadingInitializer extends AbstractApplicationContextInit
 
     private static final PropertySourceLoader LOADER = new PropertiesPropertySourceLoader();
 
+    /**
+     * 默认构造器
+     */
     public PropertiesLoadingInitializer() {
         setOrder(110);
     }

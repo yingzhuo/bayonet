@@ -1,6 +1,6 @@
 package com.github.yingzhuo.bayonet.secret;
 
-import com.github.yingzhuo.bayonet.utility.TimeConvertingUtils;
+import com.github.yingzhuo.bayonet.utility.date.TimeConvertingUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
