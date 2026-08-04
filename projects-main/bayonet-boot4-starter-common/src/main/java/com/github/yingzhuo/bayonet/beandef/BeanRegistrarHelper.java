@@ -3,10 +3,12 @@ package com.github.yingzhuo.bayonet.beandef;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.Assert;
@@ -157,6 +159,74 @@ public final class BeanRegistrarHelper {
                 .setPrimary(primary)
                 .setScope(checkScope(scope))
                 .getBeanDefinition();
+    }
+
+    // ------
+
+    /**
+     * 通过 {@link FactoryBean} 创建 BeanDefinition（非主 Bean、非懒加载、单例作用域）。
+     * <p>产物由 {@link FactoryBean#getObject()} 提供，其生命周期由 FactoryBean 自身管理。</p>
+     *
+     * @param beanType    Bean 类型（非 {@code null}）
+     * @param factoryBean 工厂 Bean 实例（非 {@code null}）
+     * @param <B>         Bean 类型
+     * @return BeanDefinition（非 {@code null}）
+     */
+    public static <B> AbstractBeanDefinition createBeanDefinition(Class<B> beanType, FactoryBean<B> factoryBean) {
+        return createBeanDefinition(beanType, factoryBean, false, false);
+    }
+
+    /**
+     * 通过 {@link FactoryBean} 创建 BeanDefinition（单例作用域）。
+     * <p>产物由 {@link FactoryBean#getObject()} 提供，其生命周期由 FactoryBean 自身管理。</p>
+     *
+     * @param beanType    Bean 类型（非 {@code null}）
+     * @param factoryBean 工厂 Bean 实例（非 {@code null}）
+     * @param primary     是否为主 Bean
+     * @param lazyInit    是否懒加载
+     * @param <B>         Bean 类型
+     * @return BeanDefinition（非 {@code null}）
+     */
+    public static <B> AbstractBeanDefinition createBeanDefinition(
+            Class<B> beanType,
+            FactoryBean<B> factoryBean,
+            boolean primary,
+            boolean lazyInit) {
+        return createBeanDefinition(beanType, factoryBean, primary, lazyInit, SCOPE_SINGLETON);
+    }
+
+    /**
+     * 通过 {@link FactoryBean} 创建 BeanDefinition。
+     * <p>产物由 {@link FactoryBean#getObject()} 提供，其生命周期由 FactoryBean 自身管理。</p>
+     *
+     * @param beanType    Bean 类型（非 {@code null}）
+     * @param factoryBean 工厂 Bean 实例（非 {@code null}）
+     * @param primary     是否为主 Bean
+     * @param lazyInit    是否懒加载
+     * @param scope       作用域，仅支持 {@code singleton} 或 {@code prototype}（大小写不敏感）
+     * @param <B>         Bean 类型
+     * @return BeanDefinition（非 {@code null}）
+     * @throws IllegalArgumentException 若 {@code scope} 非法
+     */
+    public static <B> AbstractBeanDefinition createBeanDefinition(
+            Class<B> beanType,
+            FactoryBean<B> factoryBean,
+            boolean primary,
+            boolean lazyInit,
+            String scope) {
+        Assert.notNull(beanType, "beanType must not be null");
+        Assert.notNull(factoryBean, "factoryBean must not be null");
+
+        var beanDefinition = new RootBeanDefinition();
+        beanDefinition.setBeanClass(factoryBean.getClass());
+        beanDefinition.setInstanceSupplier(() -> factoryBean);
+        beanDefinition.setTargetType(beanType);
+        beanDefinition.setRole(BeanDefinition.ROLE_APPLICATION);
+        beanDefinition.setAbstract(false);
+        beanDefinition.setLazyInit(lazyInit);
+        beanDefinition.setPrimary(primary);
+        beanDefinition.setScope(checkScope(scope));
+        return beanDefinition;
     }
 
     // ------
