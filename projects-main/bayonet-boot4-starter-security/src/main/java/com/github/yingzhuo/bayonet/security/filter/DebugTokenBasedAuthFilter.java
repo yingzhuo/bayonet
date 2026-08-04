@@ -28,6 +28,8 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Properties;
 
+import static com.github.yingzhuo.bayonet.security.filter.AuthFilterHelper.ATTRIBUTE_AUTHENTICATION_NAME;
+
 /**
  * 调试用的 Token 认证过滤器。
  * <p><strong>警告：仅用于开发/调试环境，禁止在生产环境使用。</strong></p>
@@ -115,7 +117,7 @@ public class DebugTokenBasedAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (AuthFilterUtils.authenticationIsNotRequired(securityContextHolderStrategy)) {
+        if (AuthFilterHelper.authenticationIsNotRequired(securityContextHolderStrategy)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -133,6 +135,7 @@ public class DebugTokenBasedAuthFilter extends OncePerRequestFilter {
             if (userDetails != null) {
                 var auth = new UserDetailsAuth(userDetails);
                 securityContextHolderStrategy.getContext().setAuthentication(auth);
+                request.setAttribute(ATTRIBUTE_AUTHENTICATION_NAME, auth);
             }
         } catch (UsernameNotFoundException ignored) {
             // noop

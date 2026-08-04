@@ -11,6 +11,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.util.Optional;
 
+import static com.github.yingzhuo.bayonet.security.filter.AuthFilterHelper.ATTRIBUTE_TOKEN_NAME;
+
 /**
  * 解析 {@link CurrentToken @CurrentToken} 注解参数的 {@link HandlerMethodArgumentResolver}。
  *
@@ -58,7 +60,7 @@ public class CurrentTokenHandlerMethodArgumentResolver implements HandlerMethodA
             return resolveEmpty(parameter);
         }
 
-        var token = servletRequest.getAttribute(TokenBasedAuthFilter.ATTRIBUTE_TOKEN_NAME);
+        var token = servletRequest.getAttribute(ATTRIBUTE_TOKEN_NAME);
         if (String.class.isAssignableFrom(parameter.getParameterType())) {
             return token;
         }
