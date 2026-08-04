@@ -3,6 +3,7 @@ package com.github.yingzhuo.bayonet.utility;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -53,7 +54,7 @@ class HexUtilsTest {
 
     @Test
     void should_decode_when_hexStringHasUpperCase() {
-        var upper = HEX.toUpperCase();
+        var upper = HEX.toUpperCase(Locale.ROOT);
         assertThat(HexUtils.decodeToBytes(upper)).containsExactly(BYTES);
     }
 

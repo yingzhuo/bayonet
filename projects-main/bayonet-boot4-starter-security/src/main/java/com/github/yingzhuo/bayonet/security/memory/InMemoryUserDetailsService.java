@@ -8,10 +8,7 @@ import org.springframework.security.core.userdetails.memory.UserAttribute;
 import org.springframework.security.core.userdetails.memory.UserAttributeEditor;
 import org.springframework.util.Assert;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * 基于内存的 {@link UserDetailsService} 实现。
@@ -100,12 +97,12 @@ public class InMemoryUserDetailsService implements UserDetailsService {
     }
 
     private void put(UserDetails user) {
-        this.users.put(user.getUsername().toLowerCase(), user);
+        this.users.put(user.getUsername().toLowerCase(Locale.ROOT), user);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var key = username.toLowerCase();
+        var key = username.toLowerCase(Locale.ROOT);
         var user = this.users.get(key);
         if (user == null) {
             throw new UsernameNotFoundException("User not found: " + username);
