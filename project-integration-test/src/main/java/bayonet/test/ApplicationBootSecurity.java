@@ -19,7 +19,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.session.DisableEncodeUrlFilter;
-import tools.jackson.databind.ObjectMapper;
 
 import static org.springframework.http.HttpMethod.GET;
 
@@ -54,10 +53,9 @@ public class ApplicationBootSecurity {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChainDefault(HttpSecurity http, ObjectMapper objectMapper) {
-
+    public SecurityFilterChain securityFilterChainDefault(HttpSecurity http) {
         return http
-                //.securityMatcher()
+                .securityMatcher()
                 .anonymous(Customizer.withDefaults())
                 .sessionManagement(c ->
                         c.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
