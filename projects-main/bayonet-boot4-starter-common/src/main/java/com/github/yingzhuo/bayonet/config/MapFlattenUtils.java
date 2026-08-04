@@ -2,6 +2,7 @@ package com.github.yingzhuo.bayonet.config;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 import org.springframework.util.StringUtils;
 
@@ -18,6 +19,7 @@ import java.util.Map;
  * @author 应卓
  * @since 4.1.1
  */
+@ApiStatus.Internal
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class MapFlattenUtils {
 
