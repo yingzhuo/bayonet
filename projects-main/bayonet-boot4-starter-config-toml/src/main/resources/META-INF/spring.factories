@@ -4,3 +4,5 @@ org.springframework.boot.context.config.ConfigDataLocationResolver=\
 com.github.yingzhuo.bayonet.toml.configdata.TomlConfigDataLocationResolver
 org.springframework.boot.context.config.ConfigDataLoader=\
 com.github.yingzhuo.bayonet.toml.configdata.TomlConfigDataLoader
+org.springframework.context.ApplicationContextInitializer=\
+com.github.yingzhuo.bayonet.toml.context.TomlLoadingInitializer

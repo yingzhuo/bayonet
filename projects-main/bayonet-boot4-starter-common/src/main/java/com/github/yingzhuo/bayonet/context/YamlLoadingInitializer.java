@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.Ordered;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ import java.util.List;
  * @since 4.1.1
  */
 @Slf4j
-public class YamlLoadingInitializer extends AbstractApplicationContextInitializer implements Ordered {
+public class YamlLoadingInitializer extends AbstractApplicationContextInitializer {
 
     private static final List<String> DEFAULT_LOCATIONS = List.of(
             "file:default.yaml",
