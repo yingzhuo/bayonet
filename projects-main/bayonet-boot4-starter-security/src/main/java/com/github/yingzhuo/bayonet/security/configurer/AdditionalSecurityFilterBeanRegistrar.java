@@ -1,8 +1,6 @@
 package com.github.yingzhuo.bayonet.security.configurer;
 
-import com.github.yingzhuo.bayonet.beandef.BeanRegistrarHelper;
 import jakarta.servlet.Filter;
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
@@ -11,6 +9,9 @@ import org.springframework.core.type.AnnotationMetadata;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static com.github.yingzhuo.bayonet.beandef.BeanRegistrarHelper.createBeanDefinition;
+import static com.github.yingzhuo.bayonet.beandef.BeanRegistrarHelper.getAnnotationAttributesSet;
 
 /**
  * {@link AdditionalSecurityFilter @AdditionalSecurityFilter} 注解的 Bean 定义注册器。
@@ -33,7 +34,7 @@ class AdditionalSecurityFilterBeanRegistrar implements ImportBeanDefinitionRegis
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry, BeanNameGenerator beanNameGenerator) {
 
-        var attributesSet = BeanRegistrarHelper.getAnnotationAttributes(importingClassMetadata,
+        var attributesSet = getAnnotationAttributesSet(importingClassMetadata,
                 AdditionalSecurityFilter.class,
                 AdditionalSecurityFilter.List.class
         );
@@ -59,8 +60,7 @@ class AdditionalSecurityFilterBeanRegistrar implements ImportBeanDefinitionRegis
                     hint
             );
 
-            var beanDef = BeanDefinitionBuilder.genericBeanDefinition(AdditionalFilterConfig.class, () -> conf)
-                    .getBeanDefinition();
+            var beanDef = createBeanDefinition(AdditionalFilterConfig.class, conf);
 
             var beanName = beanNameGenerator.generateBeanName(beanDef, registry) + "-" + System.identityHashCode(conf);
             registry.registerBeanDefinition(beanName, beanDef);
