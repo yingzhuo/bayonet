@@ -1,6 +1,7 @@
 package com.github.yingzhuo.bayonet.security.configurer;
 
 import jakarta.servlet.Filter;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
@@ -61,6 +62,7 @@ class AdditionalSecurityFilterBeanRegistrar implements ImportBeanDefinitionRegis
             );
 
             var beanDef = createBeanDefinition(AdditionalFilterConfig.class, conf);
+            beanDef.setRole(BeanDefinition.ROLE_INFRASTRUCTURE); // 基础设置Bean，完全不参与用户业务
 
             var beanName = beanNameGenerator.generateBeanName(beanDef, registry) + "-" + System.identityHashCode(conf);
             registry.registerBeanDefinition(beanName, beanDef);

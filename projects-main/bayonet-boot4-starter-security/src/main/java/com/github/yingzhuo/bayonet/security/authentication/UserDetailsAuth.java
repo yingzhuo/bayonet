@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.security.authentication;
 
+import lombok.Getter;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,10 +28,11 @@ public class UserDetailsAuth implements Authentication, UserDetails {
     @Serial
     private static final long serialVersionUID = 2367206193190539740L;
 
+    @Getter
     private final UserDetails user;
 
     /**
-     * 构造器。
+     * 构造器
      *
      * @param user {@link UserDetails} 对象，不可为 {@code null}
      */
