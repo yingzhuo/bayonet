@@ -1,7 +1,5 @@
 package bayonet.test;
 
-import com.github.yingzhuo.bayonet.beandef.ConditionalOnResource;
-import com.github.yingzhuo.bayonet.common.Logic;
 import com.github.yingzhuo.bayonet.jwt.algorithm.SM2Algorithm;
 import com.github.yingzhuo.bayonet.secret.KeyStoreType;
 import com.github.yingzhuo.bayonet.secret.SecretBox;
@@ -20,7 +18,6 @@ import javax.crypto.SecretKey;
 public class ApplicationBootSecret {
 
     @Bean
-    @ConditionalOnResource(resources = {"classpath:secret/secret-box.bcfks", "file:./not-exists.txt"}, logic = Logic.OR)
     public SecretBox secretBox() {
         var sb = SecretBox.fromKeyStore()
                 .resource(new ClassPathResource("secret/secret-box.bcfks"))
@@ -33,8 +30,8 @@ public class ApplicationBootSecret {
 
     @Bean
     public SM2Algorithm sm2Algorithm(SecretBox secretBox) {
-        var kp = secretBox.getKeyPair("SM2");
-        return new SM2Algorithm(kp.getPublic(), kp.getPrivate());
+        var keyPair = secretBox.getKeyPair("SM2");
+        return new SM2Algorithm(keyPair.getPublic(), keyPair.getPrivate());
     }
 
     @Bean
