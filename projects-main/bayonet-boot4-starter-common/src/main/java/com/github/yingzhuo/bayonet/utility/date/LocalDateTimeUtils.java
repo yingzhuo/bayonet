@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.utility;
+package com.github.yingzhuo.bayonet.utility.date;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

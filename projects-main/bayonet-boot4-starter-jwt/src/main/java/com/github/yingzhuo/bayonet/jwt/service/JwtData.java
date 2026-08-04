@@ -5,14 +5,13 @@ import org.springframework.util.Assert;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
 import static com.github.yingzhuo.bayonet.jwt.JwtConstants.*;
+import static com.github.yingzhuo.bayonet.utility.date.DateConvertingUtils.toDate;
 
 /**
  * JWT 数据构建器。
@@ -281,9 +280,4 @@ public final class JwtData {
         return Collections.unmodifiableMap(this.payloadMap);
     }
 
-    // ---
-
-    private Date toDate(LocalDateTime localDateTime) {
-        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-    }
 }

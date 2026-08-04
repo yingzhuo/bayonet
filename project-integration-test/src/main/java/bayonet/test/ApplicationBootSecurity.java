@@ -55,7 +55,7 @@ public class ApplicationBootSecurity {
     @Bean
     public SecurityFilterChain securityFilterChainDefault(HttpSecurity http) {
         return http
-                .securityMatcher()
+                .securityMatcher("/**")
                 .anonymous(Customizer.withDefaults())
                 .sessionManagement(c ->
                         c.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
