@@ -1,4 +1,4 @@
 @NullMarked
-package com.github.yingzhuo.bayonet.actuator;
+package bayonet.test.security;
 
 import org.jspecify.annotations.NullMarked;

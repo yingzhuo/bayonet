@@ -86,13 +86,13 @@ class DefaultJwtValidatorTest {
     @Test
     void should_return_OK_when_tokenValid() {
         var result = new DefaultJwtValidator(algorithm).validate(validToken);
-        assertThat(result).isEqualTo(ValidatingResult.OK);
+        assertThat(result.status()).isEqualTo(ValidatingResult.Status.OK);
     }
 
     @Test
     void should_return_OK_when_tokenValid_withCustomizer() {
         var validator = new DefaultJwtValidator(algorithm, v -> v.acceptLeeway(3));
-        assertThat(validator.validate(validToken)).isEqualTo(ValidatingResult.OK);
+        assertThat(validator.validate(validToken).status()).isEqualTo(ValidatingResult.Status.OK);
     }
 
     @Test
@@ -103,7 +103,7 @@ class DefaultJwtValidatorTest {
                 .sign(algorithm);
 
         var result = new DefaultJwtValidator(algorithm).validate(gen);
-        assertThat(result).isEqualTo(ValidatingResult.INVALID_TIME);
+        assertThat(result.status()).isEqualTo(ValidatingResult.Status.INVALID_TIME);
     }
 
     @Test
@@ -121,20 +121,20 @@ class DefaultJwtValidatorTest {
                 .sign(otherAlg);
 
         var result = new DefaultJwtValidator(algorithm).validate(token);
-        assertThat(result).isEqualTo(ValidatingResult.INVALID_SIGNATURE);
+        assertThat(result.status()).isEqualTo(ValidatingResult.Status.INVALID_SIGNATURE);
     }
 
     @Test
     void should_return_INVALID_JWT_FORMAT_when_garbage() {
         var result = new DefaultJwtValidator(algorithm).validate("not.a.jwt");
-        assertThat(result).isEqualTo(ValidatingResult.INVALID_JWT_FORMAT);
+        assertThat(result.status()).isEqualTo(ValidatingResult.Status.INVALID_JWT_FORMAT);
     }
 
     @Test
     void should_return_INVALID_CLAIM_when_missingRequiredClaim() {
         var validator = new DefaultJwtValidator(algorithm, v -> v.withClaimPresence("nonexistent"));
         var result = validator.validate(validToken);
-        assertThat(result).isEqualTo(ValidatingResult.INVALID_CLAIM);
+        assertThat(result.status()).isEqualTo(ValidatingResult.Status.INVALID_CLAIM);
     }
 
     @Test
@@ -145,7 +145,7 @@ class DefaultJwtValidatorTest {
                 .sign(algorithm);
 
         var result = new DefaultJwtValidator(algorithm).validate(token);
-        assertThat(result).isEqualTo(ValidatingResult.INVALID_TIME);
+        assertThat(result.status()).isEqualTo(ValidatingResult.Status.INVALID_TIME);
     }
 
 }

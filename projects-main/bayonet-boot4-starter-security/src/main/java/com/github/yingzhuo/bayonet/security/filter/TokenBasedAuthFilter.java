@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -56,6 +57,7 @@ import static com.github.yingzhuo.bayonet.security.filter.AuthFilterHelper.ATTRI
  * @author 应卓
  * @since 4.1.0
  */
+@Slf4j
 @Setter
 public class TokenBasedAuthFilter extends OncePerRequestFilter implements ApplicationEventPublisherAware {
 
@@ -73,6 +75,7 @@ public class TokenBasedAuthFilter extends OncePerRequestFilter implements Applic
         Assert.notNull(tokenConverter, "tokenConverter is required");
 
         if (AuthFilterHelper.authenticationIsNotRequired(securityContextHolderStrategy)) {
+            log.debug("Authentication NOT required. Skipping authentication");
             filterChain.doFilter(request, response);
             return;
         }
@@ -82,8 +85,11 @@ public class TokenBasedAuthFilter extends OncePerRequestFilter implements Applic
         // 解析 token
         var token = tokenResolver.resolve(currentWebRequest);
         if (token == null) {
+            log.debug("Token cannot be resolved. Skipping authentication");
             filterChain.doFilter(request, response);
             return;
+        } else {
+            log.debug("token = {}", token);
         }
 
         request.setAttribute(ATTRIBUTE_TOKEN_NAME, token); // 偷偷放在request里
