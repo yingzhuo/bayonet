@@ -18,7 +18,12 @@ import java.security.MessageDigest;
  * @see SM3Digest
  * @since 4.1.1
  */
-public class SM3PasswordEncoder extends AbstractValidatingPasswordEncoder {
+public class SM3PasswordEncoder extends AbstractValidatingPasswordEncoder implements NamedPasswordEncoder {
+
+    @Override
+    public String getName() {
+        return "SM3";
+    }
 
     @Override
     protected String encodeNonNullPassword(String rawPassword) {

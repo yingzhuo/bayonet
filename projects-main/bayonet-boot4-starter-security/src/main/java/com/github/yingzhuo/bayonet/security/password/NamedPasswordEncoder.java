@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.security.password;
 
+import com.github.yingzhuo.bayonet.common.Named;
 import com.github.yingzhuo.bayonet.utility.spi.SpringFactoriesUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -11,10 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @see com.github.yingzhuo.bayonet.security.password.PasswordEncoderFactories
  * @since 4.1.1
  */
-public interface NamedPasswordEncoder extends PasswordEncoder {
+public interface NamedPasswordEncoder extends Named, PasswordEncoder {
 
     /**
-     * 返回编码器逻辑名称
+     * 返回编码器逻辑名称 (不允许为空值)
      *
      * @return 编码器逻辑名称
      */
