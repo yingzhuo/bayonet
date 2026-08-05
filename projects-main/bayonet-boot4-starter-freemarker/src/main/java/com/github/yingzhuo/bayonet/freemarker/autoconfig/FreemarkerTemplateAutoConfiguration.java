@@ -3,8 +3,8 @@ package com.github.yingzhuo.bayonet.freemarker.autoconfig;
 import com.github.yingzhuo.bayonet.freemarker.renderer.FreemarkerStringRenderer;
 import com.github.yingzhuo.bayonet.freemarker.renderer.FreemarkerStringRendererImpl;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBooleanProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Bean;
  */
 @AutoConfiguration
 @EnableConfigurationProperties(FreemarkerTemplateProperties.class)
-@ConditionalOnProperty(prefix = "bayonet.freemarker-template", name = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnBooleanProperty(prefix = "bayonet.freemarker-template", name = "enabled", matchIfMissing = true)
 public class FreemarkerTemplateAutoConfiguration {
 
     /**
@@ -48,5 +48,4 @@ public class FreemarkerTemplateAutoConfiguration {
         bean.setTemplateLoaderPaths(properties.getTemplateLoaderPaths());
         return bean;
     }
-
 }

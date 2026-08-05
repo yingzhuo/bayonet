@@ -1,4 +1,4 @@
-package com.github.yingzhuo.bayonet.security.mvc;
+package com.github.yingzhuo.bayonet.security.annotation;
 
 import com.github.yingzhuo.bayonet.security.filter.TokenBasedAuthFilter;
 import jakarta.servlet.http.HttpServletRequest;
