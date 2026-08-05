@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.Setter;
 import org.jspecify.annotations.Nullable;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,7 +57,7 @@ import static com.github.yingzhuo.bayonet.security.filter.AuthFilterHelper.ATTRI
  * @since 4.1.0
  */
 @Setter
-public class TokenBasedAuthFilter extends OncePerRequestFilter {
+public class TokenBasedAuthFilter extends OncePerRequestFilter implements ApplicationEventPublisherAware {
 
     private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
     private TokenResolver tokenResolver = new BearerHeaderTokenResolver();

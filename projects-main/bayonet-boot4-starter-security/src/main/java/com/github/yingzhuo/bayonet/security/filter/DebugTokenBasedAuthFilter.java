@@ -1,6 +1,7 @@
 package com.github.yingzhuo.bayonet.security.filter;
 
 import com.github.yingzhuo.bayonet.security.authentication.UserDetailsAuth;
+import com.github.yingzhuo.bayonet.security.event.AuthenticationSuccessEvent;
 import com.github.yingzhuo.bayonet.security.memory.InMemoryUserDetailsService;
 import com.github.yingzhuo.bayonet.security.token.BearerHeaderTokenResolver;
 import com.github.yingzhuo.bayonet.security.token.TokenResolver;
@@ -11,6 +12,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
@@ -50,11 +53,12 @@ import static com.github.yingzhuo.bayonet.security.filter.AuthFilterHelper.ATTRI
  */
 @Slf4j
 @Setter
-public class DebugTokenBasedAuthFilter extends OncePerRequestFilter {
+public class DebugTokenBasedAuthFilter extends OncePerRequestFilter implements ApplicationEventPublisherAware {
 
     private final UserDetailsService userDetailsService;
     private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
     private TokenResolver tokenResolver = new BearerHeaderTokenResolver();
+    private ApplicationEventPublisher applicationEventPublisher;
 
     /**
      * 构造器
@@ -122,6 +126,8 @@ public class DebugTokenBasedAuthFilter extends OncePerRequestFilter {
             return;
         }
 
+        var currentWebRequest = new ServletWebRequest(request);
+
         // 解析 token, token 即用户名
         var username = tokenResolver.resolve(new ServletWebRequest(request, response));
         if (!StringUtils.hasText(username)) {
@@ -136,6 +142,10 @@ public class DebugTokenBasedAuthFilter extends OncePerRequestFilter {
                 var auth = new UserDetailsAuth(userDetails);
                 securityContextHolderStrategy.getContext().setAuthentication(auth);
                 request.setAttribute(ATTRIBUTE_AUTHENTICATION_NAME, auth);
+
+                if (applicationEventPublisher != null) {
+                    applicationEventPublisher.publishEvent(new AuthenticationSuccessEvent(currentWebRequest, username, auth));
+                }
             }
         } catch (UsernameNotFoundException ignored) {
             // noop
