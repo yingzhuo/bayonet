@@ -5,9 +5,12 @@ import jakarta.servlet.Filter;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+
+import java.util.stream.Collectors;
 
 /**
  * Security 过滤器链自动配置 DSL。
@@ -58,6 +61,24 @@ public class SecurityFilterAutoDSL extends AbstractHttpConfigurer<SecurityFilter
     private Filter getFilterBean(ApplicationContext applicationContext, Class<? extends Filter> filterType) {
         try {
             return applicationContext.getBeanProvider(filterType).getObject();
+        } catch (NoUniqueBeanDefinitionException e) {
+            // 多候选时，仅当恰好存在唯一的运行时类型精准匹配（getClass() == filterType）才采用；
+            // 否则（无精确匹配或多个精确匹配）拒绝猜测，记录候选明细并返回 null。
+            var candidates = applicationContext.getBeansOfType(filterType);
+            var exactMatches = candidates.entrySet().stream()
+                    .filter(entry -> entry.getValue().getClass() == filterType)
+                    .toList();
+
+            if (exactMatches.size() == 1) {
+                return exactMatches.get(0).getValue();
+            }
+
+            var candidateNames = candidates.entrySet().stream()
+                    .map(entry -> entry.getKey() + " (" + entry.getValue().getClass().getName() + ")")
+                    .collect(Collectors.joining(", "));
+            log.warn("multiple beans of type [{}] exist and no unambiguous exact match; candidates: [{}]",
+                    filterType.getName(), candidateNames, e);
+            return null;
         } catch (NoSuchBeanDefinitionException e) {
             log.warn(e.getMessage(), e);
             return null;

@@ -1,18 +1,15 @@
 package bayonet.test;
 
+import com.github.yingzhuo.bayonet.security.authentication.RichUserDetails;
 import com.github.yingzhuo.bayonet.security.configurer.AdditionalDebugAuthFilter;
 import com.github.yingzhuo.bayonet.security.configurer.AdditionalSecurityFilter;
 import com.github.yingzhuo.bayonet.security.filter.DebugTokenBasedAuthFilter;
 import com.github.yingzhuo.bayonet.security.filter.LoggingFilter;
 import com.github.yingzhuo.bayonet.security.filter.TokenBasedAuthFilter;
-import com.github.yingzhuo.bayonet.security.memory.InMemoryUserDetailsService;
 import com.github.yingzhuo.bayonet.security.token.HttpHeaderTokenResolver;
 import com.github.yingzhuo.bayonet.security.token.TokenConverter;
-import com.github.yingzhuo.bayonet.security.token.TokenResolver;
-import com.github.yingzhuo.bayonet.utility.PropertiesUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -22,13 +19,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.session.DisableEncodeUrlFilter;
 
-import java.util.Properties;
+import java.util.List;
 
 import static org.springframework.http.HttpMethod.GET;
 
@@ -42,33 +41,23 @@ import static org.springframework.http.HttpMethod.GET;
 public class ApplicationBootSecurity {
 
     @Bean
-    public Properties fixedUsersProperties() {
-        return PropertiesUtils.loadProperties("classpath:debugging-users.properties");
+    public UserDetailsService userDetailsService() {
+        return new InMemoryUserDetailsManager(createInMemoryUsers());
     }
 
     @Bean
-    public UserDetailsService userDetails(@Qualifier("fixedUsersProperties") Properties users) {
-        return new InMemoryUserDetailsService(users);
-    }
-
-    @Bean
-    public DebugTokenBasedAuthFilter debuggingTokenBasedAuthFilter(@Qualifier("fixedUsersProperties") Properties users, TokenResolver tokenResolver) {
-        var filter = new DebugTokenBasedAuthFilter(users);
-        filter.setTokenResolver(tokenResolver);
+    public DebugTokenBasedAuthFilter debugTokenBasedAuthFilter() {
+        var filter = new DebugTokenBasedAuthFilter(createInMemoryUsers());
+        filter.setTokenResolver(new HttpHeaderTokenResolver("X-Token"));
         return filter;
     }
 
     @Bean
-    public TokenBasedAuthFilter tokenBasedAuthFilter(TokenResolver tokenResolver, TokenConverter tokenConverter) {
+    public TokenBasedAuthFilter tokenBasedAuthFilter(TokenConverter tokenConverter) {
         var filter = new TokenBasedAuthFilter();
-        filter.setTokenResolver(tokenResolver);
+        filter.setTokenResolver(new HttpHeaderTokenResolver("X-Token"));
         filter.setTokenConverter(tokenConverter);
         return filter;
-    }
-
-    @Bean
-    public TokenResolver tokenResolver() {
-        return new HttpHeaderTokenResolver("X-Token", "", 0);
     }
 
     @Bean
@@ -118,4 +107,16 @@ public class ApplicationBootSecurity {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return customizer -> customizer.debug(false);
     }
+
+    // ------
+
+    private List<UserDetails> createInMemoryUsers() {
+        return List.of(
+                RichUserDetails.builder()
+                        .username("admin")
+                        .roles("ADMIN", "USER")
+                        .build()
+        );
+    }
+
 }
