@@ -4,8 +4,15 @@ import com.github.yingzhuo.bayonet.security.configurer.AdditionalDebugAuthFilter
 import com.github.yingzhuo.bayonet.security.configurer.AdditionalSecurityFilter;
 import com.github.yingzhuo.bayonet.security.filter.DebugTokenBasedAuthFilter;
 import com.github.yingzhuo.bayonet.security.filter.LoggingFilter;
+import com.github.yingzhuo.bayonet.security.filter.TokenBasedAuthFilter;
+import com.github.yingzhuo.bayonet.security.memory.InMemoryUserDetailsService;
+import com.github.yingzhuo.bayonet.security.token.HttpHeaderTokenResolver;
+import com.github.yingzhuo.bayonet.security.token.TokenConverter;
+import com.github.yingzhuo.bayonet.security.token.TokenResolver;
+import com.github.yingzhuo.bayonet.utility.PropertiesUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -15,10 +22,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.session.DisableEncodeUrlFilter;
+
+import java.util.Properties;
 
 import static org.springframework.http.HttpMethod.GET;
 
@@ -28,11 +38,37 @@ import static org.springframework.http.HttpMethod.GET;
 @RequiredArgsConstructor
 @AdditionalDebugAuthFilter
 @AdditionalSecurityFilter(value = LoggingFilter.class, positionFilterType = DisableEncodeUrlFilter.class)
+@AdditionalSecurityFilter(value = TokenBasedAuthFilter.class)
 public class ApplicationBootSecurity {
 
     @Bean
-    public DebugTokenBasedAuthFilter debuggingTokenBasedAuthFilter() {
-        return new DebugTokenBasedAuthFilter("classpath:debugging-users.properties");
+    public Properties fixedUsersProperties() {
+        return PropertiesUtils.loadProperties("classpath:debugging-users.properties");
+    }
+
+    @Bean
+    public UserDetailsService userDetails(@Qualifier("fixedUsersProperties") Properties users) {
+        return new InMemoryUserDetailsService(users);
+    }
+
+    @Bean
+    public DebugTokenBasedAuthFilter debuggingTokenBasedAuthFilter(@Qualifier("fixedUsersProperties") Properties users, TokenResolver tokenResolver) {
+        var filter = new DebugTokenBasedAuthFilter(users);
+        filter.setTokenResolver(tokenResolver);
+        return filter;
+    }
+
+    @Bean
+    public TokenBasedAuthFilter tokenBasedAuthFilter(TokenResolver tokenResolver, TokenConverter tokenConverter) {
+        var filter = new TokenBasedAuthFilter();
+        filter.setTokenResolver(tokenResolver);
+        filter.setTokenConverter(tokenConverter);
+        return filter;
+    }
+
+    @Bean
+    public TokenResolver tokenResolver() {
+        return new HttpHeaderTokenResolver("X-Token", "", 0);
     }
 
     @Bean
@@ -45,11 +81,6 @@ public class ApplicationBootSecurity {
         var bean = new StrictHttpFirewall();
         bean.setAllowSemicolon(true);
         return bean;
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return customizer -> customizer.debug(false);
     }
 
     @Bean
@@ -76,8 +107,15 @@ public class ApplicationBootSecurity {
                                 .requestMatchers(GET, "/actuator", "/actuator/info", "/actuator/health",
                                         "/actuator/beans", "/actuator/env", "/actuator/prometheus").permitAll()
                                 .requestMatchers("/actuator/shutdown", "/actuator/restart").denyAll()
-                                .anyRequest().permitAll()
+                                .requestMatchers("/user/login").permitAll()
+                                .requestMatchers("/user/test-jwt").authenticated()
+                                .anyRequest().denyAll()
                 )
                 .build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return customizer -> customizer.debug(false);
     }
 }

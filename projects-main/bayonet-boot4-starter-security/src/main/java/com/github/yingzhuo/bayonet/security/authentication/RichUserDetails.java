@@ -3,12 +3,14 @@ package com.github.yingzhuo.bayonet.security.authentication;
 import com.github.yingzhuo.bayonet.common.Identified;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -88,13 +90,13 @@ public sealed interface RichUserDetails extends Identified, UserDetails
      */
     final class Builder {
 
+        private final List<GrantedAuthority> authorities = new ArrayList<>();
         private @Nullable String id;
         private @Nullable LocalDate dob;
         private @Nullable String email;
         private @Nullable Object gender;
         private @Nullable String username;
         private @Nullable String password;
-        private final List<GrantedAuthority> authorities = new ArrayList<>();
         private boolean enabled = true;
         private boolean accountNonExpired = true;
         private boolean credentialsNonExpired = true;
@@ -166,6 +168,34 @@ public sealed interface RichUserDetails extends Identified, UserDetails
         public Builder password(@Nullable String password) {
             this.password = password;
             return this;
+        }
+
+        /**
+         * 添加权限（字符串形式）。
+         * <p>将权限字符串（如 {@code "ROLE_ADMIN"}）转换为权限并添加。</p>
+         *
+         * @param authorities 权限字符串
+         * @return 当前构建器
+         */
+        public Builder authorities(String... authorities) {
+            Assert.notNull(authorities, "authorities must not be null");
+            Assert.noNullElements(authorities, "authorities must not contain null elements");
+            var array = Arrays.stream(authorities)
+                    .map(SimpleGrantedAuthority::new)
+                    .toArray(GrantedAuthority[]::new);
+            return authorities(array);
+        }
+
+        /**
+         * 设置权限（逗号分隔字符串）。
+         * <p>将逗号分隔的权限字符串（如 {@code "ROLE_A,ROLE_B"}）拆分为权限列表。</p>
+         *
+         * @param commaSplitAuthorities 逗号分隔的权限字符串（非空）
+         * @return 当前构建器
+         */
+        public Builder authoritiesFromCommaSplitString(String commaSplitAuthorities) {
+            Assert.notNull(commaSplitAuthorities, "commaSplitAuthorities must not be null");
+            return authorities(AuthorityUtils.commaSeparatedStringToAuthorityList(commaSplitAuthorities));
         }
 
         /**

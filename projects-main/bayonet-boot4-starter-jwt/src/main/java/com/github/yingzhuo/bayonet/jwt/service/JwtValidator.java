@@ -3,6 +3,7 @@ package com.github.yingzhuo.bayonet.jwt.service;
 /**
  * JWT 验证器接口。
  * <p>验证 JWT token 的有效性并返回 {@link ValidatingResult}。</p>
+ * <p>验证状态见 {@link ValidatingResult.Status}。</p>
  *
  * @author 应卓
  * @see JwtCreator

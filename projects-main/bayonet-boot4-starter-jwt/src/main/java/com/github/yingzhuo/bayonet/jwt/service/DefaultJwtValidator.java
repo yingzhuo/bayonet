@@ -3,6 +3,8 @@ package com.github.yingzhuo.bayonet.jwt.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.*;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.github.yingzhuo.bayonet.jwt.DefaultJwtDescriptor;
 import com.github.yingzhuo.bayonet.jwt.JwtConstants;
 import com.github.yingzhuo.bayonet.jwt.blacklist.BlacklistManager;
 import com.github.yingzhuo.bayonet.jwt.blacklist.NoopBlacklistManager;
@@ -15,20 +17,20 @@ import java.util.Objects;
  * 基于 {@link Algorithm} 的默认 JWT 验证器。
  * <p>验证流程分为两个阶段：</p>
  * <ol>
- *   <li><b>黑名单检查</b> — 解码 token 后查询 {@link BlacklistManager}，若命中则返回 {@link ValidatingResult#INVALID_BLACKLISTED}</li>
+ *   <li><b>黑名单检查</b> — 解码 token 后查询 {@link BlacklistManager}，若命中则返回 {@link ValidatingResult.Status#INVALID_BLACKLISTED}</li>
  *   <li><b>签名与声明校验</b> — 使用 {@link VerificationCustomizer} 定制验证规则后，校验签名和声明</li>
  * </ol>
  *
  * <p>异常与返回值的映射关系：</p>
  * <table>
  *   <caption>异常-结果映射</caption>
- *   <tr><td>{@link JWTDecodeException}</td><td>→ {@link ValidatingResult#INVALID_JWT_FORMAT}</td></tr>
- *   <tr><td>{@link SignatureVerificationException}</td><td>→ {@link ValidatingResult#INVALID_SIGNATURE}</td></tr>
- *   <tr><td>{@link TokenExpiredException}</td><td>→ {@link ValidatingResult#INVALID_TIME}</td></tr>
- *   <tr><td>{@link MissingClaimException}</td><td>→ {@link ValidatingResult#INVALID_CLAIM}</td></tr>
- *   <tr><td>{@link IncorrectClaimException}（nbf / iat）</td><td>→ {@link ValidatingResult#INVALID_TIME}</td></tr>
- *   <tr><td>{@link IncorrectClaimException}（其他）</td><td>→ {@link ValidatingResult#INVALID_CLAIM}</td></tr>
- *   <tr><td>{@link JWTVerificationException}（其他）</td><td>→ {@link ValidatingResult#INVALID_JWT_FORMAT}</td></tr>
+ *   <tr><td>{@link JWTDecodeException}</td><td>→ {@link ValidatingResult.Status#INVALID_JWT_FORMAT}</td></tr>
+ *   <tr><td>{@link SignatureVerificationException}</td><td>→ {@link ValidatingResult.Status#INVALID_SIGNATURE}</td></tr>
+ *   <tr><td>{@link TokenExpiredException}</td><td>→ {@link ValidatingResult.Status#INVALID_TIME}</td></tr>
+ *   <tr><td>{@link MissingClaimException}</td><td>→ {@link ValidatingResult.Status#INVALID_CLAIM}</td></tr>
+ *   <tr><td>{@link IncorrectClaimException}（nbf / iat）</td><td>→ {@link ValidatingResult.Status#INVALID_TIME}</td></tr>
+ *   <tr><td>{@link IncorrectClaimException}（其他）</td><td>→ {@link ValidatingResult.Status#INVALID_CLAIM}</td></tr>
+ *   <tr><td>{@link JWTVerificationException}（其他）</td><td>→ {@link ValidatingResult.Status#INVALID_JWT_FORMAT}</td></tr>
  * </table>
  *
  * <pre>{@code
@@ -38,7 +40,7 @@ import java.util.Objects;
  *
  * @author 应卓
  * @see JwtValidator
- * @see ValidatingResult
+ * @see ValidatingResult.Status
  * @see VerificationCustomizer
  * @see BlacklistManager
  * @since 4.1.0
@@ -87,13 +89,15 @@ public class DefaultJwtValidator implements JwtValidator {
     public ValidatingResult validate(String token) {
         Assert.notNull(token, "token must not be null");
 
+        DecodedJWT decodedJwt;
         try {
-            var decodedToken = JWT.decode(token);
-            if (this.blacklistManager.isBlacklisted(token, decodedToken.getId())) {
-                return ValidatingResult.INVALID_BLACKLISTED;
-            }
+            decodedJwt = JWT.decode(token);
         } catch (JWTDecodeException e) {
-            return ValidatingResult.INVALID_JWT_FORMAT;
+            return failure(ValidatingResult.Status.INVALID_JWT_FORMAT);
+        }
+
+        if (this.blacklistManager.isBlacklisted(token, decodedJwt.getId())) {
+            return failure(ValidatingResult.Status.INVALID_BLACKLISTED);
         }
 
         try {
@@ -101,20 +105,26 @@ public class DefaultJwtValidator implements JwtValidator {
             verificationCustomizer.customize(verification);
             verification.build().verify(token);
         } catch (MissingClaimException ex) {
-            return ValidatingResult.INVALID_CLAIM;
+            return failure(ValidatingResult.Status.INVALID_CLAIM);
         } catch (IncorrectClaimException ex) {
             var claimName = ex.getClaimName();
             if (JwtConstants.PAYLOAD_NOT_BEFORE.equals(claimName) || JwtConstants.PAYLOAD_ISSUED_AT.equals(claimName)) {
-                return ValidatingResult.INVALID_TIME;
+                return failure(ValidatingResult.Status.INVALID_TIME);
             }
-            return ValidatingResult.INVALID_CLAIM;
+            return failure(ValidatingResult.Status.INVALID_CLAIM);
         } catch (TokenExpiredException ex) {
-            return ValidatingResult.INVALID_TIME;
+            return failure(ValidatingResult.Status.INVALID_TIME);
         } catch (SignatureVerificationException ex) {
-            return ValidatingResult.INVALID_SIGNATURE;
+            return failure(ValidatingResult.Status.INVALID_SIGNATURE);
         } catch (JWTVerificationException exception) {
-            return ValidatingResult.INVALID_JWT_FORMAT;
+            return failure(ValidatingResult.Status.INVALID_JWT_FORMAT);
         }
-        return ValidatingResult.OK;
+        return new ValidatingResult(ValidatingResult.Status.OK, new DefaultJwtDescriptor(decodedJwt));
+    }
+
+    // ------
+
+    private ValidatingResult failure(ValidatingResult.Status status) {
+        return new ValidatingResult(status, null);
     }
 }
