@@ -32,6 +32,7 @@ import java.util.Objects;
 import java.util.Properties;
 
 import static com.github.yingzhuo.bayonet.security.filter.AuthFilterHelper.ATTRIBUTE_AUTHENTICATION_NAME;
+import static com.github.yingzhuo.bayonet.security.filter.AuthFilterHelper.ATTRIBUTE_TOKEN_NAME;
 
 /**
  * 调试用的 Token 认证过滤器。
@@ -151,6 +152,7 @@ public class DebugTokenBasedAuthFilter extends OncePerRequestFilter implements A
             // noop
         } catch (AuthenticationException e) {
             securityContextHolderStrategy.clearContext();
+            request.removeAttribute(ATTRIBUTE_AUTHENTICATION_NAME);
         } catch (Exception e) {
             log.debug(e.getMessage(), e);
         }
