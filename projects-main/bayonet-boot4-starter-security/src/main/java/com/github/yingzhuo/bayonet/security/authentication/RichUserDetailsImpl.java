@@ -19,6 +19,7 @@ final class RichUserDetailsImpl implements RichUserDetails {
     private final @Nullable String id;
     private final @Nullable LocalDate dob;
     private final @Nullable String email;
+    private final @Nullable Object gender;
     private final String username;
     private final @Nullable String password;
     private final Set<GrantedAuthority> authorities;
@@ -31,6 +32,7 @@ final class RichUserDetailsImpl implements RichUserDetails {
             @Nullable String id,
             @Nullable LocalDate dob,
             @Nullable String email,
+            @Nullable Object gender,
             String username,
             @Nullable String password,
             Collection<? extends GrantedAuthority> authorities,
@@ -41,6 +43,7 @@ final class RichUserDetailsImpl implements RichUserDetails {
         this.id = id;
         this.dob = dob;
         this.email = email;
+        this.gender = gender;
         this.username = username;
         this.password = password;
         this.authorities = Set.copyOf(authorities);
@@ -63,6 +66,13 @@ final class RichUserDetailsImpl implements RichUserDetails {
     @Override
     public @Nullable String getEmail() {
         return email;
+    }
+
+    @Nullable
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T getGender() {
+        return (T) gender;
     }
 
     @Override

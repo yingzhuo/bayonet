@@ -23,7 +23,8 @@ import java.util.List;
  * @see RichUserDetailsImpl
  * @since 4.1.1
  */
-public interface RichUserDetails extends Identified, UserDetails {
+public sealed interface RichUserDetails extends Identified, UserDetails
+        permits RichUserDetailsImpl {
 
     /**
      * 获取 Builder 实例。
@@ -73,6 +74,16 @@ public interface RichUserDetails extends Identified, UserDetails {
     String getEmail();
 
     /**
+     * 获取性别。
+     * <p>性别类型不固定（可能是枚举或字符串），由调用方指定具体类型。</p>
+     *
+     * @param <T> 性别类型
+     * @return 性别，可为 {@code null}
+     */
+    @Nullable
+    <T> T getGender();
+
+    /**
      * {@link RichUserDetails} 构建器。
      */
     final class Builder {
@@ -80,6 +91,7 @@ public interface RichUserDetails extends Identified, UserDetails {
         private @Nullable String id;
         private @Nullable LocalDate dob;
         private @Nullable String email;
+        private @Nullable Object gender;
         private @Nullable String username;
         private @Nullable String password;
         private final List<GrantedAuthority> authorities = new ArrayList<>();
@@ -122,12 +134,25 @@ public interface RichUserDetails extends Identified, UserDetails {
         }
 
         /**
+         * 设置性别。
+         *
+         * @param gender 性别（枚举或字符串等），可为 {@code null}
+         * @return 当前构建器
+         */
+        public Builder gender(@Nullable Object gender) {
+            this.gender = gender;
+            return this;
+        }
+
+        /**
          * 设置用户名。
+         * <p>对应 {@link UserDetails#getUsername()}，接口要求非空。</p>
          *
          * @param username 用户名（非空）
          * @return 当前构建器
          */
         public Builder username(String username) {
+            Assert.hasText(username, "username must not be blank");
             this.username = username;
             return this;
         }
@@ -234,7 +259,7 @@ public interface RichUserDetails extends Identified, UserDetails {
         public RichUserDetails build() {
             Assert.hasText(username, "username must not be empty");
             return new RichUserDetailsImpl(
-                    id, dob, email, username, password, authorities,
+                    id, dob, email, gender, username, password, authorities,
                     enabled, accountNonExpired, credentialsNonExpired, accountNonLocked);
         }
     }
