@@ -32,6 +32,7 @@ import java.lang.annotation.*;
  * }</pre>
  *
  * @author 应卓
+ * @see CurrentUserId
  * @since 4.1.1
  */
 @Target(ElementType.PARAMETER)
