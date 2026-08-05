@@ -1,6 +1,6 @@
 package com.github.yingzhuo.bayonet.security.autoconfig;
 
-import com.github.yingzhuo.bayonet.security.mvc.CurrentTokenHandlerMethodArgumentResolver;
+import com.github.yingzhuo.bayonet.security.annotation.CurrentTokenHandlerMethodArgumentResolver;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
