@@ -2,7 +2,6 @@ package com.github.yingzhuo.bayonet.actuator.autoconfig;
 
 import com.github.yingzhuo.bayonet.actuator.SecurityProvidersEndpoint;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -22,7 +21,6 @@ public class ActuatorAutoConfiguration {
      * @return {@link SecurityProvidersEndpoint}（非 {@code null}）
      */
     @Bean
-    @ConditionalOnMissingBean
     public SecurityProvidersEndpoint securityProvidersEndpoint() {
         return new SecurityProvidersEndpoint();
     }

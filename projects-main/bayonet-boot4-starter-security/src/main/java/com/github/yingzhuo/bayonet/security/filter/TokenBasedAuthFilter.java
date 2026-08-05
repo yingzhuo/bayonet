@@ -92,8 +92,6 @@ public class TokenBasedAuthFilter extends OncePerRequestFilter implements Applic
             log.debug("token = {}", token);
         }
 
-        request.setAttribute(ATTRIBUTE_TOKEN_NAME, token); // 偷偷放在request里
-
         if (applicationEventPublisher != null) {
             applicationEventPublisher.publishEvent(new TokenResolvedEvent(currentWebRequest, token));
         }
@@ -115,14 +113,19 @@ public class TokenBasedAuthFilter extends OncePerRequestFilter implements Applic
                 rememberMeServices.loginSuccess(request, response, auth);
             }
 
-            request.setAttribute(ATTRIBUTE_AUTHENTICATION_NAME, auth); // 偷偷放在request里
             securityContextHolderStrategy.getContext().setAuthentication(auth);
+
+            request.setAttribute(ATTRIBUTE_TOKEN_NAME, token); // 偷偷放在request里
+            request.setAttribute(ATTRIBUTE_AUTHENTICATION_NAME, auth); // 偷偷放在request里
 
             if (applicationEventPublisher != null) {
                 applicationEventPublisher.publishEvent(new AuthenticationSuccessEvent(currentWebRequest, token, auth));
             }
 
         } catch (AuthenticationException e) {
+            request.removeAttribute(ATTRIBUTE_AUTHENTICATION_NAME);
+            request.removeAttribute(ATTRIBUTE_TOKEN_NAME);
+
             securityContextHolderStrategy.clearContext();
 
             if (rememberMeServices != null) {

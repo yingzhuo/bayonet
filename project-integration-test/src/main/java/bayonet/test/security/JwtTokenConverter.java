@@ -7,14 +7,13 @@ import com.github.yingzhuo.bayonet.security.token.TokenConverter;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 @Component
 @RequiredArgsConstructor
-public class MyTokenConverter implements TokenConverter {
+public class JwtTokenConverter implements TokenConverter {
 
     private final JwtValidator jwtValidator;
 
@@ -32,9 +31,7 @@ public class MyTokenConverter implements TokenConverter {
         return RichUserDetails
                 .builder()
                 .username(decoded.getClaim("username").asString())
-                .authorities(AuthorityUtils.commaSeparatedStringToAuthorityList(
-                        decoded.getClaim("authorities").asString()
-                ))
+                .authoritiesFromCommaSplitString(decoded.getClaim("authorities").asString())
                 .build();
     }
 

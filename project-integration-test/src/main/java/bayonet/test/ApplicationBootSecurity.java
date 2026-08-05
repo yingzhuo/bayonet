@@ -36,7 +36,7 @@ import static org.springframework.http.HttpMethod.GET;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@AdditionalDebugAuthFilter
+@AdditionalDebugAuthFilter(skipIfAnyProfileActivated = "prod")
 @AdditionalSecurityFilter(value = LoggingFilter.class, positionFilterType = DisableEncodeUrlFilter.class)
 @AdditionalSecurityFilter(value = TokenBasedAuthFilter.class)
 public class ApplicationBootSecurity {
@@ -105,7 +105,7 @@ public class ApplicationBootSecurity {
                 .authorizeHttpRequests(c ->
                         c.requestMatchers("/error").permitAll()
                                 .requestMatchers(GET, "/actuator", "/actuator/info", "/actuator/health",
-                                        "/actuator/beans", "/actuator/env", "/actuator/prometheus").permitAll()
+                                        "/actuator/beans", "/actuator/env", "/actuator/securityproviders").permitAll()
                                 .requestMatchers("/actuator/shutdown", "/actuator/restart").denyAll()
                                 .requestMatchers("/user/login").permitAll()
                                 .requestMatchers("/user/test-jwt").authenticated()
