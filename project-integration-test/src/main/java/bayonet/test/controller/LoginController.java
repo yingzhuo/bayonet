@@ -2,13 +2,13 @@ package bayonet.test.controller;
 
 import com.github.yingzhuo.bayonet.jwt.service.JwtCreator;
 import com.github.yingzhuo.bayonet.jwt.service.JwtData;
-import com.github.yingzhuo.bayonet.security.mvc.CurrentToken;
+import com.github.yingzhuo.bayonet.security.annotation.CurrentUserDetails;
 import com.github.yingzhuo.bayonet.utility.UUIDUtils;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.Assert;
@@ -56,9 +56,10 @@ public class LoginController {
     }
 
     @GetMapping("/test-jwt")
-    public Map<String, Object> testJwt(@CurrentToken String jwt, Authentication authentication) {
-        log.debug("jwt: {}", jwt);
-        log.debug("authentication: {}", authentication);
+    public Map<String, Object> testJwt(
+            @CurrentUserDetails UserDetails user
+    ) {
+        log.debug("user: {}", user);
         return Map.of();
     }
 
