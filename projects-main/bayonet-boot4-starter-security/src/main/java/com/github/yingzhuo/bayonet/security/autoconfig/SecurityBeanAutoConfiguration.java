@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.security.autoconfig;
 
+import com.github.yingzhuo.bayonet.security.authentication.RichUserDetailsConverter;
 import com.github.yingzhuo.bayonet.security.password.PasswordEncoderFactories;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -15,4 +16,8 @@ public class SecurityBeanAutoConfiguration {
         return PasswordEncoderFactories.createMinimal();
     }
 
+    @Bean
+    public RichUserDetailsConverter richUserDetailsConverter() {
+        return new RichUserDetailsConverter();
+    }
 }
