@@ -1,5 +1,7 @@
 package com.github.yingzhuo.bayonet.secret;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Locale;
@@ -14,20 +16,22 @@ import java.util.Locale;
  * </ul>
  *
  * @author 应卓
- * @see KeyStoreTypeConverter
+ * @see StoreTypeConverter
  * @since 4.1.0
  */
-public enum KeyStoreType {
+@Getter
+@RequiredArgsConstructor
+public enum StoreType {
 
     /**
      * PKCS#12
      */
-    PKCS12,
+    PKCS12(null),
 
     /**
      * JKS
      */
-    JKS,
+    JKS(null),
 
     /**
      * BCFKS（Bouncy Castle KeyStore）。
@@ -35,19 +39,25 @@ public enum KeyStoreType {
      *
      * @since 4.1.1
      */
-    BCFKS;
+    BCFKS("BC");
+
+    /**
+     *
+     */
+    @Nullable
+    private final String providerName;
 
     /**
      * 获取默认 KeyStore 类型。
      *
      * @return {@link #PKCS12}
      */
-    public static KeyStoreType getDefault() {
+    public static StoreType getDefault() {
         return PKCS12;
     }
 
     /**
-     * 将字符串解析为 {@link KeyStoreType}。
+     * 将字符串解析为 {@link StoreType}。
      * <p>支持的字符串值（不区分大小写）：</p>
      * <ul>
      *   <li>{@code pkcs12}、{@code pkcs#12}、{@code pfx}、{@code p12} → {@link #PKCS12}</li>
@@ -56,12 +66,12 @@ public enum KeyStoreType {
      * </ul>
      *
      * @param type 字符串类型，为 {@code null} 时返回默认值 {@link #PKCS12}
-     * @return 匹配的 {@link KeyStoreType}
+     * @return 匹配的 {@link StoreType}
      * @throws IllegalArgumentException 无法识别的类型字符串
-     * @see KeyStoreTypeConverter
+     * @see StoreTypeConverter
      * @since 4.1.1
      */
-    public static KeyStoreType toKeyStore(@Nullable String type) {
+    public static StoreType toKeyStore(@Nullable String type) {
         if (type == null) {
             return getDefault();
         }

@@ -37,7 +37,7 @@ class KeyStoreUtilsTest {
 
     @Test
     void should_throw_when_loadKeyStore_inputStreamIsNull() {
-        assertThatThrownBy(() -> KeyStoreUtils.loadKeyStore((InputStream) null, KeyStoreType.PKCS12, "pass"))
+        assertThatThrownBy(() -> KeyStoreUtils.loadKeyStore((InputStream) null, StoreType.PKCS12, "pass"))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -50,14 +50,14 @@ class KeyStoreUtilsTest {
 
     @Test
     void should_throw_when_loadKeyStore_storepassIsNull() {
-        assertThatThrownBy(() -> KeyStoreUtils.loadKeyStore(InputStream.nullInputStream(), KeyStoreType.PKCS12, null))
+        assertThatThrownBy(() -> KeyStoreUtils.loadKeyStore(InputStream.nullInputStream(), StoreType.PKCS12, null))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     void should_throw_when_loadKeyStore_invalidStream() {
         var invalid = new ByteArrayInputStream("not-a-keystore".getBytes());
-        assertThatThrownBy(() -> KeyStoreUtils.loadKeyStore(invalid, KeyStoreType.PKCS12, "pass"))
+        assertThatThrownBy(() -> KeyStoreUtils.loadKeyStore(invalid, StoreType.PKCS12, "pass"))
                 .isInstanceOf(UncheckedIOException.class);
     }
 

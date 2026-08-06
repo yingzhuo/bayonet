@@ -47,42 +47,6 @@ public class LoggingFilter extends OncePerRequestFilter {
         this.logLevel = logLevel;
     }
 
-    private static String getRequestPath(HttpServletRequest request) {
-        var uri = request.getRequestURI();
-        var query = request.getQueryString();
-        return query != null ? uri + "?" + query : uri;
-    }
-
-    private static Map<String, String> getParams(HttpServletRequest request) {
-        var params = request.getParameterMap();
-        if (params.isEmpty()) {
-            return Map.of();
-        }
-        var result = new LinkedHashMap<String, String>();
-        for (var entry : params.entrySet()) {
-            result.put(entry.getKey(), String.join(",", entry.getValue()));
-        }
-        return Map.copyOf(result);
-    }
-
-    private static String formatParams(Map<String, String> params) {
-        if (params.isEmpty()) {
-            return "        (none)";
-        }
-        return params.entrySet().stream()
-                .map(e -> "        " + e.getKey() + ": " + e.getValue())
-                .collect(Collectors.joining("\n"));
-    }
-
-    private static String formatHeaders(Map<String, String> headers) {
-        if (headers.isEmpty()) {
-            return "        (none)";
-        }
-        return headers.entrySet().stream()
-                .map(e -> "        " + e.getKey() + ": " + e.getValue())
-                .collect(Collectors.joining("\n"));
-    }
-
     /**
      * 设置敏感头部。
      * <p>匹配到的头部不会出现在日志中，匹配不区分大小写。</p>
@@ -125,6 +89,8 @@ public class LoggingFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    // ------
+
     private Map<String, String> getHeaders(HttpServletRequest request) {
         var names = request.getHeaderNames();
         if (names == null || !names.hasMoreElements()) {
@@ -139,4 +105,41 @@ public class LoggingFilter extends OncePerRequestFilter {
         }
         return result;
     }
+
+    private String getRequestPath(HttpServletRequest request) {
+        var uri = request.getRequestURI();
+        var query = request.getQueryString();
+        return query != null ? uri + "?" + query : uri;
+    }
+
+    private Map<String, String> getParams(HttpServletRequest request) {
+        var params = request.getParameterMap();
+        if (params.isEmpty()) {
+            return Map.of();
+        }
+        var result = new LinkedHashMap<String, String>();
+        for (var entry : params.entrySet()) {
+            result.put(entry.getKey(), String.join(",", entry.getValue()));
+        }
+        return Map.copyOf(result);
+    }
+
+    private String formatParams(Map<String, String> params) {
+        if (params.isEmpty()) {
+            return "        (none)";
+        }
+        return params.entrySet().stream()
+                .map(e -> "        " + e.getKey() + ": " + e.getValue())
+                .collect(Collectors.joining("\n"));
+    }
+
+    private String formatHeaders(Map<String, String> headers) {
+        if (headers.isEmpty()) {
+            return "        (none)";
+        }
+        return headers.entrySet().stream()
+                .map(e -> "        " + e.getKey() + ": " + e.getValue())
+                .collect(Collectors.joining("\n"));
+    }
+
 }
