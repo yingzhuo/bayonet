@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
@@ -37,24 +38,21 @@ public final class KeyStoreUtils {
      * <p>方法内部不会关闭传入的输入流。输入流是谁打开的，谁负责关闭。</p>
      *
      * @param stream    KeyStore 输入流（非 {@code null}）
-     * @param type      KeyStore 类型，为 {@code null} 时使用默认类型 {@link KeyStoreType#PKCS12}
+     * @param type      KeyStore 类型，为 {@code null} 时使用默认类型 {@link StoreType#PKCS12}
      * @param storepass KeyStore 密码（非 {@code null}）
      * @return 已加载的 {@link KeyStore}（非 {@code null}）
      * @throws IllegalArgumentException 若参数为 {@code null} 或加载失败
      * @throws UncheckedIOException     读取输入流失败时抛出
      */
-    public static KeyStore loadKeyStore(InputStream stream, @Nullable KeyStoreType type, String storepass) {
+    public static KeyStore loadKeyStore(InputStream stream, @Nullable StoreType type, String storepass) {
         Assert.notNull(stream, "inputStream is required");
         Assert.notNull(storepass, "storepass is required");
 
-        type = Objects.requireNonNullElseGet(type, KeyStoreType::getDefault);
+        type = Objects.requireNonNullElseGet(type, StoreType::getDefault);
 
         try {
-            var keyStore = type == KeyStoreType.BCFKS
-                    ? KeyStore.getInstance(type.name(), "BC")
-                    : KeyStore.getInstance(type.name());
+            var keyStore = getInstance(type);
             keyStore.load(stream, storepass.toCharArray());
-
             return keyStore;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -68,13 +66,13 @@ public final class KeyStoreUtils {
      * <p>本方法负责打开并关闭资源流。</p>
      *
      * @param resource  KeyStore 资源（非 {@code null}）
-     * @param type      KeyStore 类型，为 {@code null} 时使用默认类型 {@link KeyStoreType#PKCS12}
+     * @param type      KeyStore 类型，为 {@code null} 时使用默认类型 {@link StoreType#PKCS12}
      * @param storepass KeyStore 密码（非 {@code null}）
      * @return 已加载的 {@link KeyStore}（非 {@code null}）
      * @throws IllegalArgumentException 若参数为 {@code null} 或加载失败
      * @throws UncheckedIOException     读取资源失败时抛出
      */
-    public static KeyStore loadKeyStore(Resource resource, @Nullable KeyStoreType type, String storepass) {
+    public static KeyStore loadKeyStore(Resource resource, @Nullable StoreType type, String storepass) {
         Assert.notNull(resource, "resource is required");
         try (var in = resource.getInputStream()) {
             return loadKeyStore(in, type, storepass);
@@ -327,4 +325,14 @@ public final class KeyStoreUtils {
         }
         throw new IllegalArgumentException("cannot get " + attrName);
     }
+
+    private static KeyStore getInstance(StoreType type) throws KeyStoreException, NoSuchProviderException {
+        var providerName = type.getProviderName();
+        if (StringUtils.hasText(providerName)) {
+            return KeyStore.getInstance(type.name(), providerName);
+        } else {
+            return KeyStore.getInstance(type.name());
+        }
+    }
+
 }

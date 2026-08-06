@@ -1,7 +1,7 @@
 package bayonet.test;
 
 import com.github.yingzhuo.bayonet.jwt.algorithm.SM2Algorithm;
-import com.github.yingzhuo.bayonet.secret.KeyStoreType;
+import com.github.yingzhuo.bayonet.secret.StoreType;
 import com.github.yingzhuo.bayonet.secret.SecretBox;
 import com.github.yingzhuo.bayonet.utility.AES;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class ApplicationBootSecret {
     public SecretBox secretBox() {
         var sb = SecretBox.fromKeyStore()
                 .resource(new ClassPathResource("secret/secret-box.bcfks"))
-                .type(KeyStoreType.BCFKS)
+                .type(StoreType.BCFKS)
                 .storepass("123456")
                 .build();
         log.info("secret box: {}", sb);

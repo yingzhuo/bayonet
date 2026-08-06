@@ -18,14 +18,22 @@ public class BouncyCastleInstallingEnvironmentPostProcessor extends AbstractEnvi
     private static final String BC_PROVIDER_NAME = "BC";
     private static final String BC_PROVIDER_CLASS_NAME = "org.bouncycastle.jce.provider.BouncyCastleProvider";
 
+    /**
+     * 构造器
+     *
+     * @param logFactory 日志工厂
+     */
     public BouncyCastleInstallingEnvironmentPostProcessor(DeferredLogFactory logFactory) {
         super(logFactory);
+        setOrder(HIGHEST_PRECEDENCE);
     }
 
     @Override
     protected void doProcess(Log log, ConfigurableEnvironment environment) {
+        // BTW: JCE 的意思是 Java Cryptography Extension (Java语言密码扩展)
         try {
             if (Security.getProvider(BC_PROVIDER_NAME) != null) {
+                log.debug("BouncyCastle JCE provider already installed. Skipping");
                 return;
             }
 

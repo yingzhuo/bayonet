@@ -20,8 +20,8 @@ import java.util.*;
  *
  * <pre>{@code
  * var box = SecretBox.fromKeyStore()
- *         .resource(new ClassPathResource("keystore.p12"))
- *         .type(KeyStoreType.PKCS12)
+ *         .resource(new ClassPathResource("security/keystore.pfx"))
+ *         .type(StoreType.PKCS12)
  *         .storepass("storepass")
  *         .alias("jwt", "keypass")
  *         .build();
@@ -30,7 +30,7 @@ import java.util.*;
  * <p>实现 {@link Iterable}，可直接迭代 KeyStore 中所有别名。</p>
  *
  * @author 应卓
- * @see KeyStoreType
+ * @see StoreType
  * @see KeyStoreUtils
  * @see KeyStoreSecretBox
  * @since 4.1.1
@@ -191,7 +191,7 @@ public interface SecretBox extends Iterable<String> {
 
         private final Map<String, String> aliasToKeypass = new LinkedHashMap<>();
         private @Nullable Resource resource;
-        private KeyStoreType type = KeyStoreType.getDefault();
+        private StoreType type = StoreType.getDefault();
         private @Nullable String storepass;
 
         /**
@@ -210,10 +210,10 @@ public interface SecretBox extends Iterable<String> {
          *
          * @param type 类型，为 {@code null} 时使用默认类型
          * @return 当前构建器
-         * @see KeyStoreType
+         * @see StoreType
          */
-        public KeyStoreKindBuilder type(@Nullable KeyStoreType type) {
-            this.type = type != null ? type : KeyStoreType.getDefault();
+        public KeyStoreKindBuilder type(@Nullable StoreType type) {
+            this.type = type != null ? type : StoreType.getDefault();
             return this;
         }
 
@@ -222,10 +222,10 @@ public interface SecretBox extends Iterable<String> {
          *
          * @param type 类型字符串，如 {@code "PKCS12"}、{@code "JKS"}，为 {@code null} 时使用默认类型
          * @return 当前构建器
-         * @see KeyStoreType#toKeyStore(String)
+         * @see StoreType#toKeyStore(String)
          */
         public KeyStoreKindBuilder type(@Nullable String type) {
-            this.type = KeyStoreType.toKeyStore(type);
+            this.type = StoreType.toKeyStore(type);
             return this;
         }
 

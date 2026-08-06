@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
 public class KeyStoreSecretBox implements SecretBox {
 
     private final Resource resource;
-    private final KeyStoreType type;
+    private final StoreType type;
     private final String storepass;
     private final Map<String, String> aliasToKeypass;
     private volatile @Nullable KeyStore keyStore;
@@ -40,7 +40,7 @@ public class KeyStoreSecretBox implements SecretBox {
      * @param type      KeyStore 类型，为 {@code null} 时使用默认类型
      * @param storepass 存储密码（非空）
      */
-    public KeyStoreSecretBox(Resource resource, @Nullable KeyStoreType type, String storepass) {
+    public KeyStoreSecretBox(Resource resource, @Nullable StoreType type, String storepass) {
         this(resource, type, storepass, null);
     }
 
@@ -53,11 +53,11 @@ public class KeyStoreSecretBox implements SecretBox {
      * @param storepass      存储密码（非空）
      * @param aliasToKeypass 别名到密钥密码的映射，为 {@code null} 时视为空映射
      */
-    public KeyStoreSecretBox(Resource resource, @Nullable KeyStoreType type, String storepass, @Nullable Map<String, String> aliasToKeypass) {
+    public KeyStoreSecretBox(Resource resource, @Nullable StoreType type, String storepass, @Nullable Map<String, String> aliasToKeypass) {
         Assert.notNull(resource, "resource must not be null");
         Assert.hasText(storepass, "storepass must not be empty");
         this.resource = resource;
-        this.type = type != null ? type : KeyStoreType.getDefault();
+        this.type = type != null ? type : StoreType.getDefault();
         this.storepass = storepass;
         this.aliasToKeypass = aliasToKeypass != null ? Collections.unmodifiableMap(aliasToKeypass) : Map.of();
     }
