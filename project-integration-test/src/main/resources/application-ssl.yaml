@@ -5,8 +5,12 @@ spring:
         "server":
           reload-on-update: false
           keystore:
-            location: "classpath:secret/ssl.pfx"
+            location: "classpath:secret/secret-box.bcfks"
             password: "123456"
+            type: "BCFKS"
+            provider: "BC"
+          key:
+            alias: "tomcat-ssl"
       pem:
         "client":
           reload-on-update: false
