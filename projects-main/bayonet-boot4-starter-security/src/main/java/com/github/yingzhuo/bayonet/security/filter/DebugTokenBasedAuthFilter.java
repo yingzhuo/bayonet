@@ -1,7 +1,6 @@
 package com.github.yingzhuo.bayonet.security.filter;
 
 import com.github.yingzhuo.bayonet.security.authentication.RichUserDetails;
-import com.github.yingzhuo.bayonet.security.memory.InMemoryUserDetailsService;
 import com.github.yingzhuo.bayonet.security.token.TokenConverter;
 import com.github.yingzhuo.bayonet.utility.collection.ArrayUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +9,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import java.util.Collection;
 
@@ -36,7 +36,7 @@ public class DebugTokenBasedAuthFilter extends TokenBasedAuthFilter {
         if (ArrayUtils.isEmpty(users)) {
             throw new IllegalArgumentException("users must not be empty");
         }
-        super.setTokenConverter(new DebugTokenConverter(new InMemoryUserDetailsService(users)));
+        super.setTokenConverter(new DebugTokenConverter(new InMemoryUserDetailsManager(users)));
     }
 
     /**
@@ -50,7 +50,7 @@ public class DebugTokenBasedAuthFilter extends TokenBasedAuthFilter {
 
     @Override
     public void setTokenConverter(TokenConverter tokenConverter) {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("DebugTokenBasedAuthFilter does not support token converter setting");
     }
 
     // ------
