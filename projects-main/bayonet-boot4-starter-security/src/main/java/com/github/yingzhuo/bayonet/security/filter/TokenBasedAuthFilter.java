@@ -75,7 +75,7 @@ public class TokenBasedAuthFilter extends OncePerRequestFilter implements Applic
         Assert.notNull(tokenConverter, "tokenConverter is required");
 
         if (AuthFilterHelper.authenticationIsNotRequired(securityContextHolderStrategy)) {
-            log.debug("Authentication NOT required. Skipping authentication");
+            log.debug("authentication NOT required. skipping...");
             filterChain.doFilter(request, response);
             return;
         }
@@ -85,11 +85,9 @@ public class TokenBasedAuthFilter extends OncePerRequestFilter implements Applic
         // 解析 token
         var token = tokenResolver.resolve(currentWebRequest);
         if (token == null) {
-            log.debug("Token cannot be resolved. Skipping authentication");
+            log.debug("token cannot be resolved. skipping...");
             filterChain.doFilter(request, response);
             return;
-        } else {
-            log.debug("token = {}", token);
         }
 
         if (applicationEventPublisher != null) {
@@ -101,6 +99,8 @@ public class TokenBasedAuthFilter extends OncePerRequestFilter implements Applic
             var userDetails = tokenConverter.convert(token);
 
             if (userDetails == null) {
+                log.debug("could not convert token to UserDetails: token={}", token);
+                log.debug("skipping...");
                 filterChain.doFilter(request, response);
                 return;
             }

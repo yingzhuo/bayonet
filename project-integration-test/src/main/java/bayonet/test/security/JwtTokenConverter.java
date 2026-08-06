@@ -25,13 +25,13 @@ public class JwtTokenConverter implements TokenConverter {
             return null;
         }
 
-        var decoded = result.descriptor();
-        Assert.state(decoded != null, "failed to decode token");
+        var descriptor = result.descriptor();
+        Assert.state(descriptor != null, "failed to decode token");
 
         return RichUserDetails
                 .builder()
-                .username(decoded.getClaim("username").asString())
-                .authoritiesFromCommaSplitString(decoded.getClaim("authorities").asString())
+                .username(descriptor.getClaim("username").asString())
+                .authoritiesFromCommaSplitString(descriptor.getClaim("authorities").asString())
                 .build();
     }
 

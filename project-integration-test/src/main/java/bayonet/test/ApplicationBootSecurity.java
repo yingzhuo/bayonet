@@ -1,6 +1,5 @@
 package bayonet.test;
 
-import com.github.yingzhuo.bayonet.security.authentication.RichUserDetails;
 import com.github.yingzhuo.bayonet.security.configurer.AdditionalDebugAuthFilter;
 import com.github.yingzhuo.bayonet.security.configurer.AdditionalSecurityFilter;
 import com.github.yingzhuo.bayonet.security.filter.DebugTokenBasedAuthFilter;
@@ -19,7 +18,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.RequestCacheConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -27,8 +25,7 @@ import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.session.DisableEncodeUrlFilter;
 
-import java.util.List;
-
+import static bayonet.test.security.PredefinedUsers.createDefaults;
 import static org.springframework.http.HttpMethod.GET;
 
 @Slf4j
@@ -42,12 +39,12 @@ public class ApplicationBootSecurity {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(createInMemoryUsers());
+        return new InMemoryUserDetailsManager(createDefaults());
     }
 
     @Bean
     public DebugTokenBasedAuthFilter debugTokenBasedAuthFilter() {
-        var filter = new DebugTokenBasedAuthFilter(createInMemoryUsers());
+        var filter = new DebugTokenBasedAuthFilter(createDefaults());
         filter.setTokenResolver(new HttpHeaderTokenResolver("X-Token"));
         return filter;
     }
@@ -106,17 +103,6 @@ public class ApplicationBootSecurity {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return customizer -> customizer.debug(false);
-    }
-
-    // ------
-
-    private List<UserDetails> createInMemoryUsers() {
-        return List.of(
-                RichUserDetails.builder()
-                        .username("admin")
-                        .roles("ADMIN", "USER")
-                        .build()
-        );
     }
 
 }
