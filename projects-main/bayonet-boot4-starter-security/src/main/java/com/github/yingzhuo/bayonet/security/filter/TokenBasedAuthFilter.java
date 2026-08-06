@@ -12,8 +12,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.security.core.Authentication;
@@ -57,9 +58,10 @@ import static com.github.yingzhuo.bayonet.security.filter.AuthFilterHelper.ATTRI
  * @author 应卓
  * @since 4.1.0
  */
-@Slf4j
 @Setter
 public class TokenBasedAuthFilter extends OncePerRequestFilter implements ApplicationEventPublisherAware {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
     private TokenResolver tokenResolver = new BearerHeaderTokenResolver();

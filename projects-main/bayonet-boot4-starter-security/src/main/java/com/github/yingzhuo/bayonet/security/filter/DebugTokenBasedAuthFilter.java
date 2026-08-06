@@ -4,7 +4,6 @@ import com.github.yingzhuo.bayonet.security.authentication.RichUserDetails;
 import com.github.yingzhuo.bayonet.security.authentication.RichUserDetailsConverter;
 import com.github.yingzhuo.bayonet.security.token.TokenConverter;
 import com.github.yingzhuo.bayonet.utility.collection.ArrayUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.AuthenticationException;
@@ -32,7 +31,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @author 应卓
  * @since 4.1.1
  */
-@Slf4j
 public class DebugTokenBasedAuthFilter extends TokenBasedAuthFilter {
 
     /**
