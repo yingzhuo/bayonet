@@ -51,9 +51,10 @@ public final class KeyStoreUtils {
 
         try {
             var keyStore = type == KeyStoreType.BCFKS
-                    ? KeyStore.getInstance("BCFKS", "BC") // BCFKS 由 BouncyCastleProvider 提供
+                    ? KeyStore.getInstance(type.name(), "BC")
                     : KeyStore.getInstance(type.name());
             keyStore.load(stream, storepass.toCharArray());
+
             return keyStore;
         } catch (IOException e) {
             throw new UncheckedIOException(e);

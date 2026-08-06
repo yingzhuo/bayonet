@@ -39,6 +39,7 @@ secrets/
 *.pfx
 *.p12
 *.jks
+*.bcfks
 
 # 日志
 *.log
