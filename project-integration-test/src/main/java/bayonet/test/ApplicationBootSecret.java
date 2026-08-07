@@ -1,8 +1,8 @@
 package bayonet.test;
 
 import com.github.yingzhuo.bayonet.jwt.algorithm.SM2Algorithm;
-import com.github.yingzhuo.bayonet.secret.StoreType;
 import com.github.yingzhuo.bayonet.secret.SecretBox;
+import com.github.yingzhuo.bayonet.secret.StoreType;
 import com.github.yingzhuo.bayonet.utility.AES;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
