@@ -9,18 +9,3 @@ tasks.withType<Wrapper>().configureEach {
     networkTimeout = 30000
     distributionType = Wrapper.DistributionType.ALL
 }
-
-tasks.named("clean") {
-    finalizedBy("tidy")
-}
-
-tasks.register<Delete>("tidy") {
-    description = "Delete useless files."
-    group = LifecycleBasePlugin.BUILD_GROUP
-
-    doLast {
-        delete(fileTree(rootDir) {
-            include("**/.DS_Store", "**/*.log")
-        })
-    }
-}
