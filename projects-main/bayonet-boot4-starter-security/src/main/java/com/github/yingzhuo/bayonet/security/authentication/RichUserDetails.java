@@ -1,6 +1,8 @@
 package com.github.yingzhuo.bayonet.security.authentication;
 
 import com.github.yingzhuo.bayonet.common.Identified;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -88,6 +90,7 @@ public sealed interface RichUserDetails extends Identified, UserDetails
     /**
      * {@link RichUserDetails} 构建器。
      */
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     final class Builder {
 
         private final List<GrantedAuthority> authorities = new ArrayList<>();

@@ -55,7 +55,6 @@ public final class PasswordEncoderFactories {
      *   <li>{@code SHA-256} — SHA-256 (已弃用)</li>
      *   <li>{@code sha256} — Standard SHA-256 (已弃用)</li>
      *   <li>{@code argon2} — Argon2</li>
-     *   <li>{@code SM3} — 国密 SM3 (需要SPI支持)</li>
      * </ul>
      *
      * @return DelegatingPasswordEncoder 实例
