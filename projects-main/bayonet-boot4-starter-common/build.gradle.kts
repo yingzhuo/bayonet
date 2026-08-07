@@ -12,6 +12,7 @@ dependencies {
     // test
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.bouncycastle:bcprov-jdk18on")
 
     // spring-boot & spring
     testImplementation("org.springframework.boot:spring-boot-starter-test")
