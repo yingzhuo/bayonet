@@ -1,6 +1,7 @@
 package bayonet.test;
 
 import bayonet.test.security.ExceptionHandlers;
+import bayonet.test.tool.RuntimeHelper;
 import com.github.yingzhuo.bayonet.security.configurer.AdditionalDebugAuthFilter;
 import com.github.yingzhuo.bayonet.security.configurer.AdditionalSecurityFilter;
 import com.github.yingzhuo.bayonet.security.filter.DebugTokenBasedAuthFilter;
@@ -13,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -118,7 +118,7 @@ public class ApplicationBootSecurity {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(Environment environment) {
-        return customizer -> customizer.debug(environment.acceptsProfiles(Profiles.of("dev")));
+        return customizer -> customizer.debug(RuntimeHelper.isDevProfileActive(environment));
     }
 
 }
