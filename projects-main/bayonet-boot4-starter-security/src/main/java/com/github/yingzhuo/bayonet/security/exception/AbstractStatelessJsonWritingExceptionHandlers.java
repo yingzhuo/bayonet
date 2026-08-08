@@ -74,7 +74,8 @@ import java.util.Objects;
  * @see AuthenticationEntryPoint
  * @see AccessDeniedHandler
  * @see RequestRejectedHandler
- * @see org.springframework.security.config.annotation.web.builders.HttpSecurity
+ * @see SecurityFilterChain
+ * @see org.springframework.security.web.firewall.HttpFirewall
  * @since 4.1.1
  */
 public abstract class AbstractStatelessJsonWritingExceptionHandlers implements AuthenticationEntryPoint, AccessDeniedHandler, RequestRejectedHandler {
