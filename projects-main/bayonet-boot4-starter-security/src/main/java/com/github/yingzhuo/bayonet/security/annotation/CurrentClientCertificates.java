@@ -1,9 +1,7 @@
 package com.github.yingzhuo.bayonet.security.annotation;
 
 import java.lang.annotation.*;
-
 import java.security.cert.X509Certificate;
-import java.util.List;
 
 /**
  * 标记控制器方法参数以注入当前请求的客户端证书链。
