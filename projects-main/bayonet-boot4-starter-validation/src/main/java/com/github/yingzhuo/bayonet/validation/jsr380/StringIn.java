@@ -33,7 +33,7 @@ public @interface StringIn {
      *
      * @return 消息模板
      */
-    String message() default "{string.in.invalid}";
+    String message() default "{stringIn.invalid}";
 
     /**
      * 分组。
