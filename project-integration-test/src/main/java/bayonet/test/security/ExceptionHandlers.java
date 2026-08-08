@@ -1,6 +1,6 @@
 package bayonet.test.security;
 
-import com.github.yingzhuo.bayonet.security.exception.StatelessJsonWritingExceptionHandler;
+import com.github.yingzhuo.bayonet.security.exception.AbstractStatelessJsonWritingExceptionHandlers;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.AccessDeniedException;
@@ -12,7 +12,7 @@ import tools.jackson.databind.json.JsonMapper;
 import java.util.Map;
 
 @Component
-public class ExceptionHandlers extends StatelessJsonWritingExceptionHandler {
+public class ExceptionHandlers extends AbstractStatelessJsonWritingExceptionHandlers {
 
     public ExceptionHandlers(JsonMapper jsonMapper) {
         super(-1, jsonMapper);

@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.security.autoconfig;
 
+import com.github.yingzhuo.bayonet.security.annotation.CurrentClientCertificatesHandlerMethodArgumentResolver;
 import com.github.yingzhuo.bayonet.security.annotation.CurrentTokenHandlerMethodArgumentResolver;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -15,6 +16,7 @@ public class SecurityMvcAutoConfiguration implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new CurrentTokenHandlerMethodArgumentResolver());
+        resolvers.add(new CurrentClientCertificatesHandlerMethodArgumentResolver());
     }
 
 }
