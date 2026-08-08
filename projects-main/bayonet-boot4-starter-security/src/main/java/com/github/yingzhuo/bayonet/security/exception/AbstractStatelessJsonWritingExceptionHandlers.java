@@ -35,7 +35,7 @@ import java.util.Objects;
  * 则使用默认实例。</p>
  *
  * <pre>{@code
- * public class MyExceptionHandler extends AbstractStatelessJsonWritingExceptionHandlers {
+ * public class MyExceptionHandlers extends AbstractStatelessJsonWritingExceptionHandlers {
  *
  *     @Override
  *     protected Object handleAuthenticationException(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex) {
