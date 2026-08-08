@@ -6,6 +6,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.security.web.firewall.RequestRejectedHandler;
@@ -23,11 +24,18 @@ import java.util.Objects;
  * 与 {@link #handleRequestRejectedException} 三个抽象方法，生产具体的 JSON 内容
  * （通常为 {@link Object} 形式的错误体）。</p>
  *
+ * <p><b>注册方式：</b>{@link AuthenticationEntryPoint} 与 {@link AccessDeniedHandler}
+ * 须在 {@link SecurityFilterChain} 中通过
+ * {@code http.exceptionHandling(...)} 显式注册；而 {@link RequestRejectedHandler}
+ * 则要求实现类作为 Bean 放入 Spring 上下文，由 Spring Security 自动发现并应用。
+ * 因此该抽象类通常注册为 Spring Bean（如 {@code @Component} 或
+ * {@code @Bean}），同时满足三者的注册要求。</p>
+ *
  * <p>序列化基于 Jackson 3（{@link JsonMapper}）。若构造时未显式提供 {@link JsonMapper}，
  * 则使用默认实例。</p>
  *
  * <pre>{@code
- * public class MyExceptionHandler extends StatelessJsonWritingExceptionHandler {
+ * public class MyExceptionHandler extends AbstractStatelessJsonWritingExceptionHandlers {
  *
  *     @Override
  *     protected Object handleAuthenticationException(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex) {
@@ -46,13 +54,30 @@ import java.util.Objects;
  * }
  * }</pre>
  *
+ * <p>使用示例（注册到 {@code SecurityFilterChain}）：</p>
+ *
+ * <pre>{@code
+ * // MyExceptionHandler 作为 Bean 注入
+ * @Bean
+ * SecurityFilterChain securityFilterChain(HttpSecurity http, MyExceptionHandlers handlers) {
+ *     return http
+ *             .exceptionHandling(c ->
+ *                     c.authenticationEntryPoint(handlers)
+ *                             .accessDeniedHandler(handlers)
+ *             )
+ *             // ...
+ *             .build();
+ * }
+ * }</pre>
+ *
  * @author 应卓
  * @see AuthenticationEntryPoint
  * @see AccessDeniedHandler
  * @see RequestRejectedHandler
+ * @see org.springframework.security.config.annotation.web.builders.HttpSecurity
  * @since 4.1.1
  */
-public abstract class StatelessJsonWritingExceptionHandler implements AuthenticationEntryPoint, AccessDeniedHandler, RequestRejectedHandler {
+public abstract class AbstractStatelessJsonWritingExceptionHandlers implements AuthenticationEntryPoint, AccessDeniedHandler, RequestRejectedHandler {
 
     private static final String CONTENT_TYPE = "application/json;charset=UTF-8";
 
@@ -62,7 +87,7 @@ public abstract class StatelessJsonWritingExceptionHandler implements Authentica
     /**
      * 构造器，使用默认 HTTP 状态码（认证失败 401、授权失败 403、请求被拒 400）。
      */
-    protected StatelessJsonWritingExceptionHandler() {
+    protected AbstractStatelessJsonWritingExceptionHandlers() {
         this(-1);
     }
 
@@ -72,7 +97,7 @@ public abstract class StatelessJsonWritingExceptionHandler implements Authentica
      * @param fixedResponseCode 固定响应状态码；{@code <= 0} 时使用默认状态码
      *                          （认证失败 {@code 401}、授权失败 {@code 403}、请求被拒 {@code 400}）
      */
-    protected StatelessJsonWritingExceptionHandler(int fixedResponseCode) {
+    protected AbstractStatelessJsonWritingExceptionHandlers(int fixedResponseCode) {
         this(fixedResponseCode, null);
     }
 
@@ -83,7 +108,7 @@ public abstract class StatelessJsonWritingExceptionHandler implements Authentica
      *                          （认证失败 {@code 401}、授权失败 {@code 403}、请求被拒 {@code 400}）
      * @param jsonMapper        用于序列化 JSON 的 {@link JsonMapper}，为 {@code null} 时使用默认实例
      */
-    protected StatelessJsonWritingExceptionHandler(int fixedResponseCode, @Nullable JsonMapper jsonMapper) {
+    protected AbstractStatelessJsonWritingExceptionHandlers(int fixedResponseCode, @Nullable JsonMapper jsonMapper) {
         this.fixedResponseCode = fixedResponseCode;
         this.jsonMapper = Objects.requireNonNullElseGet(jsonMapper, JsonMapper::new);
     }
