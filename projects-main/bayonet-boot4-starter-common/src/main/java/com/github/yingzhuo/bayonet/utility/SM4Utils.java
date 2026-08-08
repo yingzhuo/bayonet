@@ -204,7 +204,7 @@ public final class SM4Utils {
     /**
      * ECB 解密（Base64 密文 → 明文字符串）。
      *
-     * @param keyBase64   密钥 Base64 字符串
+     * @param keyBase64    密钥 Base64 字符串
      * @param cipherBase64 Base64 密文
      * @return 明文字符串
      * @deprecated ECB 模式无 IV，相同明文产生相同密文，安全性低；仅在加密随机数据等场景下使用
@@ -324,8 +324,8 @@ public final class SM4Utils {
      * GCM 加密（byte[] 入参）。
      * <p>自动生成 12 字节 IV，返回结果为 {@code IV + 密文 + GCM 标签} 拼接的字节数组。</p>
      *
-     * @param key       密钥（16 字节）
-     * @param data      明文
+     * @param key  密钥（16 字节）
+     * @param data 明文
      * @return 密文（IV + 密文 + GCM 标签）
      * @throws RuntimeException 加密失败（如密钥非法）
      */

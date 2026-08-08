@@ -27,6 +27,12 @@ class SM2Test {
 
     // ============== PublicKey / PrivateKey 构造 ==============
 
+    private static KeyPair generateKeyPair() throws Exception {
+        var generator = KeyPairGenerator.getInstance("EC", "BC");
+        generator.initialize(new ECGenParameterSpec("sm2p256v1"));
+        return generator.generateKeyPair();
+    }
+
     @Test
     void should_signAndVerify_withPublicPrivateKey() throws Exception {
         var keyPair = generateKeyPair();
@@ -47,6 +53,8 @@ class SM2Test {
         assertThat(sm2.verify(tampered, signature)).isFalse();
     }
 
+    // ============== byte[] 构造 ==============
+
     @Test
     void should_verifyFalse_whenWrongKey() throws Exception {
         var keyPair1 = generateKeyPair();
@@ -58,7 +66,7 @@ class SM2Test {
         assertThat(wrong.verify(CONTENT, signature)).isFalse();
     }
 
-    // ============== byte[] 构造 ==============
+    // ============== String 构造 ==============
 
     @Test
     void should_signAndVerify_withByteArray() throws Exception {
@@ -71,8 +79,6 @@ class SM2Test {
         assertThat(sm2.verify(CONTENT, signature)).isTrue();
     }
 
-    // ============== String 构造 ==============
-
     @Test
     void should_signAndVerify_withHexString() throws Exception {
         var keyPair = generateKeyPair();
@@ -84,6 +90,8 @@ class SM2Test {
         assertThat(sm2.verify(CONTENT, signature)).isTrue();
     }
 
+    // ============== 参数校验 ==============
+
     @Test
     void should_signAndVerify_withBase64String() throws Exception {
         var keyPair = generateKeyPair();
@@ -94,8 +102,6 @@ class SM2Test {
         var signature = sm2.sign(CONTENT);
         assertThat(sm2.verify(CONTENT, signature)).isTrue();
     }
-
-    // ============== 参数校验 ==============
 
     @Test
     void should_throw_when_publicKeyTextBlank() {
@@ -123,20 +129,14 @@ class SM2Test {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
+    // ------
+
     @Test
     void should_throw_when_verifyContentIsNull() throws Exception {
         var keyPair = generateKeyPair();
         var sm2 = new SM2(keyPair.getPublic(), keyPair.getPrivate());
         assertThatThrownBy(() -> sm2.verify(null, new byte[32]))
                 .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    // ------
-
-    private static KeyPair generateKeyPair() throws Exception {
-        var generator = KeyPairGenerator.getInstance("EC", "BC");
-        generator.initialize(new ECGenParameterSpec("sm2p256v1"));
-        return generator.generateKeyPair();
     }
 
 }

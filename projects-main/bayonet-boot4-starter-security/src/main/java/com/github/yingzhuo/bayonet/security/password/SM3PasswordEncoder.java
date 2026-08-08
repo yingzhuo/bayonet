@@ -18,12 +18,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * @see SM3Utils
  * @since 4.1.1
  */
-public class SM3PasswordEncoder extends AbstractValidatingPasswordEncoder implements NamedPasswordEncoder {
-
-    @Override
-    public String getName() {
-        return "SM3";
-    }
+public class SM3PasswordEncoder extends AbstractValidatingPasswordEncoder {
 
     @Override
     protected String encodeNonNullPassword(String rawPassword) {
