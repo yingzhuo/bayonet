@@ -1,5 +1,6 @@
 package com.github.yingzhuo.bayonet.security.filter;
 
+import com.github.yingzhuo.bayonet.security.authentication.AuthenticationDetailsCreator;
 import com.github.yingzhuo.bayonet.security.authentication.UserDetailsAuth;
 import com.github.yingzhuo.bayonet.security.event.AuthenticationFailureEvent;
 import com.github.yingzhuo.bayonet.security.event.AuthenticationSuccessEvent;
@@ -67,6 +68,7 @@ public class TokenBasedAuthFilter extends OncePerRequestFilter implements Applic
     private TokenResolver tokenResolver = new BearerHeaderTokenResolver();
     private TokenConverter tokenConverter;
     private @Nullable RememberMeServices rememberMeServices;
+    private @Nullable AuthenticationDetailsCreator authenticationDetailsCreator;
     private @Nullable AuthenticationEntryPoint authenticationEntryPoint;
     private @Nullable ApplicationEventPublisher applicationEventPublisher;
 
@@ -108,6 +110,9 @@ public class TokenBasedAuthFilter extends OncePerRequestFilter implements Applic
             }
 
             var auth = new UserDetailsAuth(userDetails);
+            if (authenticationDetailsCreator != null) {
+                auth.setDetails(authenticationDetailsCreator.create(currentWebRequest)); // 详情
+            }
 
             onAuthenticationSuccess(auth, currentWebRequest);
 

@@ -1,6 +1,7 @@
 package com.github.yingzhuo.bayonet.security.authentication;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,6 +32,9 @@ public class UserDetailsAuth implements Authentication, UserDetails {
     @Getter
     private final UserDetails user;
 
+    @Setter
+    private @Nullable Object details;
+
     /**
      * 构造器
      *
@@ -52,13 +56,13 @@ public class UserDetailsAuth implements Authentication, UserDetails {
     }
 
     /**
-     * 无额外详情，始终返回 {@code null}。
+     * 认证详情。由用户自定义。
      *
-     * @return {@code null}
+     * @return 认证详情，可为 {@code null}
      */
     @Override
     public @Nullable Object getDetails() {
-        return null;
+        return this.details;
     }
 
     @Override
