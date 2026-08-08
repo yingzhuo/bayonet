@@ -1,5 +1,6 @@
 package bayonet.test;
 
+import bayonet.test.security.ExceptionHandlers;
 import com.github.yingzhuo.bayonet.security.configurer.AdditionalDebugAuthFilter;
 import com.github.yingzhuo.bayonet.security.configurer.AdditionalSecurityFilter;
 import com.github.yingzhuo.bayonet.security.filter.DebugTokenBasedAuthFilter;
@@ -11,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -27,6 +27,7 @@ import org.springframework.security.web.session.DisableEncodeUrlFilter;
 
 import static bayonet.test.security.PredefinedUsers.createDefaults;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Slf4j
 @Configuration
@@ -70,14 +71,14 @@ public class ApplicationBootSecurity {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChainDefault(HttpSecurity http) {
+    public SecurityFilterChain securityFilterChainDefault(HttpSecurity http, ExceptionHandlers exceptionHandlers) {
         return http
                 .securityMatcher("/**")
-                .anonymous(Customizer.withDefaults())
+                .anonymous(withDefaults())
                 .sessionManagement(c ->
                         c.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .cors(Customizer.withDefaults())
+                .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .jee(AbstractHttpConfigurer::disable)
@@ -86,8 +87,7 @@ public class ApplicationBootSecurity {
                 .passwordManagement(AbstractHttpConfigurer::disable)
                 .rememberMe(AbstractHttpConfigurer::disable)
                 .requestCache(RequestCacheConfigurer::disable)
-                .headers(Customizer.withDefaults())
-                .cors(Customizer.withDefaults())
+                .headers(withDefaults())
                 .authorizeHttpRequests(c ->
                         c.requestMatchers("/error").permitAll()
                                 .requestMatchers(GET, "/actuator", "/actuator/info", "/actuator/health",
@@ -97,6 +97,10 @@ public class ApplicationBootSecurity {
                                 .requestMatchers("/user/test-jwt").authenticated()
                                 .anyRequest().denyAll()
                 )
+                .exceptionHandling(c -> {
+                    c.authenticationEntryPoint(exceptionHandlers)
+                            .accessDeniedHandler(exceptionHandlers);
+                })
                 .build();
     }
 
