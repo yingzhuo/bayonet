@@ -5,7 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 /**
  * {@link RichUserDetails} 的不可变默认实现。
@@ -22,7 +22,7 @@ final class RichUserDetailsImpl implements RichUserDetails {
     private final @Nullable Object gender;
     private final String username;
     private final @Nullable String password;
-    private final Set<GrantedAuthority> authorities;
+    private final List<GrantedAuthority> authorities;
     private final boolean enabled;
     private final boolean accountNonExpired;
     private final boolean credentialsNonExpired;
@@ -46,7 +46,7 @@ final class RichUserDetailsImpl implements RichUserDetails {
         this.gender = gender;
         this.username = username;
         this.password = password;
-        this.authorities = Set.copyOf(authorities);
+        this.authorities = List.copyOf(authorities);
         this.enabled = enabled;
         this.accountNonExpired = accountNonExpired;
         this.credentialsNonExpired = credentialsNonExpired;
