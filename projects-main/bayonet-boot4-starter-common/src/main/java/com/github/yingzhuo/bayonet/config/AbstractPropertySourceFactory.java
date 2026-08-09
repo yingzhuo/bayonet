@@ -1,6 +1,7 @@
 package com.github.yingzhuo.bayonet.config;
 
 import com.github.yingzhuo.bayonet.utility.UUIDUtils;
+import org.jetbrains.annotations.ApiStatus;
 import org.jspecify.annotations.Nullable;
 import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.core.env.PropertySource;
@@ -18,6 +19,7 @@ import java.io.IOException;
  * @author 应卓
  * @since 4.1.0
  */
+@ApiStatus.Internal
 public abstract class AbstractPropertySourceFactory implements PropertySourceFactory {
 
     private final PropertySourceLoader loader;

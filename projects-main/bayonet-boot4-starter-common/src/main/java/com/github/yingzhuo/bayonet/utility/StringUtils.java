@@ -70,6 +70,8 @@ public final class StringUtils {
         return !isBlank(str);
     }
 
+    // ------
+
     /**
      * 将字符串按行拆分为流（null 安全）。
      *
@@ -79,7 +81,9 @@ public final class StringUtils {
      * @return 行流，输入为 {@code null} 时返回空流
      */
     public static Stream<String> toLines(@Nullable String str) {
-        if (str == null) return Stream.empty();
+        if (str == null) {
+            return Stream.empty();
+        }
         return str.lines();
     }
 
@@ -96,5 +100,4 @@ public final class StringUtils {
                 .map(String::trim)
                 .collect(Collectors.joining("\n"));
     }
-
 }

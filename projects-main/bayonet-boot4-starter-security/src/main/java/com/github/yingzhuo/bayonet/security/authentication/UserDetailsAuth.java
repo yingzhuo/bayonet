@@ -1,7 +1,9 @@
 package com.github.yingzhuo.bayonet.security.authentication;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.jspecify.annotations.Nullable;
+import org.springframework.core.style.ToStringCreator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -10,15 +12,11 @@ import org.springframework.util.Assert;
 
 import java.io.Serial;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 /**
  * 基于 {@link UserDetails} 的认证令牌实现。
  * <p>同时实现 {@link Authentication} 和 {@link UserDetails} 接口，
  * 包装 Spring Security 的 {@link User} 对象，用作认证成功后的令牌。</p>
- *
- * <p>不可变对象，{@link #setAuthenticated(boolean)} 始终抛出
- * {@link UnsupportedOperationException}。</p>
  *
  * @author 应卓
  * @since 4.1.1
@@ -30,6 +28,11 @@ public class UserDetailsAuth implements Authentication, UserDetails {
 
     @Getter
     private final UserDetails user;
+
+    @Setter
+    private @Nullable Object details;
+
+    private boolean authenticated = true;
 
     /**
      * 构造器
@@ -51,14 +54,9 @@ public class UserDetailsAuth implements Authentication, UserDetails {
         return user.getPassword();
     }
 
-    /**
-     * 无额外详情，始终返回 {@code null}。
-     *
-     * @return {@code null}
-     */
     @Override
     public @Nullable Object getDetails() {
-        return null;
+        return this.details;
     }
 
     @Override
@@ -68,21 +66,12 @@ public class UserDetailsAuth implements Authentication, UserDetails {
 
     @Override
     public boolean isAuthenticated() {
-        return user.isEnabled()
-                && user.isAccountNonExpired()
-                && user.isCredentialsNonExpired()
-                && user.isAccountNonLocked();
+        return this.authenticated;
     }
 
-    /**
-     * 保持不可变性，始终抛出 {@link UnsupportedOperationException}。
-     *
-     * @param isAuthenticated 忽略
-     * @throws UnsupportedOperationException 始终抛出
-     */
     @Override
-    public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-        throw new UnsupportedOperationException("setAuthenticated is unsupported");
+    public void setAuthenticated(boolean isAuthenticated) {
+        this.authenticated = isAuthenticated;
     }
 
     @Override
@@ -102,9 +91,13 @@ public class UserDetailsAuth implements Authentication, UserDetails {
 
     @Override
     public String toString() {
-        var authorities = user.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(", "));
-        return "UserDetailsAuth{username='%s', authorities=[%s]}".formatted(getUsername(), authorities);
+        var creator = new ToStringCreator(this);
+        creator.append("UserDetailsAuth").append(" [");
+        creator.append("Credentials=[PROTECTED], ");
+        creator.append("Authenticated=").append(isAuthenticated()).append(", ");
+        creator.append("Granted Authorities=").append(getAuthorities());
+        creator.append("]");
+        return creator.toString();
     }
+
 }
