@@ -1,11 +1,12 @@
-val jdkVersion: Int = project.property("jdkVersion").toString().toInt()
-val springBootVersion: String = project.property("springBootVersion").toString()
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
     id("java")
     id("java-library")
     id("io.spring.dependency-management")
 }
+
+var jdkVersion: Int = 17
 
 java {
     sourceCompatibility = JavaVersion.toVersion(jdkVersion)
@@ -20,7 +21,7 @@ java {
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+        mavenBom(SpringBootPlugin.BOM_COORDINATES)
     }
 }
 
