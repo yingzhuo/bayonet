@@ -10,7 +10,7 @@ GRADLE_DEFAULT_PARAMETERS := --console=plain
 
 .DEFAULT_GOAL := usage
 
-.PHONY: usage clean purge rebuild-build-logic compile build install publish test wrapper count-code-lines docker-build
+.PHONY: usage clean purge rebuild-build-logic compile build install publish test wrapper docker-build
 
 .SILENT:
 
@@ -26,7 +26,6 @@ usage:
 	echo "  publish              发布到 Maven 中央仓库"
 	echo "  test                 运行测试"
 	echo "  wrapper              升级 Gradle wrapper"
-	echo "  count-code-lines     统计代码行数"
 	echo "  docker-build         构建 docker 镜像"
 
 clean:
@@ -67,9 +66,6 @@ test:
 
 wrapper:
 	$(GRADLEW) ":wrapper" "$(GRADLE_DEFAULT_PARAMETERS)"
-
-count-code-lines:
-	$(GRADLEW) "countCodeLines" "$(GRADLE_DEFAULT_PARAMETERS)"
 
 docker-build:
 	$(GRADLEW) ':project-integration-test:jibDockerBuild' "$(GRADLE_DEFAULT_PARAMETERS)"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ship 提交推送"
+  short_description: "将当前分支的全部改动按规范提交并推送到远程仓库，适用于功能分支发布"
+  default_prompt: "使用 $ship 提交并推送当前分支的全部改动"

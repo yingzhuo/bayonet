@@ -1,7 +1,6 @@
 plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.publish-conventions")
-    id("buildlogic.code-counting-conventions")
 }
 
 description = "二维码条形码增强"

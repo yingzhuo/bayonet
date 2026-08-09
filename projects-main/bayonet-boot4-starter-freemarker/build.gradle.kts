@@ -1,7 +1,6 @@
 plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.publish-conventions")
-    id("buildlogic.code-counting-conventions")
 }
 
 description = "FreeMarker模板引擎增强"

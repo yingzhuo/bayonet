@@ -1,7 +1,6 @@
 plugins {
     id("buildlogic.java-conventions")
     id("buildlogic.publish-conventions")
-    id("buildlogic.code-counting-conventions")
 }
 
 description = "TOML配置文件增强"
