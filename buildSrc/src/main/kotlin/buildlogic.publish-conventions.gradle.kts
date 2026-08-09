@@ -1,5 +1,3 @@
-val bayonetVersion: String = project.property("bayonetVersion").toString()
-
 plugins {
     id("com.vanniktech.maven.publish")
 }

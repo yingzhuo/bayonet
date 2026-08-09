@@ -25,6 +25,8 @@ rootProject.name = "bayonet"
 include("project-integration-test")
 includeSubmodules("projects-main")
 
+// ------
+
 fun includeSubmodules(vararg baseDirs: String) {
     baseDirs.forEach { baseDir ->
         file(baseDir).listFiles()
