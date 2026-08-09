@@ -1,6 +1,7 @@
 package com.github.yingzhuo.bayonet.utility;
 
 import org.jspecify.annotations.Nullable;
+import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 
 import java.io.Serial;
@@ -139,6 +140,9 @@ public final class Pair<L, R> implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "Pair{left=" + left + ", right=" + right + "}";
+        return new ToStringCreator(this)
+                .append("left", left)
+                .append("right", right)
+                .toString();
     }
 }

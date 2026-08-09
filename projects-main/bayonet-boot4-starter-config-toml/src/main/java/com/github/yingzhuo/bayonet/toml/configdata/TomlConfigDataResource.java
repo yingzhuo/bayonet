@@ -2,6 +2,7 @@ package com.github.yingzhuo.bayonet.toml.configdata;
 
 import org.springframework.boot.context.config.ConfigDataResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.style.ToStringCreator;
 
 /**
  * TOML（{@code .toml}）配置文件的 {@link ConfigDataResource} 实现。
@@ -54,6 +55,8 @@ public class TomlConfigDataResource extends ConfigDataResource {
 
     @Override
     public String toString() {
-        return "TomlConfigDataResource{resource=" + resource + '}';
+        return new ToStringCreator(this)
+                .append("resource", resource)
+                .toString();
     }
 }

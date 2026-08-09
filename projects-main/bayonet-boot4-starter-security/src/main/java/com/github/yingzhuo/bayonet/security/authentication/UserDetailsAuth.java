@@ -92,11 +92,10 @@ public class UserDetailsAuth implements Authentication, UserDetails {
     @Override
     public String toString() {
         var creator = new ToStringCreator(this);
-        creator.append("UserDetailsAuth").append(" [");
-        creator.append("Credentials=[PROTECTED], ");
-        creator.append("Authenticated=").append(isAuthenticated()).append(", ");
-        creator.append("Granted Authorities=").append(getAuthorities());
-        creator.append("]");
+        creator.append("Credentials", "[***]");
+        creator.append("Authenticated", isAuthenticated());
+        creator.append("Granted Authorities", getAuthorities());
+        creator.append("Details", getDetails());
         return creator.toString();
     }
 
