@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -109,18 +110,22 @@ public class TokenBasedAuthFilter extends OncePerRequestFilter implements Applic
                 return;
             }
 
+            if (!userDetails.isEnabled() || !userDetails.isAccountNonLocked() || !userDetails.isAccountNonExpired() || !userDetails.isCredentialsNonExpired()) {
+                throw new DisabledException("user is disabled");
+            }
+
             var auth = new UserDetailsAuth(userDetails);
             if (authenticationDetailsCreator != null) {
                 auth.setDetails(authenticationDetailsCreator.create(currentWebRequest)); // 详情
             }
+
+            securityContextHolderStrategy.getContext().setAuthentication(auth);
 
             onAuthenticationSuccess(auth, currentWebRequest);
 
             if (rememberMeServices != null) {
                 rememberMeServices.loginSuccess(request, response, auth);
             }
-
-            securityContextHolderStrategy.getContext().setAuthentication(auth);
 
             request.setAttribute(ATTRIBUTE_TOKEN_NAME, token); // 偷偷放在request里
             request.setAttribute(ATTRIBUTE_AUTHENTICATION_NAME, auth); // 偷偷放在request里
@@ -161,10 +166,7 @@ public class TokenBasedAuthFilter extends OncePerRequestFilter implements Applic
      * @throws AuthenticationException 回调中可抛出异常中断认证
      */
     protected void onAuthenticationSuccess(Authentication auth, WebRequest currentRequest) throws AuthenticationException {
-        try {
-            auth.setAuthenticated(true);
-        } catch (IllegalArgumentException | UnsupportedOperationException ignored) {
-        }
+        // noop
     }
 
 }
