@@ -1,5 +1,7 @@
 package com.github.yingzhuo.bayonet.utility.net;
 
+import org.springframework.core.style.ToStringCreator;
+
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509ExtendedTrustManager;
@@ -71,7 +73,9 @@ public final class InsecureTrustManager extends X509ExtendedTrustManager impleme
 
     @Override
     public String toString() {
-        return "InsecureTrustManager (Trust All)";
+        return new ToStringCreator(this)
+                .append("trustAll", true)
+                .toString();
     }
 
     // ------

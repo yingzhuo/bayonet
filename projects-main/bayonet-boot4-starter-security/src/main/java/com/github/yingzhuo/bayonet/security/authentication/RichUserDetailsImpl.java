@@ -1,6 +1,7 @@
 package com.github.yingzhuo.bayonet.security.authentication;
 
 import org.jspecify.annotations.Nullable;
+import org.springframework.core.style.ToStringCreator;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDate;
@@ -112,6 +113,10 @@ final class RichUserDetailsImpl implements RichUserDetails {
 
     @Override
     public String toString() {
-        return "RichUserDetailsImpl{username='" + username + "', enabled=" + enabled + '}';
+        var creator = new ToStringCreator(this);
+        creator.append("username", getUsername());
+        creator.append("enabled", isEnabled());
+        creator.append("authorities", getAuthorities());
+        return creator.toString();
     }
 }

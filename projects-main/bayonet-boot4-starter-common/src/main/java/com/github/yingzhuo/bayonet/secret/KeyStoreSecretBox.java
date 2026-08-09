@@ -2,6 +2,7 @@ package com.github.yingzhuo.bayonet.secret;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.core.io.Resource;
+import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 
 import javax.crypto.SecretKey;
@@ -132,7 +133,9 @@ public class KeyStoreSecretBox implements SecretBox {
 
     @Override
     public String toString() {
-        return "SecretBox{aliases=" + getAliases() + '}';
+        return new ToStringCreator(this)
+                .append("aliases", getAliases())
+                .toString();
     }
 
     // ------

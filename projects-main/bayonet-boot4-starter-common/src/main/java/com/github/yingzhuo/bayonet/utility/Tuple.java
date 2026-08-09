@@ -1,6 +1,7 @@
 package com.github.yingzhuo.bayonet.utility;
 
 import org.jspecify.annotations.Nullable;
+import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 
 import java.io.Serial;
@@ -181,6 +182,10 @@ public final class Tuple<L, M, R> implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "Tuple{left=" + left + ", middle=" + middle + ", right=" + right + "}";
+        return new ToStringCreator(this)
+                .append("left", left)
+                .append("middle", middle)
+                .append("right", right)
+                .toString();
     }
 }

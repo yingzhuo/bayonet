@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,9 +58,11 @@ public class LoginController {
 
     @GetMapping("/test-jwt")
     public Map<String, Object> testJwt(
-            @CurrentUserDetails UserDetails user
+            @CurrentUserDetails UserDetails user,
+            Authentication authentication
     ) {
         log.debug("user: {}", user);
+        log.debug("authentication: {}", authentication);
         return Map.of();
     }
 

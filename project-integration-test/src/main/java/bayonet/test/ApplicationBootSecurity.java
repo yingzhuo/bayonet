@@ -2,6 +2,7 @@ package bayonet.test;
 
 import bayonet.test.security.ExceptionHandlers;
 import bayonet.test.tool.RuntimeHelper;
+import com.github.yingzhuo.bayonet.security.authentication.AuthenticationDetailsCreator;
 import com.github.yingzhuo.bayonet.security.configurer.AdditionalDebugAuthFilter;
 import com.github.yingzhuo.bayonet.security.configurer.AdditionalSecurityFilter;
 import com.github.yingzhuo.bayonet.security.filter.DebugTokenBasedAuthFilter;
@@ -59,6 +60,7 @@ public class ApplicationBootSecurity {
         var filter = new TokenBasedAuthFilter();
         filter.setTokenResolver(new HttpHeaderTokenResolver("X-Token"));
         filter.setTokenConverter(tokenConverter);
+        filter.setAuthenticationDetailsCreator(AuthenticationDetailsCreator.createDefault());
         return filter;
     }
 
