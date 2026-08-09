@@ -18,8 +18,6 @@ dependencies {
     compileOnly("org.springframework.boot:spring-boot-configuration-processor")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure-processor")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-
-    // actuator
     api("org.springframework.boot:spring-boot-starter-actuator")
 
     // bayonet
