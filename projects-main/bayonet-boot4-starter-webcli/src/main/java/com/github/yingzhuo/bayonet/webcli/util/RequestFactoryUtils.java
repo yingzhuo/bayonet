@@ -109,8 +109,8 @@ public final class RequestFactoryUtils {
 
         var ctxAndParameters = SSLFactories.createInsecure();
         var builder = HttpClient.newBuilder()
-                .sslContext(ctxAndParameters.getRequiredLeft())
-                .sslParameters(ctxAndParameters.getRequiredRight());
+                .sslContext(ctxAndParameters.getRequiredFirst())
+                .sslParameters(ctxAndParameters.getRequiredSecond());
 
         if (connectTimeout != null) {
             builder.connectTimeout(connectTimeout);
