@@ -4,3 +4,7 @@
 | |_) | (_| | |_| | (_) | | | |  __/ |_    O|===|* >________________>
 |____/ \__,_|\__, |\___/|_| |_|\___|\__|         \|
              |___/
+
+Version   : @APP_VERSION@
+Built-By  : Gradle @APP_GRADLE_VERSION@
+Built-Time: @APP_BUILD_TIMESTAMP@

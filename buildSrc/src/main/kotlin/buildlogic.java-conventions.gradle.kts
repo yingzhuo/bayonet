@@ -1,4 +1,7 @@
+import org.apache.tools.ant.filters.ReplaceTokens
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 plugins {
     id("java")
@@ -6,7 +9,7 @@ plugins {
     id("io.spring.dependency-management")
 }
 
-var jdkVersion: Int = 17
+val jdkVersion: Int = 17
 
 java {
     sourceCompatibility = JavaVersion.toVersion(jdkVersion)
@@ -66,12 +69,39 @@ tasks.named<Javadoc>("javadoc") {
     }
 }
 
-tasks.named<Copy>("processResources") {
+// 配置文件替换token
+val tokens = mapOf(
+    "APP_GROUP" to project.group,
+    "APP_NAME" to project.name,
+    "APP_VERSION" to project.version,
+    "APP_GRADLE_VERSION" to project.gradle.gradleVersion,
+    "APP_BUILD_TIMESTAMP" to DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").format(LocalDateTime.now())
+)
+
+tasks.named<ProcessResources>("processResources") {
     from(rootDir) {
         include("LICENSE*", "NOTICE*")
         into("META-INF")
     }
+
+    // 对 resources 中需要 token 替换的文件应用过滤（不再重复添加 src/main/resources source）
+    listOf(
+        "**/*.yaml",
+        "**/*.yml",
+        "**/*.properties",
+        "**/*.xml",
+        "**/*.conf",
+        "**/*.toml",
+        "**/*.ini",
+        "**/banner.txt",
+    ).forEach { pattern ->
+        filesMatching(pattern) {
+            filter<ReplaceTokens>("tokens" to tokens)
+        }
+    }
+    filteringCharset = "UTF-8"
     exclude("**/.DS_Store", "**/.gitkeep", ".gitignore")
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 tasks.named<Copy>("processTestResources") {
