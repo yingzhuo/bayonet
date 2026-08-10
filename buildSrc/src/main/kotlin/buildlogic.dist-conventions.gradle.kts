@@ -8,18 +8,24 @@ distributions {
     named("main") {
         distributionBaseName = project.name
         contents {
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+            // spring-boot uberjar
             from(tasks.named<BootJar>("bootJar")) {
+                include("**/*.jar")
                 into("lib")
                 rename { fileName ->
                     fileName.replace("-${project.version}", "")
                 }
             }
-            from("src/main/dist") {
-            }
-            from("$rootDir") {
+
+            // 其他配置与脚本
+            from("src/main/dist")
+
+            // README.md
+            from(rootDir) {
                 include("README.md")
             }
-            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         }
     }
 }
