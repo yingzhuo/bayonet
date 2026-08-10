@@ -53,10 +53,6 @@ tasks.named<BootRun>("bootRun") {
     args("--spring.profiles.active=$bootRunSpringProfiles")
 }
 
-tasks.named<DefaultTask>("build") {
-    finalizedBy("cleanResolveMainClassName")
-}
-
 gitProperties {
     dotGitDirectory = rootProject.layout.projectDirectory.dir(".git/")
     gitPropertiesName = "git.properties"
