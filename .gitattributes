@@ -38,6 +38,9 @@
 *.so            binary
 *.war           binary
 *.jks           binary
+*.p12           binary
+*.pfx           binary
+*.bcfks         binary
 
 # Common build-tool wrapper scripts ('.cmd' versions are handled by 'Common.gitattributes')
 mvnw            text eol=lf
