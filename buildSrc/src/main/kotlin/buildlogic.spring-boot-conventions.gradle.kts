@@ -2,9 +2,6 @@ import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
 
-val buildExcludeBouncyCastle = (project.findProperty("buildExcludeBouncyCastle") as? String)?.toBoolean() ?: false
-val bootRunSpringProfiles = (project.findProperty("bootRunSpringProfiles") as? String) ?: "dev"
-
 plugins {
     id("org.springframework.boot")
     id("com.gorylenko.gradle-git-properties")
@@ -17,6 +14,8 @@ springBoot {
 }
 
 tasks.named<BootJar>("bootJar") {
+    val buildExcludeBouncyCastle = (project.findProperty("buildExcludeBouncyCastle") as? String)?.toBoolean() ?: false
+
     manifest {
         attributes("Main-Class" to "org.springframework.boot.loader.launch.PropertiesLauncher")
         attributes("Implementation-Title" to project.name)
@@ -50,6 +49,7 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 }
 
 tasks.named<BootRun>("bootRun") {
+    val bootRunSpringProfiles = (project.findProperty("bootRunSpringProfiles") as? String) ?: "dev"
     args("--spring.profiles.active=$bootRunSpringProfiles")
 }
 
