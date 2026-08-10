@@ -26,11 +26,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * <p>提供便捷的资源读取方法，优先使用 Spring 上下文中的 {@link ResourceLoader}，
  * 不可用时回退到 {@link ApplicationResourceLoader}。</p>
  *
- * <pre>{@code
- * byte[] data = ResourceUtils.loadBytes("classpath:config.properties");
- * String text = ResourceUtils.loadText("file:/tmp/app.log", StandardCharsets.UTF_8);
- * }</pre>
- *
  * @author 应卓
  * @see ResourceLoader
  * @see ResourcePatternResolver
@@ -47,10 +42,9 @@ public final class ResourceUtils {
      */
     public static ResourceLoader getResourceLoader() {
         try {
-            return SpringUtils.getBeanProvider(ResourceLoader.class)
-                    .getIfAvailable(() -> LazyHolder.DEFAULT_RESOURCE_LOADER);
-        } catch (IllegalStateException e) {
-            return LazyHolder.DEFAULT_RESOURCE_LOADER;
+            return SpringUtils.getBean(ResourceLoader.class);
+        } catch (Exception e) {
+            return ApplicationResourceLoader.get();
         }
     }
 
@@ -177,12 +171,4 @@ public final class ResourceUtils {
                 .flatMap(Arrays::stream)
                 .toList();
     }
-
-    // ------
-
-    private static class LazyHolder {
-        private static final ResourceLoader DEFAULT_RESOURCE_LOADER =
-                ApplicationResourceLoader.get();
-    }
-
 }
