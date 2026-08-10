@@ -13,11 +13,18 @@ import org.jetbrains.annotations.ApiStatus;
 public final class TODO extends UnsupportedOperationException {
 
     /**
-     * 创建实例
-     *
-     * @return 实例
+     * 默认构造器
      */
-    public static TODO newInstance() {
-        return new TODO();
+    public TODO() {
     }
+
+    /**
+     * 构造器
+     *
+     * @param message 错误信息
+     */
+    public TODO(String message) {
+        super(message);
+    }
+
 }
