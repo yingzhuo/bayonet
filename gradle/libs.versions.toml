@@ -5,7 +5,7 @@ zxing = "3.5.4"
 
 [libraries]
 # BOMs from other organizations
-bc-bom = { module = "org.bouncycastle:bc-jdk18on-bom", version = "1.85" }
+bc-bom = { module = "org.bouncycastle:bc-jdk18on-bom", version = "1.85.2" }
 
 # General Component
 jetbrains-annotation = { module = "org.jetbrains:annotations", version = "26.1.0" }
