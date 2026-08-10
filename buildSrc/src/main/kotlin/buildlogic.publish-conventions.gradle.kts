@@ -40,13 +40,3 @@ mavenPublishing {
         }
     }
 }
-
-tasks.named("publishAllPublicationsToMavenCentralRepository") {
-    doFirst {
-        if (project.version.toString().endsWith("-SNAPSHOT")) {
-            throw GradleException(
-                "Cannot publish SNAPSHOT version to Maven Central. Release a non-SNAPSHOT version first."
-            )
-        }
-    }
-}
