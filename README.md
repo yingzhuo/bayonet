@@ -23,10 +23,12 @@
 
 SpringBoot4.x增强库，提供可复用的自动配置、工具类和集成支持，涵盖 Web、安全、数据、校验等领域。
 
-### 关于 Claude Code
+### ~~关于 Claude Code~~
 
 本项目使用 Claude Code 作为AI辅助开发Agent。请参考[CLAUDE.md](./CLAUDE.md)。<br>
-大语言模型使用的是 `deepseek-v4-pro`
+大语言模型使用的是[深度求索](https://www.deepseek.com/)公司研发的`deepseek-v4-flash`
+
+**本项目正处于向 Codex 过渡的时期**
 
 #### 风险提示
 

@@ -1,6 +1,6 @@
 ---
 name: ship
-description: 提交并推送所有代码到远程分支
+description: 提交所有代码到本地
 ---
 
 # /ship
@@ -26,7 +26,7 @@ description: 提交并推送所有代码到远程分支
     - 如果无法自动判断 type 和描述，向用户确认后再提交
 
 4. **推送**
-    - 运行 `git push origin <当前分支>`
+    - 禁止推送
 
 5. **输出结果**
     - 告知用户提交 hash 和分支名称
