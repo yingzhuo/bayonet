@@ -10,23 +10,28 @@ GRADLE_DEFAULT_PARAMETERS := --console=plain
 
 .DEFAULT_GOAL := usage
 
-.PHONY: usage clean purge rebuild-build-logic compile build install publish test wrapper docker-build
+.PHONY: usage \
+	clean purge rebuild-build-logic compile build install publish test \
+	wrapper \
+	docker-build docker-remove-dangling docker-purge
 
 .SILENT:
 
 usage:
 	echo "Usage: make [target]"
 	echo ""
-	echo "  clean                删除构建产物"
-	echo "  purge                彻底清理（含 Gradle 缓存）"
-	echo "  rebuild-build-logic  重建 buildSrc 构建逻辑"
-	echo "  compile              编译主代码"
-	echo "  build                编译并打包（跳过测试）"
-	echo "  install              发布到本地 Maven 仓库"
-	echo "  publish              发布到 Maven 中央仓库"
-	echo "  test                 运行测试"
-	echo "  wrapper              升级 Gradle wrapper"
-	echo "  docker-build         构建 docker 镜像"
+	echo "  clean                   删除构建产物"
+	echo "  purge                   彻底清理(含 Gradle 缓存)"
+	echo "  rebuild-build-logic     重建 buildSrc 构建逻辑"
+	echo "  compile                 编译主代码"
+	echo "  build                   编译并打包"
+	echo "  install                 发布到本地 Maven 仓库"
+	echo "  publish                 发布到 Maven 中央仓库"
+	echo "  test                    运行测试"
+	echo "  wrapper                 升级 Gradle wrapper"
+	echo "  docker-build            构建 docker 镜像"
+	echo "  docker-remove-dangling  删除孤儿镜像"
+	echo "  docker-purge            删除未使用的镜像"
 
 clean:
 	$(GRADLEW) 'clean' "$(GRADLE_DEFAULT_PARAMETERS)"
@@ -69,3 +74,9 @@ wrapper:
 
 docker-build:
 	$(GRADLEW) ':project-integration-test:jibDockerBuild' "$(GRADLE_DEFAULT_PARAMETERS)"
+
+docker-remove-dangling:
+	docker image prune -f
+
+docker-purge:
+	docker image prune -af

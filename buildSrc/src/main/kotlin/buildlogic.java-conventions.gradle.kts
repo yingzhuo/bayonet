@@ -69,16 +69,18 @@ tasks.named<Javadoc>("javadoc") {
     }
 }
 
-// 配置文件替换token
-val tokens = mapOf(
-    "APP_GROUP" to project.group,
-    "APP_NAME" to project.name,
-    "APP_VERSION" to project.version,
-    "APP_GRADLE_VERSION" to project.gradle.gradleVersion,
-    "APP_BUILD_TIMESTAMP" to DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").format(LocalDateTime.now())
-)
+
 
 tasks.named<ProcessResources>("processResources") {
+    // 配置文件替换token
+    val tokens = mapOf(
+        "APP_GROUP" to project.group,
+        "APP_NAME" to project.name,
+        "APP_VERSION" to project.version,
+        "APP_GRADLE_VERSION" to project.gradle.gradleVersion,
+        "APP_BUILD_TIMESTAMP" to DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").format(LocalDateTime.now())
+    )
+
     from(rootDir) {
         include("LICENSE*", "NOTICE*")
         into("META-INF")
@@ -89,19 +91,17 @@ tasks.named<ProcessResources>("processResources") {
         "**/*.yaml",
         "**/*.yml",
         "**/*.properties",
-        "**/*.xml",
         "**/*.conf",
         "**/*.toml",
-        "**/*.ini",
-        "**/banner.txt",
+        "**/banner.txt"
     ).forEach { pattern ->
         filesMatching(pattern) {
             filter<ReplaceTokens>("tokens" to tokens)
         }
     }
     filteringCharset = "UTF-8"
-    exclude("**/.DS_Store", "**/.gitkeep", ".gitignore")
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    exclude("**/.DS_Store", "**/.gitkeep", ".gitignore")
 }
 
 tasks.named<Copy>("processTestResources") {
