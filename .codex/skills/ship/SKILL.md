@@ -5,35 +5,36 @@ description: 提交并推送当前分支的全部改动到远程仓库。当用�
 
 # Ship
 
-将当前分支的全部改动提交并推送到远程仓库。调用本 skill 即视为用户发起提交请求，但 git 操作仍需遵守仓库 `AGENTS.md` 的 Git 规范，提交前必须获得用户明确确认。
+将当前分支的全部改动提交并推送到远程仓库。调用本 skill 即视为用户发起提交请求，但 git 操作仍需遵守仓库 `AGENTS.md` 的 Git
+规范，提交前必须获得用户明确确认。
 
 ## 步骤
 
 1. **检查分支**
-   - 运行 `git branch --show-current`
-   - 若分支为 `main`、`master` 或以 `release/` 开头，拒绝继续并说明原因
+    - 运行 `git branch --show-current`
+    - 若分支为 `main`、`master` 或以 `release/` 开头，拒绝继续并说明原因
 
 2. **检查工作区**
-   - 运行 `git status --short`
-   - 若无改动，提示"当前工作区无改动，无需提交"并结束
+    - 运行 `git status --short`
+    - 若无改动，提示"当前工作区无改动，无需提交"并结束
 
 3. **运行测试**
-   - 运行 `make test`
-   - 测试失败则停止，报告失败原因，不继续提交
+    - 运行 `make test`
+    - 测试失败则停止，报告失败原因，不继续提交
 
 4. **审查改动范围**
-   - 运行 `git diff --stat` 确认改动范围合理
-   - 若存在未跟踪的敏感文件（`secrets/`、`.env`、`*.key` 等），提示用户并暂停
+    - 运行 `git diff --stat` 确认改动范围合理
+    - 若存在未跟踪的敏感文件（`secrets/`、`.env`、`*.key` 等），提示用户并暂停
 
 5. **暂存并确认提交信息**
-   - 运行 `git add -A`
-   - 按 Conventional Commits 生成提交信息，展示给用户，获得明确确认后执行 `git commit`
+    - 运行 `git add -A`
+    - 按 Conventional Commits 生成提交信息，展示给用户，获得明确确认后执行 `git commit`
 
 6. **推送**
-   - 运行 `git push origin <当前分支>`
+    - 运行 `git push origin <当前分支>`
 
 7. **汇报**
-   - 告知用户提交 hash 和分支名
+    - 告知用户提交 hash 和分支名
 
 ## 提交信息规范
 
