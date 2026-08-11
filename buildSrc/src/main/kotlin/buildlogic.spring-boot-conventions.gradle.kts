@@ -1,3 +1,6 @@
+/*
+ * 参考: https://docs.spring.io/spring-boot/gradle-plugin/index.html
+ */
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.run.BootRun
@@ -14,8 +17,6 @@ springBoot {
 }
 
 tasks.named<BootJar>("bootJar") {
-    val buildExcludeBouncyCastle = (findProperty("buildExcludeBouncyCastle") as? String)?.toBoolean() ?: false
-
     manifest {
         attributes("Main-Class" to "org.springframework.boot.loader.launch.PropertiesLauncher")
         attributes("Implementation-Title" to project.name)
@@ -25,7 +26,23 @@ tasks.named<BootJar>("bootJar") {
     includeTools = true
 
     layered {
-        enabled = false
+        enabled = true
+        application {
+            intoLayer("spring-boot-loader") {
+                include("org/springframework/boot/loader/**")
+            }
+            intoLayer("application")
+        }
+        dependencies {
+            intoLayer("application") {
+                includeProjectDependencies()
+            }
+            intoLayer("snapshot-dependencies") {
+                include("*:*:*SNAPSHOT")
+            }
+            intoLayer("dependencies")
+        }
+        layerOrder = listOf("dependencies", "spring-boot-loader", "snapshot-dependencies", "application")
     }
 
     exclude(
@@ -34,10 +51,6 @@ tasks.named<BootJar>("bootJar") {
         "**/netty-*-macos*.jar",
         "**/netty-*-osx*.jar"
     )
-
-    if (buildExcludeBouncyCastle) {
-        exclude("**/bc*-jdk18on-*.jar")
-    }
 }
 
 tasks.named<Jar>("jar") {
@@ -49,8 +62,7 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 }
 
 tasks.named<BootRun>("bootRun") {
-    val bootRunSpringProfiles = findProperty("bootRunSpringProfiles") as? String ?: "dev"
-    args("--spring.profiles.active=$bootRunSpringProfiles")
+    enabled = false // 禁用
 }
 
 gitProperties {

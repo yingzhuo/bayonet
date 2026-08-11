@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     id("distribution")
 }
@@ -9,7 +11,7 @@ distributions {
             duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
             // spring-boot uberjar
-            from(tasks.named("bootJar")) {
+            from(tasks.named<BootJar>("bootJar")) {
                 include("**/*.jar")
                 into("lib")
                 rename {
