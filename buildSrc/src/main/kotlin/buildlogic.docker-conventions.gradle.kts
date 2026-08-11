@@ -17,6 +17,6 @@ jib {
     }
 
     container {
-        mainClass = findRequiredProperty(project, name = "jibMainClass") as String
+        mainClass = findProperty("jibMainClass") as? String
     }
 }
