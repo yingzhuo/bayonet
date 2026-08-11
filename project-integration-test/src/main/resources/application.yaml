@@ -1,10 +1,10 @@
 # ----------------------------------------------------------------------------------------------------------------------
-# Actuator
+# Main
 # ----------------------------------------------------------------------------------------------------------------------
 spring:
   application:
-    name: 'integration-test'
-    version: "0.1.0"
+    name: "@APP_NAME@"
+    version: "@APP_VERSION@"
   profiles:
     active:
       - "dev"
@@ -19,6 +19,9 @@ server:
     bundle: "server"
   port: 8443
 
+# ----------------------------------------------------------------------------------------------------------------------
+# Actuator
+# ----------------------------------------------------------------------------------------------------------------------
 management:
   endpoint:
     health:
@@ -31,18 +34,18 @@ management:
       access: none
   info:
     env:
-      enabled: true
+      enabled: false
     git:
       enabled: true
       mode: simple
     build:
-      enabled: true
+      enabled: false
     os:
-      enabled: true
+      enabled: false
     java:
-      enabled: true
+      enabled: false
     ssl:
-      enabled: true
+      enabled: false
     process:
       enabled: true
     defaults:
@@ -52,3 +55,5 @@ management:
       base-path: "/actuator"
       exposure:
         include: [ "health", "info", "metrics", "env", "beans", "securityproviders" ]
+info:
+  { }

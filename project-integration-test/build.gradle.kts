@@ -7,15 +7,11 @@ plugins {
 
 description = "集成测试 (临时)"
 
-configurations.configureEach {
-}
-
 dependencies {
     // spring-boot
     api("org.springframework.boot:spring-boot-starter-web")
     api("org.springframework.boot:spring-boot-starter-actuator")
     api("org.springframework.boot:spring-boot-starter-security")
-    api("org.springframework.boot:spring-boot-http-client")
 
     // bayonet
     api(platform(project(":projects-main:bayonet-bom")))

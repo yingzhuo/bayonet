@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="false" scan="true" scanPeriod="30 seconds" packagingData="false">
+<configuration debug="false" scan="false" scanPeriod="30 seconds" packagingData="false">
 
     <springProperty name="LOG_HOME" source="logback.log-home"/>
     <springProperty name="LOG_NAME" source="logback.log-name"/>
