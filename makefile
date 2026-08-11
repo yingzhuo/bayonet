@@ -11,9 +11,9 @@ GRADLE_DEFAULT_PARAMETERS := --console=plain
 .DEFAULT_GOAL := usage
 
 .PHONY: usage \
-	clean purge rebuild-build-logic compile build install publish test \
+	clean purge rebuild-build-logic compile build rebuild install publish test \
 	wrapper \
-	docker-build docker-remove-dangling docker-purge
+	docker-build docker-remove-dangling docker-prune
 
 .SILENT:
 
@@ -25,13 +25,14 @@ usage:
 	echo "  rebuild-build-logic     重建 buildSrc 构建逻辑"
 	echo "  compile                 编译主代码"
 	echo "  build                   编译并打包"
-	echo "  install                 发布到本地 Maven 仓库"
-	echo "  publish                 发布到 Maven 中央仓库"
+	echo "  rebuild                 重新编译并打包"
+	echo "  install                 发布到本地Maven仓库"
+	echo "  publish                 发布到Maven中央仓库"
 	echo "  test                    运行测试"
-	echo "  wrapper                 升级 Gradle wrapper"
-	echo "  docker-build            构建 docker 镜像"
-	echo "  docker-remove-dangling  删除孤儿镜像"
-	echo "  docker-purge            删除未使用的镜像"
+	echo "  wrapper                 升级GradleWrapper"
+	echo "  docker-build            构建Docker镜像"
+	echo "  docker-remove-dangling  删除Docker孤儿镜像"
+	echo "  docker-prune            删除未使用的Docker镜像"
 
 clean:
 	$(GRADLEW) 'clean' "$(GRADLE_DEFAULT_PARAMETERS)"
@@ -58,6 +59,8 @@ compile:
 build:
 	$(GRADLEW) -x "test" "build" "$(GRADLE_DEFAULT_PARAMETERS)"
 
+rebuild: clean build
+
 install:
 	$(GRADLEW) -x "test" "publishToMavenLocal" --no-parallel "$(GRADLE_DEFAULT_PARAMETERS)"
 
@@ -78,5 +81,5 @@ docker-build:
 docker-remove-dangling:
 	docker image prune -f
 
-docker-purge:
+docker-prune:
 	docker image prune -af
