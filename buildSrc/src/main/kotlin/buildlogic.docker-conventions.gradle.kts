@@ -3,12 +3,12 @@ plugins {
 }
 
 jib {
-    val dockerImage = (project.findProperty("dockerImage") as? String)
-        ?: "bayonet/${project.name}:${project.version}"
+    val dockerImage = findProperty("dockerImage") as? String ?: "bayonet/${project.name}:${project.version}"
+    val baseDockerImage = findProperty("baseDockerImage") as? String
+        ?: "docker.m.daocloud.io/eclipse-temurin:17-jre@sha256:e4f018a55645ad204892e44eb35437518d7e108ba2a2dce305024ab371d24876"
 
     from {
-        image =
-            "docker.m.daocloud.io/eclipse-temurin:17-jre@sha256:e4f018a55645ad204892e44eb35437518d7e108ba2a2dce305024ab371d24876"
+        image = baseDockerImage
     }
 
     to {
@@ -17,6 +17,6 @@ jib {
     }
 
     container {
-        mainClass = project.findProperty("jibMainClass") as? String
+        mainClass = findRequiredProperty(project, name = "jibMainClass") as String
     }
 }

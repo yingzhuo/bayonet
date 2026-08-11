@@ -14,7 +14,7 @@ springBoot {
 }
 
 tasks.named<BootJar>("bootJar") {
-    val buildExcludeBouncyCastle = (project.findProperty("buildExcludeBouncyCastle") as? String)?.toBoolean() ?: false
+    val buildExcludeBouncyCastle = (findProperty("buildExcludeBouncyCastle") as? String)?.toBoolean() ?: false
 
     manifest {
         attributes("Main-Class" to "org.springframework.boot.loader.launch.PropertiesLauncher")
@@ -49,7 +49,7 @@ tasks.named<BootBuildImage>("bootBuildImage") {
 }
 
 tasks.named<BootRun>("bootRun") {
-    val bootRunSpringProfiles = (project.findProperty("bootRunSpringProfiles") as? String) ?: "dev"
+    val bootRunSpringProfiles = findProperty("bootRunSpringProfiles") as? String ?: "dev"
     args("--spring.profiles.active=$bootRunSpringProfiles")
 }
 

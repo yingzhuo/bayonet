@@ -9,7 +9,7 @@ plugins {
     id("io.spring.dependency-management")
 }
 
-val jdkVersion: Int = 17
+val jdkVersion: Int = findProperty("jdkVersion") as? Int ?: 17
 
 java {
     sourceCompatibility = JavaVersion.toVersion(jdkVersion)
@@ -69,16 +69,17 @@ tasks.named<Javadoc>("javadoc") {
     }
 }
 
-
-
 tasks.named<ProcessResources>("processResources") {
+
+    val defaultDatePattern = findProperty("defaultDatePattern") as? String ?: "yyyy-MM-dd HH:mm:ss.SSS"
+
     // 配置文件替换token
     val tokens = mapOf(
         "APP_GROUP" to project.group,
         "APP_NAME" to project.name,
         "APP_VERSION" to project.version,
         "APP_GRADLE_VERSION" to project.gradle.gradleVersion,
-        "APP_BUILD_TIMESTAMP" to DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").format(LocalDateTime.now())
+        "APP_BUILD_TIMESTAMP" to DateTimeFormatter.ofPattern(defaultDatePattern).format(LocalDateTime.now())
     )
 
     from(rootDir) {
@@ -104,7 +105,7 @@ tasks.named<ProcessResources>("processResources") {
     exclude("**/.DS_Store", "**/.gitkeep", ".gitignore")
 }
 
-tasks.named<Copy>("processTestResources") {
+tasks.named<ProcessResources>("processTestResources") {
     exclude("**/.DS_Store", "**/.gitkeep", ".gitignore")
 }
 
