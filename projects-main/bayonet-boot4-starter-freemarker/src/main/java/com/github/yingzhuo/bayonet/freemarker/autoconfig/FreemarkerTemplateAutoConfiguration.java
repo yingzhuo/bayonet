@@ -1,7 +1,7 @@
 package com.github.yingzhuo.bayonet.freemarker.autoconfig;
 
-import com.github.yingzhuo.bayonet.freemarker.renderer.FreemarkerStringRenderer;
-import com.github.yingzhuo.bayonet.freemarker.renderer.FreemarkerStringRendererImpl;
+import com.github.yingzhuo.bayonet.freemarker.renderer.StringRenderer;
+import com.github.yingzhuo.bayonet.freemarker.renderer.StringRendererImpl;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBooleanProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
  * FreeMarker 模板渲染器的自动配置。
  *
  * <p>当 {@code bayonet.freemarker-template.enabled} 未明确设置为 {@code false} 时，
- * 自动装配 {@link FreemarkerStringRenderer} Bean。
+ * 自动装配 {@link StringRenderer} Bean。
  * 可通过 {@code application.properties} 或 {@code application.yml} 配置模板路径、编码和后缀。</p>
  *
  * <p><b>默认配置</b></p>
@@ -23,8 +23,8 @@ import org.springframework.context.annotation.Bean;
  * </ul>
  *
  * @author 应卓
- * @see FreemarkerStringRenderer
- * @see FreemarkerStringRendererImpl
+ * @see StringRenderer
+ * @see StringRendererImpl
  * @see FreemarkerTemplateProperties
  * @since 4.1.1
  */
@@ -34,15 +34,15 @@ import org.springframework.context.annotation.Bean;
 public class FreemarkerTemplateAutoConfiguration {
 
     /**
-     * 创建 {@link FreemarkerStringRenderer} Bean。
+     * 创建 {@link StringRenderer} Bean。
      *
      * @param properties 模板配置属性
      * @return 渲染器实例
      */
     @Bean
     @ConditionalOnMissingBean
-    public FreemarkerStringRenderer stringTemplateRenderer(FreemarkerTemplateProperties properties) {
-        var bean = new FreemarkerStringRendererImpl();
+    public StringRenderer stringTemplateRenderer(FreemarkerTemplateProperties properties) {
+        var bean = new StringRendererImpl();
         bean.setSuffix(properties.getSuffix());
         bean.setDefaultEncoding(properties.getDefaultEncoding());
         bean.setTemplateLoaderPaths(properties.getTemplateLoaderPaths());

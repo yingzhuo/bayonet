@@ -13,11 +13,11 @@ import org.jspecify.annotations.Nullable;
  * }</pre>
  *
  * @author 应卓
- * @see FreemarkerStringRendererImpl
+ * @see StringRendererImpl
  * @since 4.1.1
  */
 @FunctionalInterface
-public interface FreemarkerStringRenderer {
+public interface StringRenderer {
 
     /**
      * 渲染模板（无数据模型）。

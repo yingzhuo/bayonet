@@ -6,11 +6,7 @@ import org.springframework.util.Assert;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 不可变四元组（Quadruple）工具类。
