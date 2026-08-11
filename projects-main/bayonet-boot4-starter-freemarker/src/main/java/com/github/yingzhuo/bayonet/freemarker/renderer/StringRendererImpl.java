@@ -36,11 +36,11 @@ import java.util.Map;
  * }</pre>
  *
  * @author 应卓
- * @see FreemarkerStringRenderer
+ * @see StringRenderer
  * @see Configuration
  * @since 4.1.1
  */
-public class FreemarkerStringRendererImpl implements FreemarkerStringRenderer, InitializingBean {
+public class StringRendererImpl implements StringRenderer, InitializingBean {
 
     private Configuration cfg;
 

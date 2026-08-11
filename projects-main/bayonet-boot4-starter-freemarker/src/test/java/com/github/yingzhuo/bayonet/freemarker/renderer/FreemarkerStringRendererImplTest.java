@@ -10,11 +10,11 @@ import static org.assertj.core.api.Assertions.*;
 
 class FreemarkerStringRendererImplTest {
 
-    private FreemarkerStringRendererImpl renderer;
+    private StringRendererImpl renderer;
 
     @BeforeEach
     void setUp() {
-        renderer = new FreemarkerStringRendererImpl();
+        renderer = new StringRendererImpl();
         renderer.setTemplateLoaderPaths(new String[]{"classpath:/templates/"});
         renderer.setSuffix(".ftl");
         renderer.setDefaultEncoding("UTF-8");
@@ -48,7 +48,7 @@ class FreemarkerStringRendererImplTest {
 
     @Test
     void should_use_custom_suffix() {
-        var r = new FreemarkerStringRendererImpl();
+        var r = new StringRendererImpl();
         r.setTemplateLoaderPaths(new String[]{"classpath:/templates/"});
         r.setSuffix("");
         r.setDefaultEncoding("UTF-8");
@@ -60,7 +60,7 @@ class FreemarkerStringRendererImplTest {
 
     @Test
     void should_throw_when_templateLoaderPaths_contains_unsupported_prefix() {
-        var bad = new FreemarkerStringRendererImpl();
+        var bad = new StringRendererImpl();
         bad.setTemplateLoaderPaths(new String[]{"unsupported:/path"});
         bad.setSuffix(".ftl");
 
@@ -76,7 +76,7 @@ class FreemarkerStringRendererImplTest {
         var tempFile = tempDir.resolve("hello.ftl");
         java.nio.file.Files.writeString(tempFile, "file: ${msg}\n");
 
-        var r = new FreemarkerStringRendererImpl();
+        var r = new StringRendererImpl();
         r.setTemplateLoaderPaths(new String[]{"file:" + tempDir + "/"});
         r.setSuffix(".ftl");
         r.setDefaultEncoding("UTF-8");

@@ -1,6 +1,6 @@
 package com.github.yingzhuo.bayonet.freemarker.autoconfig;
 
-import com.github.yingzhuo.bayonet.freemarker.renderer.FreemarkerStringRendererImpl;
+import com.github.yingzhuo.bayonet.utility.collection.ArrayUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.InitializingBean;
@@ -19,8 +19,6 @@ import org.springframework.util.StringUtils;
  * </ul>
  *
  * @author 应卓
- * @see FreemarkerTemplateAutoConfiguration
- * @see FreemarkerStringRendererImpl
  * @since 4.1.1
  */
 @Getter
@@ -41,7 +39,7 @@ public class FreemarkerTemplateProperties implements InitializingBean {
         if (!StringUtils.hasText(defaultEncoding)) {
             defaultEncoding = "UTF-8";
         }
-        if (templateLoaderPaths == null || templateLoaderPaths.length == 0) {
+        if (ArrayUtils.isEmpty(templateLoaderPaths)) {
             templateLoaderPaths = new String[]{"classpath:/templates/"};
         }
     }
