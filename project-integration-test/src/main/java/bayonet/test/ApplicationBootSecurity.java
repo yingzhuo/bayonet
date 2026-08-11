@@ -120,7 +120,7 @@ public class ApplicationBootSecurity {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(Environment environment) {
-        return customizer -> customizer.debug(RuntimeHelper.isDevProfileActive(environment));
+        return customizer -> customizer.debug(RuntimeHelper.isDebugMode(environment));
     }
 
 }

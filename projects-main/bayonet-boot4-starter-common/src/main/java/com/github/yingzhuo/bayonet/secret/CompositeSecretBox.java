@@ -5,6 +5,7 @@ import com.github.yingzhuo.bayonet.utility.collection.SortingUtils;
 import org.springframework.util.Assert;
 
 import javax.crypto.SecretKey;
+import java.io.Serial;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -25,6 +26,9 @@ import java.util.function.Function;
  * @since 4.1.1
  */
 public final class CompositeSecretBox implements SecretBox {
+
+    @Serial
+    private final static long serialVersionUID = -8533156255292017710L;
 
     private final List<SecretBox> delegates;
 
@@ -76,16 +80,6 @@ public final class CompositeSecretBox implements SecretBox {
     @Override
     public String getStorePassword() {
         throw new UnsupportedOperationException("CompositeSecretBox does not support getStorePassword()");
-    }
-
-    /**
-     * 组合代理不支持该方法。
-     *
-     * @throws UnsupportedOperationException 始终抛出
-     */
-    @Override
-    public Map<String, String> getAliasToKeypassMapping() {
-        throw new UnsupportedOperationException("CompositeSecretBox does not support getAliasToKeypassMapping()");
     }
 
     @Override

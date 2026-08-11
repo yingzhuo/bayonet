@@ -6,6 +6,7 @@ import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 
 import javax.crypto.SecretKey;
+import java.io.Serial;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -26,6 +27,9 @@ import java.util.NoSuchElementException;
  * @since 4.1.1
  */
 public class KeyStoreSecretBox implements SecretBox {
+
+    @Serial
+    private final static long serialVersionUID = -7456659365896702093L;
 
     private final Resource resource;
     private final StoreType type;
@@ -66,11 +70,6 @@ public class KeyStoreSecretBox implements SecretBox {
     @Override
     public String getStorePassword() {
         return storepass;
-    }
-
-    @Override
-    public Map<String, String> getAliasToKeypassMapping() {
-        return aliasToKeypass;
     }
 
     @Override

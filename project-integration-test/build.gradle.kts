@@ -33,11 +33,7 @@ dependencies {
     // slf4j
     api("org.slf4j:slf4j-api")
 
-    // inject
-    api("jakarta.inject:jakarta.inject-api")
-
     // BC
     api(platform(libs.bc.bom))
     api("org.bouncycastle:bcprov-jdk18on")
-    api("org.bouncycastle:bcpkix-jdk18on")
 }

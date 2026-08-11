@@ -43,7 +43,7 @@ public final class EnvironmentUtils {
         try {
             return SpringUtils.getBean(Environment.class);
         } catch (IllegalStateException e) {
-            return LazyHolder.DEFAULT_ENVIRONMENT;
+            return new StandardEnvironment();
         }
     }
 
@@ -120,10 +120,17 @@ public final class EnvironmentUtils {
     // ------
 
     /**
-     * 持有降级 {@link StandardEnvironment} 的延迟初始化持有者。
+     * 判断是否启用了调试模式。
+     * <p>读取 {@code spring.debug} 属性，值为 {@code true} 或 {@code on}（不区分大小写）时视为启用，
+     * 属性不存在时默认关闭。</p>
+     *
+     * @return 若启用了调试模式返回 {@code true}
+     * @since 4.1.1
      */
-    private static class LazyHolder {
-        private static final Environment DEFAULT_ENVIRONMENT = new StandardEnvironment();
+    public static boolean isDebugEnabled() {
+        var value = getEnvironment().getProperty("spring.debug", "false");
+        return "true".equalsIgnoreCase(value)
+                || "on".equalsIgnoreCase(value);
     }
 
 }

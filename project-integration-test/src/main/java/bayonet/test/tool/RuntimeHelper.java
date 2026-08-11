@@ -16,4 +16,9 @@ public final class RuntimeHelper {
         return environment.acceptsProfiles(Profiles.of("prod"));
     }
 
+    public static boolean isDebugMode(Environment environment) {
+        var value = environment.getProperty("spring.debug", "false");
+        return "true".equalsIgnoreCase(value) || "on".equalsIgnoreCase(value);
+    }
+
 }

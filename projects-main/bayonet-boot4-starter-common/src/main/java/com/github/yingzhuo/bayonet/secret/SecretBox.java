@@ -5,6 +5,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 
 import javax.crypto.SecretKey;
+import java.io.Serializable;
 import java.security.KeyPair;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -35,7 +36,7 @@ import java.util.*;
  * @see KeyStoreSecretBox
  * @since 4.1.1
  */
-public interface SecretBox extends Iterable<String> {
+public interface SecretBox extends Iterable<String>, Serializable {
 
     /**
      * 获取 Builder 实例。
@@ -52,14 +53,6 @@ public interface SecretBox extends Iterable<String> {
      * @return 存储密码
      */
     String getStorePassword();
-
-    /**
-     * 获取别名到密钥密码的映射。
-     * <p>未显式配置密钥密码的别名不在映射中，其密钥密码回退为存储密码。</p>
-     *
-     * @return 不可变映射
-     */
-    Map<String, String> getAliasToKeypassMapping();
 
     /**
      * 判断是否包含指定别名。
