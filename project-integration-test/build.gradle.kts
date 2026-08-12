@@ -5,7 +5,7 @@ plugins {
     id("buildlogic.dist-conventions")
 }
 
-description = "集成测试 (临时)"
+description = "集成测试"
 
 dependencies {
     // spring-boot
@@ -18,9 +18,9 @@ dependencies {
     api(project(":projects-main:bayonet-boot4-starter-common"))
     api(project(":projects-main:bayonet-boot4-starter-actuator"))
     api(project(":projects-main:bayonet-boot4-starter-config-hocon"))
-    api(project(":projects-main:bayonet-boot4-starter-config-toml"))
-    api(project(":projects-main:bayonet-boot4-starter-security"))
     api(project(":projects-main:bayonet-boot4-starter-jwt"))
+    api(project(":projects-main:bayonet-boot4-starter-security"))
+    api(project(":projects-main:bayonet-boot4-starter-validation"))
 
     // lombok
     compileOnly("org.projectlombok:lombok")

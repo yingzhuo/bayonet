@@ -17,8 +17,8 @@ java {
 
     toolchain {
         languageVersion = JavaLanguageVersion.of(jdkVersion)
-        vendor = JvmVendorSpec.ORACLE
         implementation = JvmImplementation.VENDOR_SPECIFIC
+        //vendor = JvmVendorSpec.ORACLE
     }
 }
 
@@ -63,7 +63,7 @@ tasks.named<Javadoc>("javadoc") {
     options {
         this as StandardJavadocDocletOptions
         locale("zh_CN")
-        encoding("UTF-8")
+        encoding("utf-8")
         addBooleanOption("html5", true)
         addBooleanOption("Xdoclint:none", true)
     }
@@ -100,13 +100,17 @@ tasks.named<ProcessResources>("processResources") {
             filter<ReplaceTokens>("tokens" to tokens)
         }
     }
+
     filteringCharset = "UTF-8"
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     exclude("**/.DS_Store", "**/.gitkeep", ".gitignore")
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 tasks.named<ProcessResources>("processTestResources") {
     exclude("**/.DS_Store", "**/.gitkeep", ".gitignore")
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 tasks.named<Test>("test") {
