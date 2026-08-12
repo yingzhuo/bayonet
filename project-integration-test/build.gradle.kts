@@ -13,6 +13,10 @@ dependencies {
     api("org.springframework.boot:spring-boot-starter-actuator")
     api("org.springframework.boot:spring-boot-starter-security")
 
+    // spring-framework
+    compileOnly("org.springframework:spring-context-indexer")
+    annotationProcessor("org.springframework:spring-context-indexer")
+
     // bayonet
     api(platform(project(":projects-main:bayonet-bom")))
     api(project(":projects-main:bayonet-boot4-starter-common"))
