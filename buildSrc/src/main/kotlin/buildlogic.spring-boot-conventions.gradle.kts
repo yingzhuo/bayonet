@@ -18,9 +18,9 @@ springBoot {
 
 tasks.named<BootJar>("bootJar") {
     manifest {
-        attributes("Main-Class" to "org.springframework.boot.loader.launch.PropertiesLauncher")
-        attributes("Implementation-Title" to project.name)
-        attributes("Implementation-Version" to project.version)
+        attributes(
+            "Main-Class" to "org.springframework.boot.loader.launch.PropertiesLauncher"
+        )
     }
 
     includeTools = true
