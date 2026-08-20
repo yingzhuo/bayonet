@@ -1,7 +1,5 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 plugins {
     id("java")
@@ -9,9 +7,9 @@ plugins {
     id("io.spring.dependency-management")
 }
 
-val jdkVersion: Int = findProperty("jdkVersion") as? Int ?: 17
-
 java {
+    val jdkVersion: Int = findProperty("jdkVersion") as? Int ?: 17
+
     sourceCompatibility = JavaVersion.toVersion(jdkVersion)
     targetCompatibility = JavaVersion.toVersion(jdkVersion)
 
@@ -49,10 +47,8 @@ tasks.named<Jar>("jar") {
         attributes(
             "Implementation-Title" to project.name,
             "Implementation-Version" to project.version,
-            "Implementation-Vendor" to "应卓",
-            "Built-Jdk" to jdkVersion,
             "Created-By" to "Gradle ${gradle.gradleVersion}",
-            "Url" to "https://github.com/yingzhuo/bayonet",
+            "Url" to "https://github.com/yingzhuo/bayonet"
         )
     }
 }
@@ -71,15 +67,13 @@ tasks.named<Javadoc>("javadoc") {
 
 tasks.named<ProcessResources>("processResources") {
 
-    val defaultDatePattern = findProperty("defaultDatePattern") as? String ?: "yyyy-MM-dd HH:mm:ss.SSS"
-
     // 配置文件替换token
     val tokens = mapOf(
         "APP_GROUP" to project.group,
         "APP_NAME" to project.name,
         "APP_VERSION" to project.version,
         "APP_GRADLE_VERSION" to project.gradle.gradleVersion,
-        "APP_BUILD_TIMESTAMP" to DateTimeFormatter.ofPattern(defaultDatePattern).format(LocalDateTime.now())
+        "APP_BUILD_TIMESTAMP" to genTimestamp()
     )
 
     from(rootDir) {
